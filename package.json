@@ -1,0 +1,111 @@
+{
+  "name": "path-of-berkay",
+  "productName": "Path of Berkay",
+  "version": "0.17.0",
+  "description": "Path of Berkay (PoBe) — PoE 2 iki dilli (EN/TR) veritabanı",
+  "main": "./out/main/index.js",
+  "author": "Berkay",
+  "license": "GPL-3.0-only",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "dist": "electron-vite build && electron-builder --win --publish never",
+    "preview": "electron-vite preview",
+    "build:gems": "tsx scripts/build-gems.ts",
+    "build:currency": "tsx scripts/build-currency.ts",
+    "build:items": "tsx scripts/build-items.ts",
+    "build:uniques": "tsx scripts/build-uniques.ts",
+    "build:mods": "tsx scripts/build-mods.ts",
+    "build:mods-sim": "tsx scripts/build-mods-sim.ts",
+    "build:essences-sim": "tsx scripts/build-essences-sim.ts",
+    "build:catalysts-sim": "tsx scripts/build-catalysts-sim.ts",
+    "build:omens-sim": "tsx scripts/build-omens-sim.ts",
+    "build:runes-sim": "tsx scripts/build-runes-sim.ts",
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
+    "typecheck": "npm run typecheck:node && npm run typecheck:web",
+    "build:areas": "tsx scripts/build-areas.ts",
+    "build:ascendancies": "tsx scripts/build-ascendancies.ts",
+    "build:passives": "tsx scripts/build-passives.ts",
+    "build:passive-tree": "tsx scripts/build-passive-tree.ts",
+    "build:atlas": "tsx scripts/build-atlas.ts",
+    "build:atlas-tree": "tsx scripts/build-atlas-tree.ts",
+    "build:mechanics": "tsx scripts/build-mechanics.ts",
+    "build:bosses": "tsx scripts/build-bosses.ts",
+    "build:crafting": "tsx scripts/build-crafting.ts",
+    "build:trade-stats": "tsx scripts/build-trade-stats.ts",
+    "build:win": "electron-vite build && electron-builder --win",
+    "build:keywords": "node scripts/build-keywords.cjs"
+  },
+  "build": {
+    "appId": "com.pathofberkay.pobe",
+    "productName": "Path of Berkay",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ibarslan-45",
+        "repo": "path-of-berkay"
+      }
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "PathOfBerkay-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "shortcutName": "Path of Berkay",
+      "uninstallDisplayName": "Path of Berkay",
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "multiLanguageInstaller": true,
+      "displayLanguageSelector": true,
+      "installerLanguages": [
+        "tr_TR",
+        "en_US"
+      ],
+      "include": "build/installer.nsh"
+    },
+    "portable": {
+      "artifactName": "PathOfBerkay-${version}-portable.${ext}"
+    }
+  },
+  "dependencies": {
+    "@electron-toolkit/preload": "^3.0.1",
+    "@electron-toolkit/utils": "^3.0.0",
+    "electron-updater": "^6.8.9",
+    "pako": "^2.1.0",
+    "vue-i18n": "^11.4.4"
+  },
+  "devDependencies": {
+    "@electron-toolkit/tsconfig": "^1.0.1",
+    "@types/pako": "^2.0.4",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "electron": "^42.4.0",
+    "electron-builder": "^26.15.2",
+    "electron-vite": "^5.0.0",
+    "pngjs": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.0",
+    "vue": "^3.5.13",
+    "vue-tsc": "^3.3.4"
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "_note": "PoE2'nin resmî Türkçesi YOK. Boss adları betimleyici çeviridir -> status 'proposed'. Eşleşme anahtarı EN'dir (proje talimatları). EN kaynağı boş olan mekanik alanı burada da boş bırakılır. Mekanik içeriği araştırma kaynakları (5 boss) + d481c64c (yeni pinnacle/gate envanteri) kaynaklarından; UYDURMA YOK.",
+  "xesht": {
+    "tr": "Xesht, Bir Olan Bizler",
+    "status": "proposed",
+    "access": "Yarık'ın (Breach) pinnacle boss'u. Yarık yaratıkları ve Kenetli Eller, Yarık Kıymığı düşürür; bunları yeterince biriktirip bir Breachstone'a birleştir, sonra Realmgate'te kullanarak Xesht'in diyarına gir ve sonunda onunla yüzleş.",
+    "mechanics": "Devasa, çok elli bir varlığa karşı Yarık temalı bir dövüş. Arenanın büyük bölümünü alan saldırılarıyla kaplar; sürekli hareket et ve yeri izle."
+  },
+  "olroth": {
+    "tr": "Olroth, Düşüşün Kaynağı",
+    "status": "proposed",
+    "access": "Bir Expedition (Sefer) pinnacle düzeyinde bossu. Yüksek seviyeli Sefer Kayıt Defterleri'ni (Logbook) işleterek mekaniği ilerlet ve karşılaşmayı aç. Not: 0.5 'Return of the Ancients'te Olroth artık Sefer'in NİHAİ pinnacle'ı değil — 'Grand Expedition' görevinde yenince Shattered Triskelion düşer ve isimsiz yeni bir Expedition pinnacle'ına geçit açılır. Olroth hâlâ tamamen farm edilebilir.",
+    "mechanics": "İki faz: Faz 1'de canı 0'a inince Triskelion Flame onu ~%70 canla diriltir, böylece etkili canı kabaca iki katına çıkar. Saldırıları: Sword Slam (seni havaya kaldırıp donduran buz zemini bırakır), dönüşte patlayan Boomerang Sword Throw (uçan kılıç Hinder uygular), geniş yay kesikli atılış, Starfall (yukarıdan spiral buz ışınları) ve Frigid Flurry. En ölümcül kaynak, arenayı merkez ışın ve takip eden lazerlerle ikiye bölen, dönen galaksi biçimli Triskelion Flame diskidir; Faz 2'de buz dikenleri bırakır ve yüksek Runic Splinter sayısında Runic Gateway portalları iskelet add'leri doğurur. Hasar ağırlıklı Soğuk + Fiziksel, freeze riski yüksek — Soğuk direncini sınırla ve Thawing/Silver Charm taşı."
+  },
+  "king-in-the-mists": {
+    "tr": "Sisteki Kral",
+    "status": "proposed",
+    "access": "0.5 'Return of the Ancients'te Kral artık Ayin'in (Ritual) pinnacle'ı değil — bir geçit bossuna dönüştürüldü. Ayin sunaklarında Haraç (Tribute) biriktirerek Wildwood'da dövüşü aç; yenince 'The Head of the King' düşer ve Ayin'in yeni pinnacle'ı The Bodach'a giden 'Rite of the Nameless' ilerlemesini açar. Kral hâlâ farm edilebilir (Difficulty IV'te Mageblood düşürebilir).",
+    "mechanics": "Üç aşama. Canının yaklaşık %75'i tükenince seni bir Wisp Labirenti'ne ışınlar (süreli geç/kal — parlayan beyaz wisp'leri takip edip dön), sonra tam iyileşip son fazlar için bir treant formuna geçer. Saldırılar: Vine Slam (asasını kaldırıp çevreyi ezer), Thorngrip (mor Chaos dikenlerinden koni) ve Wither uygulayan temel Chaos projektilleri; treant fazında üçlü projektil, yavaş Explosive Spore (mor zemin) ve seni kovalayan Blood/Rat Tornado (en tehlikelisi). Merkez sunağı üç platform çevreler; birinde durmak Portent Vapors yığar (daha çok hasar alırsın). Ritual of Meditation (kırmızı = durma, hareket etme) ve Ritual of Dance (mor = sürekli hareket et) curse'leri yanlış hareketi köklenme ve stun ile cezalandırır. Hasar ağırlıklı Chaos."
+  },
+  "omniphobia": {
+    "tr": "Omniphobia, Korkunun Tezahürü",
+    "status": "proposed",
+    "access": "Delirium endgame'inin bir Simulacrum bossu — pinnacle DEĞİL (Delirium'un pinnacle'ı artık Tangmazu, the Raven Trickster). Simulacrum Kıymıklarından bir Simulacrum kur ve dalgaları aş; Omniphobia 3. dalgadan itibaren ve Delirium sis haritalarında da çıkabilir. Kendine ait loot tablosu yoktur; ortak Simulacrum havuzunu paylaşır.",
+    "mechanics": "Resmi faz yok (dalga bossu); %50 canda bir Vomit AoE kazanır. Yavaş ve telegraflı saldırıları olan ağır Fiziksel tek-hedef bruiser (hasarın bir kısmı Chaos'a çevrilir): büyük balta savurması, Double/Triple Slam (peş peşe yer ezme + diken AoE), Leap Slam (mesafe açınca üstüne zıplar) ve Wave Slash (uzun menzilli, Bleed uygulayan balta projektili). Slam'leri tam yere değmeden i-frame'li dodge-roll ile sıyrılıp boşlukta vurabilirsin. Haritada öldüğünde bir yığın Simulacrum Kıymığı düşürür."
+  },
+  "kosis": {
+    "tr": "Kosis, Hürmet Edilen Kraliçe",
+    "status": "proposed",
+    "access": "İki Simulacrum bossundan daha tehlikeli olanı (Delirium endgame) — pinnacle DEĞİL (Tangmazu yeni Delirium pinnacle'ı). Kıymıklardan bir Simulacrum kur ve dalgaları temizle; Kosis 5. dalgadan itibaren artan şansla çıkar. Delirium bossu içeren dalgalar, Voices, Split Personality ve Megalomaniac gibi Simulacrum'a özel unique'lerin tek kaynağıdır.",
+    "mechanics": "Resmi faz yok, ama Enerji Kalkanı kesinti pencereleri yaratır. Demon Beam en ölümcül hamledir: canının %15'ini ES olarak kazanır ve ~10 saniye boyunca büyüyen bir Death Zone bırakan geniş bir kara/buz ışını savurur. Ayrıca ışınlanıp slam ile diken dalgalarına patlattığı buz küreleri saçar, uzaktaki hedeflere teleport melee yapar ve fire/lightning combo'ları vardır; melee'si Corrupting Blood uygular. Işını kanalize ederken ES'ini tüketmek onu kısa süre stunlar ve ışını erken bitirir. En güçlü teleport/slam saldırılarını tetiklememek için yakın kal ve zincirleyen Death Zone'lara dikkat et. Karışık Soğuk/Şimşek/Ateş, freeze ve chill riski."
+  },
+  "zarokh": {
+    "tr": "Zarokh, Zamansal",
+    "status": "proposed",
+    "access": "Sekhemaların Denemesi'nin (Trial of the Sekhemas) sonundaki pinnacle boss. Denemenin dört katını da Onur'unu (Honour) tüketmeden geçerek son katta Zarokh'a ulaş.",
+    "mechanics": "Zaman temalı bir dövüş: karşılaşmayı geri sarabilir ve kendi yankılarını çağırabilir, arenayı bir kum fırtınası sarar. Onu hızla eritmekten çok konumlanma ve istikrarlı hasar önemlidir."
+  },
+  "trialmaster": {
+    "tr": "Deneme Ustası",
+    "status": "proposed",
+    "access": "Kaos Denemesi'nin (Trial of Chaos) pinnacle bossu — 0.5'te de mekaniğin zirvesi olmayı sürdürür, çünkü bu mekanik Atlas boss'ları gibi yeniden tasarlanmadı. Erişim, seviye 75+: bir Inscribed Ultimatum'un 10 odasını bitir ve 3 Fate (Cowardly, Deadly, Victorious — Uxmal, Bahlak, Chetza'dan) toplayıp kapıyı aç. Her odadan önce bir Bela (Affliction) seçerek odaları temizle; ilk öldürüş son Yükseliş (Ascendancy) puanlarını verir.",
+    "mechanics": "Davranışa göre (sabit can eşiği değil) iki form arasında geçer: Spear Form (yakın dövüş) ve Caster Form (menzilli/bullet-hell). İmzası Time Stop'tur — zamanı durdurup 3 Sunder (Spear Form) veya 3 Blood Orb (Caster Form) konumlandırır, zaman akınca fırlatır. Diğer saldırılar: kan projektilli çılgın mızrak savurmaları, yavaşça genişleyen fiziksel degen alanı bırakan Spear Throw, hızlı üçlü elemental orb (Ateş/Soğuk/Şimşek), duvardan sekip çoğalan Blood Orb'lar ve alanından çıkınca seni stunlayıp patlayan, yavaşlatan bir Heart bağı. Arena KÜÇÜK olduğu için konumlanma ve dodge-roll zamanlaması kritik — degen alanlarını duvar kenarına yerleştirmek için kenarda kal. Trial Tribulation modifier'ları ve Atlas pasifleri bu dövüşü ÖLÇEKLEMEZ. Chaos direnci yardımcı olur."
+  },
+  "arbiter-of-ash": {
+    "tr": "Külün Hakemi",
+    "status": "proposed",
+    "access": "0.5'te Külün Hakemi artık Atlas zirvesi değil — Fortress içinde bir görev/geçit bossuna dönüştürüldü ve yeni APEX The Arbiter of Divinity'dir. Atlas'taki üç güçlü Citadel boss'unu (ör. Enigma Chambers'taki Geonor & Doryani) alt ederek üç Crisis Fragment topla, sonra bunları Burning Monolith'e yerleştirerek Külün Hakemi'ne giden yolu aç.",
+    "mechanics": "Ateş ve kül temalı bir karşılaşma. Dövüş ilerledikçe arena ateşle giderek tehlikelileşir; istikrarlı hasar ve sürekli yer farkındalığı kritiktir."
+  },
+  "arbiter-of-divinity": {
+    "tr": "Tanrısallığın Hakemi",
+    "status": "proposed",
+    "access": "0.5'in yeni APEX pinnacle bossu (Fortress / Origins of Divinity); Atlas endgame'inin en zorlu hedefi olarak Külün Hakemi'nin yerini aldı — oyundaki en çetin hedef olarak görülmeli. Onunla yüzleşmek için Fortress endgame'inin çekirdeğindeki Origins of Divinity'ye ulaş; Uber sürümü Area Level 83'te dövüşülür.",
+    "mechanics": "İki ana faz: havadan ve yerden ilahi enerji yağdırır, yaklaşık %40 canda iyileşip hızlanır ve kendisinin 'Aspects of Divinity' yansımalarını doğurur. İstikrarlı hasar ve sürekli yer farkındalığı kritiktir."
+  },
+  "bodach": {
+    "tr": "The Bodach",
+    "status": "proposed",
+    "access": "0.5'te Ayin'in (Ritual) yeni pinnacle bossu — King in the Mists'in gücünün kaynağıdır. Beş haritalık Ritual boyunca effigy parçaları topla, effigy'leri yerleştir ve 'Rite of the Nameless'ı tamamla (final harita o ana dek yendiğin tüm harita boss'larını yeniden dövüştürür); böylece The Bodach'ın diyarına girersin.",
+    "mechanics": "İki fazlı bir dövüş. Faz 1'de Bodach gövdesini gölgede saklar ve yalnızca KAFASINI kullanarak saldırır; ilk can barı bitince arena hasar veren karanlıkla dolar ve geçiş için YEŞİL orb'ları (Draiocht ışık sağlar) takip ederek güvenli noktaya ulaşman gerekir. Faz 2'de tam gövdesi açığa çıkar ve bazı saldırılarını korur. Ana saldırılar: Arm Bash (kolunu üç kez yere indirir), geriye alev pençeleyen menzilli Ground Scratch, Side Swipe, Ground Shrapnel (kafasını yere saplayıp şarapnel saçar), işaretli Fireball Drop'lar, ağzından Shadow Beam ve Rain of Fireballs. Ana mekanik, faz geçişindeki karanlık/ışık labirentidir — karanlık hasarından kaçmak için yeşil orb'ları izle."
+  },
+  "tangmazu": {
+    "tr": "Tangmazu, Karga Düzenbaz",
+    "status": "proposed",
+    "access": "0.5'te Delirium'un yeni pinnacle bossu ve 'Voices' unique jewel'ının hedefi. Omniphobia ve Kosis'in yerine mekaniğin zirvesi olur; karşılaşmayı açmak için yeniden tasarlanan Delirium endgame'ini ilerlet.",
+    "mechanics": "Yaklaşık %75 ve %50 canda geçişli üç faz. Aynalar arasında ışınlanır ve köşelerden Fractured Beam ile heykel ışınları fırlatır; yenince 'Voices' jewel'ı düşürebilir."
+  },
+  "vessel-of-kulemak": {
+    "tr": "Kulemak'ın Mahfazası",
+    "status": "proposed",
+    "access": "Abyss (Uçurum) pinnacle bossu (0.3'te eklendi, 0.5'te 'Abyssal Power' questline'ına dönüştürüldü). Abyss geçit boss'ları Tasgul ve Vandroth'un düşürdüğü bir Kulemak's Invitation edin ve Well of Souls'ta 'Jump In' ile ona ulaş.",
+    "mechanics": "Dövüş sırasında Lich güçlerini çalarak boss'u yaklaşık üç kez empower edebilirsin; yenince Grip of Kulemak yüzüğünü düşürebilir."
+  },
+  "atziri-red-queen": {
+    "tr": "Atziri, Kızıl Kraliçe",
+    "status": "proposed",
+    "access": "Vaal Tapınağı pinnacle'ı (0.4'te eklendi, 0.5'te kalıcı bir endgame hedefi olarak core mekaniğe alındı). Vaal Tapınağı'nın sonundaki Royal Access Chamber üzerinden ona ulaş; Atziri's Rule (bir Mirror of Refraction) düşürebilir.",
+    "mechanics": ""
+  },
+  "tul-esh": {
+    "tr": "Tul ve Esh",
+    "status": "proposed",
+    "access": "Sky/Hive Fortress'te bir Breach (Yarık) geçit dövüşü. İkiliyi yenmek Breach pinnacle'ı Xesht'e bir erişim anahtarı verir.",
+    "mechanics": "İkili bir dövüş: Tul soğuk ve freeze, Esh şimşek hasarı verir. İki hasar türüyle aynı anda başa çık."
+  },
+  "vruun": {
+    "tr": "Vruun, Xesht'in Mareşali",
+    "status": "proposed",
+    "access": "Stabilised Breach'te beliren nadir bir elit. Bir Wombgift düşürür ve bir Lineage Support kazanmanı sağlar.",
+    "mechanics": ""
+  },
+  "queen-in-the-mists": {
+    "tr": "Sisteki Kraliçe",
+    "status": "proposed",
+    "access": "0.5'te eklenen OPSİYONEL bir Ayin (Ritual) yan bossu (pinnacle DEĞİL — o The Bodach'tır). Atlas ağacında 'Mysterious Rites' node'unu aldıktan sonra Ritual'larda belirir ve üç yeni corrupted Idol düşürebilir. Not: hem Kral'dan hem Bodach'tan farklıdır.",
+    "mechanics": ""
+  },
+  "medved": {
+    "tr": "Medved",
+    "status": "proposed",
+    "access": "Bir Expedition (Sefer, Okyanus) story bossu: Gwennen'in adasındaki mezarda uyanan antik bir Kalguuran savaşçısı. Yenince yönlendirilebilir bir Logbook düşürür.",
+    "mechanics": ""
+  },
+  "uhtred": {
+    "tr": "Uhtred, Yıldız İçen",
+    "status": "proposed",
+    "access": "Derin okyanus bir Expedition story bossu. Yenince okyanusa devasa bir Verisium meteoru düşürdüğü ve yeni bir eldritch endgame biome açtığı söylenir. 'Star-Drinker' (Yıldız İçen) lakabı ve kesin rolü tek-kaynaktır (topluluk okyanus rehberleri) ve henüz birincil wiki'lerce doğrulanmadı — doğrulanmamış kabul et.",
+    "mechanics": ""
+  },
+  "phyx": {
+    "tr": "Phyx, Kıvılcımın Nöbetçisi",
+    "status": "proposed",
+    "access": "Patriarch Hall'daki bir Fortress geçit bossu. Origin Spark (Origin Core için) düşürür ve sınırlı denemeyle, T15 Waystone ile dövüşülür.",
+    "mechanics": ""
+  },
+  "phya": {
+    "tr": "Phya, Beşiğin Nöbetçisi",
+    "status": "proposed",
+    "access": "Matriarch Hall'daki bir Fortress geçit bossu. Origin Cradle (Origin Core için) düşürür ve sınırlı denemeyle, T15 Waystone ile dövüşülür.",
+    "mechanics": ""
+  },
+  "geonor-doryani": {
+    "tr": "Geonor (Batı Enigma) & Doryani (Doğu Enigma)",
+    "status": "proposed",
+    "access": "Enigma Chambers'ta bulunan Fortress geçit boss'ları. Onları yenmek bir Crisis fragment düşürür ve Külün Hakemi'ne giden yolu açar.",
+    "mechanics": "Kampanya boss'ları Geonor ve Doryani'nin daha güçlü, endgame sürümleri."
+  },
+  "tasgul": {
+    "tr": "Tasgul, Işık Yutan",
+    "status": "proposed",
+    "access": "Lightless Void'deki bir Abyss geçit bossu (0.3'te eklendi, 0.5'te mevcut). Yenince, Vessel of Kulemak'a ulaşmakta kullanılan bir Kulemak's Invitation düşürür.",
+    "mechanics": ""
+  },
+  "vandroth": {
+    "tr": "Vandroth, Karakanlı Köleleştiren",
+    "status": "proposed",
+    "access": "Dark Domain'deki bir Abyss geçit bossu (0.3'te eklendi, 0.5'te mevcut). Yenince, Vessel of Kulemak'a ulaşmakta kullanılan bir Kulemak's Invitation düşürür.",
+    "mechanics": ""
+  },
+  "architect-xipocado": {
+    "tr": "Mimar (Xipocado)",
+    "status": "proposed",
+    "access": "Bir Vaal Tapınağı geçit bossu (0.4'te eklendi, 0.5'te mevcut). Tapınak'ta yenildiğinde, Atziri'ye götüren Royal Access Chamber dâhil özel ödül odalarını açar.",
+    "mechanics": ""
+  }
+}

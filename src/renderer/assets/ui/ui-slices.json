@@ -1,0 +1,176 @@
+{
+  "frame-ornate.png": {
+    "name": "frame-ornate.png",
+    "w": 224,
+    "h": 224,
+    "slice": {
+      "top": 68,
+      "right": 68,
+      "bottom": 68,
+      "left": 68
+    },
+    "repeat": "repeat"
+  },
+  "frame-border3.png": {
+    "name": "frame-border3.png",
+    "w": 44,
+    "h": 44,
+    "slice": {
+      "top": 16,
+      "right": 16,
+      "bottom": 16,
+      "left": 16
+    },
+    "repeat": "repeat"
+  },
+  "frame-selection.png": {
+    "name": "frame-selection.png",
+    "w": 88,
+    "h": 88,
+    "slice": {
+      "top": 40,
+      "right": 40,
+      "bottom": 40,
+      "left": 40
+    },
+    "repeat": "repeat"
+  },
+  "frame-inner.png": {
+    "name": "frame-inner.png",
+    "w": 24,
+    "h": 24,
+    "slice": {
+      "top": 8,
+      "right": 8,
+      "bottom": 8,
+      "left": 8
+    },
+    "repeat": "repeat"
+  },
+  "bar-titlebar.png": {
+    "name": "bar-titlebar.png",
+    "w": 480,
+    "h": 88,
+    "slice": {
+      "top": 0,
+      "right": 172,
+      "bottom": 0,
+      "left": 172
+    },
+    "fill": true,
+    "repeat": "repeat"
+  },
+  "tab-normal.png": {
+    "name": "tab-normal.png",
+    "w": 124,
+    "h": 60,
+    "slice": {
+      "top": 0,
+      "right": 44,
+      "bottom": 0,
+      "left": 44
+    },
+    "fill": true,
+    "repeat": "repeat"
+  },
+  "tab-active.png": {
+    "name": "tab-active.png",
+    "w": 124,
+    "h": 60,
+    "slice": {
+      "top": 0,
+      "right": 44,
+      "bottom": 0,
+      "left": 44
+    },
+    "fill": true,
+    "repeat": "repeat"
+  },
+  "btn-normal.png": {
+    "name": "btn-normal.png",
+    "w": 132,
+    "h": 80,
+    "slice": {
+      "top": 0,
+      "right": 44,
+      "bottom": 0,
+      "left": 44
+    },
+    "fill": true,
+    "repeat": "repeat"
+  },
+  "btn-hover.png": {
+    "name": "btn-hover.png",
+    "w": 132,
+    "h": 80,
+    "slice": {
+      "top": 0,
+      "right": 44,
+      "bottom": 0,
+      "left": 44
+    },
+    "fill": true,
+    "repeat": "repeat"
+  },
+  "btn-pressed.png": {
+    "name": "btn-pressed.png",
+    "w": 132,
+    "h": 80,
+    "slice": {
+      "top": 0,
+      "right": 44,
+      "bottom": 0,
+      "left": 44
+    },
+    "fill": true,
+    "repeat": "repeat"
+  },
+  "sb-thumb.png": {
+    "name": "sb-thumb.png",
+    "w": 64,
+    "h": 88,
+    "slice": {
+      "top": 36,
+      "right": 0,
+      "bottom": 36,
+      "left": 0
+    },
+    "fill": true,
+    "repeat": "repeat"
+  },
+  "sb-track.png": {
+    "name": "sb-track.png",
+    "w": 64,
+    "h": 72
+  },
+  "sb-up.png": {
+    "name": "sb-up.png",
+    "w": 64,
+    "h": 40
+  },
+  "sb-down.png": {
+    "name": "sb-down.png",
+    "w": 64,
+    "h": 40
+  },
+  "divider-line.png": {
+    "name": "divider-line.png",
+    "w": 1148,
+    "h": 80
+  },
+  "divider-diamond.png": {
+    "name": "divider-diamond.png",
+    "w": 76,
+    "h": 76
+  },
+  "panel-filler.png": {
+    "name": "panel-filler.png",
+    "w": 1332,
+    "h": 100
+  },
+  "bg-tile.png": {
+    "name": "bg-tile.png",
+    "w": 348,
+    "h": 348
+  }
+}

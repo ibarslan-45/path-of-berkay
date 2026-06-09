@@ -1,0 +1,201 @@
+{
+ "meta": {
+  "game_version": "0.5.0",
+  "source": "currency.json desc + küratör davranış map",
+  "note": "omen bir sonraki ilgili currency’nin davranışını değiştirir, sonra tükenir"
+ },
+ "omens": [
+  {
+   "id": "omen_of_catalysing_exaltation",
+   "en": "Omen of Catalysing Exaltation",
+   "tr": "Catalysing Exaltation Alâmeti",
+   "op": "",
+   "behavior": "",
+   "effect_en": "",
+   "effect_tr": "",
+   "mappable": false,
+   "reason": "Waystone/map omen’i (item-craft değil)",
+   "icon": "assets/currency/OmenOnExaltConsumeQuality.png"
+  },
+  {
+   "id": "omen_of_chaotic_effectiveness",
+   "en": "Omen of Chaotic Effectiveness",
+   "tr": "Chaotic Effectiveness Alâmeti",
+   "op": "",
+   "behavior": "",
+   "effect_en": "",
+   "effect_tr": "",
+   "mappable": false,
+   "reason": "Waystone/map omen’i (item-craft değil)",
+   "icon": "assets/currency/OmenOnChaosMapMonsterEffectiveness.png"
+  },
+  {
+   "id": "omen_of_chaotic_monsters",
+   "en": "Omen of Chaotic Monsters",
+   "tr": "Chaotic Monsters Alâmeti",
+   "op": "",
+   "behavior": "",
+   "effect_en": "",
+   "effect_tr": "",
+   "mappable": false,
+   "reason": "Waystone/map omen’i (item-craft değil)",
+   "icon": "assets/currency/OmenOnChaosMapItemQuantity.png"
+  },
+  {
+   "id": "omen_of_chaotic_quantity",
+   "en": "Omen of Chaotic Quantity",
+   "tr": "Chaotic Quantity Alâmeti",
+   "op": "",
+   "behavior": "",
+   "effect_en": "",
+   "effect_tr": "",
+   "mappable": false,
+   "reason": "Waystone/map omen’i (item-craft değil)",
+   "icon": "assets/currency/OmenOnChaosMapPackSize.png"
+  },
+  {
+   "id": "omen_of_chaotic_rarity",
+   "en": "Omen of Chaotic Rarity",
+   "tr": "Chaotic Rarity Alâmeti",
+   "op": "",
+   "behavior": "",
+   "effect_en": "",
+   "effect_tr": "",
+   "mappable": false,
+   "reason": "Waystone/map omen’i (item-craft değil)",
+   "icon": "assets/currency/OmenOnChaosMapItemRarity.png"
+  },
+  {
+   "id": "omen_of_corruption",
+   "en": "Omen of Corruption",
+   "tr": "Yozlaşma Alâmeti",
+   "op": "vaal",
+   "behavior": "corruption",
+   "effect_en": "Vaal: always changes (no \"no effect\")",
+   "effect_tr": "Vaal: her zaman değişir (\"etki yok\" çıkmaz)",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens3Red.png"
+  },
+  {
+   "id": "omen_of_dextral_coronation",
+   "en": "Omen of Dextral Coronation",
+   "tr": "Dextral Coronation Alâmeti",
+   "op": "regal",
+   "behavior": "dextral",
+   "effect_en": "Regal: adds only a Suffix",
+   "effect_tr": "Regal: yalnız Sonek ekler",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens2Red.png"
+  },
+  {
+   "id": "omen_of_dextral_erasure",
+   "en": "Omen of Dextral Erasure",
+   "tr": "Dextral Erasure Alâmeti",
+   "op": "chaos",
+   "behavior": "dextral",
+   "effect_en": "Chaos: removes only a Suffix",
+   "effect_tr": "Chaos: yalnız Sonek kaldırır",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens3Dark.png"
+  },
+  {
+   "id": "omen_of_dextral_exaltation",
+   "en": "Omen of Dextral Exaltation",
+   "tr": "Dextral Exaltation Alâmeti",
+   "op": "exalt",
+   "behavior": "dextral",
+   "effect_en": "Exalt: adds only a Suffix",
+   "effect_tr": "Exalt: yalnız Sonek ekler",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens3Yellow.png"
+  },
+  {
+   "id": "omen_of_greater_exaltation",
+   "en": "Omen of Greater Exaltation",
+   "tr": "Ulu Exaltation Alâmeti",
+   "op": "exalt",
+   "behavior": "greater",
+   "effect_en": "Exalt: adds TWO modifiers",
+   "effect_tr": "Exalt: İKİ mod ekler",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens1Yellow.png"
+  },
+  {
+   "id": "omen_of_homogenising_coronation",
+   "en": "Omen of Homogenising Coronation",
+   "tr": "Homogenising Coronation Alâmeti",
+   "op": "regal",
+   "behavior": "homogenising",
+   "effect_en": "Regal: adds a Modifier of the same type as an existing one",
+   "effect_tr": "Regal: mevcutla aynı türde mod ekler",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/OmenOnRegalAddExistingModType.png"
+  },
+  {
+   "id": "omen_of_homogenising_exaltation",
+   "en": "Omen of Homogenising Exaltation",
+   "tr": "Homogenising Exaltation Alâmeti",
+   "op": "exalt",
+   "behavior": "homogenising",
+   "effect_en": "Exalt: adds a Modifier of the same type as an existing one",
+   "effect_tr": "Exalt: mevcutla aynı türde mod ekler",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/OmenOnExaltAddExistingModType.png"
+  },
+  {
+   "id": "omen_of_sinistral_coronation",
+   "en": "Omen of Sinistral Coronation",
+   "tr": "Sinistral Coronation Alâmeti",
+   "op": "regal",
+   "behavior": "sinistral",
+   "effect_en": "Regal: adds only a Prefix",
+   "effect_tr": "Regal: yalnız Önek ekler",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens1Red.png"
+  },
+  {
+   "id": "omen_of_sinistral_erasure",
+   "en": "Omen of Sinistral Erasure",
+   "tr": "Sinistral Erasure Alâmeti",
+   "op": "chaos",
+   "behavior": "sinistral",
+   "effect_en": "Chaos: removes only a Prefix",
+   "effect_tr": "Chaos: yalnız Önek kaldırır",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens2Dark.png"
+  },
+  {
+   "id": "omen_of_sinistral_exaltation",
+   "en": "Omen of Sinistral Exaltation",
+   "tr": "Sinistral Exaltation Alâmeti",
+   "op": "exalt",
+   "behavior": "sinistral",
+   "effect_en": "Exalt: adds only a Prefix",
+   "effect_tr": "Exalt: yalnız Önek ekler",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens2Yellow.png"
+  },
+  {
+   "id": "omen_of_whittling",
+   "en": "Omen of Whittling",
+   "tr": "Yontma Alâmeti",
+   "op": "chaos",
+   "behavior": "whittling",
+   "effect_en": "Chaos: removes the lowest-tier modifier",
+   "effect_tr": "Chaos: en düşük tier mod’u kaldırır",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/VoodooOmens1Dark.png"
+  }
+ ]
+}

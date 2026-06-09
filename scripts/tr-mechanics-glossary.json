@@ -1,0 +1,153 @@
+{
+  "_comment": "Mekanikler kategorisi Türkçe katmanı. names: mekanik adı (EN anahtar). overviews/tips: mekanik id ile. parts: parça EN adı ile (name+desc). Adlar mevcut glossary'lerle tutarlı: Yarık/Hezeyan/Ayin/Uçurum/Sandık/Türbe/Öz, Haraç, Kalıntı.",
+  "names": {
+    "Breach": { "tr": "Yarık", "status": "exists" },
+    "Delirium": { "tr": "Hezeyan", "status": "exists" },
+    "Ritual": { "tr": "Ayin", "status": "exists" },
+    "Expedition": { "tr": "Sefer", "status": "proposed" },
+    "Abyss": { "tr": "Uçurum", "status": "exists" },
+    "Trial of the Sekhemas": { "tr": "Sekhemaların Denemesi", "status": "proposed" },
+    "Trial of Chaos": { "tr": "Kaos Denemesi", "status": "proposed" },
+    "Strongbox": { "tr": "Sandık", "status": "exists" },
+    "Shrine": { "tr": "Türbe", "status": "exists" },
+    "Essence": { "tr": "Öz", "status": "exists" }
+  },
+  "overviews": {
+    "breach": "Yarıklar, başka bir dünyadan gelen istilacıların bizim dünyamıza geçmesine olanak tanır.\n\nKararsız Yarıklar, dokuda kısa süreliğine açılan küçük yırtıklardır. Yarık yaratıklarını öldürerek onları daha uzun süre açık tutarsın. Yeterince yaratık öldürüldüğünde Yarık kararlı hale gelir ve merkezdeki portaldan daha güçlü yaratıklar çağırır. Merkezdeki bu yaratıkları öldürmek Kararsız Yarığı tamamlar ve yırtığı kapatır.\n\nYarık Kovanı ise zaten kontrolden çıkmış bir yırtıktır. Bunları kapatmak için Ailith'in yardımına ihtiyacın olur. Chayula'nın takdisiyle Kovanın merkezine doğru yolunu yakarak ilerle ve Ailith'in merkezi yok etme sürecini başlatmasına yardım et. Ailith Kovanı yok ederken, Yarık yaratıkları onu öldürmek için akın eder; o kovanın merkezini tamamen yok edene kadar Ailith'i koru. Bu sırada Ailith ölürse Kovan yerinde kalır.",
+    "delirium": "İçinde Hezeyan Aynası bulunan haritalarda aynanın içinden geçilerek mevcut alana yayılan Hezeyan sis halkası serbest bırakılabilir. Hezeyanı sürdürmek için, genişledikçe bu sisin içinde kalman gerekir; yoksa sis kaybolur.\n\nSıradan (Magic) yaratıklar, sisin içindeyken Hezeyana özgü değiştiriciler kazanabilir. Sisteki nadir (Rare) ya da eşsiz (Unique) yaratıklar Hezeyan İblisleri tezahür ettirebilir; tezahür eden İblisler yaratığın bedenine yerleşir ve zaman zaman kendi yeteneklerini kullanır.\n\nHezeyan Sisi içinde, fazladan yaratık çağıran Çatlamış Aynalar bulunabilirken, belirli derinliklerde daha çeşitli ödüller veren Çatlatan Ayna Parçaları bulunur. Harita Boss'larını yenmek, yakındaki bir haritada bir Büyük Ayna çağırma şansı verir.",
+    "ritual": "Ayin Sunakları, çemberleri içinde öldürülen yaratıkları emen kurban alanlarıdır. Belli sayıda yaratık öldürüldükten sonra Ayin etkinleştirilebilir.\n\nAyini etkinleştirmek, öldürülen yaratıkları diriltir ve onları yeniden öldürmeni gerektirir. Bu dirilen yaratıkları yenmek sana Haraç kazandırır; bu, Ayin Sunağından çeşitli Lütuflar (Favour) karşılığında takas edebileceğin bir kaynaktır. Haraç karşılığı takas edilebilen Lütuf listesi, Haraç harcanarak yeniden çevrilebilir. Lütuflar ertelenebilir; maliyetinin bir kısmı ödenerek daha sonra yeniden belirmeleri sağlanır.",
+    "expedition": "Seferler, yer altına gömülü Verisium Kalıntıları ve tehlikeler barındıran Kadim Kalguuran mezar alanlarıdır.\n\nBir patlayıcı zinciri kur ve hazineleri gün yüzüne çıkar; ancak pusuda bekleyen tehlikelere dikkat et.\n\nAtlas üzerinde Kayıt Defteri (Logbook) kullanmak, sıradan Seferlerin daha büyük versiyonları olan ve özel türde Kalıntılar içerebilen Büyük Seferleri ortaya çıkarabilir.",
+    "abyss": "Uçurum, yer altına derinlemesine inen ve ondan dallanan çok sayıda yarık bulunan bir çukurdur. Uçurumun yakınında beliren yaratıklar onun etkisiyle zayıflar. Bu zayıflamış yaratıkları yenmek yarıkların kapanmasını sağlar. Yarıklar çukura kadar tamamen kapandığında çukur etkinleşir ve çok sayıda Uçurum yaratığı çağırır; bunları yenmek çukuru kapatır.\n\nHer kapanan çukurun, eşyalarına işleyebileceğin Korunmuş Kemik parçaları verebilen bir Uçurum Hazinesi (Abyssal Trove) çıkarma şansı vardır. Alandaki son Uçurum, bunun yerine Uçurum Derinlikleri adlı bir yer altı zindanı açma şansına sahiptir.\n\nÜç ayrı Uçurum yaratığı grubu vardır: Işıksızlar, Karakanlılar ve Çukur Lejyonu; her alan genellikle bu gruplardan birini içerir. Çağrılan yaratıkların nadirliği, öldürülen zayıflamış yaratıkların nadirliğine bağlıdır ve beliren Uçurum yaratığı onların değiştiricilerinin bir kısmını ya da tamamını çalar. Nadir Uçurum yaratıklarının çaldığı değiştiriciler Uçurum Değiştiricilerine yükseltilebilir.",
+    "sanctum": "Sekhemaların Denemesi, Path of Exile 2'deki iki Yükseliş (Ascendancy) denemesinden biridir. Burada koşunu can yerine Onur (Honour) yönetir: aldığın her isabet Onurunu azaltır ve sıfıra ulaşırsa koşun sona erer. Yol boyunca ödüller ve Lütuflar (Boon) seçerek dört kat boyunca odadan odaya inersin; her katın muhafızını yenerek ilerlersin. Koşu öncesi Kalıntı Sunağına yerleştirdiğin Relic'ler kalıcı bonuslar verir; bunların en önemlisi, isabet başına kaybettiğin Onuru azaltan Onur Direnci'dir (Honour Resistance).",
+    "ultimatum": "Kaos Denemesi, Path of Exile 2'deki diğer Yükseliş denemesidir ve Kaos Tapınağı'nın içinde gerçekleşir. Her biri kendi meydan okumasına sahip art arda odaları temizlersin — tüm yaratıkları yen, bir süre hayatta kal, bir heykeli eşlik ederek koru, Ruh Çekirdeği (Soul Core) topla ya da sunağa yaratık kurban et — ve sonunda rastgele seçilmiş bir boss ile karşılaşırsın. Her odadan önce, tüm koşu boyunca kalıcı olan üç Dert'ten (olumsuz değiştirici) birini seçmek zorundasın; bu yüzden zorluk her temizlenen odayla birlikte tırmanır.",
+    "strongbox": "Sandıklar, çeşitli eşyalar barındıran kilitli kasalardır. Bir Sandığı açmaya çalışmak, içindeki eşyaları almak için yenmen gereken yaratık sürülerini serbest bırakır. Sandıklar, içindeki yaratıkların ve ödüllerin sırasıyla zorluğunu ve değerini artıracak şekilde değiştirilebilir.",
+    "shrine": "Türbeler, Etkinlik Alanlarındaki (Presence) yaratıkları çeşitli etkilerle güçlendiren Öncül (Precursor) Eserlerdir. Türbeye Tapan tüm yaratıkları yen ve gücü geçici olarak kendin için kazanmak üzere türbeyle etkileşime geç.",
+    "essence": "Öz yaratıkları, kristalleşmiş yozlaşmanın içinde hapsolmuş güçlü yaratıklardır. Bu yaratıkları serbest bırakmak onların yenilmesine ve ardından ekipman değiştirmek için kullanılabilen Öz'ü düşürmelerine olanak tanır. Öz değiştiricileri taşıyan herhangi bir yaratık, o türden fazladan bir Öz düşürür."
+  },
+  "tips": {
+    "breach": "Yarık yaratıklarını öldürerek zamanlayıcıyı erkenden uzatmaya öncelik ver; böylece merkezdeki daha güçlü elit dalgalara ulaşır, katalizör ve Yarık yüzüklerini toplarsın.",
+    "delirium": "Genişleyen sisin içinde kal ve hızlıca temizle; zamanlayıcı bitmeden ne kadar derine ilerlersen o kadar çok Damıtılmış Duygu (Distilled Emotion) toplarsın.",
+    "ritual": "Tek haritada birkaç sunağı zincirleyecek bir rota planla; böylece daha çok Haraç biriktirir, sonra onu en değerli Lütuflara (eşsiz eşyalar ve Omen'lar) harcarsın.",
+    "expedition": "Büyük sandıklara ulaşmadan önce ödülleri artıran Kalıntıları patlat ve baş edemeyeceğin tehlikeli sürüleri uyandırmamak için patlayıcıları dikkatle zincirle.",
+    "abyss": "Yarıkları takip et ve çukuru açmak için hepsini kapat; yol boyunca daha yüksek nadirlikteki zayıflamış yaratıkları öldürmek, daha güçlü Uçurum yaratıkları ve daha iyi Uçurum Hazinesi ganimeti demektir.",
+    "sanctum": "Relic'lerinde Onur Direncini yığ (yaklaşık %75 hedefle); böylece her isabet çok daha az Onur tüketir. Derin koşularda hayatta kalmak için bu, ham maksimum Onurdan çok daha önemlidir.",
+    "ultimatum": "Her odada üç Derdi oku ve build'in için en az tehlikeli olanı seç; yaratık güçlendiren ya da hareketini kısıtlayan değiştiricileri üst üste yığmak, koşunu erkenden bitiren öldürülemez bir nadir yaratık doğurabilir.",
+    "strongbox": "Önce çevredeki alanı temizle, sonra Sandığı aç ve serbest bıraktığı sürüye hazır ol; bir sandığı değiştirmek hem tehlikesini hem de ödüllerini artırır.",
+    "shrine": "Buff'ı almadan önce Türbeye tapan yaratıkları yen, sonra geçici gücü yakındaki zorlu bir sürüyü ya da nadir yaratığı temizlemek için kullan.",
+    "essence": "Düşen Öz'ü, bir eşyaya belirli bir affix'i zorlamak için hedefli bir işleme parası olarak kullan; Öz değiştiricileri taşıyan yaratıklar o türden fazladan bir Öz düşürür."
+  },
+  "parts": {
+    "Wombgifts": {
+      "name": "Wombgift'ler",
+      "desc": "Wombgift'ler Yarıkların içinde bulunur ve Genesis Ağacı'nda yetişir. Dört Wombgift türü vardır: Lavish, Ornate, Banded ve Signet Wombgift."
+    },
+    "Grand Mirror": {
+      "name": "Büyük Ayna",
+      "desc": "Büyük Ayna, Harita Boss'unun bir yansımasını yaratır. Boss'lar yenildiğinde Hezeyan sisi yakındaki haritalara yayılır. Sisin yayıldığı en az 1 harita bir Simulacrum'a dönüştürülür."
+    },
+    "Essence of Delirium": {
+      "name": "Hezeyan Özü",
+      "desc": "Hezeyan Özü ile güçlendirilen bir yaratık, Hezeyan Aynası'nın ardındaki iblisleri belli aralıklarla çağırır."
+    },
+    "Free Rerolls": {
+      "name": "Ücretsiz Yeniden Çevirme",
+      "desc": "Ayin Ücretsiz Yeniden Çevirmeleri, Lütufları hiçbir maliyet olmadan fazladan bir kez yeniden çevirmene olanak tanır."
+    },
+    "Rite of the Nameless": {
+      "name": "İsimsizin Ayini",
+      "desc": "İsimsizin Ayini, her biri Ayin Sunakları ve bir Harita Boss'u içeren bir harita grubudur. Tüm Ayin Sunaklarını tamamlamak bir Tasvir Parçası (Effigy Piece) düşürür."
+    },
+    "Effigy": {
+      "name": "Tasvir",
+      "desc": "Tasvir Parçaları, İsimsizin Ayini'ni tamamlamak için Caer Tarth'ta tamamlanmamış bir Tasvirin üzerine yerleştirilebilir."
+    },
+    "Verisium Remnant": {
+      "name": "Verisium Kalıntısı",
+      "desc": "Verisium Kalıntıları, Kalguuranlar tarafından güçlerini kullanmak için indirilen, yıldızların kendisinden parçalardır. Çeşitli ödüller üretmeni sağlar: her Kalıntının rün kazımak için yuvaları vardır ve ilk bulduğunda bir rün zaten kazınmıştır. Kazınan rüne göre bir ödül seçer ve tarifin gerektirdiği rünlere göre, etkinliği tamamlayıp ödülünü almak için Verisium yaratık dalgalarıyla savaşırsın."
+    },
+    "Grand Expedition Remnant": {
+      "name": "Büyük Sefer Kalıntısı",
+      "desc": "Büyük Seferlerde bulunan bir Kalıntı türüdür; gün yüzüne çıkarılan yaratıklara ve sandıklara değiştiriciler ekler. Bu değiştiriciler, Kalıntıyı yok eden patlayıcıdan çıkarılan yaratık ve sandıklara ve sonraki tüm patlayıcılara uygulanır."
+    },
+    "Abyssal Depths": {
+      "name": "Uçurum Derinlikleri",
+      "desc": "Uçurum Derinlikleri, alandaki son Uçurum tamamlandığında bazen bulunan bir yer altı zindanıdır. Çok sayıda Uçurum yaratığı içerir ve tüm Nadir yaratıkların bir Uçurum Değiştiricisi olur. Sonunda hem Lichborn hem de Uçurum Değiştiricisi taşıyan daha güçlü bir Nadir vardır; onu yenmek yakındaki değerli sandıkların kilidini açar. Yüksek seviyelerde güçlü Boss dövüşlerine yol açabilir."
+    },
+    "Abyssal Eye": {
+      "name": "Uçurum Gözü",
+      "desc": "Uçurum Gözleri, Uçurum yaratıklarından elde edilen ve bir Augment türü olarak işlev gören eserlerdir."
+    },
+    "Abyssal Modifiers": {
+      "name": "Uçurum Değiştiricileri",
+      "desc": "Uçurumlardan çağrılan Uçurum yaratıkları, çukurlarının yakınında öldürülen yaratıklardan değiştirici çalar; bu değiştiriciler Uçurum Değiştiricilerine yükseltilebilir. Uçurum Değiştiricilerinin nadiren daha güçlü bir Lichborn Değiştiricisine dönüşme şansı vardır."
+    },
+    "Abyssal Wasting": {
+      "name": "Uçurum Çürümesi",
+      "desc": "Uçurum Çürümesi, Can Yenilenme Hızını 6 saniye boyunca %50 azaltır."
+    },
+    "Mark of the Abyssal Lord": {
+      "name": "Uçurum Lordu'nun İşareti",
+      "desc": "Uçurum Lordu'nun İşareti değiştiricisini taşıyan bir eşyayı kutsallıktan çıkarmak (Desecrate) her zaman o değiştiriciyi kaldırır ve yerine daha yüksek kademeli, Açığa Çıkmamış bir Desecrated değiştirici koyar."
+    },
+    "Basic Strongbox": {
+      "name": "Temel Sandık",
+      "desc": "Temel Sandıklar özellikle \"Strongbox\" olarak adlandırılır ve rastgele eşyalar düşürür."
+    },
+    "Cartographer's Strongbox": {
+      "name": "Haritacının Sandığı",
+      "desc": "Haritacının Sandıkları Yol Taşı (Waystone) düşürür."
+    },
+    "Ornate Strongbox": {
+      "name": "Süslü Sandık",
+      "desc": "Süslü Sandıkların düşürdüğü eşyaların Nadirliği artırılmıştır."
+    },
+    "Researcher's Strongbox": {
+      "name": "Araştırmacının Sandığı",
+      "desc": "Araştırmacının Sandıkları Para (Currency) eşyaları düşürür."
+    },
+    "Secured Strongbox": {
+      "name": "Korumalı Sandık",
+      "desc": "Korumalı Sandıklar fazladan Nadir Yaratık sürüleriyle korunur ve Sandığı koruyan Nadirlere yaratık değiştiricileri ekleyen modifiye'ler taşıyabilir."
+    },
+    "Greed Shrine": {
+      "name": "Açgözlülük Türbesi",
+      "desc": "Açgözlülük Türbeleri, düşen eşyaların Altına dönüştürülmesine ve yaratıkların artan miktarda Altın düşürmesine neden olur."
+    },
+    "Gloom Shrine": {
+      "name": "Karanlık Türbesi",
+      "desc": "Karanlık Türbeleri, Ekstra Kaos Hasarı olarak Hasar kazanmanı sağlar ve öldürülen düşmanların maksimum Canlarına bağlı Kaos Hasarı vererek patlamasına yol açabilir."
+    },
+    "Enlightening Shrine": {
+      "name": "Aydınlatan Türbe",
+      "desc": "Aydınlatan Türbeler artan Deneyim (Experience) kazanmanı sağlar."
+    },
+    "Seeking Shrine": {
+      "name": "Arayan Türbe",
+      "desc": "Arayan Türbeler artan Eşya Nadirliği (Rarity of Items Found) verir."
+    },
+    "Honour": {
+      "name": "Onur",
+      "desc": "Sekhemaların Denemesi'ne özgü bir kaynak. İsabet aldığında Onur kaybedersin ve sıfıra ulaşırsa koşu sona erer. Bazı Türbeler Onuru yeniler."
+    },
+    "Relics": {
+      "name": "Relic'ler",
+      "desc": "Denemenin meta-ilerlemesi. Bir koşu öncesi Relic Sunağına yerleştirilerek kalıcı bonuslar verir; en önemli stat, alınan Onur hasarını azaltan Onur Direnci'dir."
+    },
+    "Boons & Afflictions": {
+      "name": "Lütuflar ve Dertler",
+      "desc": "Lütuflar (Boon) Denemenin içinde toplanan yardımcı takdislerdir; Dertler (Affliction) ise koşunun geri kalanını zorlaştıran kalıcı lanetlerdir."
+    },
+    "Afflictions": {
+      "name": "Dertler",
+      "desc": "Her odadan önce, koşu sonuna dek kalıcı olan üç olumsuz değiştiriciden birini seçersin. Üst üste yığılırlar, böylece deneme katlanarak zorlaşır; hareketini ya da arena alanını kısıtlayanları birleştirmekten kaçın."
+    },
+    "Trial Rooms": {
+      "name": "Deneme Odaları",
+      "desc": "Bir dizi meydan okuma odası: tüm yaratıkları öldür, bir süre hayatta kal, bir heykele eşlik et, Ruh Çekirdeği topla veya Kan Çemberlerinde yaratık kurban et; bir boss odasıyla sona erer."
+    },
+    "The Trialmaster": {
+      "name": "Deneme Ustası",
+      "desc": "Daha yüksek Kaos Denemelerinin sonunda karşılaşılan rastgele seçilmiş boss. Onu ilk kez yenmek 4. Yükseliş puanlarının kilidini açar."
+    }
+  }
+}

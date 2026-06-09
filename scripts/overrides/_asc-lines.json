@@ -1,0 +1,230 @@
+[
+  [
+    "15% more Maximum Life",
+    "%15 daha fazla Azami Can"
+  ],
+  [
+    "Grants Skill: Encase in Jade",
+    "Beceri verir: Encase in Jade"
+  ],
+  [
+    "Totem Life",
+    "Totem Canı"
+  ],
+  [
+    "20% increased Totem Life",
+    "%20 artan Totem Canı"
+  ],
+  [
+    "+1 to maximum number of Summoned Totems",
+    "Çağrılan Totem azami sayısı +1"
+  ],
+  [
+    "Trigger Ancestral Spirits when you Summon a Totem",
+    "Bir Totem Çağırdığında Ancestral Spirits'i tetikle"
+  ],
+  [
+    "Body Armour grants 60% increased Glory generation",
+    "Gövde Zırhı şunu verir: Glory üretimi %60 artar"
+  ],
+  [
+    "Grants Skill: Manifest Weapon",
+    "Beceri verir: Manifest Weapon"
+  ],
+  [
+    "Body Armour grants 15% increased maximum Life",
+    "Gövde Zırhı şunu verir: azami Can %15 artar"
+  ],
+  [
+    "20% increased Life Flask Charges gained",
+    "Kazanılan Can Şişesi Şarjı %20 artar"
+  ],
+  [
+    "Life Flask Effects are not removed when Unreserved Life is Filled",
+    "Rezerve Edilmemiş Can dolduğunda Can Şişesi Etkileri kaldırılmaz"
+  ],
+  [
+    "Life Flask Effects do not Queue",
+    "Can Şişesi Etkileri sıraya girmez"
+  ],
+  [
+    "3% increased maximum Life",
+    "%3 artan azami Can"
+  ],
+  [
+    "Take maximum Life and Energy Shield as Fire Damage when Infernal Flame reaches maximum",
+    "Infernal Flame azamiye ulaştığında azami Can ve Enerji Kalkanı kadar Ateş Hasarı alırsın"
+  ],
+  [
+    "Grants Skill: Summon Infernal Hound",
+    "Beceri verir: Summon Infernal Hound"
+  ],
+  [
+    "+1 to Maximum Energy Shield per 8 Maximum Life",
+    "Her 8 Azami Can için Azami Enerji Kalkanı +1"
+  ],
+  [
+    "Become Ignited when you deal a Critical Hit, taking 15% of your maximum Life and Energy Shield as Fire Damage per second",
+    "Bir Kritik Vuruş yaptığında Tutuşursun ve saniyede azami Can ve Enerji Kalkanının %15'i kadar Ateş Hasarı alırsın"
+  ],
+  [
+    "+1 to Maximum Mana per 6 Maximum Life",
+    "Her 6 Azami Can için Azami Mana +1"
+  ],
+  [
+    "+1 to Maximum Spirit per 25 Maximum Life",
+    "Her 25 Azami Can için Azami Ruh +1"
+  ],
+  [
+    "Skills gain a Base Life Cost equal to Base Mana Cost",
+    "Yetenekler, Temel Mana Maliyetine eşit bir Temel Can Maliyeti kazanır"
+  ],
+  [
+    "20% of Spell Damage Leeched as Life",
+    "Büyü Hasarının %20'si Can olarak Emilir"
+  ],
+  [
+    "Targets Cursed by you have 100% reduced Life Regeneration Rate",
+    "Senin Lanetlediğin hedeflerin Can Yenilenme Hızı %100 azalır"
+  ],
+  [
+    "Gain additional maximum Life equal to 100% of the Item Energy Shield on Equipped Body Armour",
+    "Kuşanılmış Gövde Zırhındaki Eşya Enerji Kalkanının %100'üne eşit ek azami Can kazan"
+  ],
+  [
+    "15% increased Life Flask Charges gained",
+    "Kazanılan Can Şişesi Şarjı %15 artar"
+  ],
+  [
+    "1% increased Critical Damage Bonus per 50 current Life",
+    "Mevcut her 50 Can için Kritik Hasar Bonusu %1 artar"
+  ],
+  [
+    "25% of Life Loss from Hits is prevented, then that much Life is lost over 4 seconds instead",
+    "Vuruşlardan gelen Can Kaybının %25'i önlenir, sonra o kadar Can bunun yerine 4 saniyeye yayılarak kaybedilir"
+  ],
+  [
+    "12% increased amount of Life Leeched",
+    "Emilen Can miktarı %12 artar"
+  ],
+  [
+    "Flasks do not recover Life",
+    "Şişeler Can yenilemez"
+  ],
+  [
+    "Gain 1 Life Flask Charge per 2% Life spent",
+    "Harcanan her %2 Can için 1 Can Şişesi Şarjı kazan"
+  ],
+  [
+    "On Hitting an Enemy while a Life Flask is at full Charges, 40% of its Charges are consumed",
+    "Bir Can Şişesi tam Şarjdayken bir Düşmana Vurduğunda, Şarjlarının %40'ı tüketilir"
+  ],
+  [
+    "Grants Skill: Kelari, the Tainted Sands",
+    "Beceri verir: Kelari, the Tainted Sands"
+  ],
+  [
+    "Grants Skill: Navira, the Last Mirage",
+    "Beceri verir: Navira, the Last Mirage"
+  ],
+  [
+    "Grants Skill: Ruzhan, the Blazing Sword",
+    "Beceri verir: Ruzhan, the Blazing Sword"
+  ],
+  [
+    "Non-Unique Time-Lost Jewels have 40% increased radius",
+    "Eşsiz olmayan Time-Lost Mücevherlerin yarıçapı %40 artar"
+  ],
+  [
+    "Life Leech recovers based on your Elemental damage as well as Physical damage",
+    "Can Emme, Fiziksel hasarın yanı sıra Element hasarına göre de yeniler"
+  ],
+  [
+    "15% increased Life and Mana Recovery from Flasks",
+    "Şişelerden Can ve Mana Yenilemesi %15 artar"
+  ],
+  [
+    "Life Flasks also recover Mana",
+    "Can Şişeleri Mana da yeniler"
+  ],
+  [
+    "Mana Flasks also recover Life",
+    "Mana Şişeleri Can da yeniler"
+  ],
+  [
+    "Dodging can expend up to 3 Owl Feathers, granting Primal Bounty 100% more",
+    "Sıyrılmak en fazla 3 Owl Feather harcayabilir ve Primal Bounty'ye %100 daha fazla"
+  ],
+  [
+    "Empowerment effect per additional Feather expended",
+    "harcanan her ek Feather için Güçlendirme etkisi"
+  ],
+  [
+    "Gain Owl Feathers 50% faster",
+    "Owl Feather'ları %50 daha hızlı kazan"
+  ],
+  [
+    "Bear Spirit gains Embrace of the Wild",
+    "Bear Spirit, Embrace of the Wild kazanır"
+  ],
+  [
+    "Central Projectile of Owl Feather-Empowered Skills leaves a trail of Soaring Ground",
+    "Owl Feather ile Güçlendirilmiş Yeteneklerin Merkez Mermisi, bir Soaring Ground izi bırakır"
+  ],
+  [
+    "Gain a Primal Owl Feather every 4 seconds, up to a maximum of 3",
+    "Her 4 saniyede bir Primal Owl Feather kazan, en fazla 3"
+  ],
+  [
+    "Expend an Owl Feather when you Dodge to trigger Primal Bounty",
+    "Primal Bounty'yi tetiklemek için Sıyrıldığında bir Owl Feather harca"
+  ],
+  [
+    "10% increased Life Recovery rate",
+    "Can Yenileme hızı %10 artar"
+  ],
+  [
+    "10% increased Life Recovery rate per 5% missing Unreserved Life",
+    "Eksik her %5 Rezerve Edilmemiş Can için Can Yenileme hızı %10 artar"
+  ],
+  [
+    "Banners gain 5 Glory per second",
+    "Sancaklar saniyede 5 Glory kazanır"
+  ],
+  [
+    "Totem Damage",
+    "Totem Hasarı"
+  ],
+  [
+    "20% increased Totem Damage",
+    "%20 artan Totem Hasarı"
+  ],
+  [
+    "11% increased amount of Life Leeched",
+    "Emilen Can miktarı %11 artar"
+  ],
+  [
+    "Grants Skill: Into the Breach",
+    "Beceri verir: Into the Breach"
+  ],
+  [
+    "Totem Cast and Attack Speed",
+    "Totem Büyü ve Saldırı Hızı"
+  ],
+  [
+    "Life and Mana Regeneration Rate",
+    "Can ve Mana Yenilenme Hızı"
+  ],
+  [
+    "8% increased Life Regeneration rate",
+    "Can Yenilenme hızı %8 artar"
+  ],
+  [
+    "15% less maximum Life",
+    "%15 daha az azami Can"
+  ],
+  [
+    "12% increased Life and Mana Recovery from Flasks",
+    "Şişelerden Can ve Mana Yenilemesi %12 artar"
+  ]
+]

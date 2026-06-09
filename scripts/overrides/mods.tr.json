@@ -1,0 +1,13 @@
+{
+  "_note": "ELLE tam-cümle TR mod çevirileri. Anahtar = tam İngilizce mod satırı (en alanı, # placeholder'lı). build-mods.ts bunu kompozisyonel motordan ÖNCE okur; varsa tr_status='exists'. Rebuild'de EZİLMEZ; elle düzenlenebilir. _ ile başlayan anahtarlar yok sayılır.",
+  "#% reduced Chaos Damage taken over time": "Zamana yayılan alınan Kaos Hasarı #% azalır",
+  "+#% to Chaos Damage over Time Multiplier": "Zamana Yayılan Kaos Hasarı Çarpanı +#%",
+  "+#% to Cold Damage over Time Multiplier": "Zamana Yayılan Soğuk Hasarı Çarpanı +#%",
+  "+#% to Fire Damage over Time Multiplier": "Zamana Yayılan Ateş Hasarı Çarpanı +#%",
+  "+#% to Physical Damage over Time Multiplier": "Zamana Yayılan Fiziksel Hasar Çarpanı +#%",
+  "Life Leech effects are not removed when Unreserved Life is Filled": "Rezerve Edilmemiş Can dolduğunda Can Emme etkileri kaldırılmaz",
+  "Skills have #% chance to not remove Charges but still count as consuming them": "Yeteneklerin Şarjları kaldırmama #% şansı olur ama yine de onları tüketmiş sayılır",
+  "Skills have #% chance to not remove Elemental Infusions but still count as consuming them if you've lost an Archon Buff in the past # seconds": "Son # saniye içinde bir Archon Buff kaybettiysen, Yeteneklerin Elemental Infusion'ları kaldırmama #% şansı olur ama yine de onları tüketmiş sayılır",
+  "Socketed Gems deal #% more Damage over Time": "Yuvalı Taşlar #% daha fazla Zamana Yayılan Hasar verir",
+  "When your Marks are Consumed, they have #% chance to Mark another Enemy within # metres": "İşaretlerin Tüketildiğinde, # metre içindeki başka bir Düşmanı İşaretleme #% şansları olur"
+}

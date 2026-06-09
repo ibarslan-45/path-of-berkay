@@ -1,0 +1,78 @@
+/* ---------------------------------------------------------------------------
+ * tokens.css — PoE 2 Overlay tasarim token'lari (tek kanonik kaynak)
+ * Bkz. design/DESIGN_SYSTEM.md. Arayuz SADECE bu degiskenleri kullanir.
+ * ------------------------------------------------------------------------- */
+
+/* Serif font (Fontin yoksa acik lisansli EB Garamond). */
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  /* --- Rarity / item renkleri (item-filter resmi degerleri) --- */
+  --rarity-normal: #c8c8c8;
+  --rarity-magic: #8888ff;
+  --rarity-rare: #ffff77;
+  --rarity-unique: #af6025;
+  --rarity-gem: #1ba29b;
+  --rarity-currency: #aa9e82;
+  /* Gem tooltip basligi/etiketi: gercek oyun teal'i (refs'ten olculen, parlak) */
+  --gem-teal: #7ad3c5;
+  --gem-teal-dim: #5f9d97;
+  /* Aciklama/flavour krem (refs'ten olculen) ve eklenmis/yukseltilmis deger mavisi */
+  --tt-flavor: #e6dcc2;
+  --tt-augmented: #8888ff;
+
+  /* --- Altin / susleme --- */
+  --gold-title: #e7b478;
+  --gold-ornament: #c8aa6e;
+
+  /* --- Element renkleri --- */
+  --elem-fire: #960000;
+  --elem-cold: #366492;
+  --elem-lightning: #ffd700;
+  --elem-chaos: #d02090;
+
+  /* --- Yuzeyler / metin (sicak kirli-koyu fantazi tonlari) --- */
+  --bg-black: #0d0d0d;
+  --bg-app: #120e08; /* uygulama zemini: sicak koyu, saf siyah degil */
+  --bg-app-edge: #050301; /* vinyet kenari */
+  --bg-panel: #1a1610; /* panel/tooltip govdesi (koyu tas) */
+  --bg-panel-hi: #2a2417; /* baslik seridi: govdeden acik metal ton */
+  --bg-parchment: #1e1a14;
+  --bg-tooltip: #15120c;
+  --frame-brown: #504128; /* koyu metal kenar */
+  --metal-edge: #5e4d2d; /* cerceve dis metal hatti */
+  --gold-line: #c8aa6e; /* ic ince altin hat (eskitilmis) */
+  --text-default: #c8c2b0; /* sicak krem govde metni */
+  --text-muted: #837a64; /* soluk altın-gri */
+  --stat-value: #ffffff; /* stat sayilari/degerleri: parlak beyaz (oyundaki gibi) */
+  --accent-magic: #8888ff; /* mavi vurgu (magic) */
+
+  /* --- Gem oznitelik (attribute) tonlari --- */
+  --attr-str: #960000;
+  --attr-dex: #5a8a3c;
+  --attr-int: #366492;
+  --attr-none: #504128;
+
+  /* --- Tipografi --- */
+  /* Gövde metni: Helvetica (varsayılan). Ayarlar'dan --font-body değişkeni override edilir
+   * (helvetica / sistem / serif). Ornate başlıklar var(--font-serif) kullanmaya devam eder. */
+  --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'Fontin', 'EB Garamond', Georgia, serif;
+  --font-body: var(--font-sans);
+  --fs-title: 24px;
+  --fs-subtitle: 18px;
+  --fs-body: 14px;
+  --fs-small: 12px;
+  --tracking-title: 0.04em;
+
+  /* --- Bicim --- */
+  --radius: 0px;
+  --border-width: 1px;
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+
+  /* --- Dokular (CSS uretimli SVG fractal noise; oyun asseti DEGIL) --- */
+  /* Ince metal/parsmen grain'i: panel yuzeyleri icin. */
+  --tex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  /* Kaba tas/bulut blotch'u: uygulama zemini icin. */
+  --tex-stone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.014' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+}

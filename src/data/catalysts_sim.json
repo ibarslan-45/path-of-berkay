@@ -1,0 +1,273 @@
+{
+ "meta": {
+  "game_version": "0.5.0",
+  "source": "currency.json desc + küratör tag map",
+  "note": "tag-bazlı takı kalitesi; o tag'li mod değerlerini %quality artırır"
+ },
+ "catalysts": [
+  {
+   "id": "adaptive_catalyst",
+   "en": "Adaptive Catalyst",
+   "tr": "Uyarlanır Katalizörü",
+   "type": "Attribute",
+   "tag": "attribute",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystAttribute.png"
+  },
+  {
+   "id": "carapace_catalyst",
+   "en": "Carapace Catalyst",
+   "tr": "Kabuk Katalizörü",
+   "type": "Armour, Evasion and Energy Shield",
+   "tag": "defences",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystDefences.png"
+  },
+  {
+   "id": "chayula's_catalyst",
+   "en": "Chayula's Catalyst",
+   "tr": "Chayula's Katalizörü",
+   "type": "Chaos",
+   "tag": "chaos",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystChaos.png"
+  },
+  {
+   "id": "esh's_catalyst",
+   "en": "Esh's Catalyst",
+   "tr": "Esh's Katalizörü",
+   "type": "Lightning",
+   "tag": "lightning",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystLightning.png"
+  },
+  {
+   "id": "flesh_catalyst",
+   "en": "Flesh Catalyst",
+   "tr": "Et Katalizörü",
+   "type": "Life",
+   "tag": "life",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystLife.png"
+  },
+  {
+   "id": "neural_catalyst",
+   "en": "Neural Catalyst",
+   "tr": "Sinirsel Katalizörü",
+   "type": "Mana",
+   "tag": "mana",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystMana.png"
+  },
+  {
+   "id": "reaver_catalyst",
+   "en": "Reaver Catalyst",
+   "tr": "Yağmacı Katalizörü",
+   "type": "Attack",
+   "tag": "attack",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystAttack.png"
+  },
+  {
+   "id": "refined_adaptive_catalyst",
+   "en": "Refined Adaptive Catalyst",
+   "tr": "Rafine Uyarlanır Katalizörü",
+   "type": "Attribute",
+   "tag": "attribute",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystAttribute.png"
+  },
+  {
+   "id": "refined_carapace_catalyst",
+   "en": "Refined Carapace Catalyst",
+   "tr": "Rafine Kabuk Katalizörü",
+   "type": "Armour, Evasion and Energy Shield",
+   "tag": "defences",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystDefences.png"
+  },
+  {
+   "id": "refined_chayula's_catalyst",
+   "en": "Refined Chayula's Catalyst",
+   "tr": "Rafine Chayula's Katalizörü",
+   "type": "Chaos",
+   "tag": "chaos",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystChaos.png"
+  },
+  {
+   "id": "refined_esh's_catalyst",
+   "en": "Refined Esh's Catalyst",
+   "tr": "Rafine Esh's Katalizörü",
+   "type": "Lightning",
+   "tag": "lightning",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystLightning.png"
+  },
+  {
+   "id": "refined_flesh_catalyst",
+   "en": "Refined Flesh Catalyst",
+   "tr": "Rafine Et Katalizörü",
+   "type": "Life",
+   "tag": "life",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystLife.png"
+  },
+  {
+   "id": "refined_neural_catalyst",
+   "en": "Refined Neural Catalyst",
+   "tr": "Rafine Sinirsel Katalizörü",
+   "type": "Mana",
+   "tag": "mana",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystMana.png"
+  },
+  {
+   "id": "refined_reaver_catalyst",
+   "en": "Refined Reaver Catalyst",
+   "tr": "Rafine Yağmacı Katalizörü",
+   "type": "Attack",
+   "tag": "attack",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystAttack.png"
+  },
+  {
+   "id": "refined_sibilant_catalyst",
+   "en": "Refined Sibilant Catalyst",
+   "tr": "Rafine Islıklı Katalizörü",
+   "type": "Caster",
+   "tag": "caster",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystCaster.png"
+  },
+  {
+   "id": "refined_skittering_catalyst",
+   "en": "Refined Skittering Catalyst",
+   "tr": "Rafine Seğirten Katalizörü",
+   "type": "Speed",
+   "tag": "speed",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystSpeed.png"
+  },
+  {
+   "id": "refined_tul's_catalyst",
+   "en": "Refined Tul's Catalyst",
+   "tr": "Rafine Tul's Katalizörü",
+   "type": "Cold",
+   "tag": "cold",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystCold.png"
+  },
+  {
+   "id": "refined_uul-netol's_catalyst",
+   "en": "Refined Uul-Netol's Catalyst",
+   "tr": "Rafine Uul-Netol's Katalizörü",
+   "type": "Physical",
+   "tag": "physical",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystPhysical.png"
+  },
+  {
+   "id": "refined_xoph's_catalyst",
+   "en": "Refined Xoph's Catalyst",
+   "tr": "Rafine Xoph's Katalizörü",
+   "type": "Fire",
+   "tag": "fire",
+   "target": "jewel",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/JewelCatalystFire.png"
+  },
+  {
+   "id": "sibilant_catalyst",
+   "en": "Sibilant Catalyst",
+   "tr": "Islıklı Katalizörü",
+   "type": "Caster",
+   "tag": "caster",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystCaster.png"
+  },
+  {
+   "id": "skittering_catalyst",
+   "en": "Skittering Catalyst",
+   "tr": "Seğirten Katalizörü",
+   "type": "Speed",
+   "tag": "speed",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystSpeed.png"
+  },
+  {
+   "id": "tul's_catalyst",
+   "en": "Tul's Catalyst",
+   "tr": "Tul's Katalizörü",
+   "type": "Cold",
+   "tag": "cold",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystCold.png"
+  },
+  {
+   "id": "uul-netol's_catalyst",
+   "en": "Uul-Netol's Catalyst",
+   "tr": "Uul-Netol's Katalizörü",
+   "type": "Physical",
+   "tag": "physical",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystPhysical.png"
+  },
+  {
+   "id": "xoph's_catalyst",
+   "en": "Xoph's Catalyst",
+   "tr": "Xoph's Katalizörü",
+   "type": "Fire",
+   "tag": "fire",
+   "target": "jewellery",
+   "mappable": true,
+   "reason": "",
+   "icon": "assets/currency/BreachCatalystFire.png"
+  }
+ ]
+}

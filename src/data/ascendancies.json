@@ -1,0 +1,3408 @@
+[
+  {
+    "id": "class_warrior",
+    "en": "Warrior",
+    "tr": "Warrior",
+    "tr_status": "proposed",
+    "type": "class",
+    "parent_class": null,
+    "parent_class_tr": null,
+    "attribute": "Strength",
+    "desc_en": "I wanted very little for myself. A forge, a bed. They took that all away when they burned down my home. Give me one good hammer, and they will find that there is nothing more dangerous than a man of peace roused to war.",
+    "desc_tr": "Kendim için pek az şey istedim. Bir demirhane, bir yatak. Evimi yakıp yıktıklarında bunların hepsini elimden aldılar. Bana iyi bir çekiç verin; savaşa kışkırtılmış bir barış adamından daha tehlikeli bir şey olmadığını görecekler.",
+    "nodes": [],
+    "icon": "assets/ascendancies/iconstrfourb.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_warrior1",
+    "en": "Titan",
+    "tr": "Titan",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Warrior",
+    "parent_class_tr": "Warrior",
+    "attribute": null,
+    "desc_en": "Incredible might has always laid buried within you. Now is the time to rise.",
+    "desc_tr": "İnanılmaz bir güç hep içinde gömülü yattı. Şimdi yükselme vakti.",
+    "nodes": [
+      {
+        "name_en": "Ancestral Empowerment",
+        "name_tr": "Ancestral Empowerment",
+        "stat_en": "Every second Slam Skill you use yourself is Ancestrally Boosted",
+        "stat_tr": "Kendin kullandığın her ikinci Çarpma Yeteneği Atadan Güçlendirilir",
+        "notable": true
+      },
+      {
+        "name_en": "Mysterious Lineage",
+        "name_tr": "Mysterious Lineage",
+        "stat_en": "15% more Maximum Life",
+        "stat_tr": "%15 daha fazla Azami Can",
+        "notable": true
+      },
+      {
+        "name_en": "Stun Buildup",
+        "name_tr": "Stun Buildup",
+        "stat_en": "18% increased Stun Buildup",
+        "stat_tr": "18% artar Sersemletme Buildup",
+        "notable": false
+      },
+      {
+        "name_en": "Strength",
+        "name_tr": "Strength",
+        "stat_en": "4% increased Strength",
+        "stat_tr": "4% artar Güç",
+        "notable": false
+      },
+      {
+        "name_en": "Stone Skin",
+        "name_tr": "Stone Skin",
+        "stat_en": "50% more Armour from Equipped Body Armour",
+        "stat_tr": "Kuşanılmış Gövde Zırhından %50 daha fazla Zırh",
+        "notable": true
+      },
+      {
+        "name_en": "Strength",
+        "name_tr": "Strength",
+        "stat_en": "4% increased Strength",
+        "stat_tr": "4% artar Güç",
+        "notable": false
+      },
+      {
+        "name_en": "Armour",
+        "name_tr": "Armour",
+        "stat_en": "20% increased Armour",
+        "stat_tr": "20% artan Zırh",
+        "notable": false
+      },
+      {
+        "name_en": "Hulking Form",
+        "name_tr": "Hulking Form",
+        "stat_en": "50% increased effect of Small Passive Skills",
+        "stat_tr": "Küçük Pasif Yeteneklerin etkisi %50 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Slam Area of Effect",
+        "name_tr": "Çarpma Etki Alanı",
+        "stat_en": "Slam Skills have 8% increased Area of Effect",
+        "stat_tr": "Çarpma Yeteneklerinin Etki Alanı %8 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Slam Area of Effect",
+        "name_tr": "Çarpma Etki Alanı",
+        "stat_en": "Slam Skills have 8% increased Area of Effect",
+        "stat_tr": "Çarpma Yeteneklerinin Etki Alanı %8 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Earthbreaker",
+        "name_tr": "Earthbreaker",
+        "stat_en": "25% chance for Slam Skills you use yourself to cause an additional Aftershock",
+        "stat_tr": "Kendin kullandığın Çarpma Yeteneklerinin ek bir Artçı Sarsıntı yaratma %25 şansı olur",
+        "notable": true
+      },
+      {
+        "name_en": "Life Regeneration",
+        "name_tr": "Life Regeneration",
+        "stat_en": "Regenerate 0.5% of maximum Life per second",
+        "stat_tr": "Saniyede azami Canın %0.5'ini yenile",
+        "notable": false
+      },
+      {
+        "name_en": "Stun Buildup",
+        "name_tr": "Stun Buildup",
+        "stat_en": "18% increased Stun Buildup",
+        "stat_tr": "18% artar Sersemletme Buildup",
+        "notable": false
+      },
+      {
+        "name_en": "Crushing Impacts",
+        "name_tr": "Ezici Darbeler",
+        "stat_en": "25% more Damage against Heavy Stunned Enemies\nYour Hits are Crushing Blows",
+        "stat_tr": "Ağır Sersemletilmiş Düşmanlara %25 daha fazla Hasar\nVuruşların Ezici Darbedir",
+        "notable": true
+      },
+      {
+        "name_en": "Mountain Splitter",
+        "name_tr": "Mountain Splitter",
+        "stat_en": "Every Third Slam skill that doesn't create Fissures which you use yourself causes 3 additional Aftershocks ahead and to each side of the initial area",
+        "stat_tr": "Kendin kullandığın, Yarık yaratmayan her üçüncü Çarpma Yeteneği, ilk alanın önünde ve her iki yanında 3 ek Artçı Sarsıntı yaratır",
+        "notable": true
+      },
+      {
+        "name_en": "Colossal Capacity",
+        "name_tr": "Colossal Capacity",
+        "stat_en": "Carry a Chest which adds 20 Inventory Slots",
+        "stat_tr": "20 Envanter Yuvası ekleyen bir Sandık taşırsın",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/iconstrfourb_warrior1.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_warrior2",
+    "en": "Warbringer",
+    "tr": "Savaş Getiren",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Warrior",
+    "parent_class_tr": "Warrior",
+    "attribute": null,
+    "desc_en": "Your home has been threatened. A good man must be roused to war.",
+    "desc_tr": "Yuvan tehdit altında. İyi bir insan savaşa çağrılmalı.",
+    "nodes": [
+      {
+        "name_en": "Warcry Speed",
+        "name_tr": "Warcry Speed",
+        "stat_en": "20% increased Warcry Speed",
+        "stat_tr": "20% artar Savaş Çığlığı Hız",
+        "notable": false
+      },
+      {
+        "name_en": "Jade Heritage",
+        "name_tr": "Jade Heritage",
+        "stat_en": "Gain a stack of Jade every second\nGrants Skill: Encase in Jade",
+        "stat_tr": "Her saniye bir Yeşim yığını kazan\nBeceri verir: Encase in Jade",
+        "notable": true
+      },
+      {
+        "name_en": "Block Chance",
+        "name_tr": "Blok Şansı",
+        "stat_en": "6% increased Block chance",
+        "stat_tr": "6% artan Blok şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Armour",
+        "name_tr": "Armour",
+        "stat_en": "20% increased Armour",
+        "stat_tr": "20% artan Zırh",
+        "notable": false
+      },
+      {
+        "name_en": "Renly's Training",
+        "name_tr": "Renly's Training",
+        "stat_en": "Gain 35% Base Chance to Block from Equipped Shield instead of the Shield's value",
+        "stat_tr": "Kuşanılmış Kalkanın kendi değeri yerine Kalkandan %35 Temel Blok Şansı kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Block Chance",
+        "name_tr": "Blok Şansı",
+        "stat_en": "6% increased Block chance",
+        "stat_tr": "6% artan Blok şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Imploding Impacts",
+        "name_tr": "Imploding Impacts",
+        "stat_en": "Fully Broken Armour you inflict increases all Damage Taken from Hits instead\nYou can Break Enemy Armour to below 0",
+        "stat_tr": "Uyguladığın Tamamen Kırılmış Zırh, bunun yerine Vuruşlardan Alınan tüm Hasarı artırır\nDüşman Zırhını 0'ın altına Kırabilirsin",
+        "notable": true
+      },
+      {
+        "name_en": "Armour Break",
+        "name_tr": "Armour Break",
+        "stat_en": "Break 25% increased Armour",
+        "stat_tr": "Break 25% artan Zırh",
+        "notable": false
+      },
+      {
+        "name_en": "Totem Life",
+        "name_tr": "Totem Canı",
+        "stat_en": "20% increased Totem Life",
+        "stat_tr": "%20 artan Totem Canı",
+        "notable": false
+      },
+      {
+        "name_en": "Answered Call",
+        "name_tr": "Answered Call",
+        "stat_en": "+1 to maximum number of Summoned Totems\nTrigger Ancestral Spirits when you Summon a Totem\nGrants Skill: Ancestral Spirits",
+        "stat_tr": "Çağrılan Totem azami sayısı +1\nBir Totem Çağırdığında Ancestral Spirits'i tetikle\nBeceri verir: Ancestral Spirits",
+        "notable": true
+      },
+      {
+        "name_en": "Wooden Wall",
+        "name_tr": "Wooden Wall",
+        "stat_en": "20% of Damage from Hits is taken from your nearest Totem's Life before you",
+        "stat_tr": "Vuruşlardan gelen Hasarın %20'si, senden önce en yakın Totemin Canından alınır",
+        "notable": true
+      },
+      {
+        "name_en": "Warcaller's Bellow",
+        "name_tr": "Warcaller's Bellow",
+        "stat_en": "Warcries Explode Corpses dealing 25% of their Life as Physical Damage\nIgnore Warcry Cooldowns",
+        "stat_tr": "Savaş Çığlıkları Cesetleri patlatır ve Canlarının %25'i kadar Fiziksel Hasar verir\nSavaş Çığlığı Bekleme Sürelerini yok say",
+        "notable": true
+      },
+      {
+        "name_en": "Totem Life",
+        "name_tr": "Totem Canı",
+        "stat_en": "20% increased Totem Life",
+        "stat_tr": "%20 artan Totem Canı",
+        "notable": false
+      },
+      {
+        "name_en": "Armour Break",
+        "name_tr": "Armour Break",
+        "stat_en": "Break 25% increased Armour",
+        "stat_tr": "Break 25% artan Zırh",
+        "notable": false
+      },
+      {
+        "name_en": "Turtle Charm",
+        "name_tr": "Turtle Charm",
+        "stat_en": "You take 20% of damage from Blocked Hits\nMaximum Block chance is 75%",
+        "stat_tr": "Bloklanan Vuruşlardan gelen hasarın %20'sini alırsın\nAzami Blok şansı %75'tir",
+        "notable": true
+      },
+      {
+        "name_en": "Anvil's Weight",
+        "name_tr": "Anvil's Weight",
+        "stat_en": "Break Armour equal to 10% of Hit Damage dealt",
+        "stat_tr": "Break Zırh eşit 10% Vuruş Hasar verdiğin",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/iconstrfourb_warrior2.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_warrior3",
+    "en": "Smith of Kitava",
+    "tr": "Kitava'nın Demircisi",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Warrior",
+    "parent_class_tr": "Warrior",
+    "attribute": null,
+    "desc_en": "You hunger for power, and by force of arms, you will take it.",
+    "desc_tr": "Güce açsın ve onu silah zoruyla alacaksın.",
+    "nodes": [
+      {
+        "name_en": "Internal Layer",
+        "name_tr": "Internal Layer",
+        "stat_en": "Body Armour grants Hits against you have 100% reduced Critical Damage Bonus",
+        "stat_tr": "Gövde Zırhı şunu verir: sana karşı Vuruşların Kritik Hasar Bonusu %100 azalır",
+        "notable": true
+      },
+      {
+        "name_en": "Fire Damage",
+        "name_tr": "Fire Damage",
+        "stat_en": "20% increased Fire Damage",
+        "stat_tr": "20% artan Ateş Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "Leather Bindings",
+        "name_tr": "Leather Bindings",
+        "stat_en": "Body Armour grants regenerate 3% of maximum Life per second",
+        "stat_tr": "Gövde Zırhı şunu verir: saniyede azami Canın %3'ünü yenile",
+        "notable": true
+      },
+      {
+        "name_en": "Smith's Masterwork",
+        "name_tr": "Smith's Masterwork",
+        "stat_en": "Can only use a Normal Body Armour\n+200 to Armour for each Connected Notable Passive Skill Allocated",
+        "stat_tr": "Yalnızca Normal bir Gövde Zırhı kullanabilirsin\nBağlı ve dağıtılmış her Kayda Değer Pasif Yetenek için +200 Zırh",
+        "notable": true
+      },
+      {
+        "name_en": "Molten Symbol",
+        "name_tr": "Molten Symbol",
+        "stat_en": "Body Armour grants 25% of Physical Damage from Hits taken as Fire Damage",
+        "stat_tr": "Gövde Zırhı şunu verir: Vuruşlardan gelen Fiziksel Hasarın %25'i Ateş Hasarı olarak alınır",
+        "notable": true
+      },
+      {
+        "name_en": "Flowing Metal",
+        "name_tr": "Flowing Metal",
+        "stat_en": "Body Armour grants +50% of Armour also applies to Elemental Damage",
+        "stat_tr": "Gövde Zırhı şunu verir: Zırhın +%50'si Element Hasarına da uygulanır",
+        "notable": true
+      },
+      {
+        "name_en": "Fire Resistance",
+        "name_tr": "Fire Resistance",
+        "stat_en": "+8% to Fire Resistance",
+        "stat_tr": "+8% Ateş Direnci",
+        "notable": false
+      },
+      {
+        "name_en": "Kitavan Imprint",
+        "name_tr": "Kitavan Imprint",
+        "stat_en": "Body Armour grants 60% increased Glory generation",
+        "stat_tr": "Gövde Zırhı şunu verir: Glory üretimi %60 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Spiked Plates",
+        "name_tr": "Spiked Plates",
+        "stat_en": "Body Armour grants 100% increased Thorns damage",
+        "stat_tr": "Gövde Zırhı şunu verir: Diken hasarı %100 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Strength",
+        "name_tr": "Strength",
+        "stat_en": "5% increased Strength",
+        "stat_tr": "5% artar Güç",
+        "notable": false
+      },
+      {
+        "name_en": "Heat of the Forge",
+        "name_tr": "Demir Ocağının Harareti",
+        "stat_en": "Grants Skill: Fire Spell on Hit",
+        "stat_tr": "Beceri verir: Ateş Büyü Vuruşta",
+        "notable": true
+      },
+      {
+        "name_en": "Tribute to Utula",
+        "name_tr": "Utula'ya Haraç",
+        "stat_en": "Body Armour grants 30% increased Spirit",
+        "stat_tr": "Gövde Zırhı şunu verir: Ruh %30 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Heatproofing",
+        "name_tr": "Heatproofing",
+        "stat_en": "Body Armour grants Unaffected by Damaging Ailments",
+        "stat_tr": "Gövde Zırhı şunu verir: Hasar Veren Rahatsızlıklardan etkilenmezsin",
+        "notable": true
+      },
+      {
+        "name_en": "Living Weapon",
+        "name_tr": "Living Weapon",
+        "stat_en": "Grants Skill: Manifest Weapon",
+        "stat_tr": "Beceri verir: Manifest Weapon",
+        "notable": true
+      },
+      {
+        "name_en": "Melee Damage",
+        "name_tr": "Melee Damage",
+        "stat_en": "20% increased Melee Damage",
+        "stat_tr": "20% artar Yakın Dövüş Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "Forged in Flame",
+        "name_tr": "Forged in Flame",
+        "stat_en": "Modifiers to Maximum Fire Resistance also grant Maximum Cold and Lightning Resistance",
+        "stat_tr": "Azami Ateş Direncine etki eden Değiştiriciler, Azami Soğuk ve Yıldırım Direnci de verir",
+        "notable": true
+      },
+      {
+        "name_en": "Support Straps",
+        "name_tr": "Support Straps",
+        "stat_en": "Body Armour grants 20% increased Strength",
+        "stat_tr": "Gövde Zırhı şunu verir: Güç %20 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Coal Stoker",
+        "name_tr": "Coal Stoker",
+        "stat_en": "Modifiers to Fire Resistance also grant Cold and Lightning Resistance at 50% of their value",
+        "stat_tr": "Ateş Direncine etki eden Değiştiriciler, değerlerinin %50'si kadar Soğuk ve Yıldırım Direnci de verir",
+        "notable": true
+      },
+      {
+        "name_en": "Against the Anvil",
+        "name_tr": "Örse Karşı",
+        "stat_en": "Grants Skill: Temper Weapon",
+        "stat_tr": "Beceri verir: Temper Weapon",
+        "notable": true
+      },
+      {
+        "name_en": "Kitavan Engraving",
+        "name_tr": "Kitavan Engraving",
+        "stat_en": "Body Armour grants 15% increased maximum Life",
+        "stat_tr": "Gövde Zırhı şunu verir: azami Can %15 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Tantalum Alloy",
+        "name_tr": "Tantalum Alloy",
+        "stat_en": "Body Armour grants +75% to Fire Resistance",
+        "stat_tr": "Gövde Zırhı şunu verir: Ateş Direnci +%75",
+        "notable": true
+      },
+      {
+        "name_en": "Fire Resistance",
+        "name_tr": "Fire Resistance",
+        "stat_en": "+8% to Fire Resistance",
+        "stat_tr": "+8% Ateş Direnci",
+        "notable": false
+      },
+      {
+        "name_en": "Dedication to Kitava",
+        "name_tr": "Kitava'ya Adanmışlık",
+        "stat_en": "Body Armour grants +100% of Armour also applies to Chaos Damage",
+        "stat_tr": "Gövde Zırhı şunu verir: Zırhın +%100'ü Kaos Hasarına da uygulanır",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/iconstrfourb_warrior3.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "class_ranger",
+    "en": "Ranger",
+    "tr": "Ranger",
+    "tr_status": "proposed",
+    "type": "class",
+    "parent_class": null,
+    "parent_class_tr": null,
+    "attribute": "Dexterity",
+    "desc_en": "All I need is a single well-placed arrow. I'm fleet of foot, and have the eyes of a hawk. Put a bow in my hands, and they'll die trying to catch me. ",
+    "desc_tr": "Tek ihtiyacım, yerini iyi bulmuş bir ok. Ayağıma çabuğum, gözlerim bir şahininki gibi. Elime bir yay verin; beni yakalamaya çalışırken ölecekler.",
+    "nodes": [],
+    "icon": "assets/ascendancies/icondexfour.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_ranger1",
+    "en": "Deadeye",
+    "tr": "Keskin Nişancı",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Ranger",
+    "parent_class_tr": "Ranger",
+    "attribute": null,
+    "desc_en": "A woman can change the world with a single well-placed arrow.",
+    "desc_tr": "Bir kadın, yerini iyi bulmuş tek bir okla dünyayı değiştirebilir.",
+    "nodes": [
+      {
+        "name_en": "Gathering Winds",
+        "name_tr": "Gathering Winds",
+        "stat_en": "Gain Tailwind on Skill use\nLose all Tailwind when Hit",
+        "stat_tr": "Kuyruk Rüzgârı Beceri kullanınca kazan\nVurulunca tüm Kuyruk Rüzgârı kaybedilir",
+        "notable": true
+      },
+      {
+        "name_en": "Skill Speed",
+        "name_tr": "Skill Speed",
+        "stat_en": "4% increased Skill Speed",
+        "stat_tr": "4% artar Yetenek Hız",
+        "notable": false
+      },
+      {
+        "name_en": "Mirage Deadeye",
+        "name_tr": "Mirage Deadeye",
+        "stat_en": "Grants Skill: Mirage Deadeye",
+        "stat_tr": "Beceri verir: Mirage Deadeye",
+        "notable": true
+      },
+      {
+        "name_en": "Endless Munitions",
+        "name_tr": "Endless Munitions",
+        "stat_en": "Skills fire an additional Projectile",
+        "stat_tr": "Yetenekler Ateş an ek Mermi",
+        "notable": true
+      },
+      {
+        "name_en": "Thrilling Chase",
+        "name_tr": "Thrilling Chase",
+        "stat_en": "Benefits from consuming Frenzy Charges for your Skills have 50% chance to be doubled",
+        "stat_tr": "Yeteneklerin için Çılgınlık Şarjı tüketmenin faydalarının iki katına çıkma %50 şansı olur",
+        "notable": true
+      },
+      {
+        "name_en": "Bullseye",
+        "name_tr": "Bullseye",
+        "stat_en": "Apply 10 Critical Weakness to Enemies when Consuming a Mark on them",
+        "stat_tr": "Düşmanlardaki bir İşareti Tükettiğinde onlara 10 Kritik Zafiyet uygula",
+        "notable": true
+      },
+      {
+        "name_en": "Frenzy Charge Duration",
+        "name_tr": "Frenzy Charge Duration",
+        "stat_en": "25% increased Frenzy Charge Duration",
+        "stat_tr": "25% artar Çılgınlık Şarjı Süre",
+        "notable": false
+      },
+      {
+        "name_en": "Mark Effect",
+        "name_tr": "İşaret Etkisi",
+        "stat_en": "12% increased Effect of your Mark Skills",
+        "stat_tr": "İşaret Yeteneklerinin Etkisi %12 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Frenzy Charge Duration",
+        "name_tr": "Frenzy Charge Duration",
+        "stat_en": "25% increased Frenzy Charge Duration",
+        "stat_tr": "25% artar Çılgınlık Şarjı Süre",
+        "notable": false
+      },
+      {
+        "name_en": "Avidity",
+        "name_tr": "Avidity",
+        "stat_en": "50% chance when you gain a Frenzy Charge to gain an additional Frenzy Charge",
+        "stat_tr": "50% şans iken sen kazan Çılgınlık Şarjı kazan an ek Çılgınlık Şarjı",
+        "notable": true
+      },
+      {
+        "name_en": "Projectile Damage",
+        "name_tr": "Projectile Damage",
+        "stat_en": "12% increased Projectile Damage",
+        "stat_tr": "12% artar Mermi Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "Point Blank",
+        "name_tr": "Point Blank",
+        "stat_en": "Projectiles deal 20% more Hit damage to targets in the first 3.5 metres of their movement, scaling down with distance travelled to reach 0% after 7 metres",
+        "stat_tr": "Mermiler, hareketlerinin ilk 3.5 metresinde hedeflere %20 daha fazla Vuruş hasarı verir; kat edilen mesafeyle azalarak 7 metre sonra %0'a iner",
+        "notable": false
+      },
+      {
+        "name_en": "Projectile Speed",
+        "name_tr": "Projectile Speed",
+        "stat_en": "10% increased Projectile Speed",
+        "stat_tr": "10% artar Mermi Hız",
+        "notable": false
+      },
+      {
+        "name_en": "Mark Effect",
+        "name_tr": "İşaret Etkisi",
+        "stat_en": "12% increased Effect of your Mark Skills",
+        "stat_tr": "İşaret Yeteneklerinin Etkisi %12 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Far Shot",
+        "name_tr": "Far Shot",
+        "stat_en": "Projectiles deal 0% more Hit damage to targets in the first 3.5 metres of their movement, scaling up with distance travelled to reach 20% after 7 metres",
+        "stat_tr": "Mermiler, hareketlerinin ilk 3.5 metresinde hedeflere %0 daha fazla Vuruş hasarı verir; kat edilen mesafeyle artarak 7 metre sonra %20'ye çıkar",
+        "notable": false
+      },
+      {
+        "name_en": "Called Shots",
+        "name_tr": "Called Shots",
+        "stat_en": "Grants Skill: Called Shots",
+        "stat_tr": "Beceri verir: Called Shots",
+        "notable": true
+      },
+      {
+        "name_en": "Projectile Speed",
+        "name_tr": "Projectile Speed",
+        "stat_en": "10% increased Projectile Speed",
+        "stat_tr": "10% artar Mermi Hız",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/icondexfour_ranger1.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_ranger3",
+    "en": "Pathfinder",
+    "tr": "İz Sürücü",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Ranger",
+    "parent_class_tr": "Ranger",
+    "attribute": null,
+    "desc_en": "There are venoms and virtues aplenty in the wilds, if you know where to look.",
+    "desc_tr": "Nereye bakacağını bilirsen, yabanda zehirler de erdemler de boldur.",
+    "nodes": [
+      {
+        "name_en": "Life Flask Charges",
+        "name_tr": "Life Flask Charges",
+        "stat_en": "20% increased Life Flask Charges gained",
+        "stat_tr": "Kazanılan Can Şişesi Şarjı %20 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Sustainable Practices",
+        "name_tr": "Sustainable Practices",
+        "stat_en": "50% of Evasion Rating also grants Elemental Damage reduction",
+        "stat_tr": "Kaçınma Derecesinin %50'si, Element Hasarı azaltması da verir",
+        "notable": true
+      },
+      {
+        "name_en": "Bleeding Concoction",
+        "name_tr": "Bleeding Concoction",
+        "stat_en": "Grants Skill: Bleeding Concoction",
+        "stat_tr": "Beceri verir: Kanama Concoction",
+        "notable": false
+      },
+      {
+        "name_en": "Skill Speed",
+        "name_tr": "Skill Speed",
+        "stat_en": "4% increased Skill Speed",
+        "stat_tr": "4% artar Yetenek Hız",
+        "notable": false
+      },
+      {
+        "name_en": "Passive Points",
+        "name_tr": "Passive Points",
+        "stat_en": "Grants 1 Passive Skill Point",
+        "stat_tr": "1 Pasif Yetenek Puanı verir",
+        "notable": false
+      },
+      {
+        "name_en": "Path of the Sorceress",
+        "name_tr": "Büyücünün Yolu",
+        "stat_en": "Can Allocate Passive Skills from the Sorceress's starting point\nGrants 4 Passive Skill Points",
+        "stat_tr": "Büyücünün başlangıç noktasından Pasif Yetenekler dağıtabilirsin\n4 Pasif Yetenek Puanı verir",
+        "notable": false
+      },
+      {
+        "name_en": "Poison Effect",
+        "name_tr": "Zehir Etkisi",
+        "stat_en": "12% increased Magnitude of Poison you inflict",
+        "stat_tr": "Uyguladığın Zehrin Büyüklüğü %12 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Shattering Concoction",
+        "name_tr": "Shattering Concoction",
+        "stat_en": "Grants Skill: Shattering Concoction",
+        "stat_tr": "Beceri verir: Shattering Concoction",
+        "notable": false
+      },
+      {
+        "name_en": "Relentless Pursuit",
+        "name_tr": "Relentless Pursuit",
+        "stat_en": "Your speed is unaffected by Slows",
+        "stat_tr": "Hızın Yavaşlatmalardan etkilenmez",
+        "notable": true
+      },
+      {
+        "name_en": "Overwhelming Toxicity",
+        "name_tr": "Overwhelming Toxicity",
+        "stat_en": "Double the number of your Poisons that targets can be affected by at the same time\n50% less Poison Duration",
+        "stat_tr": "Hedeflerin aynı anda etkilenebileceği Zehir sayını iki katına çıkar\n50% daha az Zehir Süre",
+        "notable": true
+      },
+      {
+        "name_en": "Skill Speed",
+        "name_tr": "Skill Speed",
+        "stat_en": "4% increased Skill Speed",
+        "stat_tr": "4% artar Yetenek Hız",
+        "notable": false
+      },
+      {
+        "name_en": "Passive Points",
+        "name_tr": "Passive Points",
+        "stat_en": "Grants 1 Passive Skill Point",
+        "stat_tr": "1 Pasif Yetenek Puanı verir",
+        "notable": false
+      },
+      {
+        "name_en": "Explosive Concoction",
+        "name_tr": "Explosive Concoction",
+        "stat_en": "Grants Skill: Explosive Concoction",
+        "stat_tr": "Beceri verir: Explosive Concoction",
+        "notable": false
+      },
+      {
+        "name_en": "Evasion",
+        "name_tr": "Evasion",
+        "stat_en": "20% increased Evasion Rating",
+        "stat_tr": "20% artan Kaçınma Derecesi",
+        "notable": false
+      },
+      {
+        "name_en": "Enduring Elixirs",
+        "name_tr": "Enduring Elixirs",
+        "stat_en": "Life Flask Effects are not removed when Unreserved Life is Filled\nLife Flask Effects do not Queue",
+        "stat_tr": "Rezerve Edilmemiş Can dolduğunda Can Şişesi Etkileri kaldırılmaz\nCan Şişesi Etkileri sıraya girmez",
+        "notable": true
+      },
+      {
+        "name_en": "Traveller's Wisdom",
+        "name_tr": "Traveller's Wisdom",
+        "stat_en": "Attribute Passive Skills can instead grant 5% increased Damage\nAttribute Passive Skills can instead grant 5% increased Armour, Evasion and Energy Shield\nAttribute Passive Skills can instead grant 5% increased Cost Efficiency",
+        "stat_tr": "Nitelik Pasif Yetenekleri bunun yerine %5 artan Hasar verebilir\nNitelik Pasif Yetenekleri bunun yerine %5 artan Zırh, Kaçınma ve Enerji Kalkanı verebilir\nNitelik Pasif Yetenekleri bunun yerine %5 artan Maliyet Verimliliği verebilir",
+        "notable": true
+      },
+      {
+        "name_en": "Mana Flask Charges",
+        "name_tr": "Mana Flask Charges",
+        "stat_en": "20% increased Mana Flask Charges gained",
+        "stat_tr": "20% artar Mana Şişe Şarj kazanılan",
+        "notable": false
+      },
+      {
+        "name_en": "Fulminating Concoction",
+        "name_tr": "Fulminating Concoction",
+        "stat_en": "Grants Skill: Fulminating Concoction",
+        "stat_tr": "Beceri verir: Fulminating Concoction",
+        "notable": false
+      },
+      {
+        "name_en": "Path of the Warrior",
+        "name_tr": "Savaşçının Yolu",
+        "stat_en": "Can Allocate Passive Skills from the Warrior's starting point\nGrants 4 Passive Skill Points",
+        "stat_tr": "Savaşçının başlangıç noktasından Pasif Yetenekler dağıtabilirsin\n4 Pasif Yetenek Puanı verir",
+        "notable": false
+      },
+      {
+        "name_en": "Acidic Concoction",
+        "name_tr": "Acidic Concoction",
+        "stat_en": "Grants Skill: Acidic Concoction",
+        "stat_tr": "Beceri verir: Acidic Concoction",
+        "notable": false
+      },
+      {
+        "name_en": "Running Assault",
+        "name_tr": "Running Assault",
+        "stat_en": "Cannot be Heavy Stunned while Sprinting\n30% less Movement Speed Penalty from using Skills while moving",
+        "stat_tr": "Cannot be Heavy Stunned Sprint yaparken\nHareket hâlindeyken Yetenek kullanmanın Hareket Hızı Cezası %30 daha az",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/icondexfour_ranger3.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "class_witch",
+    "en": "Witch",
+    "tr": "Witch",
+    "tr_status": "proposed",
+    "type": "class",
+    "parent_class": null,
+    "parent_class_tr": null,
+    "attribute": "Intelligence",
+    "desc_en": "I do not fear death. I am its master. Darkness and the dead are my weapons of war. My enemies will rot from the inside out, as my army of corpses tears them screaming limb from limb.",
+    "desc_tr": "Ölümden korkmam. Ben onun efendisiyim. Karanlık ve ölüler benim savaş silahlarım. Düşmanlarım içten dışa çürüyecek; ceset ordum onları çığlıklar içinde uzuv uzuv parçalarken.",
+    "nodes": [],
+    "icon": "assets/ascendancies/iconintfour.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_witch1",
+    "en": "Infernalist",
+    "tr": "Cehennemci",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Witch",
+    "parent_class_tr": "Witch",
+    "attribute": null,
+    "desc_en": "You seek power at any cost... and there is no price too high to pay.",
+    "desc_tr": "Ne pahasına olursa olsun güç ararsın... ve ödenmeyecek kadar yüksek bir bedel yoktur.",
+    "nodes": [
+      {
+        "name_en": "Mana",
+        "name_tr": "Mana",
+        "stat_en": "3% increased maximum Mana",
+        "stat_tr": "3% artan maksimum Mana",
+        "notable": false
+      },
+      {
+        "name_en": "Life",
+        "name_tr": "Life",
+        "stat_en": "3% increased maximum Life",
+        "stat_tr": "%3 artan azami Can",
+        "notable": false
+      },
+      {
+        "name_en": "Life",
+        "name_tr": "Life",
+        "stat_en": "3% increased maximum Life",
+        "stat_tr": "%3 artan azami Can",
+        "notable": false
+      },
+      {
+        "name_en": "Seething Body",
+        "name_tr": "Seething Body",
+        "stat_en": "Gain Elemental Archon when you cast a Spell while on High Infernal Flame\nElemental Archon does not expire while on High Infernal Flame\nLose Elemental Archon on reaching maximum Infernal Flame",
+        "stat_tr": "Element Archon'u Yüksek Cehennem Alevi'ndeyken bir Büyü yaptığında kazan\nElement Archon'u sona ermez Yüksek Cehennem Alevi'ndeyken\nKaybet Element Archon'u Cehennem Alevi azamiye ulaşınca",
+        "notable": true
+      },
+      {
+        "name_en": "Pyromantic Pact",
+        "name_tr": "Pyromantic Pact",
+        "stat_en": "Maximum Mana is replaced by twice as much Maximum Infernal Flame\nGain Infernal Flame instead of spending Mana for Skill costs\nTake maximum Life and Energy Shield as Fire Damage when Infernal Flame reaches maximum\nLose all Infernal Flame on reaching maximum Infernal Flame\n25% of Infernal Flame lost per second if none was gained in the past 2 seconds",
+        "stat_tr": "Azami Mana, iki katı Azami Cehennem Alevi ile değiştirilir\nCehennem Alevi yerine harcayarak Mana için Yetenek maliyetleri kazan\nInfernal Flame azamiye ulaştığında azami Can ve Enerji Kalkanı kadar Ateş Hasarı alırsın\nKaybet tüm Cehennem Alevi Cehennem Alevi azamiye ulaşınca\n25% Cehennem Alevi saniyede kaybedilir (son 2 saniyede hiç kazanılmadıysa)",
+        "notable": true
+      },
+      {
+        "name_en": "Loyal Hellhound",
+        "name_tr": "Loyal Hellhound",
+        "stat_en": "Grants Skill: Summon Infernal Hound",
+        "stat_tr": "Beceri verir: Summon Infernal Hound",
+        "notable": true
+      },
+      {
+        "name_en": "Bringer of Flame",
+        "name_tr": "Bringer of Flame",
+        "stat_en": "All Damage from you and Allies in your Presence\ncontributes to Flammability and Ignite Magnitudes",
+        "stat_tr": "Senden ve Varlığındaki Müttefiklerden gelen tüm Hasar\nşuna katkıda bulunur: Yanıcılık ve Tutuşturma Magnitudes",
+        "notable": true
+      },
+      {
+        "name_en": "Altered Flesh",
+        "name_tr": "Altered Flesh",
+        "stat_en": "20% of Physical Damage taken as Chaos Damage\n20% of Lightning Damage taken as Fire Damage\n20% of Cold Damage taken as Fire Damage",
+        "stat_tr": "20% Fiziksel Hasar olarak alınır Kaos Hasarı\n20% Şimşek Hasarı olarak alınır Ateş Hasarı\n20% Soğuk Hasarı olarak alınır Ateş Hasarı",
+        "notable": true
+      },
+      {
+        "name_en": "Life",
+        "name_tr": "Life",
+        "stat_en": "3% increased maximum Life",
+        "stat_tr": "%3 artan azami Can",
+        "notable": false
+      },
+      {
+        "name_en": "Mana",
+        "name_tr": "Mana",
+        "stat_en": "3% increased maximum Mana",
+        "stat_tr": "3% artan maksimum Mana",
+        "notable": false
+      },
+      {
+        "name_en": "Beidat's Hand",
+        "name_tr": "Beidat's Hand",
+        "stat_en": "Reserves 25% of Life\n+1 to Maximum Energy Shield per 8 Maximum Life",
+        "stat_tr": "Canın %25'ini Rezerve eder\nHer 8 Azami Can için Azami Enerji Kalkanı +1",
+        "notable": true
+      },
+      {
+        "name_en": "Critical Chance",
+        "name_tr": "Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance",
+        "stat_tr": "12% artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Demonic Possession",
+        "name_tr": "Demonic Possession",
+        "stat_en": "Grants Skill: Demon Form",
+        "stat_tr": "Beceri verir: Demon Form",
+        "notable": true
+      },
+      {
+        "name_en": "Grinning Immolation",
+        "name_tr": "Grinning Immolation",
+        "stat_en": "Become Ignited when you deal a Critical Hit, taking 15% of your maximum Life and Energy Shield as Fire Damage per second\n50% more Critical Damage Bonus",
+        "stat_tr": "Bir Kritik Vuruş yaptığında Tutuşursun ve saniyede azami Can ve Enerji Kalkanının %15'i kadar Ateş Hasarı alırsın\n50% daha fazla Kritik Hasar Bonusu",
+        "notable": true
+      },
+      {
+        "name_en": "Beidat's Gaze",
+        "name_tr": "Beidat's Gaze",
+        "stat_en": "Reserves 25% of Life\n+1 to Maximum Mana per 6 Maximum Life",
+        "stat_tr": "Canın %25'ini Rezerve eder\nHer 6 Azami Can için Azami Mana +1",
+        "notable": true
+      },
+      {
+        "name_en": "Minion Life",
+        "name_tr": "Minion Life",
+        "stat_en": "Minions have 12% increased maximum Life",
+        "stat_tr": "Hizmetkârların azami Canı %12 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Life",
+        "name_tr": "Life",
+        "stat_en": "3% increased maximum Life",
+        "stat_tr": "%3 artan azami Can",
+        "notable": false
+      },
+      {
+        "name_en": "Beidat's Will",
+        "name_tr": "Beidat's Will",
+        "stat_en": "Reserves 25% of Life\n+1 to Maximum Spirit per 25 Maximum Life",
+        "stat_tr": "Canın %25'ini Rezerve eder\nHer 25 Azami Can için Azami Ruh +1",
+        "notable": true
+      },
+      {
+        "name_en": "Mastered Darkness",
+        "name_tr": "Mastered Darkness",
+        "stat_en": "Demonflame has no maximum",
+        "stat_tr": "Demonflame'in azami sınırı yoktur",
+        "notable": true
+      },
+      {
+        "name_en": "Flammability Magnitude",
+        "name_tr": "Flammability Magnitude",
+        "stat_en": "40% increased Flammability Magnitude",
+        "stat_tr": "40% artar Yanıcılık Şiddeti",
+        "notable": false
+      },
+      {
+        "name_en": "Spell Damage",
+        "name_tr": "Spell Damage",
+        "stat_en": "12% increased Spell Damage",
+        "stat_tr": "12% artan Büyü Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "Spell Damage",
+        "name_tr": "Spell Damage",
+        "stat_en": "12% increased Spell Damage",
+        "stat_tr": "12% artan Büyü Hasarı",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/iconintfour_witch1.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_witch2",
+    "en": "Blood Mage",
+    "tr": "Kan Büyücüsü",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Witch",
+    "parent_class_tr": "Witch",
+    "attribute": null,
+    "desc_en": "Your search for power took you on a journey inwards.",
+    "desc_tr": "Güç arayışın seni içe dönük bir yolculuğa çıkardı.",
+    "nodes": [
+      {
+        "name_en": "Life",
+        "name_tr": "Life",
+        "stat_en": "3% increased maximum Life",
+        "stat_tr": "%3 artan azami Can",
+        "notable": false
+      },
+      {
+        "name_en": "Sanguimancy",
+        "name_tr": "Sanguimancy",
+        "stat_en": "Skills gain a Base Life Cost equal to Base Mana Cost\nGrants Skill: Life Remnants",
+        "stat_tr": "Yetenekler, Temel Mana Maliyetine eşit bir Temel Can Maliyeti kazanır\nBeceri verir: Life Remnants",
+        "notable": true
+      },
+      {
+        "name_en": "Vitality Siphon",
+        "name_tr": "Vitality Siphon",
+        "stat_en": "20% of Spell Damage Leeched as Life",
+        "stat_tr": "Büyü Hasarının %20'si Can olarak Emilir",
+        "notable": true
+      },
+      {
+        "name_en": "Blood Barbs",
+        "name_tr": "Blood Barbs",
+        "stat_en": "Elemental Damage also Contributes to Bleeding Magnitude\nBleeding you inflict on Cursed targets is Aggravated",
+        "stat_tr": "Element Hasarı, Kanama Büyüklüğüne de katkı sağlar\nLanetli hedeflere uyguladığın Kanama Şiddetlenir",
+        "notable": true
+      },
+      {
+        "name_en": "Sunder the Flesh",
+        "name_tr": "Eti Parçala",
+        "stat_en": "Base Critical Hit Chance for Spells is 15%",
+        "stat_tr": "Büyüler için Temel Kritik Vuruş Şansı %15'tir",
+        "notable": true
+      },
+      {
+        "name_en": "Whispers of the Flesh",
+        "name_tr": "Etin Fısıltıları",
+        "stat_en": "Targets Cursed by you have 100% reduced Life Regeneration Rate\nTargets Cursed by you have at least 15% of Life Reserved",
+        "stat_tr": "Senin Lanetlediğin hedeflerin Can Yenilenme Hızı %100 azalır\nSenin Lanetlediğin hedeflerin Canının en az %15'i Rezerve edilir",
+        "notable": true
+      },
+      {
+        "name_en": "Curse Effect",
+        "name_tr": "Lanet Etkisi",
+        "stat_en": "6% increased Curse Magnitudes",
+        "stat_tr": "6% artar Lanet Magnitudes",
+        "notable": false
+      },
+      {
+        "name_en": "Spell Critical Chance",
+        "name_tr": "Spell Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance for Spells",
+        "stat_tr": "12% Büyüler için artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Crimson Power",
+        "name_tr": "Crimson Power",
+        "stat_en": "Gain additional maximum Life equal to 100% of the Item Energy Shield on Equipped Body Armour",
+        "stat_tr": "Kuşanılmış Gövde Zırhındaki Eşya Enerji Kalkanının %100'üne eşit ek azami Can kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Life Flasks",
+        "name_tr": "Life Flasks",
+        "stat_en": "15% increased Life Flask Charges gained",
+        "stat_tr": "Kazanılan Can Şişesi Şarjı %15 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Spell Critical Chance",
+        "name_tr": "Spell Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance for Spells",
+        "stat_tr": "12% Büyüler için artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Life",
+        "name_tr": "Life",
+        "stat_en": "3% increased maximum Life",
+        "stat_tr": "%3 artan azami Can",
+        "notable": false
+      },
+      {
+        "name_en": "Gore Spike",
+        "name_tr": "Gore Spike",
+        "stat_en": "1% increased Critical Damage Bonus per 50 current Life",
+        "stat_tr": "Mevcut her 50 Can için Kritik Hasar Bonusu %1 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Grasping Wounds",
+        "name_tr": "Grasping Wounds",
+        "stat_en": "25% of Life Loss from Hits is prevented, then that much Life is lost over 4 seconds instead",
+        "stat_tr": "Vuruşlardan gelen Can Kaybının %25'i önlenir, sonra o kadar Can bunun yerine 4 saniyeye yayılarak kaybedilir",
+        "notable": true
+      },
+      {
+        "name_en": "Life Leech",
+        "name_tr": "Life Leech",
+        "stat_en": "12% increased amount of Life Leeched",
+        "stat_tr": "Emilen Can miktarı %12 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Bleed on Critical Chance",
+        "name_tr": "Bleed on Critical Chance",
+        "stat_en": "15% chance to inflict Bleeding on Critical Hit",
+        "stat_tr": "Kritik Vuruşta Kanama uygulama %15 şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Sanguine Tides",
+        "name_tr": "Sanguine Tides",
+        "stat_en": "Flasks do not recover Life\nGain 1 Life Flask Charge per 2% Life spent\nOn Hitting an Enemy while a Life Flask is at full Charges, 40% of its Charges are consumed\nGain 1% of damage as Physical damage for 5 seconds per Charge consumed this way",
+        "stat_tr": "Şişeler Can yenilemez\nHarcanan her %2 Can için 1 Can Şişesi Şarjı kazan\nBir Can Şişesi tam Şarjdayken bir Düşmana Vurduğunda, Şarjlarının %40'ı tüketilir\nBu şekilde tüketilen her Şarj için 5 saniye boyunca hasarın %1'i kadar Fiziksel hasar kazan",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/iconintfour_witch2.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_witch3",
+    "en": "Lich",
+    "tr": "Lich",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Witch",
+    "parent_class_tr": "Witch",
+    "attribute": null,
+    "desc_en": "Death is your domain, your flesh merely a material to be mastered.",
+    "desc_tr": "Ölüm senin diyarın; etin ise yalnızca hükmedilecek bir malzeme.",
+    "nodes": [
+      {
+        "name_en": "Incessant Cacophony",
+        "name_tr": "Incessant Cacophony",
+        "stat_en": "Curses you inflict have infinite Duration\nYou can apply an additional Curse",
+        "stat_tr": "Uyguladığın Lanetlerin Süresi sonsuzdur\nek bir Lanet uygulayabilirsin",
+        "notable": true
+      },
+      {
+        "name_en": "Price of Power",
+        "name_tr": "Price of Power",
+        "stat_en": "Spells consume a Power Charge if able to deal 40% more Damage",
+        "stat_tr": "Büyüler, %40 daha fazla Hasar verebiliyorsa bir Güç Şarjı tüketir",
+        "notable": true
+      },
+      {
+        "name_en": "Blackened Heart",
+        "name_tr": "Blackened Heart",
+        "stat_en": "4% increased Magnitude of Unholy Might Buffs you grant per 100 maximum Mana",
+        "stat_tr": "Her 100 azami Mana için, verdiğin Unholy Might Güçlendirmelerinin Büyüklüğü %4 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Energy Shield if Consumed Power Charge",
+        "name_tr": "Güç Şarjı Tüketildiyse Enerji Kalkanı",
+        "stat_en": "30% increased maximum Energy Shield if you've consumed a Power Charge Recently",
+        "stat_tr": "Yakın zamanda bir Güç Şarjı tükettiysen azami Enerji Kalkanı %30 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Curse Area",
+        "name_tr": "Lanet Alanı",
+        "stat_en": "15% increased Area of Effect of Curses",
+        "stat_tr": "15% artar Etki Alanı Curses",
+        "notable": false
+      },
+      {
+        "name_en": "Crystalline Phylactery",
+        "name_tr": "Crystalline Phylactery",
+        "stat_en": "Can Socket a non-Unique Basic Jewel into the Phylactery\n100% increased Effect of bonuses gained from Socketed Jewel\n50% more Mana Cost of Skills if you have no Energy Shield",
+        "stat_tr": "Phylactery'ye Eşsiz olmayan Temel bir Mücevher takabilirsin\nTakılı Mücevherden kazanılan bonusların Etkisi %100 artar\nEnerji Kalkanın yoksa Yeteneklerin Mana Maliyeti %50 daha fazla",
+        "notable": true
+      },
+      {
+        "name_en": "Mana",
+        "name_tr": "Mana",
+        "stat_en": "3% increased maximum Mana",
+        "stat_tr": "3% artan maksimum Mana",
+        "notable": false
+      },
+      {
+        "name_en": "Rupture the Soul",
+        "name_tr": "Ruhu Patlat",
+        "stat_en": "Cursed Enemies killed by you, or by Allies in your Presence, have a 33% chance to explode, dealing a quarter of their maximum Life as Chaos damage",
+        "stat_tr": "Senin ya da Huzurundaki Müttefiklerin öldürdüğü Lanetli Düşmanların, azami Canlarının çeyreği kadar Kaos hasarı vererek patlama %33 şansı olur",
+        "notable": true
+      },
+      {
+        "name_en": "Necromantic Conduit",
+        "name_tr": "Necromantic Conduit",
+        "stat_en": "While you are not on Low Mana, you and Allies in your Presence have Unholy Might\nLose 5% of maximum Mana per Second",
+        "stat_tr": "Düşük Manada değilken, sen ve Huzurundaki Müttefiklerin Unholy Might'a sahip olur\nKaybet 5% azami Mana saniyede",
+        "notable": true
+      },
+      {
+        "name_en": "Eternal Life",
+        "name_tr": "Eternal Life",
+        "stat_en": "Your Life cannot change while you have Energy Shield",
+        "stat_tr": "Enerji Kalkanın varken Canın değişemez",
+        "notable": true
+      },
+      {
+        "name_en": "Life",
+        "name_tr": "Life",
+        "stat_en": "3% increased maximum Life",
+        "stat_tr": "%3 artan azami Can",
+        "notable": false
+      },
+      {
+        "name_en": "Soulless Form",
+        "name_tr": "Soulless Form",
+        "stat_en": "10% of Damage taken bypasses Energy Shield\nNo inherent Mana Regeneration\nRegenerate Mana equal to 6% of maximum Life per second",
+        "stat_tr": "Alınan Hasarın %10'u Enerji Kalkanını atlar\nyok inherent Mana Regeneration\nSaniyede azami Canın %6'sına eşit Mana yenile",
+        "notable": true
+      },
+      {
+        "name_en": "Life",
+        "name_tr": "Life",
+        "stat_en": "3% increased maximum Life",
+        "stat_tr": "%3 artan azami Can",
+        "notable": false
+      },
+      {
+        "name_en": "Energy Shield",
+        "name_tr": "Energy Shield",
+        "stat_en": "20% increased maximum Energy Shield",
+        "stat_tr": "20% artar azami Enerji Kalkanı",
+        "notable": false
+      },
+      {
+        "name_en": "Mana",
+        "name_tr": "Mana",
+        "stat_en": "3% increased maximum Mana",
+        "stat_tr": "3% artan maksimum Mana",
+        "notable": false
+      },
+      {
+        "name_en": "Energy Shield",
+        "name_tr": "Energy Shield",
+        "stat_en": "20% increased maximum Energy Shield",
+        "stat_tr": "20% artar azami Enerji Kalkanı",
+        "notable": false
+      },
+      {
+        "name_en": "Eldritch Empowerment",
+        "name_tr": "Eldritch Empowerment",
+        "stat_en": "Sacrificing Energy Shield does not interrupt Recharge\nSacrifice 5% of maximum Energy Shield when you Cast a Spell\nSpells for which this Sacrifice was fully made deal 30% more Damage",
+        "stat_tr": "Enerji Kalkanı feda etmek Yeniden Dolumu kesmez\nSacrifice 5% azami Enerji Kalkanı iken sen Cast Büyü\nBu Feda'nın tam yapıldığı Büyüler %30 daha fazla Hasar verir",
+        "notable": true
+      },
+      {
+        "name_en": "Curse Area",
+        "name_tr": "Lanet Alanı",
+        "stat_en": "15% increased Area of Effect of Curses",
+        "stat_tr": "15% artar Etki Alanı Curses",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/iconintfour_witch3.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "class_sorceress",
+    "en": "Sorceress",
+    "tr": "Sorceress",
+    "tr_status": "proposed",
+    "type": "class",
+    "parent_class": null,
+    "parent_class_tr": null,
+    "attribute": "Intelligence",
+    "desc_en": "The elements are mine to control. I know why lightning strikes, why fire burns, and why cold freezes. They do so because I command it. The vengeance of the Maraketh will find those who have transgressed no matter where they run.",
+    "desc_tr": "Elementler benim hükmümde. Şimşeğin neden çaktığını, ateşin neden yaktığını, soğuğun neden dondurduğunu bilirim. Bunu, ben emrettiğim için yaparlar. Maraketh'in intikamı, nereye kaçarlarsa kaçsınlar suç işleyenleri bulacak.",
+    "nodes": [],
+    "icon": "assets/ascendancies/iconintfourb.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_sorceress1",
+    "en": "Stormweaver",
+    "tr": "Fırtına Dokuyucu",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Sorceress",
+    "parent_class_tr": "Sorceress",
+    "attribute": null,
+    "desc_en": "The rumble of thunder heralds your approach. Woe to those that draw your ire.",
+    "desc_tr": "Gök gürültüsünün uğultusu gelişini müjdeler. Öfkeni üstüne çekenlerin vay haline.",
+    "nodes": [
+      {
+        "name_en": "Strike Twice",
+        "name_tr": "Strike Twice",
+        "stat_en": "Targets can be affected by two of your Shocks at the same time\n25% less Magnitude of Shock you inflict",
+        "stat_tr": "Hedefler aynı anda iki Şokundan etkilenebilir\nUyguladığın Şokun Büyüklüğü %25 daha az",
+        "notable": true
+      },
+      {
+        "name_en": "Mana Regeneration",
+        "name_tr": "Mana Regeneration",
+        "stat_en": "12% increased Mana Regeneration Rate",
+        "stat_tr": "12% artan Mana Yenilenme Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "Shock Chance",
+        "name_tr": "Shock Chance",
+        "stat_en": "20% increased chance to Shock",
+        "stat_tr": "20% artar şans Şok",
+        "notable": false
+      },
+      {
+        "name_en": "Constant Gale",
+        "name_tr": "Constant Gale",
+        "stat_en": "You have Arcane Surge",
+        "stat_tr": "Arcane Surge'e sahip olursun",
+        "notable": true
+      },
+      {
+        "name_en": "Remnant Range",
+        "name_tr": "Remnant Range",
+        "stat_en": "Remnants can be collected from 25% further away",
+        "stat_tr": "Kalıntılar %25 daha uzaktan toplanabilir",
+        "notable": false
+      },
+      {
+        "name_en": "Tempest Caller",
+        "name_tr": "Tempest Caller",
+        "stat_en": "Trigger Elemental Storm on Critical Hit with Spells\nGrants Skill: Elemental Storm",
+        "stat_tr": "Büyülerle Kritik Vuruşta Elemental Storm'u tetikle\nBeceri verir: Elemental Storm",
+        "notable": true
+      },
+      {
+        "name_en": "Chill Duration",
+        "name_tr": "Chill Duration",
+        "stat_en": "25% increased Chill Duration on Enemies",
+        "stat_tr": "25% artar Üşütme Süre Düşmanlarda",
+        "notable": false
+      },
+      {
+        "name_en": "Shaper of Winter",
+        "name_tr": "Shaper of Winter",
+        "stat_en": "All Damage from Hits Contributes to Chill Magnitude",
+        "stat_tr": "Vuruşlardan gelen tüm Hasar, Üşüme Büyüklüğüne katkı sağlar",
+        "notable": true
+      },
+      {
+        "name_en": "Spell Critical Chance",
+        "name_tr": "Spell Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance for Spells",
+        "stat_tr": "12% Büyüler için artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Chill Duration",
+        "name_tr": "Chill Duration",
+        "stat_en": "25% increased Chill Duration on Enemies",
+        "stat_tr": "25% artar Üşütme Süre Düşmanlarda",
+        "notable": false
+      },
+      {
+        "name_en": "Multiplying Squalls",
+        "name_tr": "Multiplying Squalls",
+        "stat_en": "+2 to Limit for Elemental Skills",
+        "stat_tr": "+2 Sınır için Elemental Yetenekler",
+        "notable": true
+      },
+      {
+        "name_en": "Force of Will",
+        "name_tr": "Force of Will",
+        "stat_en": "20% of Damage is taken from Mana before Life\n20% increased Effect of Arcane Surge on you per ten percent missing Mana",
+        "stat_tr": "Hasarın %20'si Candan önce Manadan alınır\nEksik her yüzde on Mana için, üzerindeki Arcane Surge Etkisi %20 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Shaper of Storms",
+        "name_tr": "Shaper of Storms",
+        "stat_en": "All Damage from Hits Contributes to Shock Chance",
+        "stat_tr": "Vuruşlardan gelen tüm Hasar, Şok Şansına katkı sağlar",
+        "notable": true
+      },
+      {
+        "name_en": "Refracted Infusion",
+        "name_tr": "Refracted Infusion",
+        "stat_en": "When collecting an Elemental Infusion, gain another different Elemental Infusion",
+        "stat_tr": "Bir Elemental Infusion topladığında, farklı bir Elemental Infusion daha kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Remnant Range",
+        "name_tr": "Remnant Range",
+        "stat_en": "Remnants can be collected from 25% further away",
+        "stat_tr": "Kalıntılar %25 daha uzaktan toplanabilir",
+        "notable": false
+      },
+      {
+        "name_en": "Storm's Recollection",
+        "name_tr": "Storm's Recollection",
+        "stat_en": "Remnants can be collected from 50% further away\nRemnants you create reappear once, 3 seconds after being collected",
+        "stat_tr": "Kalıntılar %50 daha uzaktan toplanabilir\nYarattığın Kalıntılar bir kez yeniden belirir, 3 saniye sonra toplandıktan",
+        "notable": true
+      },
+      {
+        "name_en": "Shock Chance",
+        "name_tr": "Shock Chance",
+        "stat_en": "20% increased chance to Shock",
+        "stat_tr": "20% artar şans Şok",
+        "notable": false
+      },
+      {
+        "name_en": "Heavy Snows",
+        "name_tr": "Heavy Snows",
+        "stat_en": "Targets can be affected by two of your Chills at the same time\nYour Chills can Slow targets by up to a maximum of 35%\n25% less Magnitude of Chill you inflict",
+        "stat_tr": "Hedefler aynı anda iki Üşümenden etkilenebilir\nÜşümelerin hedefleri en fazla %35'e kadar Yavaşlatabilir\nUyguladığın Üşümenin Büyüklüğü %25 daha az",
+        "notable": true
+      },
+      {
+        "name_en": "Mana Regeneration",
+        "name_tr": "Mana Regeneration",
+        "stat_en": "12% increased Mana Regeneration Rate",
+        "stat_tr": "12% artan Mana Yenilenme Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "Spell Critical Chance",
+        "name_tr": "Spell Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance for Spells",
+        "stat_tr": "12% Büyüler için artan Kritik Vuruş Şansı",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/iconintfourb_sorceress1.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_sorceress2",
+    "en": "Chronomancer",
+    "tr": "Zaman Büyücüsü",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Sorceress",
+    "parent_class_tr": "Sorceress",
+    "attribute": null,
+    "desc_en": "The tapestry of time is yours to weave; an element you alone may master.",
+    "desc_tr": "Zamanın dokusu senin örgün; yalnızca senin ustalaşabileceğin bir element.",
+    "nodes": [
+      {
+        "name_en": "Cooldown Recovery Rate",
+        "name_tr": "Cooldown Recovery Rate",
+        "stat_en": "6% increased Cooldown Recovery Rate",
+        "stat_tr": "6% artar Cooldown Recovery Rate",
+        "notable": false
+      },
+      {
+        "name_en": "Unbound Encore",
+        "name_tr": "Unbound Encore",
+        "stat_en": "Grants Skill: Time Snap",
+        "stat_tr": "Beceri verir: Time Snap",
+        "notable": true
+      },
+      {
+        "name_en": "Quicksand Hourglass",
+        "name_tr": "Quicksand Hourglass",
+        "stat_en": "Grants Sands of Time",
+        "stat_tr": "Sands of Time verir",
+        "notable": true
+      },
+      {
+        "name_en": "Now and Again",
+        "name_tr": "Ara Sıra",
+        "stat_en": "Cascadable Spells have 20% chance to Echo\nRepeatable Spells have 20% chance to Repeat",
+        "stat_tr": "Kademelenebilir Büyülerin Yankılanma %20 şansı olur\nTekrarlanabilir Büyülerin Tekrarlama %20 şansı olur",
+        "notable": true
+      },
+      {
+        "name_en": "Buff Expiry Rate",
+        "name_tr": "Buff Expiry Rate",
+        "stat_en": "Buffs on you expire 10% slower",
+        "stat_tr": "Üzerindeki Buff'lar %10 daha yavaş sona erer",
+        "notable": false
+      },
+      {
+        "name_en": "Footprints in the Sand",
+        "name_tr": "Kumdaki Ayak İzleri",
+        "stat_en": "Grants Skill: Temporal Rift",
+        "stat_tr": "Beceri verir: Temporal Rift",
+        "notable": true
+      },
+      {
+        "name_en": "Slow Effect",
+        "name_tr": "Yavaşlatma Etkisi",
+        "stat_en": "Debuffs you inflict have 6% increased Slow Magnitude",
+        "stat_tr": "Uyguladığın Zayıflatmaların Yavaşlatma Büyüklüğü %6 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Phased Form",
+        "name_tr": "Phased Form",
+        "stat_en": "Take 30% less Damage\n4 seconds after being Damaged by an Enemy Hit, take Damage equal to 30% of that Hit's Damage",
+        "stat_tr": "Al 30% daha az Hasar\nBir Düşman Vuruşundan Hasar aldıktan 4 saniye sonra, o Vuruşun Hasarının %30'una eşit Hasar alırsın",
+        "notable": true
+      },
+      {
+        "name_en": "Cooldown Recovery Rate",
+        "name_tr": "Cooldown Recovery Rate",
+        "stat_en": "6% increased Cooldown Recovery Rate",
+        "stat_tr": "6% artar Cooldown Recovery Rate",
+        "notable": false
+      },
+      {
+        "name_en": "Inevitability",
+        "name_tr": "Inevitability",
+        "stat_en": "Grants Skill: Inevitable Agony",
+        "stat_tr": "Beceri verir: Inevitable Agony",
+        "notable": true
+      },
+      {
+        "name_en": "Skill Speed and Area of Effect",
+        "name_tr": "Yetenek Hızı ve Etki Alanı",
+        "stat_en": "4% increased Skill Speed\n6% increased Area of Effect",
+        "stat_tr": "4% artar Yetenek Hız\n6% artar Etki Alanı",
+        "notable": false
+      },
+      {
+        "name_en": "Apex of the Moment",
+        "name_tr": "Anın Zirvesi",
+        "stat_en": "Enemies in your Presence are Slowed by 20%",
+        "stat_tr": "Huzurundaki Düşmanlar %20 Yavaşlatılır",
+        "notable": true
+      },
+      {
+        "name_en": "Area of Effect",
+        "name_tr": "Etki Alanı",
+        "stat_en": "8% increased Area of Effect",
+        "stat_tr": "8% artar Etki Alanı",
+        "notable": false
+      },
+      {
+        "name_en": "Cast Speed",
+        "name_tr": "Cast Speed",
+        "stat_en": "6% increased Cast Speed",
+        "stat_tr": "6% artan Büyü Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "Ultimate Command",
+        "name_tr": "Ultimate Command",
+        "stat_en": "Grants Skill: Time Freeze",
+        "stat_tr": "Beceri verir: Time Donma",
+        "notable": true
+      },
+      {
+        "name_en": "Buff Expiry Rate",
+        "name_tr": "Buff Expiry Rate",
+        "stat_en": "Buffs on you expire 10% slower",
+        "stat_tr": "Üzerindeki Buff'lar %10 daha yavaş sona erer",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/iconintfourb_sorceress2.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_sorceress3",
+    "en": "Disciple of Varashta",
+    "tr": "Varashta Müridi",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Sorceress",
+    "parent_class_tr": "Sorceress",
+    "attribute": null,
+    "desc_en": "By your command, they will earn redemption...one duty at a time.",
+    "desc_tr": "Senin emrinle, kefaretlerini bir görevde birini ödeyecekler...",
+    "nodes": [
+      {
+        "name_en": "Varashta's Intuition",
+        "name_tr": "Varashta's Intuition",
+        "stat_en": "100% of Elemental Damage is taken from Mana before Life",
+        "stat_tr": "Element Hasarının %100'ü Candan önce Manadan alınır",
+        "notable": true
+      },
+      {
+        "name_en": "Mana",
+        "name_tr": "Mana",
+        "stat_en": "3% increased maximum Mana",
+        "stat_tr": "3% artan maksimum Mana",
+        "notable": false
+      },
+      {
+        "name_en": "Navira's Fracturing",
+        "name_tr": "Navira's Fracturing",
+        "stat_en": "Grants Skill: Navira's Fracturing",
+        "stat_tr": "Beceri verir: Navira's Fracturing",
+        "notable": true
+      },
+      {
+        "name_en": "Barya of Kelari",
+        "name_tr": "Barya of Kelari",
+        "stat_en": "Grants Skill: Kelari, the Tainted Sands",
+        "stat_tr": "Beceri verir: Kelari, the Tainted Sands",
+        "notable": true
+      },
+      {
+        "name_en": "Ruzhan's Fury",
+        "name_tr": "Ruzhan's Fury",
+        "stat_en": "Grants Skill: Ruzhan's Fury",
+        "stat_tr": "Beceri verir: Ruzhan's Fury",
+        "notable": true
+      },
+      {
+        "name_en": "Instruments of Power",
+        "name_tr": "Instruments of Power",
+        "stat_en": "You can equip a Focus while wielding a Staff\n50% reduced bonuses gained from Equipped Focus",
+        "stat_tr": "Bir Asa kuşanırken bir Focus takabilirsin\nKuşanılmış Focus'tan kazanılan bonuslar %50 azalır",
+        "notable": true
+      },
+      {
+        "name_en": "Kelari's Deception",
+        "name_tr": "Kelari's Deception",
+        "stat_en": "Grants Skill: Kelari's Deception",
+        "stat_tr": "Beceri verir: Kelari's Deception",
+        "notable": true
+      },
+      {
+        "name_en": "Kelari's Judgment",
+        "name_tr": "Kelari's Judgment",
+        "stat_en": "Grants Skill: Kelari's Judgment",
+        "stat_tr": "Beceri verir: Kelari's Judgment",
+        "notable": true
+      },
+      {
+        "name_en": "Ruzhan's Reckoning",
+        "name_tr": "Ruzhan's Reckoning",
+        "stat_en": "Grants Skill: Ruzhan's Reckoning",
+        "stat_tr": "Beceri verir: Ruzhan's Reckoning",
+        "notable": true
+      },
+      {
+        "name_en": "Energy Shield",
+        "name_tr": "Energy Shield",
+        "stat_en": "20% increased maximum Energy Shield",
+        "stat_tr": "20% artar azami Enerji Kalkanı",
+        "notable": false
+      },
+      {
+        "name_en": "Barya of Navira",
+        "name_tr": "Barya of Navira",
+        "stat_en": "Grants Skill: Navira, the Last Mirage",
+        "stat_tr": "Beceri verir: Navira, the Last Mirage",
+        "notable": true
+      },
+      {
+        "name_en": "Barya of Ruzhan",
+        "name_tr": "Barya of Ruzhan",
+        "stat_en": "Grants Skill: Ruzhan, the Blazing Sword",
+        "stat_tr": "Beceri verir: Ruzhan, the Blazing Sword",
+        "notable": true
+      },
+      {
+        "name_en": "Cast Speed",
+        "name_tr": "Cast Speed",
+        "stat_en": "4% increased Cast Speed",
+        "stat_tr": "4% artan Büyü Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "Kelari's Malediction",
+        "name_tr": "Kelari's Malediction",
+        "stat_en": "Grants Skill: Kelari's Malediction",
+        "stat_tr": "Beceri verir: Kelari's Malediction",
+        "notable": true
+      },
+      {
+        "name_en": "Baryanic Leylines",
+        "name_tr": "Baryanic Leylines",
+        "stat_en": "Non-Unique Time-Lost Jewels have 40% increased radius",
+        "stat_tr": "Eşsiz olmayan Time-Lost Mücevherlerin yarıçapı %40 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Navira's Well",
+        "name_tr": "Navira's Well",
+        "stat_en": "Grants Skill: Navira's Well",
+        "stat_tr": "Beceri verir: Navira's Well",
+        "notable": true
+      },
+      {
+        "name_en": "Navira's Oasis",
+        "name_tr": "Navira's Oasis",
+        "stat_en": "Grants Skill: Navira's Oasis",
+        "stat_tr": "Beceri verir: Navira's Oasis",
+        "notable": true
+      },
+      {
+        "name_en": "The Fourth Teaching",
+        "name_tr": "Dördüncü Öğreti",
+        "stat_en": "-1 second to base Energy Shield Recharge delay\n40% more Energy Shield Recharge Rate while on Low Energy Shield",
+        "stat_tr": "Temel Enerji Kalkanı Yeniden Dolum gecikmesi -1 saniye\n40% daha fazla Enerji Kalkanı Yeniden Dolumu Rate iken Düşük Enerji Kalkanında",
+        "notable": true
+      },
+      {
+        "name_en": "Area of Effect",
+        "name_tr": "Etki Alanı",
+        "stat_en": "8% increased Area of Effect",
+        "stat_tr": "8% artar Etki Alanı",
+        "notable": false
+      },
+      {
+        "name_en": "Sacred Rituals",
+        "name_tr": "Sacred Rituals",
+        "stat_en": "60% of your current Energy Shield is added to your Armour for\ndetermining your Physical Damage Reduction from Armour",
+        "stat_tr": "Mevcut Enerji Kalkanının %60'ı şunun için Zırhına eklenir:\nZırhtan gelen Fiziksel Hasar Azaltmanın belirlenmesi",
+        "notable": true
+      },
+      {
+        "name_en": "Energy Shield",
+        "name_tr": "Energy Shield",
+        "stat_en": "20% increased maximum Energy Shield",
+        "stat_tr": "20% artar azami Enerji Kalkanı",
+        "notable": false
+      },
+      {
+        "name_en": "Ruzhan's Trap",
+        "name_tr": "Ruzhan's Trap",
+        "stat_en": "Grants Skill: Ruzhan's Trap",
+        "stat_tr": "Beceri verir: Ruzhan's Tuzak",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/iconintfourb_sorceress3.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "class_huntress",
+    "en": "Huntress",
+    "tr": "Huntress",
+    "tr_status": "proposed",
+    "type": "class",
+    "parent_class": null,
+    "parent_class_tr": null,
+    "attribute": "Dexterity",
+    "desc_en": "The Spirit bid me leave my mountain, only to find violence and death. Give me a spear! If they want blood, I will show them what it means to fight for survival.",
+    "desc_tr": "Ruh, dağımı terk etmemi buyurdu; karşıma yalnızca şiddet ve ölüm çıktı. Bana bir mızrak verin! Kan istiyorlarsa, hayatta kalmak için savaşmanın ne demek olduğunu onlara göstereceğim.",
+    "nodes": [],
+    "icon": "assets/ascendancies/icondexfourb.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_huntress1",
+    "en": "Amazon",
+    "tr": "Amazon",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Huntress",
+    "parent_class_tr": "Huntress",
+    "attribute": null,
+    "desc_en": "You became a weapon of war so that others could live in peace.",
+    "desc_tr": "Başkaları barış içinde yaşayabilsin diye bir savaş silahına dönüştün.",
+    "nodes": [
+      {
+        "name_en": "Accuracy",
+        "name_tr": "Accuracy",
+        "stat_en": "12% increased Accuracy Rating",
+        "stat_tr": "12% artar İsabet Derecesi",
+        "notable": false
+      },
+      {
+        "name_en": "Life Leech",
+        "name_tr": "Life Leech",
+        "stat_en": "12% increased amount of Life Leeched",
+        "stat_tr": "Emilen Can miktarı %12 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Mystic Harvest",
+        "name_tr": "Mystic Harvest",
+        "stat_en": "Life Leech recovers based on your Elemental damage as well as Physical damage",
+        "stat_tr": "Can Emme, Fiziksel hasarın yanı sıra Element hasarına göre de yeniler",
+        "notable": true
+      },
+      {
+        "name_en": "Flask Recovery",
+        "name_tr": "Flask Recovery",
+        "stat_en": "15% increased Life and Mana Recovery from Flasks",
+        "stat_tr": "Şişelerden Can ve Mana Yenilemesi %15 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Evasion",
+        "name_tr": "Evasion",
+        "stat_en": "20% increased Evasion Rating",
+        "stat_tr": "20% artan Kaçınma Derecesi",
+        "notable": false
+      },
+      {
+        "name_en": "Elemental Surge",
+        "name_tr": "Elemental Surge",
+        "stat_en": "When you Consume a Charge, Trigger Elemental Surge to gain 3 Lightning Surges\nGrants Skill: Elemental Surge",
+        "stat_tr": "Bir Şarj Tükettiğinde, 3 Lightning Surge kazanmak için Elemental Surge'ü tetikle\nBeceri verir: Elemental Surge",
+        "notable": true
+      },
+      {
+        "name_en": "Critical Strike",
+        "name_tr": "Critical Strike",
+        "stat_en": "Chance to Hit with Attacks can exceed 100%\nGain additional Critical Hit Chance equal to 25% of excess chance to Hit with Attacks",
+        "stat_tr": "Saldırılarla Vurma Şansı %100'ü aşabilir\nSaldırılarla Vurma şansının fazlasının %25'ine eşit ek Kritik Vuruş Şansı kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Elemental Damage",
+        "name_tr": "Elemental Damage",
+        "stat_en": "12% increased Elemental Damage",
+        "stat_tr": "12% artan Elemental Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Skill Speed",
+        "name_tr": "Skill Speed",
+        "stat_en": "4% increased Skill Speed",
+        "stat_tr": "4% artar Yetenek Hız",
+        "notable": false
+      },
+      {
+        "name_en": "In for the Kill",
+        "name_tr": "Öldürmeye Hazır",
+        "stat_en": "20% increased Movement Speed while an enemy with an Open Weakness is in your Presence\n40% increased Skill Speed while an enemy with an Open Weakness is in your Presence",
+        "stat_tr": "Huzurunda Açık Zafiyeti olan bir düşman varken Hareket Hızı %20 artar\nHuzurunda Açık Zafiyeti olan bir düşman varken Yetenek Hızı %40 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Penetrate",
+        "name_tr": "Penetrate",
+        "stat_en": "Attacks using your Weapons have Added Physical Damage equal\nto 25% of the Accuracy Rating on the Weapon",
+        "stat_tr": "Silahlarını kullanan Saldırılar şuna eşit Eklenmiş Fiziksel Hasar kazanır:\nSilahtaki Doğruluk Derecesinin %25'i",
+        "notable": true
+      },
+      {
+        "name_en": "Surging Avatar",
+        "name_tr": "Surging Avatar",
+        "stat_en": "When you Consume a Charge, Trigger Elemental Surge to gain 2 Fire Surges\nWhen you Consume a Charge, Trigger Elemental Surge to gain 2 Cold Surges\nGain 1 fewer Lightning Surge from Triggering Elemental Surge",
+        "stat_tr": "Bir Şarj Tükettiğinde, 2 Fire Surge kazanmak için Elemental Surge'ü tetikle\nBir Şarj Tükettiğinde, 2 Cold Surge kazanmak için Elemental Surge'ü tetikle\nElemental Surge tetiklemekten 1 daha az Lightning Surge kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Skill Speed",
+        "name_tr": "Skill Speed",
+        "stat_en": "4% increased Skill Speed",
+        "stat_tr": "4% artar Yetenek Hız",
+        "notable": false
+      },
+      {
+        "name_en": "Accuracy",
+        "name_tr": "Accuracy",
+        "stat_en": "12% increased Accuracy Rating",
+        "stat_tr": "12% artar İsabet Derecesi",
+        "notable": false
+      },
+      {
+        "name_en": "Azmeri Brew",
+        "name_tr": "Azmeri Brew",
+        "stat_en": "Life Flasks also recover Mana\nMana Flasks also recover Life",
+        "stat_tr": "Can Şişeleri Mana da yeniler\nMana Şişeleri Can da yeniler",
+        "notable": true
+      },
+      {
+        "name_en": "Predatory Instinct",
+        "name_tr": "Predatory Instinct",
+        "stat_en": "Reveal Weaknesses against Rare and Unique enemies\n50% more damage against enemies with an Open Weakness",
+        "stat_tr": "Nadir ve Eşsiz düşmanlara karşı Zafiyetleri açığa çıkar\nAçık Zafiyeti olan düşmanlara %50 daha fazla hasar",
+        "notable": true
+      },
+      {
+        "name_en": "Elemental Damage",
+        "name_tr": "Elemental Damage",
+        "stat_en": "12% increased Elemental Damage",
+        "stat_tr": "12% artan Elemental Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Stalking Panther",
+        "name_tr": "Stalking Panther",
+        "stat_en": "Evasion Rating from Equipped Helmet, Gloves and Boots is doubled\nEvasion Rating from Equipped Body Armour is halved",
+        "stat_tr": "Kuşanılmış Kask, Eldiven ve Botlardan gelen Kaçınma Derecesi iki katına çıkar\nKuşanılmış Gövde Zırhından gelen Kaçınma Derecesi yarıya iner",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/icondexfourb_huntress1.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_huntress2",
+    "en": "Spirit Walker",
+    "tr": "Ruh Yürüyücü",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Huntress",
+    "parent_class_tr": "Huntress",
+    "attribute": null,
+    "desc_en": "You were chosen by the Sacred Wisps to enact the Spirit's will.",
+    "desc_tr": "Kutsal Hayaletler tarafından, Ruh'un iradesini yerine getirmek üzere seçildin.",
+    "nodes": [
+      {
+        "name_en": "The Catha's Balance",
+        "name_tr": "Catha'nın Dengesi",
+        "stat_en": "Companions gain added Attack damage equal to 60% of your main hand Weapon's damage",
+        "stat_tr": "Yoldaşlar, ana el Silahının hasarının %60'ına eşit eklenmiş Saldırı hasarı kazanır",
+        "notable": true
+      },
+      {
+        "name_en": "The Mhacha's Gift",
+        "name_tr": "Mhacha'nın Armağanı",
+        "stat_en": "Dodging can expend up to 3 Owl Feathers, granting Primal Bounty 100% more\nEmpowerment effect per additional Feather expended\nGain Owl Feathers 50% faster",
+        "stat_tr": "Sıyrılmak en fazla 3 Owl Feather harcayabilir ve Primal Bounty'ye %100 daha fazla\nharcanan her ek Feather için Güçlendirme etkisi\nOwl Feather'ları %50 daha hızlı kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Spirit",
+        "name_tr": "Spirit",
+        "stat_en": "+10 to Spirit",
+        "stat_tr": "+10 Ruh",
+        "notable": false
+      },
+      {
+        "name_en": "Shared Companion Damage",
+        "name_tr": "Paylaşılan Yoldaş Hasarı",
+        "stat_en": "Companions deal 10% increased Damage\n10% increased Damage while your Companion is in your Presence",
+        "stat_tr": "Yoldaşlar %10 artan Hasar verir\nYoldaşın Huzurundayken %10 artan Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Movement Speed",
+        "name_tr": "Movement Speed",
+        "stat_en": "2% increased Movement Speed",
+        "stat_tr": "2% artan Hareket Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "The Mórrigan's Guidance",
+        "name_tr": "Mórrigan'ın Rehberliği",
+        "stat_en": "Gain a Vivid Wisp when Vivid Stampede ends\nStags deal 20% more damage per leap\nStags have 20% more Shock Magnitude per leap",
+        "stat_tr": "Vivid Wisp iken Vivid Stampede ends kazan\nGeyikler her sıçrayışta %20 daha fazla hasar verir\nGeyiklerin her sıçrayışta Şok Büyüklüğü %20 daha fazla",
+        "notable": true
+      },
+      {
+        "name_en": "Sacred Unity",
+        "name_tr": "Sacred Unity",
+        "stat_en": "Bear Spirit gains Embrace of the Wild\nVivid Stags leap towards enemies\nCentral Projectile of Owl Feather-Empowered Skills leaves a trail of Soaring Ground",
+        "stat_tr": "Bear Spirit, Embrace of the Wild kazanır\nVivid Stag'ler düşmanlara doğru sıçrar\nOwl Feather ile Güçlendirilmiş Yeteneklerin Merkez Mermisi, bir Soaring Ground izi bırakır",
+        "notable": true
+      },
+      {
+        "name_en": "Shared Companion Damage",
+        "name_tr": "Paylaşılan Yoldaş Hasarı",
+        "stat_en": "Companions deal 10% increased Damage\n10% increased Damage while your Companion is in your Presence",
+        "stat_tr": "Yoldaşlar %10 artan Hasar verir\nYoldaşın Huzurundayken %10 artan Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "The Natural Order",
+        "name_tr": "Doğal Düzen",
+        "stat_en": "Tame Beast can capture Unique Beasts\nCan have up to one Unique Tamed Beast summoned\nUnique Tamed Beasts have 30% increased movement speed\nUnique Tamed Beasts are Possessed by random Azmeri Spirits, changing every 20 seconds",
+        "stat_tr": "Tame Beast, Eşsiz Canavarları yakalayabilir\nÇağrılmış en fazla bir Eşsiz Evcil Canavarın olabilir\nEşsiz Evcil Canavarların hareket hızı %30 artar\nEşsiz Evcil Canavarlar, her 20 saniyede değişen rastgele Azmeri Ruhları tarafından Ele Geçirilir",
+        "notable": true
+      },
+      {
+        "name_en": "Critical Chance",
+        "name_tr": "Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance",
+        "stat_tr": "12% artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Vivid Stampede",
+        "name_tr": "Vivid Stampede",
+        "stat_en": "Gain a Vivid Wisp for every 10 metres you move, up to a maximum of 3\nExpend all Vivid Wisps to trigger Vivid Stampede when you Attack\nGrants Skill: Vivid Stampede",
+        "stat_tr": "Hareket ettiğin her 10 metre için bir Vivid Wisp kazan, en fazla 3\nSaldırdığında Vivid Stampede'i tetiklemek için tüm Vivid Wisp'leri harca\nBeceri verir: Vivid Stampede",
+        "notable": true
+      },
+      {
+        "name_en": "Companion Life and Area",
+        "name_tr": "Yoldaş Canı ve Alanı",
+        "stat_en": "Companions have 10% increased Area of Effect\nCompanions have 15% increased maximum Life",
+        "stat_tr": "Yoldaşların Etki Alanı %10 artar\nYoldaşların azami Canı %15 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Primal Bounty",
+        "name_tr": "Primal Bounty",
+        "stat_en": "Gain a Primal Owl Feather every 4 seconds, up to a maximum of 3\nExpend an Owl Feather when you Dodge to trigger Primal Bounty\nGrants Skill: Primal Bounty",
+        "stat_tr": "Her 4 saniyede bir Primal Owl Feather kazan, en fazla 3\nPrimal Bounty'yi tetiklemek için Sıyrıldığında bir Owl Feather harca\nBeceri verir: Primal Bounty",
+        "notable": true
+      },
+      {
+        "name_en": "Idolatry",
+        "name_tr": "Idolatry",
+        "stat_en": "Companions deal 10% increased damage per Idol in your Equipment\n2% increased Reservation Efficiency of Skills per Idol in your Equipment\n-4% to all Elemental Resistances per non-Idol Augment in your Equipment",
+        "stat_tr": "Teçhizatındaki her Idol için Yoldaşlar %10 artan hasar verir\nTeçhizatındaki her Idol için Yeteneklerin Rezervasyon Verimliliği %2 artar\n-4% tüm Elemental Dirençler başına non-Idol Geliştirme in senin Equipment",
+        "notable": true
+      },
+      {
+        "name_en": "Critical Chance",
+        "name_tr": "Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance",
+        "stat_tr": "12% artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Movement Speed",
+        "name_tr": "Movement Speed",
+        "stat_en": "2% increased Movement Speed",
+        "stat_tr": "2% artan Hareket Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "Wild Protector",
+        "name_tr": "Wild Protector",
+        "stat_en": "Grants Skill: Wild Protector",
+        "stat_tr": "Beceri verir: Wild Protector",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/icondexfourb_huntress2.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_huntress3",
+    "en": "Ritualist",
+    "tr": "Ayinci",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Huntress",
+    "parent_class_tr": "Huntress",
+    "attribute": null,
+    "desc_en": "Corruption cost you your home, but taught you so much more...",
+    "desc_tr": "Çürüme sana yuvanı kaybettirdi ama çok daha fazlasını öğretti...",
+    "nodes": [
+      {
+        "name_en": "Attributes",
+        "name_tr": "Attributes",
+        "stat_en": "3% increased Attributes",
+        "stat_tr": "3% artar Attributes",
+        "notable": false
+      },
+      {
+        "name_en": "Intricate Sigils",
+        "name_tr": "Intricate Sigils",
+        "stat_en": "+1 Charm Slot\n20% more Charm Charges gained",
+        "stat_tr": "+1 Tılsım Slot\n20% daha fazla Tılsım Şarj kazanılan",
+        "notable": true
+      },
+      {
+        "name_en": "Mystic Attunement",
+        "name_tr": "Mystic Attunement",
+        "stat_en": "25% increased bonuses gained from Equipped Rings and Amulets",
+        "stat_tr": "Kuşanılmış Yüzük ve Kolyelerden kazanılan bonuslar %25 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Physical Damage",
+        "name_tr": "Physical Damage",
+        "stat_en": "15% increased Physical Damage",
+        "stat_tr": "15% artan Fiziksel Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Reduced Resistances",
+        "name_tr": "Azaltılmış Dirençler",
+        "stat_en": "-20% to all Elemental Resistances",
+        "stat_tr": "-20% tüm Elemental Dirençler",
+        "notable": false
+      },
+      {
+        "name_en": "Mind Phylacteries",
+        "name_tr": "Mind Phylacteries",
+        "stat_en": "Can instead consume 25% of maximum Mana to trigger Charms with insufficient charges",
+        "stat_tr": "Yetersiz şarjı olan Tılsımları tetiklemek için bunun yerine azami Mananın %25'ini tüketebilirsin",
+        "notable": true
+      },
+      {
+        "name_en": "Movement Speed",
+        "name_tr": "Movement Speed",
+        "stat_en": "3% increased Movement Speed",
+        "stat_tr": "3% artan Hareket Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "As the Whispers Demand",
+        "name_tr": "Fısıltılar Buyurdukça",
+        "stat_en": "Grants Skill: Ritual Sacrifice",
+        "stat_tr": "Beceri verir: Ritual Sacrifice",
+        "notable": true
+      },
+      {
+        "name_en": "Unfurled Finger",
+        "name_tr": "Unfurled Finger",
+        "stat_en": "+1 Ring Slot",
+        "stat_tr": "+1 Yüzük Yuvası",
+        "notable": true
+      },
+      {
+        "name_en": "Corrupted Lifeforce",
+        "name_tr": "Corrupted Lifeforce",
+        "stat_en": "15% more Damage against Enemies affected by Blood Boils\nGrants Skill: Blood Boil",
+        "stat_tr": "Blood Boil'den etkilenen Düşmanlara %15 daha fazla Hasar\nBeceri verir: Blood Boil",
+        "notable": true
+      },
+      {
+        "name_en": "Charm Charges",
+        "name_tr": "Charm Charges",
+        "stat_en": "15% increased Charm Charges gained",
+        "stat_tr": "15% artar Tılsım Şarj kazanılan",
+        "notable": false
+      },
+      {
+        "name_en": "Reduced Spirit",
+        "name_tr": "Azaltılmış Ruh",
+        "stat_en": "25% reduced Spirit",
+        "stat_tr": "25% azalır Ruh",
+        "notable": false
+      },
+      {
+        "name_en": "Life Recovery Rate",
+        "name_tr": "Life Recovery Rate",
+        "stat_en": "10% increased Life Recovery rate",
+        "stat_tr": "Can Yenileme hızı %10 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Reduced Mana",
+        "name_tr": "Azaltılmış Mana",
+        "stat_en": "30% reduced maximum Mana",
+        "stat_tr": "30% azalır azami Mana",
+        "notable": false
+      },
+      {
+        "name_en": "Charm Charges",
+        "name_tr": "Charm Charges",
+        "stat_en": "15% increased Charm Charges gained",
+        "stat_tr": "15% artar Tılsım Şarj kazanılan",
+        "notable": false
+      },
+      {
+        "name_en": "Wildwood Persistence",
+        "name_tr": "Wildwood Persistence",
+        "stat_en": "10% increased Life Recovery rate per 5% missing Unreserved Life",
+        "stat_tr": "Eksik her %5 Rezerve Edilmemiş Can için Can Yenileme hızı %10 artar",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/icondexfourb_huntress3.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "class_mercenary",
+    "en": "Mercenary",
+    "tr": "Mercenary",
+    "tr_status": "proposed",
+    "type": "class",
+    "parent_class": null,
+    "parent_class_tr": null,
+    "attribute": "Strength/Dexterity",
+    "desc_en": "You've got a weapon, I'll wield it. Just tell me where to point it. I've seen the highs and horrors of war, and I'll do whatever it takes to survive. If you've got coin, I'm your man.",
+    "desc_tr": "Silahın var, ben kullanırım. Yeter ki nereye doğrultacağımı söyle. Savaşın hem zaferlerini hem de dehşetini gördüm; hayatta kalmak için ne gerekiyorsa yaparım. Paran varsa, aradığın adam benim.",
+    "nodes": [],
+    "icon": "assets/ascendancies/iconstrdexfourb.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_mercenary1",
+    "en": "Tactician",
+    "tr": "Taktikçi",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Mercenary",
+    "parent_class_tr": "Mercenary",
+    "attribute": null,
+    "desc_en": "Countless wars have left you with skills somewhat resembling a decent officer...",
+    "desc_tr": "Sayısız savaş, sana neredeyse iyi bir subayınkine benzer beceriler bıraktı...",
+    "nodes": [
+      {
+        "name_en": "Minion Damage",
+        "name_tr": "Minion Damage",
+        "stat_en": "Minions deal 20% increased Damage",
+        "stat_tr": "Uşaklar verir 20% artar Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Unleash Hell!",
+        "name_tr": "Unleash Hell!",
+        "stat_en": "Grants Skill: Supporting Fire",
+        "stat_tr": "Beceri verir: Supporting Ateş",
+        "notable": true
+      },
+      {
+        "name_en": "Strategic Embankments",
+        "name_tr": "Strategic Embankments",
+        "stat_en": "Totems you place grant Embankment Auras",
+        "stat_tr": "Yerleştirdiğin Totemler Embankment Aurası verir",
+        "notable": true
+      },
+      {
+        "name_en": "Pin Buildup",
+        "name_tr": "Pin Buildup",
+        "stat_en": "20% increased Pin Buildup",
+        "stat_tr": "20% artar Pin Buildup",
+        "notable": false
+      },
+      {
+        "name_en": "Whoever Pays Best",
+        "name_tr": "Whoever Pays Best",
+        "stat_en": "Banners gain 5 Glory per second\nThere is no Limit on the number of Banners you can place",
+        "stat_tr": "Sancaklar saniyede 5 Glory kazanır\nYerleştirebileceğin Sancak sayısında bir Sınır yoktur",
+        "notable": true
+      },
+      {
+        "name_en": "Totem Damage",
+        "name_tr": "Totem Hasarı",
+        "stat_en": "20% increased Totem Damage",
+        "stat_tr": "%20 artan Totem Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "A Solid Plan",
+        "name_tr": "A Solid Plan",
+        "stat_en": "Persistent Buffs have 50% less Reservation",
+        "stat_tr": "Kalıcı Güçlendirmelerin Rezervasyonu %50 daha az",
+        "notable": true
+      },
+      {
+        "name_en": "Watch How I Do It",
+        "name_tr": "Watch How I Do It",
+        "stat_en": "Allies in your Presence gain added Attack Damage equal\nto 25% of your main hand Weapon's damage",
+        "stat_tr": "Mevcudiyetindeki Müttefikler kazan eklenmiş Saldırı Hasarı eşit\n25% senin main hand Weapon's Hasar",
+        "notable": true
+      },
+      {
+        "name_en": "Totem Damage",
+        "name_tr": "Totem Hasarı",
+        "stat_en": "20% increased Totem Damage",
+        "stat_tr": "%20 artan Totem Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "Spirit",
+        "name_tr": "Spirit",
+        "stat_en": "8% increased Spirit",
+        "stat_tr": "8% artan Ruh",
+        "notable": false
+      },
+      {
+        "name_en": "Armour and Evasion",
+        "name_tr": "Zırh ve Kaçınma",
+        "stat_en": "15% increased Armour and Evasion Rating",
+        "stat_tr": "15% artan Zırh ve Kaçınma Derecesi",
+        "notable": false
+      },
+      {
+        "name_en": "Presence Area",
+        "name_tr": "Huzur Alanı",
+        "stat_en": "20% increased Presence Area of Effect",
+        "stat_tr": "20% artar Mevcudiyet Etki Alanı",
+        "notable": false
+      },
+      {
+        "name_en": "Stay Light, Use Cover",
+        "name_tr": "Hafif Kal, Siper Kullan",
+        "stat_en": "Defend with 200% of Armour\nEnemies have an Accuracy Penalty against you based on Distance\nMaximum Chance to Evade is 50%\nMaximum Physical Damage Reduction is 50%",
+        "stat_tr": "Zırhın %200'ü ile Savun\nDüşmanların sana karşı Mesafeye dayalı bir Doğruluk Cezası olur\nAzami Kaçınma Şansı %50'dir\nAzami Fiziksel Hasar Azaltması %50'dir",
+        "notable": true
+      },
+      {
+        "name_en": "Cannons, Ready!",
+        "name_tr": "Cannons, Ready!",
+        "stat_en": "+1 to maximum number of Summoned Totems\nSkills used by Totems have 30% more Skill Speed\nTotems only use Skills when you fire an Attack Projectile",
+        "stat_tr": "Çağrılan Totem azami sayısı +1\nTotemlerin kullandığı Yeteneklerin Yetenek Hızı %30 daha fazla\nTotemler yalnızca sen bir Saldırı Mermisi attığında Yetenek kullanır",
+        "notable": true
+      },
+      {
+        "name_en": "Banner Area",
+        "name_tr": "Sancak Alanı",
+        "stat_en": "Banner Skills have 16% increased Area of Effect",
+        "stat_tr": "Sancak Yeteneklerinin Etki Alanı %16 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Polish That Gear",
+        "name_tr": "O Teçhizatı Parlat",
+        "stat_en": "Gain Deflection Rating equal to 20% of Armour\nGain 100% of Evasion Rating as extra Ailment Threshold",
+        "stat_tr": "Deflection Derecesi eşit 20% Zırh kazan\nKaçınma Derecesinin %100'ünü ek Rahatsızlık Eşiği olarak kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Suppressing Fire",
+        "name_tr": "Suppressing Fire",
+        "stat_en": "40% more Immobilisation buildup",
+        "stat_tr": "40% daha fazla Immobilisation buildup",
+        "notable": true
+      },
+      {
+        "name_en": "Pin Buildup",
+        "name_tr": "Pin Buildup",
+        "stat_en": "20% increased Pin Buildup",
+        "stat_tr": "20% artar Pin Buildup",
+        "notable": false
+      },
+      {
+        "name_en": "Right Where We Want Them",
+        "name_tr": "Tam İstediğimiz Yerde",
+        "stat_en": "Projectile Damage builds Pin\nPinned enemies cannot perform actions",
+        "stat_tr": "Mermi Hasarı builds Pin\nPinned Düşmanlar cannot perform actions",
+        "notable": true
+      },
+      {
+        "name_en": "Armour and Evasion",
+        "name_tr": "Zırh ve Kaçınma",
+        "stat_en": "15% increased Armour and Evasion Rating",
+        "stat_tr": "15% artan Zırh ve Kaçınma Derecesi",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/iconstrdexfourb_mercenary1.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_mercenary2",
+    "en": "Witchhunter",
+    "tr": "Cadı Avcısı",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Mercenary",
+    "parent_class_tr": "Mercenary",
+    "attribute": null,
+    "desc_en": "There's something very wrong with this world... and you're going to fix it.",
+    "desc_tr": "Bu dünyada çok yanlış giden bir şey var... ve sen onu düzelteceksin.",
+    "nodes": [
+      {
+        "name_en": "Witchbane",
+        "name_tr": "Witchbane",
+        "stat_en": "Enemies have Maximum Concentration equal to 30% of their Maximum Life\nBreak enemy Concentration on Hit equal to 100% of Damage Dealt\nEnemies regain 10% of Concentration every second if they haven't lost Concentration in the past 5 seconds",
+        "stat_tr": "Düşmanların, Azami Canlarının %30'una eşit Azami Konsantrasyonu olur\nBreak Düşman Concentration Vuruşta eşit 100% Hasar verdiğin\nDüşmanlar son 5 saniyede Konsantrasyon kaybetmediyse her saniye Konsantrasyonun %10'unu geri kazanır",
+        "notable": true
+      },
+      {
+        "name_en": "Ceremonial Ablution",
+        "name_tr": "Ceremonial Ablution",
+        "stat_en": "Sorcery Ward's Barrier can also take Physical and Chaos Damage from Hits",
+        "stat_tr": "Sorcery Ward'ın Bariyeri, Vuruşlardan gelen Fiziksel ve Kaos Hasarını da alabilir",
+        "notable": true
+      },
+      {
+        "name_en": "Weapon Master",
+        "name_tr": "Weapon Master",
+        "stat_en": "100 Passive Skill Points become Weapon Set Skill Points",
+        "stat_tr": "100 Pasif Yetenek Puanı, Silah Seti Yetenek Puanına dönüşür",
+        "notable": true
+      },
+      {
+        "name_en": "Judge, Jury, and Executioner",
+        "name_tr": "Yargıç, Jüri ve Cellat",
+        "stat_en": "Decimating Strike",
+        "stat_tr": "Decimating Vuruş",
+        "notable": true
+      },
+      {
+        "name_en": "Area of Effect",
+        "name_tr": "Etki Alanı",
+        "stat_en": "8% increased Area of Effect",
+        "stat_tr": "8% artar Etki Alanı",
+        "notable": false
+      },
+      {
+        "name_en": "Cooldown Recovery Rate",
+        "name_tr": "Cooldown Recovery Rate",
+        "stat_en": "6% increased Cooldown Recovery Rate",
+        "stat_tr": "6% artar Cooldown Recovery Rate",
+        "notable": false
+      },
+      {
+        "name_en": "Cooldown Recovery Rate",
+        "name_tr": "Cooldown Recovery Rate",
+        "stat_en": "6% increased Cooldown Recovery Rate",
+        "stat_tr": "6% artar Cooldown Recovery Rate",
+        "notable": false
+      },
+      {
+        "name_en": "Armour and Evasion",
+        "name_tr": "Zırh ve Kaçınma",
+        "stat_en": "15% increased Armour and Evasion Rating",
+        "stat_tr": "15% artan Zırh ve Kaçınma Derecesi",
+        "notable": false
+      },
+      {
+        "name_en": "Zealous Inquisition",
+        "name_tr": "Zealous Inquisition",
+        "stat_en": "10% chance for Enemies you Kill to Explode, dealing 100%\nof their maximum Life as Physical Damage\nChance is doubled against Undead and Demons",
+        "stat_tr": "10% şans için Düşmanlar öldürdüğün patlar, vererek 100%\nazami Canlarının o kadarı Fiziksel Hasar olarak\nŞans, Hortlaklara ve İblislere karşı iki katına çıkar",
+        "notable": true
+      },
+      {
+        "name_en": "Obsessive Rituals",
+        "name_tr": "Obsessive Rituals",
+        "stat_en": "50% less Armour and Evasion Rating\nGrants Skill: Sorcery Ward",
+        "stat_tr": "50% daha az Zırh ve Kaçınma Derecesi\nBeceri verir: Sorcery Ward",
+        "notable": true
+      },
+      {
+        "name_en": "Damage vs Low Life Enemies",
+        "name_tr": "Damage vs Low Life Enemies",
+        "stat_en": "35% increased Damage with Hits against Enemies that are on Low Life",
+        "stat_tr": "Düşük Candaki Düşmanlara karşı Vuruşlarla Hasar %35 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Damage vs Low Life Enemies",
+        "name_tr": "Damage vs Low Life Enemies",
+        "stat_en": "35% increased Damage with Hits against Enemies that are on Low Life",
+        "stat_tr": "Düşük Candaki Düşmanlara karşı Vuruşlarla Hasar %35 artar",
+        "notable": false
+      },
+      {
+        "name_en": "No Mercy",
+        "name_tr": "No Mercy",
+        "stat_en": "Deal up to 40% more Damage to Enemies based on their missing Concentration",
+        "stat_tr": "Düşmanlara, eksik Konsantrasyonlarına göre %40'a kadar daha fazla Hasar ver",
+        "notable": true
+      },
+      {
+        "name_en": "Cooldown Recovery Rate",
+        "name_tr": "Cooldown Recovery Rate",
+        "stat_en": "6% increased Cooldown Recovery Rate",
+        "stat_tr": "6% artar Cooldown Recovery Rate",
+        "notable": false
+      },
+      {
+        "name_en": "Armour and Evasion",
+        "name_tr": "Zırh ve Kaçınma",
+        "stat_en": "15% increased Armour and Evasion Rating",
+        "stat_tr": "15% artan Zırh ve Kaçınma Derecesi",
+        "notable": false
+      },
+      {
+        "name_en": "Pitiless Killer",
+        "name_tr": "Pitiless Killer",
+        "stat_en": "Culling Strike",
+        "stat_tr": "Culling Vuruş",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/iconstrdexfourb_mercenary2.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_mercenary3",
+    "en": "Gemling Legionnaire",
+    "tr": "Gemling Lejyoneri",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Mercenary",
+    "parent_class_tr": "Mercenary",
+    "attribute": null,
+    "desc_en": "The more you embrace virtue gems, the more power they offer...",
+    "desc_tr": "Erdem taşlarını ne kadar benimsersen, o kadar güç sunarlar...",
+    "nodes": [
+      {
+        "name_en": "Attributes",
+        "name_tr": "Attributes",
+        "stat_en": "3% increased Attributes",
+        "stat_tr": "3% artar Attributes",
+        "notable": false
+      },
+      {
+        "name_en": "Reduced Attribute Requirements",
+        "name_tr": "Azaltılmış Nitelik Gereksinimleri",
+        "stat_en": "Equipment and Skill Gems have 4% reduced Attribute Requirements",
+        "stat_tr": "Teçhizat ve Yetenek Taşlarının Nitelik Gereksinimleri %4 azalır",
+        "notable": false
+      },
+      {
+        "name_en": "Essence of Virtue",
+        "name_tr": "Essence of Virtue",
+        "stat_en": "Grants Skill: Virtuous Barrier",
+        "stat_tr": "Beceri verir: Virtuous Barrier",
+        "notable": true
+      },
+      {
+        "name_en": "Advanced Thaumaturgy",
+        "name_tr": "Advanced Thaumaturgy",
+        "stat_en": "Gem Quality grants Socketed Skills an additional effect",
+        "stat_tr": "Taş Kalitesi, Takılı Yeteneklere ek bir etki verir",
+        "notable": true
+      },
+      {
+        "name_en": "Reduced Attribute Requirements",
+        "name_tr": "Azaltılmış Nitelik Gereksinimleri",
+        "stat_en": "Equipment and Skill Gems have 4% reduced Attribute Requirements",
+        "stat_tr": "Teçhizat ve Yetenek Taşlarının Nitelik Gereksinimleri %4 azalır",
+        "notable": false
+      },
+      {
+        "name_en": "Gem Studded",
+        "name_tr": "Gem Studded",
+        "stat_en": "For each colour of Socketed Support Gem that is most numerous, gain:\n•Red: Hits against you have no Critical Damage Bonus\n•Blue: Skills have 30% less cost\n•Green: 40% less Movement Speed Penalty from using Skills while Moving",
+        "stat_tr": "En çok sayıda olan her Takılı Destek Taşı rengi için şunu kazan:\n•Kırmızı: Sana karşı Vuruşların Kritik Hasar Bonusu olmaz\n•Mavi: Yeteneklerin maliyeti %30 daha az\n•Yeşil: Hareket hâlindeyken Yetenek kullanmanın Hareket Hızı Cezası %40 daha az",
+        "notable": true
+      },
+      {
+        "name_en": "Bolstering Implants",
+        "name_tr": "Bolstering Implants",
+        "stat_en": "+2 to Level of all Skills with a Strength requirement",
+        "stat_tr": "Güç gereksinimi olan tüm Yeteneklerin Seviyesi +2",
+        "notable": false
+      },
+      {
+        "name_en": "Skill Gem Quality",
+        "name_tr": "Skill Gem Quality",
+        "stat_en": "+2% to Quality of all Skills",
+        "stat_tr": "+2% Quality tüm Yetenekler",
+        "notable": false
+      },
+      {
+        "name_en": "Thaumaturgical Infusion",
+        "name_tr": "Thaumaturgical Infusion",
+        "stat_en": "+1% to Maximum Cold Resistance per 3 Blue Support Gems Socketed\n+1% to Maximum Fire Resistance per 3 Red Support Gems Socketed\n+1% to Maximum Lightning Resistance per 3 Green Support Gems Socketed",
+        "stat_tr": "Takılı her 3 Mavi Destek Taşı için Azami Soğuk Direnci +%1\nTakılı her 3 Kırmızı Destek Taşı için Azami Ateş Direnci +%1\nTakılı her 3 Yeşil Destek Taşı için Azami Yıldırım Direnci +%1",
+        "notable": true
+      },
+      {
+        "name_en": "Attributes",
+        "name_tr": "Attributes",
+        "stat_en": "3% increased Attributes",
+        "stat_tr": "3% artar Attributes",
+        "notable": false
+      },
+      {
+        "name_en": "Neurological Implants",
+        "name_tr": "Neurological Implants",
+        "stat_en": "+2 to Level of all Skills with an Intelligence requirement",
+        "stat_tr": "Zekâ gereksinimi olan tüm Yeteneklerin Seviyesi +2",
+        "notable": false
+      },
+      {
+        "name_en": "Skill Gem Quality",
+        "name_tr": "Skill Gem Quality",
+        "stat_en": "+2% to Quality of all Skills",
+        "stat_tr": "+2% Quality tüm Yetenekler",
+        "notable": false
+      },
+      {
+        "name_en": "Adaptive Capability",
+        "name_tr": "Adaptive Capability",
+        "stat_en": "Attribute Requirements of Gems can be satisified by your highest Attribute",
+        "stat_tr": "Taşların Nitelik Gereksinimleri, en yüksek Niteliğinle karşılanabilir",
+        "notable": true
+      },
+      {
+        "name_en": "Reduced Attribute Requirements",
+        "name_tr": "Azaltılmış Nitelik Gereksinimleri",
+        "stat_en": "Equipment and Skill Gems have 4% reduced Attribute Requirements",
+        "stat_tr": "Teçhizat ve Yetenek Taşlarının Nitelik Gereksinimleri %4 azalır",
+        "notable": false
+      },
+      {
+        "name_en": "Skill Gem Quality",
+        "name_tr": "Skill Gem Quality",
+        "stat_en": "+2% to Quality of all Skills",
+        "stat_tr": "+2% Quality tüm Yetenekler",
+        "notable": false
+      },
+      {
+        "name_en": "Integrated Efficiency",
+        "name_tr": "Integrated Efficiency",
+        "stat_en": "Skills deal 20% increased Damage per Connected Red Support Gem\nSkills have 6% increased Skill Speed per Connected Green Support Gem\nSkills have 20% increased Critical Hit Chance per Connected Blue Support Gem",
+        "stat_tr": "Bağlı her Kırmızı Destek Taşı için Yetenekler %20 artan Hasar verir\nBağlı her Yeşil Destek Taşı için Yeteneklerin Yetenek Hızı %6 artar\nBağlı her Mavi Destek Taşı için Yeteneklerin Kritik Vuruş Şansı %20 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Enhanced Effectiveness",
+        "name_tr": "Enhanced Effectiveness",
+        "stat_en": "20% less Attributes\nInherent bonuses gained from Attributes are doubled",
+        "stat_tr": "20% daha az Attributes\nNiteliklerden kazanılan doğal bonuslar iki katına çıkar",
+        "notable": true
+      },
+      {
+        "name_en": "Motoric Implants",
+        "name_tr": "Motoric Implants",
+        "stat_en": "+2 to Level of all Skills with a Dexterity requirement",
+        "stat_tr": "Çeviklik gereksinimi olan tüm Yeteneklerin Seviyesi +2",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/iconstrdexfourb_mercenary3.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "class_monk",
+    "en": "Monk",
+    "tr": "Monk",
+    "tr_status": "proposed",
+    "type": "class",
+    "parent_class": null,
+    "parent_class_tr": null,
+    "attribute": "Dexterity/Intelligence",
+    "desc_en": "My life has been naught but discipline and focus, preparing me for this. I fight for the Benevolent Dreamer. Free my hands, and those who seek chaos will fall before me!",
+    "desc_tr": "Hayatım, beni buna hazırlayan disiplin ve odaktan başka bir şey olmadı. Hayırsever Hayalperest için savaşırım. Ellerimi serbest bırakın; kaosun peşindekiler önümde diz çökecek!",
+    "nodes": [],
+    "icon": "assets/ascendancies/icondexintfourb.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_monk1",
+    "en": "Martial Artist",
+    "tr": "Dövüş Sanatçısı",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Monk",
+    "parent_class_tr": "Monk",
+    "attribute": null,
+    "desc_en": "They made you a human weapon... but that strength has set you free.",
+    "desc_tr": "Seni bir insan silahına dönüştürdüler... ama o güç seni özgür kıldı.",
+    "nodes": [
+      {
+        "name_en": "Hollow Form Technique",
+        "name_tr": "Hollow Form Technique",
+        "stat_en": "Grants Skill: Hollow Form",
+        "stat_tr": "Beceri verir: Hollow Form",
+        "notable": true
+      },
+      {
+        "name_en": "Hollow Resonance Technique",
+        "name_tr": "Hollow Resonance Technique",
+        "stat_en": "Grants Skill: Hollow Resonance",
+        "stat_tr": "Beceri verir: Hollow Resonance",
+        "notable": true
+      },
+      {
+        "name_en": "Hollow Focus Technique",
+        "name_tr": "Hollow Focus Technique",
+        "stat_en": "Grants Skill: Hollow Focus",
+        "stat_tr": "Beceri verir: Hollow Focus",
+        "notable": true
+      },
+      {
+        "name_en": "Attributes",
+        "name_tr": "Attributes",
+        "stat_en": "+5 to all Attributes",
+        "stat_tr": "+5 tüm Öznitelikler",
+        "notable": false
+      },
+      {
+        "name_en": "Area of Effect",
+        "name_tr": "Etki Alanı",
+        "stat_en": "8% increased Area of Effect",
+        "stat_tr": "8% artar Etki Alanı",
+        "notable": false
+      },
+      {
+        "name_en": "Additional Power Charge Chance",
+        "name_tr": "Additional Power Charge Chance",
+        "stat_en": "10% chance when you gain a Power Charge to gain an additional Power Charge",
+        "stat_tr": "10% şans iken sen kazan Güç Şarjı kazan an ek Güç Şarjı",
+        "notable": false
+      },
+      {
+        "name_en": "Immobilisation Buildup",
+        "name_tr": "Immobilisation Buildup",
+        "stat_en": "20% increased Immobilisation buildup",
+        "stat_tr": "20% artar Immobilisation buildup",
+        "notable": false
+      },
+      {
+        "name_en": "Runic Meridians",
+        "name_tr": "Runic Meridians",
+        "stat_en": "Can tattoo Runes onto your body, gaining\nadditional Rune-only sockets:\n• 1 Helmet socket\n• 2 Body Armour sockets\n• 1 Gloves socket\n• 1 Boots socket",
+        "stat_tr": "Vücuduna Rune dövmesi yapabilir ve şunları kazanırsın:\nek, yalnızca Rune yuvaları:\n• 1 Kask yuvası\n• 2 Gövde Zırhı yuvası\n• 1 Eldiven yuvası\n• 1 Bot yuvası",
+        "notable": true
+      },
+      {
+        "name_en": "Way of the Stonefist",
+        "name_tr": "Taşyumruk Yolu",
+        "stat_en": "Gloves you equip have their Base Type transformed to Fists of Stone while equipped, and\ntheir Explicit Modifiers are transformed into more powerful related Modifiers\nIgnore Attribute Requirements to equip Gloves",
+        "stat_tr": "Kuşandığın Eldivenlerin Taban Türü, kuşanılıyken Fists of Stone'a dönüşür ve\nBelirgin Değiştiricileri, ilgili daha güçlü Değiştiricilere dönüşür\nEldiven kuşanmak için Nitelik Gereksinimlerini yok say",
+        "notable": true
+      },
+      {
+        "name_en": "Martial Adept",
+        "name_tr": "Martial Adept",
+        "stat_en": "When you gain Combo, gain an additional Combo\n-0.2 seconds to current Energy Shield Recharge delay per Combo expended when using Skills",
+        "stat_tr": "iken sen kazan Combo, kazan an ek Combo\nYetenek kullanırken harcanan her Combo için mevcut Enerji Kalkanı Yeniden Dolum gecikmesi -0.2 saniye",
+        "notable": true
+      },
+      {
+        "name_en": "Way of the Mountain",
+        "name_tr": "Dağın Yolu",
+        "stat_en": "100% Surpassing chance per enemy Power to gain Mountain's Teachings on Immobilising an enemy, up to a maximum of 30\nLose a Mountain's Teaching when you are Hit, or when you use or Sustain an Attack that benefits from Mountain's Teachings",
+        "stat_tr": "Bir düşmanı Hareketsiz bıraktığında, düşman Gücü başına %100 Aşma şansıyla Mountain's Teachings kazan, en fazla 30'a kadar\nVurulduğunda ya da Mountain's Teachings'ten faydalanan bir Saldırı kullandığında veya Sürdürdüğünde bir Mountain's Teaching kaybedersin",
+        "notable": true
+      },
+      {
+        "name_en": "Evasion and Energy Shield",
+        "name_tr": "Kaçınma ve Enerji Kalkanı",
+        "stat_en": "15% increased Evasion Rating\n15% increased maximum Energy Shield",
+        "stat_tr": "15% artan Kaçınma Derecesi\n15% artar azami Enerji Kalkanı",
+        "notable": false
+      },
+      {
+        "name_en": "Attack Speed",
+        "name_tr": "Attack Speed",
+        "stat_en": "4% increased Attack Speed",
+        "stat_tr": "4% artan Saldırı Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "Area of Effect",
+        "name_tr": "Etki Alanı",
+        "stat_en": "8% increased Area of Effect",
+        "stat_tr": "8% artar Etki Alanı",
+        "notable": false
+      },
+      {
+        "name_en": "Martial Master",
+        "name_tr": "Martial Master",
+        "stat_en": "Skills can build and retain Combo regardless of Weapon Set\nGain Combo from all Attack Hits",
+        "stat_tr": "Yetenekler, Silah Setinden bağımsız olarak Combo oluşturabilir ve koruyabilir\nTüm Saldırı Vuruşlarından Combo kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Attack Speed",
+        "name_tr": "Attack Speed",
+        "stat_en": "4% increased Attack Speed",
+        "stat_tr": "4% artan Saldırı Hızı",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/icondexintfourb_monk1.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_monk2",
+    "en": "Invoker",
+    "tr": "Davetçi",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Monk",
+    "parent_class_tr": "Monk",
+    "attribute": null,
+    "desc_en": "True strength lies within. One must only focus... and believe.",
+    "desc_tr": "Gerçek güç içeridedir. İnsanın yalnızca odaklanması... ve inanması gerekir.",
+    "nodes": [
+      {
+        "name_en": "I am the Thunder...",
+        "name_tr": "Ben Gök Gürültüsüyüm...",
+        "stat_en": "Gain 10% of Damage as Extra Lightning Damage\n25% chance on Shocking Enemies to created Shocked Ground",
+        "stat_tr": "Hasarın %10'unu Ekstra Yıldırım Hasarı olarak kazan\nDüşmanları Şoklarken Şoklu Zemin oluşturma %25 şansı",
+        "notable": true
+      },
+      {
+        "name_en": "Lead me through Grace...",
+        "name_tr": "Lead me through Grace...",
+        "stat_en": "+1 to Spirit for every 8 Item Energy Shield on Equipped Body Armour\n+1 to Spirit for every 20 Evasion Rating on Equipped Body Armour\nCannot gain Spirit from Equipment",
+        "stat_tr": "Kuşanılmış Gövde Zırhındaki her 8 Eşya Enerji Kalkanı için Ruh +1\nKuşanılmış Gövde Zırhındaki her 20 Kaçınma Derecesi için Ruh +1\nTeçhizattan Ruh kazanamazsın",
+        "notable": true
+      },
+      {
+        "name_en": "Faith is a Choice",
+        "name_tr": "İnanç Bir Tercihtir",
+        "stat_en": "Grants Skill: Meditate",
+        "stat_tr": "Beceri verir: Meditate",
+        "notable": true
+      },
+      {
+        "name_en": "Triggered Spell Damage",
+        "name_tr": "Triggered Spell Damage",
+        "stat_en": "Triggered Spells deal 16% increased Spell Damage",
+        "stat_tr": "Triggered Büyüler deal 16% artan Büyü Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "Evasion",
+        "name_tr": "Evasion",
+        "stat_en": "20% increased Evasion Rating",
+        "stat_tr": "20% artan Kaçınma Derecesi",
+        "notable": false
+      },
+      {
+        "name_en": "Shock Effect",
+        "name_tr": "Şok Etkisi",
+        "stat_en": "15% increased Magnitude of Shock you inflict",
+        "stat_tr": "Uyguladığın Şokun Büyüklüğü %15 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Evasion and Energy Shield",
+        "name_tr": "Kaçınma ve Enerji Kalkanı",
+        "stat_en": "15% increased Evasion Rating\n15% increased maximum Energy Shield",
+        "stat_tr": "15% artan Kaçınma Derecesi\n15% artar azami Enerji Kalkanı",
+        "notable": false
+      },
+      {
+        "name_en": "I am the Blizzard...",
+        "name_tr": "Ben Tipiyim...",
+        "stat_en": "Gain 10% of Damage as Extra Cold Damage\nOn Freezing Enemies create Chilled Ground",
+        "stat_tr": "Hasarın %10'unu Ekstra Soğuk Hasarı olarak kazan\nDüşmanları Dondurduğunda Üşütücü Zemin oluştur",
+        "notable": true
+      },
+      {
+        "name_en": "Chill Effect",
+        "name_tr": "Üşüme Etkisi",
+        "stat_en": "15% increased Magnitude of Chill you inflict",
+        "stat_tr": "Uyguladığın Üşümenin Büyüklüğü %15 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Energy Shield Recharge Rate",
+        "name_tr": "Energy Shield Recharge Rate",
+        "stat_en": "20% increased Energy Shield Recharge Rate",
+        "stat_tr": "20% artan Enerji Kalkanı Recharge Rate",
+        "notable": false
+      },
+      {
+        "name_en": "Elemental Damage",
+        "name_tr": "Elemental Damage",
+        "stat_en": "12% increased Elemental Damage",
+        "stat_tr": "12% artan Elemental Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Critical Chance",
+        "name_tr": "Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance",
+        "stat_tr": "12% artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "...and Scatter Them to the Winds",
+        "name_tr": "...ve Onları Rüzgâra Savur",
+        "stat_en": "Trigger Elemental Expression on Melee Critical Hit\nGrants Skill: Elemental Expression",
+        "stat_tr": "Yakın Dövüş Kritik Vuruşunda Elemental Expression'ı tetikle\nBeceri verir: Elemental Expression",
+        "notable": true
+      },
+      {
+        "name_en": "Elemental Damage",
+        "name_tr": "Elemental Damage",
+        "stat_en": "12% increased Elemental Damage",
+        "stat_tr": "12% artan Elemental Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Critical Chance",
+        "name_tr": "Critical Chance",
+        "stat_en": "12% increased Critical Hit Chance",
+        "stat_tr": "12% artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "The Soul Springs Eternal",
+        "name_tr": "Ruh Hiç Tükenmez",
+        "stat_en": "Meta Skills gain 35% more Energy\nMeta Skills have 50% increased Reservation Efficiency",
+        "stat_tr": "Meta Yetenekler kazan 35% daha fazla Energy\nMeta Yeteneklerin Rezervasyon Verimliliği %50 artar",
+        "notable": true
+      },
+      {
+        "name_en": "Sunder my Enemies...",
+        "name_tr": "Sunder my Enemies...",
+        "stat_en": "Critical Hits ignore non-negative Enemy Monster Elemental Resistances",
+        "stat_tr": "Kritik Vuruşs ignore non-negative Düşman Monster Elemental Dirençler",
+        "notable": true
+      },
+      {
+        "name_en": "...and I Shall Rage",
+        "name_tr": "...ve Öfkeleneceğim",
+        "stat_en": "Grants Skill: Unbound Avatar",
+        "stat_tr": "Beceri verir: Unbound Avatar",
+        "notable": true
+      },
+      {
+        "name_en": "...and Protect me from Harm",
+        "name_tr": "...ve Beni Zarardan Koru",
+        "stat_en": "Physical Damage Reduction from Armour is based on your combined Armour and Evasion Rating\n35% less Evasion Rating",
+        "stat_tr": "Zırhtan gelen Fiziksel Hasar Azaltması, birleşik Zırh ve Kaçınma Derecene dayanır\n35% daha az Kaçınma Derecesi",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/icondexintfourb_monk2.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_monk3",
+    "en": "Acolyte of Chayula",
+    "tr": "Chayula Çömezi",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Monk",
+    "parent_class_tr": "Monk",
+    "attribute": null,
+    "desc_en": "The truth of your faith threatens to break your very soul... but in that struggle lies power beyond belief.",
+    "desc_tr": "İnancının hakikati ruhunu paramparça etmekle tehdit ediyor... ama o mücadelede inanılmaz bir güç yatar.",
+    "nodes": [
+      {
+        "name_en": "Choice of Power",
+        "name_tr": "Choice of Power",
+        "stat_en": "Remnants you create have 50% increased effect\nRemnants can be collected from 50% further away\nAll Flames of Chayula that you manifest are Purple",
+        "stat_tr": "Oluşturduğun Remnant'ların etkisi %50 artar\nKalıntılar %50 daha uzaktan toplanabilir\nBelirdiğin tüm Flames of Chayula Mor olur",
+        "notable": false
+      },
+      {
+        "name_en": "Skill Speed",
+        "name_tr": "Skill Speed",
+        "stat_en": "4% increased Skill Speed",
+        "stat_tr": "4% artar Yetenek Hız",
+        "notable": false
+      },
+      {
+        "name_en": "Unravelling",
+        "name_tr": "Unravelling",
+        "stat_en": "Grants Unravelling",
+        "stat_tr": "Çözülme verir",
+        "notable": true
+      },
+      {
+        "name_en": "Skill Speed",
+        "name_tr": "Skill Speed",
+        "stat_en": "4% increased Skill Speed",
+        "stat_tr": "4% artar Yetenek Hız",
+        "notable": false
+      },
+      {
+        "name_en": "Volatility",
+        "name_tr": "Volatility",
+        "stat_en": "10% chance to gain Volatility on Kill",
+        "stat_tr": "10% şans kazan Volatility Öldürmede",
+        "notable": false
+      },
+      {
+        "name_en": "Inner Turmoil",
+        "name_tr": "Inner Turmoil",
+        "stat_en": "Gain 1 Volatility on inflicting an Elemental Ailment\nTake no Damage from Volatility",
+        "stat_tr": "1 Volatility inflicting an Elemental Ailment kazan\nVolatility'den Hasar almazsın",
+        "notable": true
+      },
+      {
+        "name_en": "Chaos Resistance",
+        "name_tr": "Chaos Resistance",
+        "stat_en": "+7% to Chaos Resistance",
+        "stat_tr": "+7% Kaos Direnci",
+        "notable": false
+      },
+      {
+        "name_en": "Darkness",
+        "name_tr": "Darkness",
+        "stat_en": "10% increased maximum Darkness",
+        "stat_tr": "10% artar azami Darkness",
+        "notable": false
+      },
+      {
+        "name_en": "Sap of Nightmares",
+        "name_tr": "Sap of Nightmares",
+        "stat_en": "Leech recovers based on Chaos Damage as well as Physical Damage",
+        "stat_tr": "Emme, Fiziksel Hasarın yanı sıra Kaos Hasarına göre de yeniler",
+        "notable": true
+      },
+      {
+        "name_en": "Damage as Chaos",
+        "name_tr": "Kaos Olarak Hasar",
+        "stat_en": "Gain 4% of Damage as Extra Chaos Damage",
+        "stat_tr": "Hasarın %4'ünü Ekstra Kaos Hasarı olarak kazan",
+        "notable": false
+      },
+      {
+        "name_en": "Choice of Mana",
+        "name_tr": "Choice of Mana",
+        "stat_en": "Remnants you create have 50% increased effect\nRemnants can be collected from 50% further away\nAll Flames of Chayula that you manifest are Blue",
+        "stat_tr": "Oluşturduğun Remnant'ların etkisi %50 artar\nKalıntılar %50 daha uzaktan toplanabilir\nBelirdiğin tüm Flames of Chayula Mavi olur",
+        "notable": false
+      },
+      {
+        "name_en": "Grasp of the Void",
+        "name_tr": "Boşluğun Kavrayışı",
+        "stat_en": "Grants Skill: Void Illusion",
+        "stat_tr": "Beceri verir: Void Illusion",
+        "notable": true
+      },
+      {
+        "name_en": "Darkness",
+        "name_tr": "Darkness",
+        "stat_en": "10% increased maximum Darkness",
+        "stat_tr": "10% artar azami Darkness",
+        "notable": false
+      },
+      {
+        "name_en": "Archon of Chayula",
+        "name_tr": "Archon of Chayula",
+        "stat_en": "Grants Skill: Archon of Chayula",
+        "stat_tr": "Beceri verir: Archon Chayula",
+        "notable": true
+      },
+      {
+        "name_en": "Deepening Shadows",
+        "name_tr": "Deepening Shadows",
+        "stat_en": "1% increased maximum Darkness per 1% Chaos Resistance",
+        "stat_tr": "1% artar azami Darkness başına 1% Kaos Direnci",
+        "notable": true
+      },
+      {
+        "name_en": "Leech",
+        "name_tr": "Leech",
+        "stat_en": "11% increased amount of Life Leeched\n11% increased amount of Mana Leeched",
+        "stat_tr": "Emilen Can miktarı %11 artar\n11% artar miktarı Mana'nın Leeched",
+        "notable": false
+      },
+      {
+        "name_en": "Embrace the Darkness",
+        "name_tr": "Karanlığı Kucakla",
+        "stat_en": "You have no Spirit\nBase Maximum Darkness is 100\nDamage taken is Reserved from Darkness before being taken from Life or Energy Shield\nDarkness Reservation lasts for 5 seconds\n+10 to Maximum Darkness per Level",
+        "stat_tr": "Hiç Ruhun yoktur\nTemel Azami Karanlık 100'dür\nAlınan Hasar, Candan veya Enerji Kalkanından alınmadan önce Karanlıktan Rezerve edilir\nKaranlık Rezervasyonu 5 saniye sürer\n+10 azami Darkness başına Seviye",
+        "notable": true
+      },
+      {
+        "name_en": "Chaos Damage",
+        "name_tr": "Chaos Damage",
+        "stat_en": "11% increased Chaos Damage",
+        "stat_tr": "11% artan Kaos Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "Waking Dream",
+        "name_tr": "Waking Dream",
+        "stat_en": "Grants Skill: Into the Breach",
+        "stat_tr": "Beceri verir: Into the Breach",
+        "notable": true
+      },
+      {
+        "name_en": "Choice of Life",
+        "name_tr": "Choice of Life",
+        "stat_en": "Remnants you create have 50% increased effect\nRemnants can be collected from 50% further away\nAll Flames of Chayula that you manifest are Red",
+        "stat_tr": "Oluşturduğun Remnant'ların etkisi %50 artar\nKalıntılar %50 daha uzaktan toplanabilir\nBelirdiğin tüm Flames of Chayula Kırmızı olur",
+        "notable": false
+      },
+      {
+        "name_en": "Chayula's Gift",
+        "name_tr": "Chayula's Gift",
+        "stat_en": "+10% to Maximum Chaos Resistance\nChaos Resistance is doubled",
+        "stat_tr": "+10% azami Kaos Direnci\nKaos Direnci iki katına çıkar",
+        "notable": true
+      },
+      {
+        "name_en": "Chaos Damage",
+        "name_tr": "Chaos Damage",
+        "stat_en": "11% increased Chaos Damage",
+        "stat_tr": "11% artan Kaos Hasarı",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/icondexintfourb_monk3.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "class_druid",
+    "en": "Druid",
+    "tr": "Druid",
+    "tr_status": "proposed",
+    "type": "class",
+    "parent_class": null,
+    "parent_class_tr": null,
+    "attribute": "Strength/Intelligence",
+    "desc_en": "The wrath of the wild and the mind of a man - with the ruthlessness of both. I have weathered more than most could fathom, and I will have my vengeance.",
+    "desc_tr": "Yabanın gazabı ile bir insanın aklı — ikisinin de acımasızlığıyla. Çoğunun hayal edebileceğinden fazlasına göğüs gerdim ve intikamımı alacağım.",
+    "nodes": [],
+    "icon": "assets/ascendancies/iconstrintfourb.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_druid1",
+    "en": "Oracle",
+    "tr": "Kâhin",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Druid",
+    "parent_class_tr": "Druid",
+    "attribute": null,
+    "desc_en": "There are many paths to achieve your goals... and you see them all.",
+    "desc_tr": "Hedeflerine ulaşmanın birçok yolu vardır... ve sen hepsini görürsün.",
+    "nodes": [
+      {
+        "name_en": "Critical Hit Chance",
+        "name_tr": "Critical Hit Chance",
+        "stat_en": "12% increased Critical Hit Chance",
+        "stat_tr": "12% artan Kritik Vuruş Şansı",
+        "notable": false
+      },
+      {
+        "name_en": "Converging Paths",
+        "name_tr": "Converging Paths",
+        "stat_en": "Grants Skill: Moment of Vulnerability",
+        "stat_tr": "Beceri verir: Moment Vulnerability",
+        "notable": true
+      },
+      {
+        "name_en": "The Unseen Path",
+        "name_tr": "Görünmeyen Yol",
+        "stat_en": "Walk the Paths Not Taken",
+        "stat_tr": "Gidilmemiş Yolları Yürü",
+        "notable": true
+      },
+      {
+        "name_en": "Passive Point",
+        "name_tr": "Passive Point",
+        "stat_en": "Grants 1 Passive Skill Point",
+        "stat_tr": "1 Pasif Yetenek Puanı verir",
+        "notable": false
+      },
+      {
+        "name_en": "Totem Cast and Attack Speed",
+        "name_tr": "Totem Büyü ve Saldırı Hızı",
+        "stat_en": "Spells Cast by Totems have 5% increased Cast Speed\nAttacks used by Totems have 5% increased Attack Speed",
+        "stat_tr": "Totemlerin yaptığı Büyülerin Büyü Hızı %5 artar\nTotemlerin kullandığı Saldırıların Saldırı Hızı %5 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Life and Mana Regeneration Rate",
+        "name_tr": "Can ve Mana Yenilenme Hızı",
+        "stat_en": "8% increased Life Regeneration rate\n8% increased Mana Regeneration Rate",
+        "stat_tr": "Can Yenilenme hızı %8 artar\n8% artan Mana Yenilenme Hızı",
+        "notable": false
+      },
+      {
+        "name_en": "Critical Damage Bonus on You",
+        "name_tr": "Sana Karşı Kritik Hasar Bonusu",
+        "stat_en": "Hits against you have 12% reduced Critical Damage Bonus",
+        "stat_tr": "Sana karşı Vuruşların Kritik Hasar Bonusu %12 azalır",
+        "notable": false
+      },
+      {
+        "name_en": "Harmony Within",
+        "name_tr": "İçsel Uyum",
+        "stat_en": "Hit damage is taken from Mana before Life if your current Mana is higher than your current Life\n15% less maximum Life\n15% less maximum Mana",
+        "stat_tr": "Mevcut Manan mevcut Canından yüksekse, Vuruş hasarı Candan önce Manadan alınır\n%15 daha az azami Can\n15% daha az azami Mana",
+        "notable": true
+      },
+      {
+        "name_en": "Entwined Realities",
+        "name_tr": "Entwined Realities",
+        "stat_en": "Non-Keystone Passive Skills in Medium Radius of allocated Keystone Passive Skills can be allocated without being connected to your tree",
+        "stat_tr": "Dağıtılmış Kilittaşı Pasif Yeteneklerin Orta Yarıçapındaki Kilittaşı olmayan Pasif Yetenekler, ağacına bağlı olmadan dağıtılabilir",
+        "notable": true
+      },
+      {
+        "name_en": "The Lesser Harm",
+        "name_tr": "Daha Küçük Zarar",
+        "stat_en": "Enemy Critical Hit Chance against you is Unlucky\nDamage of Enemies Hitting you is Unlucky",
+        "stat_tr": "Düşmanların sana karşı Kritik Vuruş Şansı Şanssızdır\nSana Vuran Düşmanların Hasarı Şanssızdır",
+        "notable": true
+      },
+      {
+        "name_en": "Fateful Vision",
+        "name_tr": "Fateful Vision",
+        "stat_en": "Grants Skill: Align Fate",
+        "stat_tr": "Beceri verir: Align Fate",
+        "notable": true
+      },
+      {
+        "name_en": "Spell Damage",
+        "name_tr": "Spell Damage",
+        "stat_en": "12% increased Spell Damage",
+        "stat_tr": "12% artan Büyü Hasarı",
+        "notable": false
+      },
+      {
+        "name_en": "Passive Point",
+        "name_tr": "Passive Point",
+        "stat_en": "Grants 1 Passive Skill Point",
+        "stat_tr": "1 Pasif Yetenek Puanı verir",
+        "notable": false
+      },
+      {
+        "name_en": "Unnamed Heartwood",
+        "name_tr": "Unnamed Heartwood",
+        "stat_en": "+1 to maximum number of Summoned Totems\nTotems die 6 seconds after their Life is reduced to 0",
+        "stat_tr": "Çağrılan Totem azami sayısı +1\nTotemler, Canları 0'a indikten 6 saniye sonra ölür",
+        "notable": true
+      },
+      {
+        "name_en": "Forced Outcome",
+        "name_tr": "Forced Outcome",
+        "stat_en": "Inevitable Critical Hits",
+        "stat_tr": "Inevitable Kritik Vuruşs",
+        "notable": true
+      },
+      {
+        "name_en": "Immobilisation Buildup",
+        "name_tr": "Immobilisation Buildup",
+        "stat_en": "20% increased Immobilisation buildup",
+        "stat_tr": "20% artar Immobilisation buildup",
+        "notable": false
+      }
+    ],
+    "icon": "assets/ascendancies/iconstrintfourb_druid1.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  },
+  {
+    "id": "asc_druid2",
+    "en": "Shaman",
+    "tr": "Şaman",
+    "tr_status": "proposed",
+    "type": "ascendancy",
+    "parent_class": "Druid",
+    "parent_class_tr": "Druid",
+    "attribute": null,
+    "desc_en": "Wraeclast has suffered for too long.\nYou are vengeance incarnate.",
+    "desc_tr": "Wraeclast çok uzun süredir acı çekti.\nSen, bedenlenmiş intikamsın.",
+    "nodes": [
+      {
+        "name_en": "Flask Recovery",
+        "name_tr": "Flask Recovery",
+        "stat_en": "12% increased Life and Mana Recovery from Flasks",
+        "stat_tr": "Şişelerden Can ve Mana Yenilemesi %12 artar",
+        "notable": false
+      },
+      {
+        "name_en": "Sacred Flow",
+        "name_tr": "Sacred Flow",
+        "stat_en": "+40 to Spirit for each of your empty Charm slots",
+        "stat_tr": "Boş her Tılsım yuvan için Ruh +40",
+        "notable": true
+      },
+      {
+        "name_en": "Elemental Damage",
+        "name_tr": "Elemental Damage",
+        "stat_en": "12% increased Elemental Damage",
+        "stat_tr": "12% artan Elemental Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Elemental Damage",
+        "name_tr": "Elemental Damage",
+        "stat_en": "12% increased Elemental Damage",
+        "stat_tr": "12% artan Elemental Hasar",
+        "notable": false
+      },
+      {
+        "name_en": "Bringer of the Apocalypse",
+        "name_tr": "Kıyametin Getiricisi",
+        "stat_en": "Grants Skill: Apocalypse",
+        "stat_tr": "Beceri verir: Apocalypse",
+        "notable": true
+      },
+      {
+        "name_en": "Defences",
+        "name_tr": "Defences",
+        "stat_en": "10% increased Armour, Evasion and Energy Shield",
+        "stat_tr": "10% artan Zırh, Kaçınma ve Enerji Kalkanı",
+        "notable": false
+      },
+      {
+        "name_en": "Furious Wellspring",
+        "name_tr": "Furious Wellspring",
+        "stat_en": "No Inherent loss of Rage\nRegenerate 6% of your maximum Rage per second\nIncreases and Reductions to Mana Regeneration Rate also apply to Rage Regeneration Rate\nSkills have +5 to Rage cost\n+7 to Maximum Rage",
+        "stat_tr": "yok Inherent loss Öfke\n6% senin azami Öfke saniyede yeniler\nMana Yenilenme Hızındaki artış ve azalışlar, Öfke Yenilenme Hızına da uygulanır\nYeteneklerin Öfke maliyeti +5\n+7 azami Öfke",
+        "notable": true
+      },
+      {
+        "name_en": "Maximum Rage",
+        "name_tr": "Azami Öfke",
+        "stat_en": "+3 to Maximum Rage",
+        "stat_tr": "+3 azami Öfke",
+        "notable": false
+      },
+      {
+        "name_en": "Wisdom of the Maji",
+        "name_tr": "Maji'nin Bilgeliği",
+        "stat_en": "Gain the benefits of Bonded modifiers on Runes and Idols",
+        "stat_tr": "Rune ve Idol'lerdeki Bonded değiştiricilerin faydalarını kazan",
+        "notable": true
+      },
+      {
+        "name_en": "Elemental Resistances",
+        "name_tr": "Elemental Resistances",
+        "stat_en": "+3% to all Elemental Resistances",
+        "stat_tr": "+3% tüm Elemental Dirençler",
+        "notable": false
+      },
+      {
+        "name_en": "Maximum Rage",
+        "name_tr": "Azami Öfke",
+        "stat_en": "+3 to Maximum Rage",
+        "stat_tr": "+3 azami Öfke",
+        "notable": false
+      },
+      {
+        "name_en": "Druidic Champion",
+        "name_tr": "Druidic Champion",
+        "stat_en": "Every 2 Rage also grants 1% more Spell damage",
+        "stat_tr": "Her 2 Öfke ayrıca %1 daha fazla Büyü hasarı verir",
+        "notable": true
+      },
+      {
+        "name_en": "Reactive Growth",
+        "name_tr": "Reactive Growth",
+        "stat_en": "10% less Elemental Damage taken\nAdapt to the highest Elemental Damage Type of each Hit you take\n10% less Damage taken of each Elemental Damage Type per matching Adaptation",
+        "stat_tr": "Alınan Element Hasarı %10 daha az\nAldığın her Vuruşun en yüksek Element Hasar Türüne uyum sağla\nEşleşen her Adaptasyon için, her Element Hasar Türünden alınan Hasar %10 daha az",
+        "notable": true
+      },
+      {
+        "name_en": "Elemental Resistances",
+        "name_tr": "Elemental Resistances",
+        "stat_en": "+3% to all Elemental Resistances",
+        "stat_tr": "+3% tüm Elemental Dirençler",
+        "notable": false
+      },
+      {
+        "name_en": "Avatar of Evolution",
+        "name_tr": "Avatar of Evolution",
+        "stat_en": "5% of Physical Damage taken as Fire Damage\n5% of Physical Damage taken as Lightning Damage\n5% of Physical Damage taken as Cold Damage\nAdaptations have a duration of 5 seconds\nDouble Adaptation Effect",
+        "stat_tr": "5% Fiziksel Hasar olarak alınır Ateş Hasarı\n5% Fiziksel Hasar olarak alınır Şimşek Hasarı\n5% Fiziksel Hasar olarak alınır Soğuk Hasarı\nAdaptasyonların süresi 5 saniyedir\nAdaptasyon Etkisini iki katına çıkar",
+        "notable": true
+      },
+      {
+        "name_en": "Turning of the Seasons",
+        "name_tr": "Mevsimlerin Dönüşü",
+        "stat_en": "Enemies in your Presence have Exposure\nGain 10% of Damage as Extra Damage of a random Element",
+        "stat_tr": "Huzurundaki Düşmanlarda Exposure olur\nHasarın %10'unu rastgele bir Elementten Ekstra Hasar olarak kazan",
+        "notable": true
+      }
+    ],
+    "icon": "assets/ascendancies/iconstrintfourb_druid2.png",
+    "category": "ascendancy",
+    "source": "repoe-fork + grindinggear/poe2-skilltree-export",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-05"
+  }
+]

@@ -1,0 +1,396 @@
+[
+  {
+    "id": "breach",
+    "en": "Breach",
+    "tr": "Yarık",
+    "tr_status": "exists",
+    "category": "mechanic",
+    "subtype": "map",
+    "overview_en": "Breaches allow invaders from another world to access ours.\r\n\r\nUnstable Breaches are a small tear in the fabric that will open for a short time. Kill Breach monsters to keep them open longer.\r\nOnce enough monsters have been killed, the Breach will stabalise, calling stronger monsters through the portal at the centre.\r\nKill these monsters in the centre will complete the Unstable Breach, closing the tear.\r\n\r\nA Breach Hive is a tear that has already grown out of control. You will need the help of Ailith to close these.\r\nWith a blessing from Chayula, burn your way to the centre of the Hive and help Ailith start the process of destorying the centre.\r\nAs Ailith destroys the Hive, Breach monsters will pour in to try and kill her. Defend Ailith until she has completely destroyed the centre of the hive to remove it from existence.\r\nIf Ailith dies during this, the Hive will remain.",
+    "overview_tr": "Yarıklar, başka bir dünyadan gelen istilacıların bizim dünyamıza geçmesine olanak tanır.\n\nKararsız Yarıklar, dokuda kısa süreliğine açılan küçük yırtıklardır. Yarık yaratıklarını öldürerek onları daha uzun süre açık tutarsın. Yeterince yaratık öldürüldüğünde Yarık kararlı hale gelir ve merkezdeki portaldan daha güçlü yaratıklar çağırır. Merkezdeki bu yaratıkları öldürmek Kararsız Yarığı tamamlar ve yırtığı kapatır.\n\nYarık Kovanı ise zaten kontrolden çıkmış bir yırtıktır. Bunları kapatmak için Ailith'in yardımına ihtiyacın olur. Chayula'nın takdisiyle Kovanın merkezine doğru yolunu yakarak ilerle ve Ailith'in merkezi yok etme sürecini başlatmasına yardım et. Ailith Kovanı yok ederken, Yarık yaratıkları onu öldürmek için akın eder; o kovanın merkezini tamamen yok edene kadar Ailith'i koru. Bu sırada Ailith ölürse Kovan yerinde kalır.",
+    "overview_source": "repoe-fork",
+    "tip_en": "Prioritise extending the timer early by killing Breach monsters, so you reach the stronger elite waves at the centre for catalysts and Breach rings.",
+    "tip_tr": "Yarık yaratıklarını öldürerek zamanlayıcıyı erkenden uzatmaya öncelik ver; böylece merkezdeki daha güçlü elit dalgalara ulaşır, katalizör ve Yarık yüzüklerini toplarsın.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Wombgifts",
+        "tr": "Wombgift'ler",
+        "desc_en": "Wombgifts are found within Breaches and are grown on The Genesis Tree.\r\n\r\nThe 4 types of Wombgifts are:\r\n* Lavish Wombgift\r\n* Ornate Wombgift\r\n* Banded Wombgift\r\n* Signet Wombgift",
+        "desc_tr": "Wombgift'ler Yarıkların içinde bulunur ve Genesis Ağacı'nda yetişir. Dört Wombgift türü vardır: Lavish, Ornate, Banded ve Signet Wombgift."
+      }
+    ],
+    "icon": "assets/mechanics/breach.png",
+    "banner": "assets/mechanics/breach-banner.png",
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "delirium",
+    "en": "Delirium",
+    "tr": "Hezeyan",
+    "tr_status": "exists",
+    "category": "mechanic",
+    "subtype": "map",
+    "overview_en": "Maps containing a Delirium Mirror can have the mirror walked through to unleash the rolling Delirium fog ring across the current area. \r\nYou must stay within this fog as it expands to maintain the Delirium or it will disappear.\r\n\r\nMagic monsters are able to gain Delirium specific Modifiers while inside the fog.\r\n\r\nRare or Unique monsters in the fog may manifest Delirium Demons. Manifested Delirium Demons inhabit the monster's body to occasionally use Skills of their own.\r\n\r\nFractured Mirrors may be found within Delirium Fog, summoning extra monsters while Fracturing Mirror Shards are found at set depths, with more varied rewards.\r\n\r\nDefeating Map Bosses has a chance to summon a Grand Mirror on a nearby map.",
+    "overview_tr": "İçinde Hezeyan Aynası bulunan haritalarda aynanın içinden geçilerek mevcut alana yayılan Hezeyan sis halkası serbest bırakılabilir. Hezeyanı sürdürmek için, genişledikçe bu sisin içinde kalman gerekir; yoksa sis kaybolur.\n\nSıradan (Magic) yaratıklar, sisin içindeyken Hezeyana özgü değiştiriciler kazanabilir. Sisteki nadir (Rare) ya da eşsiz (Unique) yaratıklar Hezeyan İblisleri tezahür ettirebilir; tezahür eden İblisler yaratığın bedenine yerleşir ve zaman zaman kendi yeteneklerini kullanır.\n\nHezeyan Sisi içinde, fazladan yaratık çağıran Çatlamış Aynalar bulunabilirken, belirli derinliklerde daha çeşitli ödüller veren Çatlatan Ayna Parçaları bulunur. Harita Boss'larını yenmek, yakındaki bir haritada bir Büyük Ayna çağırma şansı verir.",
+    "overview_source": "repoe-fork",
+    "tip_en": "Stay inside the expanding fog and clear quickly; the deeper you push before the timer ends, the more Distilled Emotions you collect.",
+    "tip_tr": "Genişleyen sisin içinde kal ve hızlıca temizle; zamanlayıcı bitmeden ne kadar derine ilerlersen o kadar çok Damıtılmış Duygu (Distilled Emotion) toplarsın.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Grand Mirror",
+        "tr": "Büyük Ayna",
+        "desc_en": "A Grand Mirror causes a reflection of the Map Boss. When the bosses are defeated Delirium fog spreads to nearby Maps.\r\n\r\nAt least 1 Map the fog spreads to will be transformed into a Simulacrum.",
+        "desc_tr": "Büyük Ayna, Harita Boss'unun bir yansımasını yaratır. Boss'lar yenildiğinde Hezeyan sisi yakındaki haritalara yayılır. Sisin yayıldığı en az 1 harita bir Simulacrum'a dönüştürülür."
+      },
+      {
+        "en": "Essence of Delirium",
+        "tr": "Hezeyan Özü",
+        "desc_en": "A monster empowered by an Essence of Delirium will periodically summon the demons that lay behind the Delirium Mirror.",
+        "desc_tr": "Hezeyan Özü ile güçlendirilen bir yaratık, Hezeyan Aynası'nın ardındaki iblisleri belli aralıklarla çağırır."
+      }
+    ],
+    "icon": "assets/mechanics/delirium.png",
+    "banner": "assets/mechanics/delirium-banner.png",
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "ritual",
+    "en": "Ritual",
+    "tr": "Ayin",
+    "tr_status": "exists",
+    "category": "mechanic",
+    "subtype": "map",
+    "overview_en": "Ritual Altars are sacrificial sites that absorb the monsters slain within their ritual circles. After an amount of monsters have been slain, the Ritual can be activated.\r\nActivating the Ritual will resurrect the slain monsters, requiring you slay them once more. \r\n\r\nDefeating these revived monsters earns you Tribute, a resource that you can trade for various Favours from the Ritual Altar. \r\nThe list of Favours tradable for Tribute can be rerolled, costing Tribute.\r\nFavours can be deferred, paying a part of their cost but having them appear again later.",
+    "overview_tr": "Ayin Sunakları, çemberleri içinde öldürülen yaratıkları emen kurban alanlarıdır. Belli sayıda yaratık öldürüldükten sonra Ayin etkinleştirilebilir.\n\nAyini etkinleştirmek, öldürülen yaratıkları diriltir ve onları yeniden öldürmeni gerektirir. Bu dirilen yaratıkları yenmek sana Haraç kazandırır; bu, Ayin Sunağından çeşitli Lütuflar (Favour) karşılığında takas edebileceğin bir kaynaktır. Haraç karşılığı takas edilebilen Lütuf listesi, Haraç harcanarak yeniden çevrilebilir. Lütuflar ertelenebilir; maliyetinin bir kısmı ödenerek daha sonra yeniden belirmeleri sağlanır.",
+    "overview_source": "repoe-fork",
+    "tip_en": "Plan a route that chains several altars in one map to bank more Tribute, then spend it on the most valuable Favours (unique items and Omens).",
+    "tip_tr": "Tek haritada birkaç sunağı zincirleyecek bir rota planla; böylece daha çok Haraç biriktirir, sonra onu en değerli Lütuflara (eşsiz eşyalar ve Omen'lar) harcarsın.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Free Rerolls",
+        "tr": "Ücretsiz Yeniden Çevirme",
+        "desc_en": "Ritual Free Rerolls allow rerolling Favours an additional time at no Cost.",
+        "desc_tr": "Ayin Ücretsiz Yeniden Çevirmeleri, Lütufları hiçbir maliyet olmadan fazladan bir kez yeniden çevirmene olanak tanır."
+      },
+      {
+        "en": "Rite of the Nameless",
+        "tr": "İsimsizin Ayini",
+        "desc_en": "The Rite of the Nameless is a group of maps which each contain Ritual Altars and a Map Boss.\r\n\r\nCompleting all Ritual Altars will drop an Effigy Piece.",
+        "desc_tr": "İsimsizin Ayini, her biri Ayin Sunakları ve bir Harita Boss'u içeren bir harita grubudur. Tüm Ayin Sunaklarını tamamlamak bir Tasvir Parçası (Effigy Piece) düşürür."
+      },
+      {
+        "en": "Effigy",
+        "tr": "Tasvir",
+        "desc_en": "Effigy Pieces can be placed on an incomplete Effigy in Caer Tarth to complete the Rite of the Nameless.",
+        "desc_tr": "Tasvir Parçaları, İsimsizin Ayini'ni tamamlamak için Caer Tarth'ta tamamlanmamış bir Tasvirin üzerine yerleştirilebilir."
+      }
+    ],
+    "icon": "assets/mechanics/ritual.png",
+    "banner": "assets/mechanics/ritual-banner.png",
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "expedition",
+    "en": "Expedition",
+    "tr": "Sefer",
+    "tr_status": "proposed",
+    "category": "mechanic",
+    "subtype": "map",
+    "overview_en": "Expeditions are Ancient Kalguuran burial sites, with Verisium Remnants and dangers buried beneath the ground.\r\n\r\nSet up a chain of explosives and unearth the treasures, but beware of the dangers that hide in wait.\r\n\r\nUsing Logbooks on the Atlas can reveal Grand Expeditions which are larger versions of regular Expeditions and can contain special types of Remnants.",
+    "overview_tr": "Seferler, yer altına gömülü Verisium Kalıntıları ve tehlikeler barındıran Kadim Kalguuran mezar alanlarıdır.\n\nBir patlayıcı zinciri kur ve hazineleri gün yüzüne çıkar; ancak pusuda bekleyen tehlikelere dikkat et.\n\nAtlas üzerinde Kayıt Defteri (Logbook) kullanmak, sıradan Seferlerin daha büyük versiyonları olan ve özel türde Kalıntılar içerebilen Büyük Seferleri ortaya çıkarabilir.",
+    "overview_source": "repoe-fork",
+    "tip_en": "Detonate Remnants that amplify rewards before you reach the big chests, and chain explosives carefully to avoid waking dangerous packs you cannot handle.",
+    "tip_tr": "Büyük sandıklara ulaşmadan önce ödülleri artıran Kalıntıları patlat ve baş edemeyeceğin tehlikeli sürüleri uyandırmamak için patlayıcıları dikkatle zincirle.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Verisium Remnant",
+        "tr": "Verisium Kalıntısı",
+        "desc_en": "Verisium Remnants are fragments of the stars themselves, called down by Kalguurans to harness their power.\r\n\r\nVerisium Remnants allow you to craft a variety of rewards. Each Remnant has a number of slots available for runes to be inscribed, and when you first find it, it will have one rune already inscribed.\r\n\r\nBased on the inscribed rune, you'll be able to select a reward and, based on the runes required for the recipe, you will have to fight waves of Verisium infused monsters to complete the encounter and receive your reward.\r\n\r\nThe number of monster waves are one less than the total number of inscribable slots for the chosen recipe. Each wave of the encounter will activate an additional runic effect, starting from the first two runes on the left.",
+        "desc_tr": "Verisium Kalıntıları, Kalguuranlar tarafından güçlerini kullanmak için indirilen, yıldızların kendisinden parçalardır. Çeşitli ödüller üretmeni sağlar: her Kalıntının rün kazımak için yuvaları vardır ve ilk bulduğunda bir rün zaten kazınmıştır. Kazınan rüne göre bir ödül seçer ve tarifin gerektirdiği rünlere göre, etkinliği tamamlayıp ödülünü almak için Verisium yaratık dalgalarıyla savaşırsın."
+      },
+      {
+        "en": "Grand Expedition Remnant",
+        "tr": "Büyük Sefer Kalıntısı",
+        "desc_en": "A type of Remnant found in Grand Expeditions that adds modifiers to unearthed monsters and chests.\r\n\r\nModifiers from these Remnants are applied to Monsters and Chests that are excavated from the explosive that destroys the Remnant and all subsequent Explosives",
+        "desc_tr": "Büyük Seferlerde bulunan bir Kalıntı türüdür; gün yüzüne çıkarılan yaratıklara ve sandıklara değiştiriciler ekler. Bu değiştiriciler, Kalıntıyı yok eden patlayıcıdan çıkarılan yaratık ve sandıklara ve sonraki tüm patlayıcılara uygulanır."
+      }
+    ],
+    "icon": "assets/mechanics/expedition.png",
+    "banner": null,
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "abyss",
+    "en": "Abyss",
+    "tr": "Uçurum",
+    "tr_status": "exists",
+    "category": "mechanic",
+    "subtype": "map",
+    "overview_en": "An Abyss is a pit which leads deep underground with multiple fissures branching from it. Any monsters spawned near an Abyss will be weakened by it.\r\nDefeating these weakened monsters will cause the fissures to close.\r\nOnce the fissures have closed all the way to the pit, the pit will activate and spawn a large number of Abyssal monsters. Defeating these monsters will close the pit. \r\n\r\nEach closed pit has a chance to spawn an Abyssal Trove which can grant pieces of Preserved Bone to craft onto your Items. The final Abyss in the area has a chance to instead open an underground dungeon called an Abyssal Depths.\r\n\r\nThere are three separate groups of Abyssal Monsters: the Lightless, the Blackblooded and the Legion of the Pit, each area generally contains one of these groups.\r\nThe rarity of the monsters spawned depends on the rarity of the slain weakened monsters and the emerging Abyssal will steal some or all of the modifiers from them.\r\nAny of the modifiers stolen by Rare Abyssal can be upgraded to Abyssal Modifiers.",
+    "overview_tr": "Uçurum, yer altına derinlemesine inen ve ondan dallanan çok sayıda yarık bulunan bir çukurdur. Uçurumun yakınında beliren yaratıklar onun etkisiyle zayıflar. Bu zayıflamış yaratıkları yenmek yarıkların kapanmasını sağlar. Yarıklar çukura kadar tamamen kapandığında çukur etkinleşir ve çok sayıda Uçurum yaratığı çağırır; bunları yenmek çukuru kapatır.\n\nHer kapanan çukurun, eşyalarına işleyebileceğin Korunmuş Kemik parçaları verebilen bir Uçurum Hazinesi (Abyssal Trove) çıkarma şansı vardır. Alandaki son Uçurum, bunun yerine Uçurum Derinlikleri adlı bir yer altı zindanı açma şansına sahiptir.\n\nÜç ayrı Uçurum yaratığı grubu vardır: Işıksızlar, Karakanlılar ve Çukur Lejyonu; her alan genellikle bu gruplardan birini içerir. Çağrılan yaratıkların nadirliği, öldürülen zayıflamış yaratıkların nadirliğine bağlıdır ve beliren Uçurum yaratığı onların değiştiricilerinin bir kısmını ya da tamamını çalar. Nadir Uçurum yaratıklarının çaldığı değiştiriciler Uçurum Değiştiricilerine yükseltilebilir.",
+    "overview_source": "repoe-fork",
+    "tip_en": "Follow the fissures and close them all to open the pit; killing higher-rarity weakened monsters along the way means stronger Abyssal monsters and better Abyssal Trove loot.",
+    "tip_tr": "Yarıkları takip et ve çukuru açmak için hepsini kapat; yol boyunca daha yüksek nadirlikteki zayıflamış yaratıkları öldürmek, daha güçlü Uçurum yaratıkları ve daha iyi Uçurum Hazinesi ganimeti demektir.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Abyssal Depths",
+        "tr": "Uçurum Derinlikleri",
+        "desc_en": "Abyssal Depths are an underground dungeon sometimes found when completing the final Abyss in the area.\r\n\r\nThe Abyssal Depths contains many Abyssal monsters and all Rare monsters will have an Abyssal Modifier.\r\nAt the end of the Abyssal Depths is a more powerful Rare with both a Lichborn Modifier and an Abyssal Modifier. Defeating this Rare will unlock valuable chests nearby.\r\n\r\nThe chests at the end of the Abyssal Depths can also drop pieces of Preserved Bone, but also can rarely drop additional exclusive Omens and Lineage Supports.\r\n\r\nAt higher levels the Abyssal Depths can lead to powerful Boss Fights.",
+        "desc_tr": "Uçurum Derinlikleri, alandaki son Uçurum tamamlandığında bazen bulunan bir yer altı zindanıdır. Çok sayıda Uçurum yaratığı içerir ve tüm Nadir yaratıkların bir Uçurum Değiştiricisi olur. Sonunda hem Lichborn hem de Uçurum Değiştiricisi taşıyan daha güçlü bir Nadir vardır; onu yenmek yakındaki değerli sandıkların kilidini açar. Yüksek seviyelerde güçlü Boss dövüşlerine yol açabilir."
+      },
+      {
+        "en": "Abyssal Eye",
+        "tr": "Uçurum Gözü",
+        "desc_en": "Abyssal Eyes are artifacts recovered from Abyssals which function as a type of Augment.",
+        "desc_tr": "Uçurum Gözleri, Uçurum yaratıklarından elde edilen ve bir Augment türü olarak işlev gören eserlerdir."
+      },
+      {
+        "en": "Abyssal Modifiers",
+        "tr": "Uçurum Değiştiricileri",
+        "desc_en": "Abyssal Monsters spawned from Abysses steal modifiers from monsters killed near their pit, these modifiers can be upgraded to Abyssal Modifiers.\r\n\r\nAbyssal Modifiers rarely have a chance to become a more powerful Lichborn Modifier.",
+        "desc_tr": "Uçurumlardan çağrılan Uçurum yaratıkları, çukurlarının yakınında öldürülen yaratıklardan değiştirici çalar; bu değiştiriciler Uçurum Değiştiricilerine yükseltilebilir. Uçurum Değiştiricilerinin nadiren daha güçlü bir Lichborn Değiştiricisine dönüşme şansı vardır."
+      },
+      {
+        "en": "Abyssal Wasting",
+        "tr": "Uçurum Çürümesi",
+        "desc_en": "Abyssal Wasting reduces Life Regeneration Rate by 50% for 6 seconds",
+        "desc_tr": "Uçurum Çürümesi, Can Yenilenme Hızını 6 saniye boyunca %50 azaltır."
+      },
+      {
+        "en": "Mark of the Abyssal Lord",
+        "tr": "Uçurum Lordu'nun İşareti",
+        "desc_en": "Desecrating an item with the Mark of the Abyssal Lord modifier always removes that modifier, replacing it with an Unrevealed Desecrated modifier of a higher tier.",
+        "desc_tr": "Uçurum Lordu'nun İşareti değiştiricisini taşıyan bir eşyayı kutsallıktan çıkarmak (Desecrate) her zaman o değiştiriciyi kaldırır ve yerine daha yüksek kademeli, Açığa Çıkmamış bir Desecrated değiştirici koyar."
+      }
+    ],
+    "icon": "assets/mechanics/abyss.png",
+    "banner": "assets/mechanics/abyss-banner.png",
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "sanctum",
+    "en": "Trial of the Sekhemas",
+    "tr": "Sekhemaların Denemesi",
+    "tr_status": "proposed",
+    "category": "mechanic",
+    "subtype": "trial",
+    "overview_en": "The Trial of the Sekhemas is one of the two Ascendancy trials in Path of Exile 2. Instead of life, your run is governed by Honour: every hit you take drains Honour, and if it reaches zero your run ends. You descend through four floors of rooms, choosing rewards and Boons along the way, until you defeat the floor guardian. Relics placed on your Relic Altar before the run grant lasting bonuses, the most important being Honour Resistance, which reduces the Honour you lose per hit.",
+    "overview_tr": "Sekhemaların Denemesi, Path of Exile 2'deki iki Yükseliş (Ascendancy) denemesinden biridir. Burada koşunu can yerine Onur (Honour) yönetir: aldığın her isabet Onurunu azaltır ve sıfıra ulaşırsa koşun sona erer. Yol boyunca ödüller ve Lütuflar (Boon) seçerek dört kat boyunca odadan odaya inersin; her katın muhafızını yenerek ilerlersin. Koşu öncesi Kalıntı Sunağına yerleştirdiğin Relic'ler kalıcı bonuslar verir; bunların en önemlisi, isabet başına kaybettiğin Onuru azaltan Onur Direnci'dir (Honour Resistance).",
+    "overview_source": "maxroll",
+    "tip_en": "Stack Honour Resistance on your Relics (aim for around 75%) so each hit drains far less Honour; this matters far more than raw maximum Honour for surviving deep runs.",
+    "tip_tr": "Relic'lerinde Onur Direncini yığ (yaklaşık %75 hedefle); böylece her isabet çok daha az Onur tüketir. Derin koşularda hayatta kalmak için bu, ham maksimum Onurdan çok daha önemlidir.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Honour",
+        "tr": "Onur",
+        "desc_en": "A resource unique to the Trial of the Sekhemas. You lose Honour whenever you are hit, and the run is over if it reaches zero. Some Shrines restore Honour.",
+        "desc_tr": "Sekhemaların Denemesi'ne özgü bir kaynak. İsabet aldığında Onur kaybedersin ve sıfıra ulaşırsa koşu sona erer. Bazı Türbeler Onuru yeniler."
+      },
+      {
+        "en": "Relics",
+        "tr": "Relic'ler",
+        "desc_en": "The meta-progression for the Trial. Placed on the Relic Altar before a run to grant lasting bonuses; the key stat is Honour Resistance, which reduces Honour damage taken.",
+        "desc_tr": "Denemenin meta-ilerlemesi. Bir koşu öncesi Relic Sunağına yerleştirilerek kalıcı bonuslar verir; en önemli stat, alınan Onur hasarını azaltan Onur Direnci'dir."
+      },
+      {
+        "en": "Boons & Afflictions",
+        "tr": "Lütuflar ve Dertler",
+        "desc_en": "Boons are helpful blessings picked up inside the Trial; Afflictions are lingering curses that make the rest of the run harder.",
+        "desc_tr": "Lütuflar (Boon) Denemenin içinde toplanan yardımcı takdislerdir; Dertler (Affliction) ise koşunun geri kalanını zorlaştıran kalıcı lanetlerdir."
+      }
+    ],
+    "icon": "assets/mechanics/sanctum.png",
+    "banner": "assets/mechanics/sanctum-banner.png",
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "ultimatum",
+    "en": "Trial of Chaos",
+    "tr": "Kaos Denemesi",
+    "tr_status": "proposed",
+    "category": "mechanic",
+    "subtype": "trial",
+    "overview_en": "The Trial of Chaos is the other Ascendancy trial in Path of Exile 2, run inside the Temple of Chaos. You clear a series of consecutive rooms, each with its own challenge — defeat all monsters, survive a timer, escort a statue, collect Soul Cores, or sacrifice monsters at an altar — and finish with a randomised boss. Before every room you must choose one of three Afflictions (negative modifiers) that stay for the whole run, so difficulty climbs with each room cleared.",
+    "overview_tr": "Kaos Denemesi, Path of Exile 2'deki diğer Yükseliş denemesidir ve Kaos Tapınağı'nın içinde gerçekleşir. Her biri kendi meydan okumasına sahip art arda odaları temizlersin — tüm yaratıkları yen, bir süre hayatta kal, bir heykeli eşlik ederek koru, Ruh Çekirdeği (Soul Core) topla ya da sunağa yaratık kurban et — ve sonunda rastgele seçilmiş bir boss ile karşılaşırsın. Her odadan önce, tüm koşu boyunca kalıcı olan üç Dert'ten (olumsuz değiştirici) birini seçmek zorundasın; bu yüzden zorluk her temizlenen odayla birlikte tırmanır.",
+    "overview_source": "maxroll",
+    "tip_en": "Read the three Afflictions each room and pick the least dangerous for your build; stacking monster-buff or movement-restricting modifiers can spawn an unkillable rare that ends the run early.",
+    "tip_tr": "Her odada üç Derdi oku ve build'in için en az tehlikeli olanı seç; yaratık güçlendiren ya da hareketini kısıtlayan değiştiricileri üst üste yığmak, koşunu erkenden bitiren öldürülemez bir nadir yaratık doğurabilir.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Afflictions",
+        "tr": "Dertler",
+        "desc_en": "Before each room you pick one of three negative modifiers that last until the end of the run. They stack, so the trial gets exponentially harder; avoid combining ones that restrict your movement or arena space.",
+        "desc_tr": "Her odadan önce, koşu sonuna dek kalıcı olan üç olumsuz değiştiriciden birini seçersin. Üst üste yığılırlar, böylece deneme katlanarak zorlaşır; hareketini ya da arena alanını kısıtlayanları birleştirmekten kaçın."
+      },
+      {
+        "en": "Trial Rooms",
+        "tr": "Deneme Odaları",
+        "desc_en": "A sequence of challenge rooms: kill all monsters, survive a timer, escort a statue, collect Soul Cores, or sacrifice monsters in Blood Circles, ending with a boss room.",
+        "desc_tr": "Bir dizi meydan okuma odası: tüm yaratıkları öldür, bir süre hayatta kal, bir heykele eşlik et, Ruh Çekirdeği topla veya Kan Çemberlerinde yaratık kurban et; bir boss odasıyla sona erer."
+      },
+      {
+        "en": "The Trialmaster",
+        "tr": "Deneme Ustası",
+        "desc_en": "The randomised boss encountered at the end of the higher Trials of Chaos; defeating it for the first time unlocks your 4th Ascendancy points.",
+        "desc_tr": "Daha yüksek Kaos Denemelerinin sonunda karşılaşılan rastgele seçilmiş boss. Onu ilk kez yenmek 4. Yükseliş puanlarının kilidini açar."
+      }
+    ],
+    "icon": "assets/mechanics/ultimatum.png",
+    "banner": "assets/mechanics/ultimatum-banner.png",
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "strongbox",
+    "en": "Strongbox",
+    "tr": "Sandık",
+    "tr_status": "exists",
+    "category": "mechanic",
+    "subtype": "event",
+    "overview_en": "Strongboxes are locked chests that contain various items.\r\nAttempting to unlock a Strongbox will unleash Packs of monsters that must be defeated in order to get the items within.\r\nStrongboxes can be modified to increase the difficulty and reward of the monsters and rewards within respectively.",
+    "overview_tr": "Sandıklar, çeşitli eşyalar barındıran kilitli kasalardır. Bir Sandığı açmaya çalışmak, içindeki eşyaları almak için yenmen gereken yaratık sürülerini serbest bırakır. Sandıklar, içindeki yaratıkların ve ödüllerin sırasıyla zorluğunu ve değerini artıracak şekilde değiştirilebilir.",
+    "overview_source": "repoe-fork",
+    "tip_en": "Clear the surrounding area first, then open the Strongbox and be ready for the pack it releases; modifying a box raises both its danger and its rewards.",
+    "tip_tr": "Önce çevredeki alanı temizle, sonra Sandığı aç ve serbest bıraktığı sürüye hazır ol; bir sandığı değiştirmek hem tehlikesini hem de ödüllerini artırır.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Basic Strongbox",
+        "tr": "Temel Sandık",
+        "desc_en": "Basic Strongboxes are specifically named \"Strongbox\" and drop random items.",
+        "desc_tr": "Temel Sandıklar özellikle \"Strongbox\" olarak adlandırılır ve rastgele eşyalar düşürür."
+      },
+      {
+        "en": "Cartographer's Strongbox",
+        "tr": "Haritacının Sandığı",
+        "desc_en": "Cartographer's Strongboxes drop Waystones.",
+        "desc_tr": "Haritacının Sandıkları Yol Taşı (Waystone) düşürür."
+      },
+      {
+        "en": "Ornate Strongbox",
+        "tr": "Süslü Sandık",
+        "desc_en": "Ornate Strongboxes have improved dropped Item Rarity.",
+        "desc_tr": "Süslü Sandıkların düşürdüğü eşyaların Nadirliği artırılmıştır."
+      },
+      {
+        "en": "Researcher's Strongbox",
+        "tr": "Araştırmacının Sandığı",
+        "desc_en": "Researcher's Strongboxes drop Currency items.",
+        "desc_tr": "Araştırmacının Sandıkları Para (Currency) eşyaları düşürür."
+      },
+      {
+        "en": "Secured Strongbox",
+        "tr": "Korumalı Sandık",
+        "desc_en": "Secured Strongboxes are guarded by additional Packs of Rare Monsters and may roll Modifiers which add Monster Modifiers to any Rares guarding the Strongbox.",
+        "desc_tr": "Korumalı Sandıklar fazladan Nadir Yaratık sürüleriyle korunur ve Sandığı koruyan Nadirlere yaratık değiştiricileri ekleyen modifiye'ler taşıyabilir."
+      }
+    ],
+    "icon": "assets/mechanics/strongbox.png",
+    "banner": null,
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "shrine",
+    "en": "Shrine",
+    "tr": "Türbe",
+    "tr_status": "exists",
+    "category": "mechanic",
+    "subtype": "event",
+    "overview_en": "Shrines are Precursor Artifacts that empower monsters with its Presence with various effects.\r\nDefeat all the monsters Worshipping the Shrine and interact with it to temporarily gain the power for yourself.",
+    "overview_tr": "Türbeler, Etkinlik Alanlarındaki (Presence) yaratıkları çeşitli etkilerle güçlendiren Öncül (Precursor) Eserlerdir. Türbeye Tapan tüm yaratıkları yen ve gücü geçici olarak kendin için kazanmak üzere türbeyle etkileşime geç.",
+    "overview_source": "repoe-fork",
+    "tip_en": "Defeat the monsters worshipping the Shrine before grabbing the buff, then use the temporary power to blast through a tough pack or rare nearby.",
+    "tip_tr": "Buff'ı almadan önce Türbeye tapan yaratıkları yen, sonra geçici gücü yakındaki zorlu bir sürüyü ya da nadir yaratığı temizlemek için kullan.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Greed Shrine",
+        "tr": "Açgözlülük Türbesi",
+        "desc_en": "Greed Shrines cause item drops to be converted to Gold and monsters to drop increased Gold.",
+        "desc_tr": "Açgözlülük Türbeleri, düşen eşyaların Altına dönüştürülmesine ve yaratıkların artan miktarda Altın düşürmesine neden olur."
+      },
+      {
+        "en": "Gloom Shrine",
+        "tr": "Karanlık Türbesi",
+        "desc_en": "Gloom Shrines cause you to Gain Damage as Extra Chaos Damage and slain enemies can explode dealing Chaos Damage based on their maximum Life.",
+        "desc_tr": "Karanlık Türbeleri, Ekstra Kaos Hasarı olarak Hasar kazanmanı sağlar ve öldürülen düşmanların maksimum Canlarına bağlı Kaos Hasarı vererek patlamasına yol açabilir."
+      },
+      {
+        "en": "Enlightening Shrine",
+        "tr": "Aydınlatan Türbe",
+        "desc_en": "Enlightening Shrines cause you to gain increased Experience.",
+        "desc_tr": "Aydınlatan Türbeler artan Deneyim (Experience) kazanmanı sağlar."
+      },
+      {
+        "en": "Seeking Shrine",
+        "tr": "Arayan Türbe",
+        "desc_en": "Seeking Shrines grant increased Rarity of Items Found.",
+        "desc_tr": "Arayan Türbeler artan Eşya Nadirliği (Rarity of Items Found) verir."
+      }
+    ],
+    "icon": "assets/mechanics/shrine.png",
+    "banner": null,
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  },
+  {
+    "id": "essence",
+    "en": "Essence",
+    "tr": "Öz",
+    "tr_status": "exists",
+    "category": "mechanic",
+    "subtype": "event",
+    "overview_en": "Essence monsters are powerful monsters trapped in crystallised corruption.\r\n\r\nBreaking these monsters free allows them to be defeated, dropping the Essence that can then be used to modify equipment.\r\n\r\nAny monsters with Essences Modifiers drop an additional Essence of that type.",
+    "overview_tr": "Öz yaratıkları, kristalleşmiş yozlaşmanın içinde hapsolmuş güçlü yaratıklardır. Bu yaratıkları serbest bırakmak onların yenilmesine ve ardından ekipman değiştirmek için kullanılabilen Öz'ü düşürmelerine olanak tanır. Öz değiştiricileri taşıyan herhangi bir yaratık, o türden fazladan bir Öz düşürür.",
+    "overview_source": "repoe-fork",
+    "tip_en": "Use the dropped Essence as targeted crafting currency to force a specific affix onto an item; monsters carrying Essence modifiers drop an extra Essence of that type.",
+    "tip_tr": "Düşen Öz'ü, bir eşyaya belirli bir affix'i zorlamak için hedefli bir işleme parası olarak kullan; Öz değiştiricileri taşıyan yaratıklar o türden fazladan bir Öz düşürür.",
+    "tip_source": "maxroll",
+    "parts": [
+      {
+        "en": "Essence of Delirium",
+        "tr": "Hezeyan Özü",
+        "desc_en": "A monster empowered by an Essence of Delirium will periodically summon the demons that lay behind the Delirium Mirror.",
+        "desc_tr": "Hezeyan Özü ile güçlendirilen bir yaratık, Hezeyan Aynası'nın ardındaki iblisleri belli aralıklarla çağırır."
+      }
+    ],
+    "icon": "assets/mechanics/essence.png",
+    "banner": null,
+    "source": "repoe-fork",
+    "game_version": "0.5.0",
+    "league": "The Runes of Aldur",
+    "last_updated": "2026-06-03"
+  }
+]

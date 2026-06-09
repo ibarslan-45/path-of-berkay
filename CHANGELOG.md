@@ -1,0 +1,76 @@
+# Path of Berkay — Değişiklik Günlüğü / Changelog
+
+> Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
+> (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
+
+## 0.17.0
+### Güvenlik & kalite
+- **Klasik dişli ayar ikonu.** Başlık çubuğundaki ayar ikonu (eskiden güneş/parlaklık gibi görünüyordu) net, tanınır bir **dişli (cog)** ile değiştirildi; yanında "Ayarlar" etiketi.
+- **Otomatik kopyalama varsayılan KAPALI + odak koruması.** Tek-tuş oto-kopyala artık varsayılan kapalıdır; açsanız bile Ctrl+C **yalnızca ön plandaki pencere "Path of Exile 2" iken** oyuna gönderilir — başka bir uygulama odaktayken hiçbir tuş gönderilmez (yalnız mevcut pano okunur). Davranış Ayarlar ve README'de açıkça yazıldı.
+- **Electron güvenlik sıkılaştırması.** Tüm pencerelerde `sandbox: true`, `contextIsolation: true`, `nodeIntegration: false`. Renderer'a Node verilmez; tüm yetkili işler main process'te, contextBridge + IPC köprüsüyle yapılır.
+- **Dış bağlantı beyaz listesi.** Tarayıcıda/e-posta istemcisinde yalnızca `https:` (+ `mailto:`) ve gerçekten kullanılan güvenilir alan adları açılır; bilinmeyen protokol/alan adları reddedilir. Sayfa-içi dışa navigasyon da engellenir.
+- **Electron ve bağımlılıklar güncellendi.** Electron 31 → 42, Vite 5 → 7, electron-vite 2 → 5, electron-builder 24 → 26 ve diğerleri; `npm audit` artık **0 güvenlik açığı** bildiriyor.
+- **Tip denetimi temizlendi.** `npm run typecheck` artık hatasız geçiyor (window.api tipi, kullanılmayan değişkenler ve diğer uyarılar giderildi).
+
+## 0.16.0
+### Build araçları
+- **İşaretlenebilir ilerleme (kalıcı).** Build görünümünde elde ettiklerini tek tek işaretleyebilirsin: her ekipman slotu, o eşyadaki her stat/mod, her gem ve support gem, ve kayda değer pasif node'lar. İşaretler build başına kaydedilir; kapanıp açınca kalır. Üstte ilerleme çubuğu (yüzde).
+- **Quest ödülleri ayrı ve belirgin.** Leveling sekmesinde, build'in becerilerini oymak için hangi Uncut Skill/Support/Spirit Gem'i hangi seviyede/bölgede alacağın öne çıkan bir kartta gösterilir (işaretlenebilir).
+- **Silah seti (Set 1 / Set 2) ayrımı.** Build'de silah seti ayrımı varsa, pasif ağaçta "Set 1 / Set 2 / Tümü" geçişiyle hangi pasiflerin hangi sete ait olduğunu görürsün (yoksa gösterilmez).
+- **Eşyadan Craft Simülatörü'ne geçiş.** Build'deki her eşyada "Craft'la" düğmesi: tıklayınca Craft Simülatörü açılır; eşyanın saf tabanı solda, istenen modlar sağda Hedef Eşya'da yüklenir ve craft koçu hedefe doğru yardım eder.
+- **Build kalıcılığı pekiştirildi.** İçe aktarılan build, seçili variant ve aşama programı kapatıp açınca da korunur.
+
+### Fiyat / değer
+- **Eşya statları artık tam yakalanıyor.** Değerleme, eşyanın TÜM mod havuzlarını (implicit, explicit, crafted, fractured, rune, enchant) okur ve doğru trade stat filtrelerini kurar; eşlenemeyen modlar dürüstçe "doğrulanmadı" işaretlenir (ve loglanır).
+- **Değer = EN YAKIN eşya (ortalama değil).** Artık dönen ilanların ortalaması/medyanı yerine, senin eşyana EN BENZER ilan(lar) bulunur (benzerlik = eşleşen stat sayısı + değerlerin yakınlığı) ve değer ona göre biçilir: "en yakın eşya: ≈X". Yöntem dürüstçe açıklanır ("en benzer N ilana göre").
+- **Overlay'den stat ekle/çıkar — canlı değer.** Fiyat overlay'inde (ve Craft Simülatörü'nde) her stat filtresinin yanında aç/kapa ve min değer kutusu var; statı ekleyip çıkardıkça veya min'i değiştirdikçe sorgu otomatik yeniden çalışır ve değer anında güncellenir (kibar rate-limit kuyruğu korunur).
+
+## 0.15.1
+- **Yazı tipi Helvetica + italik kaldırıldı.** Arayüzün gövde yazısı artık Helvetica (ornate başlıklar serif kalır); her yerdeki italik metin normale çevrildi.
+- **Yazı tipi & boyutu ayarı artık gerçekten çalışıyor.** Ayarlar → "Arayüz — Yazı tipi & boyut": Helvetica / Sistem / Serif seç + boyut kaydırıcısı; değişiklik anında uygulanır ve kapanıp açılınca korunur (tüm arayüz ölçeklenir).
+- **Tek tuş fiyat/tehlike kontrolü (varsayılan açık).** Fiyat (Ctrl+D) ve tehlike (Ctrl+E) kısayoluna basınca program önce oyuna Ctrl+C gönderir, panoyu okur ve paneli gösterir — tek tuş yeter. Awakened PoE / Exiled Exchange ile aynı yöntem; Ayarlar'dan kapatıp kendin Ctrl+C yapabilirsin (dürüst ToS notu eklendi).
+- **Daha tam eşya bilgisi çekme.** Ctrl+C metninden quality, item level, soket/rune, requirements (inline dahil), corrupted/fractured/synthesised, enchant ve fiyat notu ayrı ayrı çıkarılıyor; trade stat-id eşleşmesi implicit/explicit ayrımına duyarlı hale getirildi.
+- **Belirgin Ayarlar düğmesi.** Başlık çubuğundaki dişli ikonu büyütüldü, kontrastı artırıldı ve yanına "Ayarlar" etiketi eklendi.
+- **Uygulama içinden geri bildirim.** Ana sayfada ve Ayarlar → Hakkında'da "Geri Bildirim / Öneri" — yaz, "E-posta gönder"e bas, varsayılan e-posta uygulaman hazır taslakla açılır; Discord kullanıcı adını tek tıkla kopyala.
+
+## 0.15.0
+- **Lisans / aktivasyon kaldırıldı — program artık herkese açık ve ücretsiz.** Açılışta hiçbir kapı/etkinleştirme yok; doğrudan ana sayfaya girilir. Mevcut kullanıcılar sorunsuz açmaya devam eder.
+- **Proje açık kaynak oldu (GPL-3.0).** Kaynak kod herkese açık; LICENSE dosyası eklendi.
+- Tüm özellikler korundu: otomatik güncelleme, ana sayfa, iletişim, veritabanı, build araçları ve overlay'ler.
+
+## 0.14.4
+### Ana Sayfa & "Neler Değişti" (0.14.3'ten)
+- **Ana Sayfa:** görselli, estetik açılış ekranı — her ana bölüm için büyük kategori kartı (ikon + açıklama); kart tıklayınca o bölüme gider. Varsayılan açılış görünümü oldu.
+- **"Neler Değişti" ekranı:** güncelleme sonrası ilk açılışta o sürümün notları gösterilir; Ayarlar → İletişim/Hakkında'dan tekrar açılır.
+
+### Düzeltmeler & İyileştirmeler
+- **Build artık sıfırlanmıyor:** İçe aktarılan build (PoB kodu / Mobalytics / Maxroll / .build) ve seçili variant; sekme değiştirsen, hatta programı kapatıp açsan bile korunur (kalıcı snapshot).
+- **Build görünümü büyütüldü:** ekipman kartları, mod metni, gem isimleri ve ikonları daha büyük ve ferah — okunur ve net.
+- **Build'e özel leveling / görev listesi:** İçe aktarılan build için, aşamalardan ve yazar notlarından üretilen işaretlenebilir bir görev kontrol listesi (Leveling sekmesinde); ilerleme kaydedilir.
+- **Türkçe sızıntısı giderildi:** İngilizce kalması gereken oyun terimleri (stat/affix/mod metni, item/gem/skill/pasif/currency adları) artık Türkçe cümlenin içinde de İngilizce orijinal kalıyor — ör. "+20 to maximum Life". Yalnız çevreleyen açıklama Türkçe.
+- **Ayarlar → Siteyi Aç düzeldi:** web sitesi (https://pathofberkay.netlify.app), e-posta ve Discord bağlantıları artık doğru açılıyor.
+
+## 0.14.2
+- **Variant isimleri düzeldi:** Mobalytics build'lerinde gerçek aşama başlıkları gösteriliyor (ör. "lvl 1-14" … "lvl 60+"), "Variant 1/2/3" yerine.
+- **Variant geçişi 3 paneli birden günceller:** aşama değişince yetenekler, ekipman ve pasif ağaç hepsi o aşamaya göre yenilenir.
+- **.build içe aktarma tam:** gerçek oyun .build formatı (passives/inventory_slots) tanınıyor — ekipman, yetenek, pasif, yükseliş eksiksiz gelir.
+- **Pasif eşleşmesi düzeldi:** bazı build'lerde 0 çıkan ağaç eşleşmesi giderildi (tüm ağaç setleri birleştirildi).
+- İçe aktarma kutusu yardım metni güncellendi; veri olmayan build'lerde net "PoB kodu/veri yok" kartı.
+
+## 0.14.1
+- **Web sitesi linki:** İletişim / Hakkında bölümüne (Ayarlar + onboarding + sohbet botu) web sitesi linki eklendi → https://pathofberkay.netlify.app
+- Otomatik güncelleme GitHub Releases üzerinden (ibarslan-45/pobe-releases).
+
+## 0.14.0
+- **Otomatik güncelleme:** açılışta yeni sürüm kontrolü + "neler değişti" bildirimi; tek tıkla güncelle (NSIS). Portable sürüm siteden güncellenir.
+- Ayarlar'da "Güncellemeleri kontrol et" + mevcut sürüm + son kontrol zamanı.
+
+## 0.13.1
+- **Çok dilli (TR/EN) kurulum:** NSIS dil seçici (varsayılan Türkçe); seçilen dil uygulamada ilk açılışta kullanılır.
+- **Uygulama-içi İletişim / Hakkında:** Discord `panars` + e-posta; Ayarlar + onboarding + sohbet botu.
+
+## 0.13.0
+- Aşama-aşama build görünümü (gem/item ikonları + progresif pasif ağaç).
+- Mobalytics yapısal build import düzeltmesi (creator/profile build'ler).
+- `.build` dosyası içe aktarma (sürükle-bırak).
+- Tüm 8 ana özellik + cihaza-bağlı lisans.

@@ -1,0 +1,552 @@
+{
+  "rewardIcons": {
+    "shaper's orb (tier 1)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 2)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 3)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 4)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 5)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 6)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 7)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 8)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 9)": "assets/questitems/UpgradeMapToYellow.png",
+    "shaper's orb (tier 10)": "assets/questitems/UpgradeMapToYellow.png",
+    "elder's orb": "assets/questitems/SuperShapersOrb.png",
+    "the shaper's key": "assets/questitems/ShaperKey.png",
+    "memory fragment i": "assets/questitems/ShaperFragment.png",
+    "memory fragment ii": "assets/questitems/ShaperFragment.png",
+    "memory fragment iii": "assets/questitems/ShaperFragment.png",
+    "memory fragment iv": "assets/questitems/ShaperFragment.png",
+    "memory fragment v": "assets/questitems/ShaperFragment.png",
+    "memory fragment vi": "assets/questitems/ShaperFragment.png",
+    "memory fragment vii": "assets/questitems/ShaperFragment.png",
+    "memory fragment viii": "assets/questitems/ShaperFragment.png",
+    "memory fragment ix": "assets/questitems/ShaperFragment.png",
+    "memory fragment x": "assets/questitems/ShaperFragment.png",
+    "memory fragment xi": "assets/questitems/ShaperFragment.png",
+    "memory fragment xii": "assets/questitems/ShaperFragment.png",
+    "memory fragment xiii": "assets/questitems/ShaperFragment.png",
+    "memory fragment xiv": "assets/questitems/ShaperFragment.png",
+    "memory fragment xv": "assets/questitems/ShaperFragment.png",
+    "book of skill": "assets/questitems/SkillBook.png",
+    "book of regrets": "assets/questitems/RefundBookBandit.png",
+    "book of regression": "assets/questitems/RefundBookBandit.png",
+    "atlas book of skill": "assets/questitems/AtlasSkillBook.png",
+    "crystalline core of knowledge i": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge ii": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge iv": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge v": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge iii": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge vii": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge viii": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge x": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge xi": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge xiii": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge xiv": "assets/questitems/SkillOrb.png",
+    "crystalline core of knowledge vi": "assets/questitems/SkillOrb.png",
+    "book of unique knowledge i": "assets/questitems/UniqueAtlasSkillBook.png",
+    "book of unique knowledge ii": "assets/questitems/UniqueAtlasSkillBook.png",
+    "book of unique knowledge iii": "assets/questitems/UniqueAtlasSkillBook.png",
+    "book of unique knowledge iv": "assets/questitems/UniqueAtlasSkillBook.png",
+    "book of unique knowledge v": "assets/questitems/UniqueAtlasSkillBook.png",
+    "otherworldly book of knowledge i": "assets/questitems/BreachAtlasSkillBook.png",
+    "otherworldly book of knowledge ii": "assets/questitems/BreachAtlasSkillBook.png",
+    "otherworldly book of knowledge iii": "assets/questitems/BreachAtlasSkillBook.png",
+    "otherworldly book of knowledge iv": "assets/questitems/BreachAtlasSkillBook.png",
+    "ritualistic book of knowledge i": "assets/questitems/RitualAtlasSkillBook.png",
+    "ritualistic book of knowledge ii": "assets/questitems/RitualAtlasSkillBook.png",
+    "ritualistic book of knowledge iii": "assets/questitems/RitualAtlasSkillBook.png",
+    "ritualistic book of knowledge iv": "assets/questitems/RitualAtlasSkillBook.png",
+    "runic book of knowledge i": "assets/questitems/ExpeditionAtlasSkillBook.png",
+    "runic book of knowledge ii": "assets/questitems/ExpeditionAtlasSkillBook.png",
+    "runic book of knowledge iii": "assets/questitems/ExpeditionAtlasSkillBook.png",
+    "runic book of knowledge iv": "assets/questitems/ExpeditionAtlasSkillBook.png",
+    "deranging book of knowledge i": "assets/questitems/DeliriumAtlasSkillBook.png",
+    "deranging book of knowledge ii": "assets/questitems/DeliriumAtlasSkillBook.png",
+    "deranging book of knowledge iii": "assets/questitems/DeliriumAtlasSkillBook.png",
+    "deranging book of knowledge iv": "assets/questitems/DeliriumAtlasSkillBook.png",
+    "lightless book of knowledge i": "assets/questitems/AbyssAtlasSkillBook.png",
+    "lightless book of knowledge ii": "assets/questitems/AbyssAtlasSkillBook.png",
+    "lightless book of knowledge iii": "assets/questitems/AbyssAtlasSkillBook.png",
+    "lightless book of knowledge iv": "assets/questitems/AbyssAtlasSkillBook.png",
+    "vanquisher's book of knowledge i": "assets/questitems/MapBossAtlasSkillBook.png",
+    "vanquisher's book of knowledge ii": "assets/questitems/MapBossAtlasSkillBook.png",
+    "vanquisher's book of knowledge iii": "assets/questitems/MapBossAtlasSkillBook.png",
+    "vanquisher's book of knowledge iv": "assets/questitems/MapBossAtlasSkillBook.png",
+    "vanquisher's book of knowledge v": "assets/questitems/MapBossAtlasSkillBook.png",
+    "arbiter's book of knowledge i": "assets/questitems/PinnacleAtlasSkillBook.png",
+    "arbiter's book of knowledge ii": "assets/questitems/PinnacleAtlasSkillBook.png",
+    "arbiter's book of knowledge iii": "assets/questitems/PinnacleAtlasSkillBook.png",
+    "arbiter's book of knowledge iv": "assets/questitems/PinnacleAtlasSkillBook.png",
+    "vault key": "assets/questitems/ReliquaryVaultKey.png",
+    "blood crucible": "assets/questitems/BloodCrucibleQuestItem.png",
+    "dream furnace": "assets/questitems/DreamFurnaceQuestItem.png",
+    "viscera cauldron": "assets/questitems/VisceraCauldronQuestItem.png",
+    "master key": "assets/questitems/KeyBronze.png",
+    "blank rune": "assets/questitems/BlankRune.png",
+    "blank greater rune": "assets/questitems/BlankRune.png",
+    "contract: trial run": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: stolen lockpicks": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: karst's revenge": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: credit where credit's due": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: finding opal": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: opal's jewels": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: enoch's whereabouts": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: enoch's remains": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: grocery list": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: the vinderi bomb": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: the nameless play": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: the finest costumes": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: the wedding dress": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: disengagement": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: rational tools": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: a mundane sample": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: the book of jamanra": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: isla's prototypes": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: isla's designs": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: a matter of honour": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: flying false colours": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: slaver's revenge": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: follow the paper trail": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: the admiral's records": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: findings for fidium": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: hyrri's gift": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: the negotiation": "assets/questitems/GenericNPCQuestContract.png",
+    "contract: the rescue": "assets/questitems/GenericNPCQuestContract.png",
+    "karst's lockpicks": "assets/questitems/LockpickSet.png",
+    "\"the kiss goodnight\"": "assets/questitems/PoisonVial.png",
+    "poisoned lockpick": "assets/questitems/SingleLockpick.png",
+    "census records": "assets/questitems/CensusRecords.png",
+    "tibbs' wealth": "assets/questitems/PileOfWealth.png",
+    "blackguard personnel files": "assets/questitems/BlackguardPersonnelFiles.png",
+    "enoch's tags": "assets/questitems/MilitaryDogTags.png",
+    "alchemical supplies": "assets/questitems/AlchemicalSupplies.png",
+    "fumarole tar": "assets/questitems/FumaroleTar.png",
+    "\"the nameless play\"": "assets/questitems/PlayScript.png",
+    "templar uniforms": "assets/questitems/TemplarUniform.png",
+    "merveil's wedding dress": "assets/questitems/MerveilsWeddingDress.png",
+    "tullina's engagement ring": "assets/questitems/EngagementRing.png",
+    "the thought extractor": "assets/questitems/ThoughtExtractor.png",
+    "viridi's finger": "assets/questitems/ViridisFinger.png",
+    "the book of jamanra": "assets/questitems/BookOfJamanra.png",
+    "jamanra, the legendary warrior": "assets/questitems/HeistPrize6.png",
+    "pile of inexplicable junk": "assets/questitems/CrateofPrototypes.png",
+    "baffling blueprints": "assets/questitems/IslasDesigns.png",
+    "the unbreakable": "assets/questitems/HeistPrize6.png",
+    "solerai's spear": "assets/questitems/SoleraisSpear.png",
+    "nashta's war journal": "assets/questitems/NashtasWarJournal.png",
+    "confront nashta": "assets/questitems/HeistPrize6.png",
+    "hapihapi's charm": "assets/questitems/KaruiCharm.png",
+    "slaver's records": "assets/questitems/SlaverRecords.png",
+    "the blood idol": "assets/questitems/HeistPrize6.png",
+    "admiral darnaw's papers": "assets/questitems/AdmiralDarnawsPapers.png",
+    "fleet orders": "assets/questitems/FleetOrders.png",
+    "admiral darnaw": "assets/questitems/HeistPrize6.png",
+    "\"o' eternal\"": "assets/questitems/OEternalPoetryBook.png",
+    "negotiate with the client": "assets/questitems/HeistPrize6.png",
+    "rescue hana": "assets/questitems/HeistPrize6.png",
+    "the vox twins": "assets/questitems/HeistPrize6.png",
+    "the maven's beacon": "assets/questitems/MavenOrb.png",
+    "flesh compass": "assets/questitems/FleshCompass.png",
+    "luminous astrolabe": "assets/questitems/LuminousAstrolabe.png",
+    "maven's invitation: the atlas": "assets/questitems/ProvingGroundHaewarkHamlet4.png",
+    "maven's invitation: haewark hamlet": "assets/questitems/ProvingGroundHaewarkHamlet4.png",
+    "maven's invitation: tirn's end": "assets/questitems/ProvingGroundTirnsEnd4.png",
+    "maven's invitation: lex proxima": "assets/questitems/ProvingGroundLexProxima4.png",
+    "maven's invitation: lex ejoris": "assets/questitems/ProvingGroundLexEjoras4.png",
+    "maven's invitation: new vastir": "assets/questitems/ProvingGroundNewVastir4.png",
+    "maven's invitation: glennach cairns": "assets/questitems/ProvingGroundGlennachCairns4.png",
+    "maven's invitation: valdo's rest": "assets/questitems/ProvingGroundValdosRest4.png",
+    "maven's invitation: lira arthain": "assets/questitems/ProvingGroundLiraArthain4.png",
+    "writhing invitation": "assets/questitems/TangleOrbRank0.png",
+    "screaming invitation": "assets/questitems/TangleOrbRank5.png",
+    "polaric invitation": "assets/questitems/CleansingFireOrbRank0.png",
+    "incandescent invitation": "assets/questitems/CleansingFireOrbRank5.png",
+    "balbala's barya": "assets/questitems/BalbalaCoinVariant.png",
+    "una's lute": "assets/questitems/Lute.png",
+    "runed spikes": "assets/questitems/RuneSpikes.png",
+    "head of the winter wolf": "assets/questitems/CroneWolfHead.png",
+    "candlemass' essence": "assets/questitems/MudBurrowerGift.png",
+    "vagrant's brew": "assets/questitems/FinnsPotion.png",
+    "runed girdle": "assets/questitems/IronRune1.png",
+    "runed guard": "assets/questitems/IronRune2.png",
+    "runed skull cap": "assets/questitems/IronRune3.png",
+    "asinia's memorial key piece": "assets/questitems/GraveyardKeyTop.png",
+    "draven's memorial key piece": "assets/questitems/GraveyardKeyBottom.png",
+    "count lachlann's ring": "assets/questitems/OghamCountRing.png",
+    "ancestral steel": "assets/questitems/AncestralSteel.png",
+    "book of specialisation": "assets/questitems/BileSoakedTome.png",
+    "gembloom skull": "assets/questitems/CrystalSkull_Spirit_01a.png",
+    "smithing tools": "assets/questitems/RenlysTools.png",
+    "the horn of the vastiri": "assets/questitems/HornOfKeth.png",
+    "mastodon tusks": "assets/questitems/MastodonTusks.png",
+    "the flame ruby": "assets/questitems/CrystalTitan.png",
+    "the essence of water": "assets/questitems/CrystalGoddess.png",
+    "kabala clan relic": "assets/questitems/MedallionSerpentHalf.png",
+    "sun clan relic": "assets/questitems/MedallionHyenaHalf.png",
+    "sigil of the third pact": "assets/questitems/MedallionCombined.png",
+    "maggot husk": "assets/questitems/HuskOfMaggots.png",
+    "stitched bladder": "assets/questitems/RuneSpikes.png",
+    "gas filled bladder": "assets/questitems/RuneSpikes.png",
+    "burning heart": "assets/questitems/RattlecagesHeart.png",
+    "empty decanter djinnus": "assets/questitems/DjinnFlaskEmpty.png",
+    "full decanter djinnus": "assets/questitems/DjinnFlaskFull.png",
+    "final letter": "assets/questitems/MarakethSuicideNote.png",
+    "gemrot skull": "assets/questitems/CrystalSkull_Spirit_02a.png",
+    "venom draught of stone": "assets/questitems/SnakeLadyPotionRed.png",
+    "venom draught of the veil": "assets/questitems/SnakeLadyPotion.png",
+    "venom draught of clarity": "assets/questitems/SnakeLadyPotionBlue.png",
+    "venom draught of the lost": "assets/questitems/SnakeLadyPotionRed.png",
+    "venom draught of the sky": "assets/questitems/SnakeLadyPotion.png",
+    "venom draught of the marshes": "assets/questitems/SnakeLadyPotionBlue.png",
+    "corpse-snake venom": "assets/questitems/VenomVials.png",
+    "large soul core": "assets/questitems/VaalBossGem.png",
+    "the flame core": "assets/questitems/SoulCore.png",
+    "temple door idol": "assets/questitems/ZigguratKey.png",
+    "ignagduk's ghastly spear": "assets/questitems/CarverBogBroomstick.png",
+    "the hammer of kamasa": "assets/questitems/Crafting_VaalHammer.png",
+    "golden idol": "assets/questitems/GoldIdol01.png",
+    "grand idol": "assets/questitems/GoldIdol02.png",
+    "glorious idol": "assets/questitems/GoldIdol03.png",
+    "exquisite idol": "assets/questitems/GoldIdol01.png",
+    "elegant idol": "assets/questitems/GoldIdol02.png",
+    "exceptional idol": "assets/questitems/GoldIdol03.png",
+    "sacrificial dagger": "assets/questitems/SacrificialDagger.png",
+    "sacrificial heart": "assets/questitems/SacrificialHeart.png",
+    "gemcrust skull": "assets/questitems/CrystalSkull_Spirit_02b.png",
+    "boat charter": "assets/questitems/BoatCharterQuestItem.png",
+    "mist-shrouded tome": "assets/questitems/BileSoakedTome.png",
+    "half-digested sulphite": "assets/questitems/HalfDigestedRock.png",
+    "sulphite potion": "assets/questitems/VoltaxicPotion.png",
+    "humming pearl": "assets/questitems/ClamshellPearlQuestItem.png",
+    "severed talon": "assets/questitems/ScourgeTalon.png",
+    "plucked eyeballs": "assets/questitems/ScourgeEyes.png",
+    "ever-healing liver": "assets/questitems/RegeneratingLiver.png",
+    "the siren's vocal cords": "assets/questitems/SirensVocalCords.png",
+    "krutog's lip plate": "assets/questitems/LipDisk.png",
+    "the siren's head": "assets/questitems/PetrifiedSirenHead.png",
+    "shark fin": "assets/questitems/SharkFinQuestItem.png",
+    "verisium ingots": "assets/questitems/VerisiumIngot.png",
+    "verisium spikes": "assets/questitems/RuneSpikex5.png",
+    "torn map piece": "assets/questitems/TreasureMapFragments1.png",
+    "ripped map piece": "assets/questitems/TreasureMapFragments2.png",
+    "frayed map piece": "assets/questitems/TreasureMapFragments3.png",
+    "ragged map piece": "assets/questitems/TreasureMapFragments4.png",
+    "blank tattoo of tawhoa": "assets/questitems/TattooBlankStick.png",
+    "blank tattoo of tasalio": "assets/questitems/TattooBlankStraw.png",
+    "blank tattoo of ngamahu": "assets/questitems/TattooBlankClay.png",
+    "silver coin": "assets/rewards/NavaliSilverCoin.png",
+    "dexterity tattoo of tawhoa": "assets/questitems/TattooDex01.png",
+    "intelligence tattoo of tasalio": "assets/questitems/TattooInt01.png",
+    "strength tattoo of ngamahu": "assets/questitems/TattooStr01.png",
+    "lightning tattoo of tawhoa": "assets/questitems/TattooDex01.png",
+    "cold tattoo of tasalio": "assets/questitems/TattooInt01.png",
+    "fire tattoo of ngamahu": "assets/questitems/TattooStr01.png",
+    "tattoo of hinekora": "assets/questitems/TattooNoteable01.png",
+    "kaom's lesson": "assets/questitems/SharkFinKaomTotem.png",
+    "rakiata's lesson": "assets/questitems/SharkFinRakiataTotem.png",
+    "vial of sacred water": "assets/questitems/SacredWaterVialQuestItem.png",
+    "yoon's barya": "assets/questitems/BalbalaCoinVariant.png",
+    "rangeen's barya": "assets/questitems/BalbalaCoinVariant.png",
+    "icy tusks": "assets/questitems/YetiTusksQuestItem.png",
+    "kulemak's invitation": "assets/questitems/KulemaksInvitation.png",
+    "red mushroom": "assets/questitems/MushroomRed.png",
+    "green mushroom": "assets/questitems/MushroomGreen.png",
+    "blue mushroom": "assets/questitems/MushroomBlue.png",
+    "ancient crisis fragment": "assets/questitems/PinnacleKey1.png",
+    "faded crisis fragment": "assets/questitems/PinnacleKey2.png",
+    "weathered crisis fragment": "assets/questitems/PinnacleKey3.png",
+    "tangled torso": "assets/questitems/RitualMidriff.png",
+    "mossy arm": "assets/questitems/RitualLeftHand.png",
+    "frayed cloth": "assets/questitems/RitualLeftHandDecor.png",
+    "brittle arm": "assets/questitems/RitualRightHand.png",
+    "ragged cloth": "assets/questitems/RitualRightHandDecor.png",
+    "chimeral inscribed ultimatum": "assets/questitems/UltimatumTrialQuestItem.png",
+    "warden's ledger": "assets/questitems/BileSoakedTome.png",
+    "molten one's gift": "assets/questitems/CrystalTitan.png",
+    "origin cradle": "assets/questitems/PrecursorEgg.png",
+    "origin spark": "assets/questitems/PrecursorSeed.png",
+    "origin core": "assets/questitems/PrecursorSeedEggCombined.png",
+    "breachstone": "assets/questitems/Breachstone.png",
+    "breachlord sac": "assets/questitems/BreachlordSac.png",
+    "raven's reflection": "assets/questitems/TangamazuKey.png",
+    "the triskelion reforged": "assets/questitems/KalguuranTriskellion.png",
+    "shattered triskelion": "assets/questitems/DamagedKalguuranTriskellion.png",
+    "an audience with the king": "assets/questitems/VoodooKingEffigy.png",
+    "head of the king": "assets/questitems/KingoftheMistHead.png",
+    "makoru's logbook": "assets/questitems/ExpeditionLogbook3.png",
+    "vorana's logbook": "assets/questitems/ExpeditionLogbook2.png",
+    "uhtred's logbook": "assets/questitems/ExpeditionLogbook4.png",
+    "olroth's logbook": "assets/questitems/ExpeditionLogbook1.png",
+    "journey to the east": "assets/questitems/LoreweaveLogbook.png",
+    "depleted mana rune": "assets/questitems/GrandManaRuneEmpty.png",
+    "infused mana rune": "assets/questitems/GrandManaRuneCharged.png",
+    "the head of vruun": "assets/questitems/HeadBreachBodyPartQuestItem2x1.png",
+    "olroth's boon": "assets/questitems/EndgameQuestRune1.png",
+    "vorana's boon": "assets/questitems/EndgameQuestRune2.png",
+    "uhtred's boon": "assets/questitems/EndgameQuestRune3.png",
+    "medved's boon": "assets/questitems/EndgameQuestRune4.png",
+    "uncut skill gem (level 1)": "assets/rewards/UncutSkillGem.png",
+    "uncut support gem (level 1)": "assets/rewards/UncutSupportGem.png",
+    "gold": "assets/rewards/CoinPileTier2.png",
+    "uncut spirit gem (level 4)": "assets/rewards/UncutSkillGemBuff.png",
+    "uncut skill gem (level 5)": "assets/rewards/UncutSkillGem.png",
+    "artificer's orb": "assets/rewards/CurrencyAddEquipmentSocket.png",
+    "lesser essence of insulation": "assets/rewards/FireResistanceEssenceLesser.png",
+    "uncut skill gem (level 7)": "assets/rewards/UncutSkillGem.png",
+    "uncut support gem (level 2)": "assets/rewards/UncutSupportGem.png",
+    "uncut spirit gem (level 10)": "assets/rewards/UncutSkillGemBuff.png",
+    "uncut skill gem (level 10)": "assets/rewards/UncutSkillGem.png",
+    "uncut skill gem (level 13)": "assets/rewards/UncutSkillGem.png",
+    "exalted orb": "assets/rewards/CurrencyAddModToRare.png",
+    "regal orb": "assets/rewards/CurrencyUpgradeMagicToRare.png",
+    "armourer's scrap": "assets/rewards/CurrencyArmourQuality.png"
+  },
+  "rewardIconsByArea": {
+    "The Riverbank": [
+      "assets/rewards/UncutSkillGem.png"
+    ],
+    "Clearfell": [
+      "assets/questitems/CroneWolfHead.png"
+    ],
+    "Mud Burrow": [
+      "assets/rewards/UncutSupportGem.png",
+      "assets/rewards/CoinPileTier2.png"
+    ],
+    "The Red Vale": [
+      "assets/questitems/IronRune1.png"
+    ],
+    "Cemetery of the Eternals": [
+      "assets/questitems/OghamCountRing.png"
+    ],
+    "Mausoleum of the Praetor": [
+      "assets/questitems/GraveyardKeyBottom.png"
+    ],
+    "Tomb of the Consort": [
+      "assets/questitems/GraveyardKeyTop.png"
+    ],
+    "Freythorn": [
+      "assets/rewards/UncutSkillGemBuff.png",
+      "assets/questitems/CrystalSkull_Spirit_01a.png"
+    ],
+    "Ogham Village": [
+      "assets/rewards/UncutSkillGem.png"
+    ],
+    "Ogham Manor": [
+      "assets/questitems/MudBurrowerGift.png"
+    ],
+    "Vastiri Outskirts": [
+      "assets/rewards/UncutSkillGem.png"
+    ],
+    "Mawdun Quarry": [
+      "assets/rewards/CurrencyAddEquipmentSocket.png"
+    ],
+    "Mawdun Mine": [
+      "assets/rewards/FireResistanceEssenceLesser.png"
+    ],
+    "The Halani Gates": [
+      "assets/rewards/UncutSkillGem.png"
+    ],
+    "Keth": [
+      "assets/questitems/MedallionSerpentHalf.png"
+    ],
+    "Mastodon Badlands": [
+      "assets/rewards/UncutSupportGem.png",
+      "assets/questitems/MedallionHyenaHalf.png"
+    ],
+    "The Bone Pits": [
+      "assets/rewards/UncutSupportGem.png",
+      "assets/questitems/MastodonTusks.png",
+      "assets/questitems/MedallionHyenaHalf.png"
+    ],
+    "The Lost City": [
+      "assets/questitems/MedallionSerpentHalf.png",
+      "assets/rewards/CoinPileTier2.png"
+    ],
+    "The Titan Grotto": [
+      "assets/rewards/UncutSupportGem.png"
+    ],
+    "Buried Shrines": [
+      "assets/rewards/UncutSupportGem.png",
+      "assets/questitems/CrystalGoddess.png"
+    ],
+    "Deshar": [
+      "assets/rewards/CurrencyAddEquipmentSocket.png"
+    ],
+    "The Venom Crypts": [
+      "assets/rewards/CurrencyAddEquipmentSocket.png"
+    ],
+    "Chimeral Wetlands": [
+      "assets/questitems/UltimatumTrialQuestItem.png"
+    ],
+    "Jiquani's Machinarium": [
+      "assets/questitems/SoulCore.png"
+    ],
+    "Jiquani's Sanctum": [
+      "assets/questitems/VaalBossGem.png"
+    ],
+    "The Azak Bog": [
+      "assets/rewards/UncutSkillGemBuff.png",
+      "assets/questitems/CrystalSkull_Spirit_02a.png"
+    ],
+    "Apex of Filth": [
+      "assets/questitems/ZigguratKey.png"
+    ],
+    "The Molten Vault": [
+      "assets/rewards/UncutSkillGem.png",
+      "assets/rewards/CurrencyAddEquipmentSocket.png"
+    ],
+    "Isle of Kin": [
+      "assets/questitems/BlankRune.png"
+    ],
+    "Kedge Bay": [
+      "assets/questitems/TreasureMapFragments1.png"
+    ],
+    "Shrike Island": [
+      "assets/questitems/TreasureMapFragments1.png"
+    ],
+    "Whakapanu Island": [
+      "assets/questitems/SharkFinQuestItem.png"
+    ],
+    "Halls of the Dead": [
+      "assets/rewards/NavaliSilverCoin.png"
+    ],
+    "Journey's End": [
+      "assets/rewards/UncutSkillGem.png"
+    ],
+    "Arastas": [
+      "assets/rewards/CurrencyAddModToRare.png",
+      "assets/rewards/CurrencyUpgradeMagicToRare.png"
+    ],
+    "Holten": [
+      "assets/rewards/CurrencyArmourQuality.png"
+    ],
+    "Wolvenhold": [
+      "assets/questitems/BileSoakedTome.png"
+    ],
+    "The Grelwood": [
+      "assets/rewards/UncutSupportGem.png"
+    ],
+    "The Grim Tangle": [
+      "assets/rewards/UncutSupportGem.png"
+    ],
+    "Hunting Grounds": [
+      "assets/rewards/SkillPoint.png"
+    ],
+    "Ogham Farmlands": [
+      "assets/rewards/SkillPoint.png"
+    ],
+    "The Manor Ramparts": [
+      "assets/rewards/UncutSupportGem.png"
+    ],
+    "Traitor's Passage": [
+      "assets/questitems/DjinnFlaskFull.png"
+    ],
+    "Valley of the Titans": [
+      "assets/questitems/KaruiCharm.png"
+    ],
+    "Path of Mourning": [
+      "assets/rewards/UncutSupportGem.png"
+    ],
+    "The Spires of Deshar": [
+      "assets/rewards/LightningResistanceEssence.png"
+    ],
+    "Dreadnought": [
+      "assets/questitems/BookOfJamanra.png"
+    ],
+    "Sandswept Marsh": [
+      "assets/rewards/UncutSkillGem.png"
+    ],
+    "Jungle Ruins": [
+      "assets/rewards/SkillPoint.png"
+    ],
+    "The Matlan Waterways": [
+      "assets/rewards/RareBelt.png"
+    ],
+    "Aggorat": [
+      "assets/rewards/SkillPoint.png"
+    ],
+    "Abandoned Prison": [
+      "assets/questitems/FinnsPotion.png"
+    ],
+    "Eye of Hinekora": [
+      "assets/questitems/GrandManaRuneCharged.png"
+    ],
+    "Singing Caverns": [
+      "assets/questitems/ClamshellPearlQuestItem.png"
+    ],
+    "Trial of the Ancestors": [
+      "assets/rewards/SkillPoint.png"
+    ],
+    "The Excavation": [
+      "assets/questitems/SoleraisSpear.png"
+    ],
+    "Plunder's Point": [
+      "assets/questitems/ExpeditionLogbook1.png"
+    ],
+    "The Blackwood": [
+      "assets/rewards/Omen.png"
+    ]
+  },
+  "areaImages": {
+    "4.0": "assets/areas/4.0.png",
+    "abyssalloadingscreen": "assets/areas/abyssalloadingscreen.png",
+    "act3sacrifice": "assets/areas/act3sacrifice.png",
+    "act4sailing": "assets/areas/act4sailing.png",
+    "act4trade": "assets/areas/act4trade.png",
+    "alternatewellofsoulsloadingscreen": "assets/areas/alternatewellofsoulsloadingscreen.png",
+    "atlasloadingscreen": "assets/areas/atlasloadingscreen.png",
+    "atziriloadingscreen": "assets/areas/atziriloadingscreen.png",
+    "breachhub": "assets/areas/breachhub.png",
+    "caravan": "assets/areas/caravan.png",
+    "caravanlandscape": "assets/areas/caravanlandscape.png",
+    "chaostempletrial": "assets/areas/chaostempletrial.png",
+    "deliriumhub": "assets/areas/deliriumhub.png",
+    "divinity": "assets/areas/divinity.png",
+    "fallenstar": "assets/areas/fallenstar.png",
+    "graveyard": "assets/areas/graveyard.png",
+    "helenahideout": "assets/areas/helenahideout.png",
+    "monolith": "assets/areas/monolith.png",
+    "oldforest": "assets/areas/oldforest.png",
+    "ritualhub": "assets/areas/ritualhub.png",
+    "seethingchyme": "assets/areas/seethingchyme.png",
+    "shapermaps": "assets/areas/shapermaps.png",
+    "trialofsekhemas": "assets/areas/trialofsekhemas.png",
+    "village": "assets/areas/village.png"
+  },
+  "bossIcons": {
+    "Asinia, Praetor Consort": "assets/bosses/worldmapcontentasinia.png",
+    "Azarian, the Forsaken Son": "assets/bosses/worldmapcontentforsakenson.png",
+    "Balbala, the Traitor": "assets/bosses/worldmapcontentbalbala.png",
+    "Blackjaw, the Remnant": "assets/bosses/worldmapcontentblackjaw.png",
+    "Bloated Miller": "assets/bosses/worldmapcontentbloatedmiller.png",
+    "Candlemass": "assets/bosses/worldmapcontentcandlemass.png",
+    "Doryani, Royal Thaumaturge": "assets/bosses/worldmapcontentdoryani.png",
+    "Draven, Eternal Praetor": "assets/bosses/worldmapcontentdraven.png",
+    "Ekbab, Ancient Steed": "assets/bosses/worldmapcontentekbab.png",
+    "Gerung, the Brambleghast": "assets/bosses/worldmapcontentbrambleghast.png",
+    "Ignagduk, the Bog Witch": "assets/bosses/worldmapcontentignagduk.png",
+    "Kabala, Constrictor Queen": "assets/bosses/worldmapcontentkabala.png",
+    "Ketzuli, High Priest of the Sun": "assets/bosses/worldmapcontentketzuli.png",
+    "Lachlann of Endless Lament": "assets/bosses/worldmapcontentlachlann.png",
+    "Mektul, the Forgemaster": "assets/bosses/worldmapcontentmektul.png",
+    "Mighty Silverfist": "assets/bosses/worldmapcontentsilverback.png",
+    "Queen of Filth": "assets/bosses/worldmapcontentthequeenoffilth.png",
+    "Rathbreaker": "assets/bosses/worldmapcontentrathbreaker.png",
+    "Rootdredge": "assets/bosses/worldmapcontentrootdredge.png",
+    "Rudja, the Dread Engineer": "assets/bosses/worldmapcontentrudja.png",
+    "The Crowbell": "assets/bosses/worldmapcontentcrowbell.png",
+    "The Devourer": "assets/bosses/worldmapcontentdevourer.png",
+    "The Executioner": "assets/bosses/worldmapcontentexecutioner.png",
+    "The Rust King": "assets/bosses/worldmapcontentrustking.png",
+    "Tor Gul, the Defiler": "assets/bosses/worldmapcontenttorgul.png",
+    "Viper Napuatzi": "assets/bosses/worldmapcontentvipernapuatzi.png",
+    "Xylucian, the Chimera": "assets/bosses/worldmapcontentxyclucian.png",
+    "Zalmarath, the Colossus": "assets/bosses/worldmapcontentthecolossus.png",
+    "Zicoatl, Warden of the Core": "assets/bosses/worldmapcontentzicoatl.png",
+    "Yama, the White": "assets/bosses/yama.png",
+    "Scourge of the Skies": "assets/bosses/scourge.png",
+    "Tavakai, the Chieftain": "assets/bosses/tavaki.png",
+    "Omniphobia, Fear Manifest": "assets/bosses/omniphobia.png",
+    "The King in the Mists": "assets/bosses/king-in-the-mists.png"
+  }
+}
