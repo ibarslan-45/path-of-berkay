@@ -203,5 +203,32 @@ check('Fire Damage property', w.properties.some((p) => p.label === 'Fire Damage'
 check('Crit property', w.properties.some((p) => p.label === 'Critical Hit Chance'))
 check('explicit count = 2', w.explicits.length === 2, w.explicits.length)
 
+console.log('\nÖrnek 9 — Advanced Mod Descriptions (açık) → { ... } satırları atlanır, kind ipucu uygulanır:')
+const ADV = `Item Class: Rings
+Rarity: Rare
+Hypnotic Whorl
+Sapphire Ring
+--------
+Item Level: 81
+--------
+{ Implicit Modifier }
++22% to Cold Resistance (implicit)
+--------
+{ Prefix Modifier "Athlete's" (Tier: 2) — Life }
++95 to maximum Life
+{ Suffix Modifier "of the Walrus" (Tier: 3) — Cold }
++34% to Cold Resistance
+{ Master Crafted Prefix Modifier "Upgraded" (Rank: 1) }
++1 to Level of all Fire Spell Skills
+{ Fractured Suffix Modifier "of the Bear" (Tier: 1) }
++25 to Strength`
+const adv = parseClipboard(ADV)!
+check('1 implicit (annotation atlandı)', adv.implicits.length === 1, adv.implicits.length)
+check('4 explicit (4 annotation atlandı)', adv.explicits.length === 4, adv.explicits.length)
+check('hiçbir mod metni "Modifier"/"{" içermez', !adv.explicits.concat(adv.implicits).some((m) => /Modifier|\{|Tier:|Rank:/.test(m.text)))
+check('crafted inline etiket olmadan tespit', adv.explicits.some((m) => m.kind === 'crafted' && /Fire Spell/.test(m.text)))
+check('fractured annotation’dan + fractured=true', adv.fractured === true && adv.explicits.some((m) => m.kind === 'fractured' && /Strength/.test(m.text)))
+check('Life mod düz explicit', adv.explicits.some((m) => m.kind === 'explicit' && /maximum Life/.test(m.text)))
+
 console.log(`\nSONUÇ: ${pass} geçti, ${fail} kaldı`)
 process.exit(fail ? 1 : 0)

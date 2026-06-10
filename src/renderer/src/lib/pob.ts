@@ -15,6 +15,7 @@ export interface PobGem {
 export interface PobSkillGroup {
   label: string
   mainActiveSkill: number
+  slot?: string // soketlendiği slot adı (PoB); "… Swap" → silah seti 2
   gems: PobGem[]
 }
 export interface PobSkillSet {
@@ -147,6 +148,8 @@ export function parsePob(xml: string): PobBuild {
         groups.push({
           label: attr(skillOpen, 'label'),
           mainActiveSkill: num(skillOpen, 'mainActiveSkill', 1),
+          // soketlendiği slot (ör. "Weapon 1", "Weapon 1 Swap") → silah seti 1/2 türetilir
+          slot: attr(skillOpen, 'slot') || undefined,
           gems
         })
       }

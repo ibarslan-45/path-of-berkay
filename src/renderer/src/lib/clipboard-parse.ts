@@ -128,6 +128,16 @@ function stripKindTag(line: string): { text: string; kind: ModKind | null } {
   return { text: line.slice(0, m.index).trimEnd(), kind: kind as ModKind }
 }
 
+// "Advanced Mod Descriptions" açıklama satırından ({ Master Crafted Suffix Modifier ... }) mod türü ipucu.
+function annotationKind(line: string): ModKind {
+  if (/crafted/i.test(line)) return 'crafted'
+  if (/fractured/i.test(line)) return 'fractured'
+  if (/enchant/i.test(line)) return 'enchant'
+  if (/\brune\b/i.test(line)) return 'rune'
+  if (/implicit/i.test(line)) return 'implicit'
+  return 'explicit' // Prefix/Suffix Modifier
+}
+
 function countSockets(socketText: string): number {
   // PoE2 soketleri harf/simge + ayraç (G-B-G veya "S S S"). Boş olmayan jeton sayısı.
   const toks = socketText.split(/[\s\-|,]+/).filter((t) => t && t !== '-')
@@ -299,9 +309,18 @@ export function parseClipboard(raw: string): ParsedItem | null {
     }
 
     // Aksi halde: mod satırları (implicit/crafted/fractured/rune/enchant/explicit)
+    // "Advanced Mod Descriptions" AÇIK iken her mod'dan önce { ... Modifier ... } açıklama satırı
+    // gelir (tier/affix/crafted bilgisi). Bu satır mod DEĞİLDİR → atlanır; ama bir sonraki mod'un
+    // türü için ipucu verir (advanced modda inline (crafted)/(fractured) etiketi olmayabilir).
+    let pendingKind: ModKind | null = null
     for (const ln of lines) {
       const t = ln.trim()
       if (!t) continue
+      // advanced mod açıklama satırı: { ... } — türü çıkar, satırı mod havuzuna KOYMA
+      if (/^\{.*\}$/.test(t)) {
+        pendingKind = annotationKind(t)
+        continue
+      }
       // durum/not satırları: mod havuzuna karıştırma
       if (/^Corrupted$/i.test(t)) {
         item.corrupted = true
@@ -324,11 +343,13 @@ export function parseClipboard(raw: string): ParsedItem | null {
         continue
       }
       const { text: clean, kind } = stripKindTag(t)
-      if (kind === 'implicit') item.implicits.push({ text: clean, kind })
-      else if (kind === 'enchant') item.enchants.push({ text: clean, kind })
+      const effKind = kind ?? pendingKind // inline etiket öncelikli; yoksa açıklama satırı ipucu
+      pendingKind = null
+      if (effKind === 'implicit') item.implicits.push({ text: clean, kind: 'implicit' })
+      else if (effKind === 'enchant') item.enchants.push({ text: clean, kind: 'enchant' })
       else {
-        if (kind === 'fractured') item.fractured = true
-        item.explicits.push({ text: clean, kind: kind ?? 'explicit' })
+        if (effKind === 'fractured') item.fractured = true
+        item.explicits.push({ text: clean, kind: effKind ?? 'explicit' })
       }
     }
   }

@@ -28,13 +28,20 @@ const props = defineProps<{
   allocated?: number[]
   /** Aşama-progresif: bu node'lar "bu aşamada YENİ eklendi" → amber vurgu (allocated alt-kümesi). */
   highlight?: number[]
+  /** #3: "elde ettim" işaretli node'lar → yeşil halka (allocated içinden tıklanarak işaretlenir). */
+  done?: number[]
+  /** Tıkla-işaretle açık mı (allocated bir node'a tıklayınca toggle-node emit edilir). */
+  markable?: boolean
 }>()
+const emit = defineEmits<{ (e: 'toggle-node', id: number): void }>()
 const { t } = useI18n()
 
 // Build vurgu seti (verilince ayrılmış node'lar teal vurgulanır)
 const allocSet = computed<Set<number>>(() => new Set(props.allocated ?? []))
 // "Bu aşamada yeni eklenen" node'lar (amber halka ile öne çıkar)
 const hlSet = computed<Set<number>>(() => new Set(props.highlight ?? []))
+// #3: "elde ettim" işaretli node'lar (yeşil halka)
+const doneSet = computed<Set<number>>(() => new Set(props.done ?? []))
 
 // --- veri yapıları ---
 type CNode = [number, number, number, number, string | null, string | null]
@@ -174,6 +181,7 @@ watch(matched, () => requestDraw())
 watch(() => props.isTr, () => requestDraw())
 watch(allocSet, () => { fitToAllocated(); requestDraw() })
 watch(hlSet, () => requestDraw())
+watch(doneSet, () => requestDraw())
 
 /** Kamerayı ayrılmış node'ların etrafına sığdır (build önizleme). */
 function fitToAllocated(): void {
@@ -287,6 +295,7 @@ function draw(): void {
   const mset = matched.value
   const aset = allocSet.value
   const hset = hlSet.value
+  const dset = doneSet.value
   const allocActive = aset.size > 0
 
   // görünür dünya dikdörtgeni (kenar payı)
@@ -405,6 +414,15 @@ function draw(): void {
       c.strokeStyle = isHover ? '#ffffff' : isNew ? '#ffcf6a' : isAlloc ? '#5fd0bf' : '#e7b478'
       c.stroke()
     }
+    // #3: "elde ettim" işaretli node → belirgin YEŞİL halka
+    if (isAlloc && dset.has(n[0])) {
+      c.globalAlpha = 1
+      c.beginPath()
+      c.arc(sx, sy, r + Math.max(3, r * 0.42), 0, Math.PI * 2)
+      c.lineWidth = 3
+      c.strokeStyle = '#6fdf5a'
+      c.stroke()
+    }
   }
   c.globalAlpha = 1
 }
@@ -413,10 +431,12 @@ function draw(): void {
 let dragging = false
 let lastX = 0
 let lastY = 0
+let downX = 0
+let downY = 0
 function onMouseDown(e: MouseEvent): void {
   dragging = true
-  lastX = e.clientX
-  lastY = e.clientY
+  lastX = downX = e.clientX
+  lastY = downY = e.clientY
 }
 function onMouseMove(e: MouseEvent): void {
   const rect = canvas.value!.getBoundingClientRect()
@@ -448,7 +468,15 @@ function onMouseMove(e: MouseEvent): void {
     requestDraw()
   }
 }
-function onMouseUp(): void { dragging = false }
+function onMouseUp(e: MouseEvent): void {
+  dragging = false
+  // #3: küçük hareket (sürükleme değil) + ayrılmış bir node üzerindeyse "elde ettim" toggle
+  if (!props.markable) return
+  const dist = Math.hypot(e.clientX - downX, e.clientY - downY)
+  if (dist < 5 && hover.value != null && allocSet.value.has(hover.value)) {
+    emit('toggle-node', hover.value)
+  }
+}
 function onMouseLeave(): void { dragging = false; hover.value = null; tip.value = null; requestDraw() }
 function onWheel(e: WheelEvent): void {
   e.preventDefault()

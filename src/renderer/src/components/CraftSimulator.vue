@@ -721,13 +721,14 @@ onMounted(() => {
 // --- Part 5: build eşyasından gelen "Craft'la" tohumunu uygula (SOL=taban, SAĞ=hedef modlar) ---
 const seedSource = ref<CraftSeedItem | null>(null) // gösterim için orijinal build eşyası
 const seedUnmatched = ref<string[]>([])
-const seedNotice = ref<{ baseEn: string; matched: number; unmatched: number } | null>(null)
+const seedNotice = ref<{ baseEn: string; matched: number; unmatched: number; suggested: boolean } | null>(null)
 function applyCraftSeed(it: CraftSeedItem): void {
   const seed = craftSeedFromItem(it)
   seedSource.value = it
   seedUnmatched.value = seed.unmatched
+  // baseEn artık item-class tahminiyle de dolabilir (baseSuggested) — selClass SIM sınıfı listede olmalı.
   if (seed.baseEn && seed.itemClass && classes.value.includes(seed.itemClass)) {
-    // SOL taraf: bu eşyanın SAF/beyaz tabanı (implicit base ile gelir)
+    // SOL taraf: bu eşyanın SAF/beyaz tabanı (kesin VEYA tahmini; kullanıcı taban kutusundan düzeltebilir)
     selClass.value = seed.itemClass
     selBaseEn.value = seed.baseEn
     ilvl.value = seed.ilvl
@@ -738,7 +739,7 @@ function applyCraftSeed(it: CraftSeedItem): void {
     saveCraft()
     craftMode.value = 'currency'
   }
-  seedNotice.value = { baseEn: seed.baseEn || '', matched: seed.matched.length, unmatched: seed.unmatched.length }
+  seedNotice.value = { baseEn: seed.baseEn || '', matched: seed.matched.length, unmatched: seed.unmatched.length, suggested: seed.baseSuggested }
 }
 // mount'ta bekleyen tohumu tüket (CraftSimulator v-if ile her aktifleşmede yeniden mount olur)
 onMounted(() => {
@@ -874,13 +875,14 @@ function parts(text: string): { t: string; num: boolean }[] {
       <div class="cs-seed-main">
         <span class="cs-seed-ic">⚒</span>
         <template v-if="seedNotice.baseEn">
-          <b>{{ seedSource?.pureBase || seedSource?.base }}</b>
+          <b>{{ seedNotice.suggested ? seedNotice.baseEn : (seedSource?.pureBase || seedSource?.base) }}</b>
           {{ tr('build’den yüklendi — taban soldaki, hedef modlar sağdaki Hedef Eşya’da.', 'loaded from build — base on the left, target mods in the Target panel on the right.') }}
+          <span v-if="seedNotice.suggested" class="cs-seed-stat cs-seed-stat--warn">{{ tr('tahmini taban — taban kutusundan düzelt', 'estimated base — fix it in the Base box') }}</span>
           <span class="cs-seed-stat">{{ seedNotice.matched }} {{ tr('hedef', 'targets') }}</span>
           <span v-if="seedNotice.unmatched" class="cs-seed-stat cs-seed-stat--warn">{{ seedNotice.unmatched }} {{ tr('eşleşmedi', 'unmatched') }}</span>
         </template>
         <template v-else>
-          {{ tr('Bu eşyanın tabanı simülatörde yok (ör. Mobalytics genel sınıf) — elle taban seç.', 'This item’s base isn’t in the simulator (e.g. Mobalytics generic class) — pick a base manually.') }}
+          {{ tr('Bu eşyanın tabanı/sınıfı simülatörde bulunamadı — elle taban seç.', 'This item’s base/class isn’t in the simulator — pick a base manually.') }}
         </template>
         <button class="cs-seed-x" @click="dismissSeedNotice">✕</button>
       </div>

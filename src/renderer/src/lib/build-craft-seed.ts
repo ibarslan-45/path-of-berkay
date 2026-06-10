@@ -17,6 +17,7 @@ import {
 export interface CraftSeedItem {
   base: string // saf taban adı (pureBase tercih)
   pureBase?: string
+  name?: string // eşya adı (unique adı / rare adı) — taban bulunamazsa aday
   itemClass?: string | null
   rarity?: string
   mods: string[]
@@ -24,9 +25,10 @@ export interface CraftSeedItem {
 }
 
 export interface CraftSeed {
-  baseEn: string | null // SIM_BASES'te eşleşen taban (yoksa null)
+  baseEn: string | null // SIM_BASES'te kullanılacak taban (kesin eşleşme VEYA tahmin)
   itemClass: string | null // taban sınıfı (selClass için)
   ilvl: number
+  baseSuggested: boolean // taban tam eşleşmedi → item-class'tan TAHMİN edildi (kullanıcı düzeltebilir)
   targets: TargetEntry[] // eşleşen hedef modlar (advisor besler)
   matched: Array<{ line: string; group: string; tier: number }>
   unmatched: string[] // eşlenemeyen mod satırları (dürüst işaret)
@@ -49,15 +51,36 @@ function normBase(s: string): string {
   return (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim()
 }
 
+// taban adı önek gürültüsü (kalite/etki kelimeleri) — eşleme öncesi soyulur
+const BASE_NOISE = /\b(superior|synthesised|synthesized|fractured|mirrored)\b/gi
+
 const baseByName = new Map<string, SimBase>()
 for (const b of SIM_BASES) {
   const k = normBase(b.en)
   if (k && !baseByName.has(k)) baseByName.set(k, b)
 }
 
-/** Saf taban adından SIM_BASES eşleşmesi (tam ad → içerme fallback). */
+// item-class normalize: küçük harf, sondaki 's' tekille ("Body Armours"→"body armour", "Rings"→"ring")
+function normClass(s: string): string {
+  return (s || '').toLowerCase().replace(/[^a-z ]/g, '').replace(/\s+/g, ' ').trim().replace(/s$/, '')
+}
+const basesByClass = new Map<string, SimBase[]>()
+for (const b of SIM_BASES) {
+  const k = normClass(b.item_class)
+  if (!basesByClass.has(k)) basesByClass.set(k, [])
+  basesByClass.get(k)!.push(b)
+}
+/** Bir item-class için temsilci taban (en yüksek drop_level = endgame tabanı). Yoksa null. */
+export function representativeBase(itemClass: string | null | undefined): SimBase | null {
+  if (!itemClass) return null
+  const list = basesByClass.get(normClass(itemClass))
+  if (!list || !list.length) return null
+  return [...list].sort((a, b) => b.drop_level - a.drop_level)[0]
+}
+
+/** Saf taban adından SIM_BASES eşleşmesi (tam ad → içerme fallback; kalite önekleri soyulur). */
 export function matchSimBase(pureBase: string): SimBase | null {
-  const k = normBase(pureBase)
+  const k = normBase((pureBase || '').replace(BASE_NOISE, ' '))
   if (!k) return null
   const exact = baseByName.get(k)
   if (exact) return exact
@@ -101,20 +124,35 @@ function tierForValue(group: string, affix: 'prefix' | 'suffix', line: string): 
  * Eşleşmeyen modlar `unmatched` (advisor'a girmez; kullanıcı görür).
  */
 export function craftSeedFromItem(item: CraftSeedItem): CraftSeed {
-  const pure = item.pureBase || item.base || ''
-  const simBase = matchSimBase(pure)
+  // 1) pureBase → base → name sırasıyla SIM tabanı bul (unique adı taban değil → en sonda).
+  let simBase: SimBase | null = null
+  for (const cand of [item.pureBase, item.base, item.name]) {
+    if (!cand) continue
+    simBase = matchSimBase(cand)
+    if (simBase) break
+  }
+  // 2) Hâlâ yoksa item-class'tan TEMSİLCİ taban TAHMİN et (Mobalytics genel sınıf / bilinmeyen taban).
+  let baseSuggested = false
+  if (!simBase) {
+    const rep = representativeBase(item.itemClass)
+    if (rep) {
+      simBase = rep
+      baseSuggested = true
+    }
+  }
   const ilvl = Math.max(1, Math.min(100, item.itemLevel || (simBase ? simBase.drop_level : 80) || 80))
 
   const seed: CraftSeed = {
     baseEn: simBase ? simBase.en : null,
     itemClass: simBase ? simBase.item_class : item.itemClass ?? null,
     ilvl,
+    baseSuggested,
     targets: [],
     matched: [],
     unmatched: []
   }
   if (!simBase) {
-    // taban eşleşmedi → modları hedefe çeviremeyiz (grup tabana bağlı). Hepsi unmatched.
+    // taban da sınıf da eşleşmedi → modları hedefe çeviremeyiz (grup tabana bağlı). Hepsi unmatched.
     seed.unmatched = item.mods.filter((m) => m && !/^\(/.test(m.trim()))
     return seed
   }

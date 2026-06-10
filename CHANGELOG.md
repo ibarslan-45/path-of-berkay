@@ -3,6 +3,15 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.1
+### Hata düzeltmeleri
+- **İşaretlenebilir ilerleme artık kalıcı.** Build görünümündeki tikler (item/stat/gem/support/pasif) kapat-aç'ta korunuyor — 0.17.0'daki sandbox değişikliğinden sonra bir IPC serileştirme hatası tikleri sessizce düşürüyordu; düzeltildi.
+- **Silah seti (Set 1/2) artık gem ve eşyalarda da gösteriliyor.** Pasif ağaçtaki Set 1/2 ayrımına ek olarak; silahlar ve silaha soketli gem'ler "Set 1"/"Set 2" rozetiyle etiketlenir ve üstteki "Silah Seti" filtresiyle süzülür (build 2 silah seti kullanıyorsa).
+- **Pasif ağaçta tıkla-işaretle.** Ağaçtaki bir node'a tıklayarak "elde ettim" (yeşil halka) işaretleyebilirsin; işaret kapat-aç'ta kalır.
+- **Eşyadan Craft'a — taban bulma güçlendirildi.** Unique/genel-sınıf eşyalar için taban artık item-class'tan tahmin edilir (ör. "Body Armours" → uygun bir gövde tabanı); tahminse "tahmini taban — düzelt" notu çıkar ve taban kutusundan değiştirebilirsin.
+- **Build'deki tüm eşyalar görünüyor.** Silah-seti-2 (swap) silahları, flask, jewel ve charm'lar artık tam kart olarak (mod + ikon + işaretleme + Craft) gösteriliyor — eskiden sadece isim olarak görünüp gözden kaçıyordu.
+- **Tam stat yakalama (Advanced Mod Descriptions).** Oyunda "Advanced Mod Descriptions" açıkken kopyalanan eşya metnindeki `{ ... Modifier ... }` açıklama satırları artık mod havuzunu kirletmiyor; crafted/fractured türü bu satırlardan da doğru algılanıyor, böylece değerleme tüm statları kullanıyor.
+
 ## 0.17.0
 ### Güvenlik & kalite
 - **Klasik dişli ayar ikonu.** Başlık çubuğundaki ayar ikonu (eskiden güneş/parlaklık gibi görünüyordu) net, tanınır bir **dişli (cog)** ile değiştirildi; yanında "Ayarlar" etiketi.

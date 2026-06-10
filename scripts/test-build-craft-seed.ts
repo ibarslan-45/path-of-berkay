@@ -2,7 +2,7 @@
  * test-build-craft-seed.ts — build eşyası → Craft Simülatörü tohumu birim testi (saf, ağsız).
  * Çalıştırma: npx tsx scripts/test-build-craft-seed.ts
  */
-import { craftSeedFromItem, matchSimBase } from '../src/renderer/src/lib/build-craft-seed'
+import { craftSeedFromItem, matchSimBase, representativeBase } from '../src/renderer/src/lib/build-craft-seed'
 
 let pass = 0,
   fail = 0
@@ -61,12 +61,25 @@ const seed3 = craftSeedFromItem({
 })
 check('rune satırı hedef/unmatched değil', seed3.targets.length === 1 && seed3.unmatched.length === 0, { t: seed3.targets.length, u: seed3.unmatched })
 
-console.log('\ntaban eşleşmezse modlar unmatched:')
+check('kesin eşleşmede baseSuggested false', seed.baseSuggested === false)
+
+console.log('\ntaban+sınıf hiç eşleşmezse modlar unmatched:')
 const seed4 = craftSeedFromItem({ base: 'Mystery Base', pureBase: 'Mystery Base', mods: ['+45 to maximum Life'] })
 check('baseEn null', seed4.baseEn === null)
+check('baseSuggested false (sınıf da yok)', seed4.baseSuggested === false)
 check('hedef yok', seed4.targets.length === 0)
 check('mod unmatched', seed4.unmatched.length === 1, seed4.unmatched)
 check('ilvl varsayılan (80)', seed4.ilvl === 80, seed4.ilvl)
+
+console.log('\nitem-class TAHMİNİ (Part 4 — genel sınıf / bilinmeyen taban):')
+const repr = representativeBase('Body Armours') // çoğul item-class da eşleşmeli
+check('representativeBase(Body Armours) bir taban verir', !!repr && /Body Armour/i.test(repr!.item_class), repr?.en)
+const seed5 = craftSeedFromItem({ base: 'Body Armour', pureBase: 'Body Armour', itemClass: 'Body Armours', mods: ['+120 to maximum Life'], itemLevel: 84 })
+check('genel sınıf → taban TAHMİN edildi', !!seed5.baseEn && seed5.baseSuggested === true, { b: seed5.baseEn, s: seed5.baseSuggested })
+check('tahminde itemClass = SIM sınıfı', seed5.itemClass === 'Body Armour', seed5.itemClass)
+check('tahminde de hedef mod eşleşir (Life)', seed5.targets.length >= 1, seed5.targets.length)
+// "Superior" öneki soyulur
+check('Superior öneki soyulur', matchSimBase('Superior Sapphire Ring')?.en === 'Sapphire Ring', matchSimBase('Superior Sapphire Ring')?.en)
 
 console.log(`\n${pass} geçti, ${fail} kaldı`)
 process.exit(fail ? 1 : 0)

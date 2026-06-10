@@ -76,7 +76,8 @@ export function commitBuild(raw: PobBuild, meta: BuildMeta, stage: number): void
   trackedStage.value = stage
   clearSlotIfGone(raw)
   try {
-    window.api?.build?.setFull?.({ code: meta.code || '', built: JSON.stringify(raw), meta: { ...meta, stage } })
+    // meta düz (plain) klon olmalı — reactive proxy contextBridge'den geçmez (sandbox/contextIsolation).
+    window.api?.build?.setFull?.({ code: meta.code || '', built: JSON.stringify(raw), meta: JSON.parse(JSON.stringify({ ...meta, stage })) })
   } catch {
     /* serialize/persist hatası build'i bozmasın */
   }
@@ -90,7 +91,7 @@ export function setStage(stage: number): void {
     window.api?.build?.setFull?.({
       code: trackedMeta.value.code || '',
       built: JSON.stringify(buildRef.value),
-      meta: { ...trackedMeta.value, stage }
+      meta: JSON.parse(JSON.stringify({ ...trackedMeta.value, stage }))
     })
   } catch {
     /* yoksay */

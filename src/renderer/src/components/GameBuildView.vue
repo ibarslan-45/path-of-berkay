@@ -9,6 +9,7 @@ import type { PobBuild, PobItem } from '../lib/pob'
 import type { MatchedItem } from '../lib/pob-match'
 import { trackedStage, setStage, requestCraft } from '../lib/build-target'
 import { buildSig, slotProgressId, modProgressId, gemProgressId, nodeProgressId } from '../lib/build-progress'
+import { slotWeaponSet, buildHasWeaponSets } from '../lib/weapon-set'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import gemsData from '../../../data/gems.json'
 import treeData from '../../../data/passive-tree.json'
@@ -58,7 +59,9 @@ onMounted(async () => {
   progress.value = (await window.api?.build?.progressGet?.()) ?? {}
 })
 function persistProgress(): void {
-  window.api?.build?.progressSet?.(progress.value)
+  // ÖNEMLİ: progress.value Vue REAKTİF proxy'sidir; contextBridge (sandbox/contextIsolation)
+  // proxy'yi serileştiremez → düz nesne klonu gönder (yoksa IPC sessizce başarısız, tikler kaydolmaz).
+  window.api?.build?.progressSet?.({ ...progress.value })
 }
 function isDone(id: string): boolean {
   return !!progress.value[id]
@@ -132,6 +135,14 @@ interface GearCell {
   slot: string
   label: string
   item: PobItem | null
+  set: 1 | 2 | null // silah seti (yalnız silah slotları); paylaşılan/silah-dışı = null
+  extra: boolean // kanonik dışı (Flask/Jewel/Charm/Swap silah)
+}
+// swap silah slotuna okunur etiket
+function niceSlotLabel(slot: string): string {
+  if (/weapon 1 swap/i.test(slot)) return props.isTr ? 'Silah (Set 2)' : 'Weapon (Set 2)'
+  if (/weapon 2 swap/i.test(slot)) return props.isTr ? 'Yan El (Set 2)' : 'Offhand (Set 2)'
+  return slot
 }
 // id → eşleşmiş eşya (pureBase/itemClass → Craft tohumu için)
 const matchedById = computed(() => new Map(props.items.map((i) => [i.id, i])))
@@ -142,6 +153,7 @@ function craftItem(item: PobItem | null): void {
   requestCraft({
     base: item.base,
     pureBase: mi?.pureBase || item.base,
+    name: item.name,
     itemClass: mi?.itemClass ?? null,
     rarity: item.rarity,
     mods: item.mods,
@@ -154,23 +166,28 @@ function craftItem(item: PobItem | null): void {
 const activeSlots = computed<Record<string, string>>(
   () => props.raw.stageSlots?.[stageIdx.value] ?? props.raw.slots ?? {}
 )
+// #5: TÜM eşyalar görünür — kanonik slotlar (paper-doll, boşlar dahil) + kanonik DIŞI dolu slotlar
+// (Flask/Jewel/Charm/Swap silah) AYNI tam kartla. Hiçbir eşya gizlenmez.
 const gearCells = computed<GearCell[]>(() => {
   const slots = activeSlots.value
-  return GEAR_SLOTS.map((g) => {
+  const cells: GearCell[] = GEAR_SLOTS.map((g) => {
     const id = slots[g.slot]
-    return { slot: g.slot, label: props.isTr ? g.tr : g.en, item: id ? itemById.value.get(id) ?? null : null }
+    return {
+      slot: g.slot,
+      label: props.isTr ? g.tr : g.en,
+      item: id ? itemById.value.get(id) ?? null : null,
+      set: slotWeaponSet(g.slot),
+      extra: false
+    }
   })
-})
-// kanonik dışı slotlar (Charm/Jewel/Flask vb.) — varsa ayrı göster
-const extraCells = computed<GearCell[]>(() => {
-  const slots = activeSlots.value
   const known = new Set(GEAR_SLOTS.map((g) => g.slot))
-  const out: GearCell[] = []
   for (const [slotName, id] of Object.entries(slots)) {
     if (known.has(slotName)) continue
-    out.push({ slot: slotName, label: slotName, item: itemById.value.get(id) ?? null })
+    const item = itemById.value.get(id) ?? null
+    if (!item) continue
+    cells.push({ slot: slotName, label: niceSlotLabel(slotName), item, set: slotWeaponSet(slotName), extra: true })
   }
-  return out
+  return cells
 })
 // bir gear hücresinin slot + mod id'leri (işaretleme)
 function cellSlotId(c: GearCell): string {
@@ -187,9 +204,9 @@ function toggleSlot(c: GearCell): void {
 }
 // bundled ikonu olmayan ama uzak iconUrl taşıyan eşyalar için CDN ikonlarını önceden çek
 watch(
-  [gearCells, extraCells],
+  [gearCells],
   () => {
-    for (const c of [...gearCells.value, ...extraCells.value]) {
+    for (const c of gearCells.value) {
       if (c.item && !bundledIconById.value.get(c.item.id) && c.item.iconUrl) void ensureRemote(c.item.iconUrl)
     }
   },
@@ -203,6 +220,7 @@ function itemRarityClass(it: PobItem | null): string {
 interface GemView { name: string; level: number; icon: string | null }
 interface GemGroup {
   label: string
+  set: 1 | 2 | null // silaha soketli grup → silah seti; aksi paylaşılan (null)
   actives: GemView[]
   supports: GemView[]
 }
@@ -211,6 +229,7 @@ const gemGroups = computed<GemGroup[]>(() => {
   return groups
     .map((grp) => ({
       label: grp.label || '',
+      set: slotWeaponSet(grp.slot),
       actives: grp.gems.filter((g) => !g.support && g.nameSpec).map((g) => ({ name: g.nameSpec, level: g.level, icon: gemIcon(g.nameSpec) })),
       supports: grp.gems.filter((g) => g.support && g.nameSpec).map((g) => ({ name: g.nameSpec, level: g.level, icon: gemIcon(g.nameSpec) }))
     }))
@@ -279,6 +298,11 @@ const minorNodeCount = computed(() => Math.max(0, allocatedNodes.value.length - 
 function nodeDoneId(id: number): string {
   return nodeProgressId(sig.value, id)
 }
+// #3: ağaçta "elde ettim" işaretli (acquired) node id'leri — tıklanınca toggle + kalıcı.
+const acquiredNodeIds = computed<number[]>(() => allocatedNodes.value.filter((id) => isDone(nodeDoneId(id))))
+function onToggleNode(id: number): void {
+  toggleDone(nodeDoneId(id))
+}
 
 // --- Part 4: silah seti (weapon set 1/2) ayrımı (yalnız VARSA) ---
 const setNodes = computed<{ set1: number[]; set2: number[] } | null>(() => {
@@ -287,9 +311,19 @@ const setNodes = computed<{ set1: number[]; set2: number[] } | null>(() => {
   if (!s.set1Nodes.length && !s.set2Nodes.length) return null
   return { set1: s.set1Nodes, set2: s.set2Nodes }
 })
-const hasWeaponSets = computed(() => !!setNodes.value)
+// Part 4/#2: build 2 silah seti kullanıyor mu (pasif set1/2 VEYA swap silah/grup) → Set 1/2 etiketleri
+const hasWeaponSets = computed(() => buildHasWeaponSets(props.raw))
 // ağaçta hangi set vurgulanacak ('all' → aşama-eklenen amber; 'set1'/'set2' → o setin node'ları)
 const setFilter = ref<'all' | 'set1' | 'set2'>('all')
+// setFilter'e göre bir öğe (silah seti) soluk gösterilsin mi? (paylaşılan/null öğeler her zaman görünür)
+function dimForSet(set: 1 | 2 | null): boolean {
+  if (setFilter.value === 'all' || set == null) return false
+  return (setFilter.value === 'set1' ? 1 : 2) !== set
+}
+// kısa rozet metni
+function setBadge(set: 1 | 2 | null): string {
+  return set === 1 ? 'Set 1' : set === 2 ? 'Set 2' : ''
+}
 const treeHighlight = computed<number[]>(() => {
   if (!setNodes.value || setFilter.value === 'all') return addedNodes.value
   return setFilter.value === 'set1' ? setNodes.value.set1 : setNodes.value.set2
@@ -304,7 +338,7 @@ const progressSummary = computed(() => {
     total++
     if (p[id]) done++
   }
-  for (const c of [...gearCells.value, ...extraCells.value]) {
+  for (const c of gearCells.value) {
     if (!c.item) continue
     add(cellSlotId(c))
     for (const mid of cellModIds(c)) add(mid)
@@ -341,12 +375,21 @@ const progressSummary = computed(() => {
       <span class="gv-prog-num">{{ progressSummary.done }} / {{ progressSummary.total }} · {{ progressSummary.pct }}%</span>
     </div>
 
+    <!-- #2: silah seti (weapon set 1/2) filtresi — gear + gem + pasif ağaç hepsine uygulanır (yalnız VARSA) -->
+    <div v-if="hasWeaponSets" class="gv-wset gv-wset--global">
+      <span class="gv-wset-lbl">{{ tr('Silah Seti', 'Weapon Set') }}:</span>
+      <button class="gv-wset-btn" :class="{ 'gv-wset-btn--on': setFilter === 'all' }" @click="setFilter = 'all'">{{ tr('Tümü', 'All') }}</button>
+      <button class="gv-wset-btn gv-wset-btn--s1" :class="{ 'gv-wset-btn--on': setFilter === 'set1' }" @click="setFilter = 'set1'">Set 1</button>
+      <button class="gv-wset-btn gv-wset-btn--s2" :class="{ 'gv-wset-btn--on': setFilter === 'set2' }" @click="setFilter = 'set2'">Set 2</button>
+      <span class="gv-wset-note">{{ tr('silahlar, silaha soketli gem’ler ve sete özel pasifler etiketlenir', 'weapons, weapon-socketed gems and set-specific passives are labeled') }}</span>
+    </div>
+
     <div class="gv-cols">
       <!-- SOL: GEAR paper-doll -->
       <section class="gv-gear panel-frame">
         <div class="gv-sec-head">⚔ {{ tr('Ekipman', 'Equipment') }}</div>
         <div class="gv-gear-grid">
-          <div v-for="(c, i) in gearCells" :key="i" class="gv-slot" :class="[itemRarityClass(c.item), { 'gv-slot--empty': !c.item, 'gv-slot--done': c.item && isDone(cellSlotId(c)) }]">
+          <div v-for="(c, i) in gearCells" :key="i" class="gv-slot" :class="[itemRarityClass(c.item), { 'gv-slot--empty': !c.item, 'gv-slot--done': c.item && isDone(cellSlotId(c)), 'gv-slot--dim': dimForSet(c.set) }]">
             <div class="gv-slot-head">
               <button
                 v-if="c.item"
@@ -358,6 +401,7 @@ const progressSummary = computed(() => {
               <img v-if="itemIcon(c.item)" :src="itemIcon(c.item)!" class="gv-slot-icon" alt="" />
               <span v-else class="gv-slot-icon gv-slot-icon--ph">◇</span>
               <span class="gv-slot-label">{{ c.label }}</span>
+              <span v-if="hasWeaponSets && c.set" class="gv-setbadge" :class="'gv-setbadge--s' + c.set">{{ setBadge(c.set) }}</span>
               <button
                 v-if="c.item"
                 class="gv-craftbtn"
@@ -385,23 +429,14 @@ const progressSummary = computed(() => {
             <div v-else class="gv-slot-empty">{{ tr('boş', 'empty') }}</div>
           </div>
         </div>
-        <!-- charm / jewel / flask -->
-        <template v-if="extraCells.length">
-          <div class="gv-sec-sub">{{ tr('Diğer (Charm / Jewel / Flask)', 'Other (Charm / Jewel / Flask)') }}</div>
-          <div class="gv-gear-grid">
-            <div v-for="(c, i) in extraCells" :key="'x' + i" class="gv-slot gv-slot--sm" :class="itemRarityClass(c.item)">
-              <div class="gv-slot-head"><span class="gv-slot-label">{{ c.label }}</span></div>
-              <div v-if="c.item" class="gv-item-name">{{ c.item.name || c.item.base }}</div>
-            </div>
-          </div>
-        </template>
       </section>
 
       <!-- SAĞ: GEM socket grupları -->
       <section class="gv-gems panel-frame">
         <div class="gv-sec-head">✦ {{ tr('Yetenek Taşları (Socket Grupları)', 'Skill Gems (Socket Groups)') }}</div>
         <div v-if="!gemGroups.length" class="gv-empty">{{ tr('Bu aşamada gem verisi yok', 'No gem data for this stage') }}</div>
-        <div v-for="(grp, i) in gemGroups" :key="i" class="gv-group">
+        <div v-for="(grp, i) in gemGroups" :key="i" class="gv-group" :class="{ 'gv-group--dim': dimForSet(grp.set) }">
+          <div v-if="hasWeaponSets && grp.set" class="gv-group-set" :class="'gv-setbadge--s' + grp.set">{{ setBadge(grp.set) }} {{ tr('(silaha soketli)', '(in weapon)') }}</div>
           <div
             v-for="(a, j) in grp.actives"
             :key="'a' + j"
@@ -445,15 +480,14 @@ const progressSummary = computed(() => {
           <button class="gv-treebtn" @click="showTree = !showTree">{{ showTree ? tr('Gizle', 'Hide') : tr('Ağacı göster', 'Show tree') }}</button>
         </div>
 
-        <!-- Part 4: silah seti (weapon set 1/2) ayrımı — yalnız VARSA -->
-        <div v-if="hasWeaponSets && setNodes" class="gv-wset">
-          <span class="gv-wset-lbl">{{ tr('Silah Seti', 'Weapon Set') }}:</span>
-          <button class="gv-wset-btn" :class="{ 'gv-wset-btn--on': setFilter === 'all' }" @click="setFilter = 'all'">{{ tr('Tümü', 'All') }}</button>
-          <button class="gv-wset-btn gv-wset-btn--s1" :class="{ 'gv-wset-btn--on': setFilter === 'set1' }" @click="setFilter = 'set1'">Set 1 · {{ setNodes.set1.length }}</button>
-          <button class="gv-wset-btn gv-wset-btn--s2" :class="{ 'gv-wset-btn--on': setFilter === 'set2' }" @click="setFilter = 'set2'">Set 2 · {{ setNodes.set2.length }}</button>
-          <span class="gv-wset-note">{{ tr('Bu aşamada sete özel pasifler', 'Set-specific passives this stage') }}</span>
+        <!-- Part 4: sete özel pasif node sayısı (yalnız passive set verisi varsa) -->
+        <div v-if="setNodes && setFilter !== 'all'" class="gv-wset-note gv-wset-note--tree">
+          {{ setFilter === 'set1' ? 'Set 1' : 'Set 2' }}: {{ (setFilter === 'set1' ? setNodes.set1 : setNodes.set2).length }} {{ tr('sete özel pasif (amber)', 'set-specific passives (amber)') }}
         </div>
 
+        <div v-if="showTree" class="gv-treehint">
+          {{ tr('İpucu: ağaçtaki bir node’a tıkla → "elde ettim" (yeşil) işaretle; kapat-aç’ta kalır.', 'Tip: click a node on the tree → mark as acquired (green); persists across restarts.') }}
+        </div>
         <PassiveTreeCanvas
           v-if="showTree"
           class="gv-treehost"
@@ -461,6 +495,9 @@ const progressSummary = computed(() => {
           :is-tr="isTr"
           :allocated="allocatedNodes"
           :highlight="treeHighlight"
+          :done="acquiredNodeIds"
+          :markable="true"
+          @toggle-node="onToggleNode"
         />
 
         <!-- Part 2: kayda değer (notable/keystone) node işaretleme -->
@@ -958,5 +995,51 @@ const progressSummary = computed(() => {
 .gv-wset-note {
   font-size: 10.5px;
   color: var(--text-muted);
+}
+.gv-treehint {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin: 4px 0 2px;
+}
+.gv-wset--global {
+  margin: 2px 0 4px;
+  padding: 4px 6px;
+  border: 1px solid rgba(184, 154, 102, 0.25);
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.18);
+}
+.gv-wset-note--tree {
+  margin: 4px 0;
+}
+/* #2: silah seti rozeti (gear + gem) */
+.gv-setbadge {
+  font-size: 9.5px;
+  font-weight: 700;
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+  padding: 0 5px;
+  border-radius: 2px;
+  flex: none;
+}
+.gv-setbadge--s1 {
+  color: #2a1f08;
+  background: linear-gradient(#e0b46a, #c89446);
+}
+.gv-setbadge--s2 {
+  color: #0a1828;
+  background: linear-gradient(#7fb0e0, #4f88c8);
+}
+.gv-slot--dim,
+.gv-group--dim {
+  opacity: 0.32;
+}
+.gv-group-set {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  font-variant: small-caps;
+  padding: 0 6px;
+  border-radius: 2px;
+  margin-bottom: 5px;
 }
 </style>

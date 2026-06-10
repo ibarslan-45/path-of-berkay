@@ -608,6 +608,7 @@ function craftFromItem(it: MatchedItem): void {
   requestCraft({
     base: it.base,
     pureBase: it.pureBase,
+    name: it.name,
     itemClass: it.itemClass,
     rarity: it.rarity,
     mods: it.mods,
