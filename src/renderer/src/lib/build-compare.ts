@@ -7,9 +7,38 @@
 //   + toplam yakınlık skoru (eşleşen sayısı × değer yakınlığı, dürüst).
 
 import modsData from '../../../data/mods.json'
+import itemsData from '../../../data/items.json'
 import { matchStat, valueFromLine, type QueryItem, type QueryMod } from './trade-query'
 import { modToPattern } from './clipboard-parse'
 import type { PobItem } from './pob'
+
+// 0.18.2: trade2 GEÇERLİ tam base adları (items.json `en`). "Recurve Bow" geçerli; "Bow"/"Ring" (kategori) DEĞİL.
+const VALID_BASE_TYPES = new Set<string>()
+for (const r of itemsData as Array<{ en?: string }>) if (r.en) VALID_BASE_TYPES.add(r.en.toLowerCase())
+function isValidBaseType(s: string): boolean {
+  return VALID_BASE_TYPES.has((s || '').trim().toLowerCase())
+}
+// item sınıfı/kategori adı → trade2 type_filters kategori opsiyonu (CANLI doğrulı: bow/crossbow/quiver/ring;
+// armour.*/accessory.* standart). Bilinmeyen sınıf → undefined (type DÜŞER, yalnız stat — yine GEÇERLİ).
+const CLASS_TO_CATEGORY: Record<string, string> = {
+  bow: 'weapon.bow',
+  crossbow: 'weapon.crossbow',
+  quiver: 'armour.quiver',
+  shield: 'armour.shield',
+  focus: 'armour.focus',
+  buckler: 'armour.buckler',
+  helmet: 'armour.helmet',
+  'body armour': 'armour.chest',
+  'body armor': 'armour.chest',
+  gloves: 'armour.gloves',
+  boots: 'armour.boots',
+  ring: 'accessory.ring',
+  amulet: 'accessory.amulet',
+  belt: 'accessory.belt'
+}
+function categoryForBase(base: string): string | undefined {
+  return CLASS_TO_CATEGORY[(base || '').trim().toLowerCase()]
+}
 
 // mods.json: EN '#' kalıbı -> TR şablonu (iki dilli gösterim için)
 const trByKey = new Map<string, string>()
@@ -61,10 +90,19 @@ export function pobItemToQueryItem(it: PobItem): { qi: QueryItem; searchableMods
  * etkin bırakırız (kullanıcı trade'de daraltabilir). pureBase varsa taban olarak onu kullanır.
  */
 export function buildItemTradeQuery(it: PobItem & { pureBase?: string }, maxMods = 3): QueryItem {
-  const { qi } = pobItemToQueryItem({ ...it, base: it.pureBase || it.base })
+  const base = it.pureBase || it.base
+  const { qi } = pobItemToQueryItem({ ...it, base })
+  // 0.18.2 KÖK NEDEN FİX: base GEÇERLİ tam base değilse (Mobalytics'te "Bow"/"Ring" gibi KATEGORİ) `type`
+  // trade2'de 400 "Unknown item base type" → tüm arama geçersiz. type'ı DÜŞÜR, kategori filtresine geç
+  // (varsa); yoksa yalnız stat ara. q JSON her durumda yapısal GEÇERLİ.
+  if (qi.baseType && !isValidBaseType(qi.baseType)) {
+    qi.category = categoryForBase(qi.baseType)
+    qi.baseType = ''
+  }
+  // GEVŞEK: yalnız ilk birkaç DOĞRULANMIŞ stat-id'li mod etkin (çözülemeyen mod zaten matched=false → sorguya girmez).
   let kept = 0
   for (const m of qi.mods) {
-    if (m.matched && kept < maxMods) {
+    if (m.matched && m.statId && kept < maxMods) {
       m.enabled = true
       kept++
     } else {

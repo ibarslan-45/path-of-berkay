@@ -3,6 +3,11 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.18.2
+### Hata düzeltmeleri
+- **Build eşyasında "Trade'de Ara" artık gerçekten çalışıyor.** Build eşyalarının taban adı bir kategoriydi ("Bow", "Body Armour") ve trade bunu geçersiz sayıp tüm aramayı reddediyordu ("search is no longer valid"). Artık geçerli tam taban varsa o, yoksa kategori filtresi (ör. yay → bow kategorisi) kullanılır; arama hatasız açılır. Canlı doğrulandı (yay, ok kılıfı, zırh, yüzük, kolye → geçerli sonuç).
+- **Yalnızca çözülen modlar sorguya eklenir.** Eşleşmeyen modlar atlanır; sorgu her durumda geçerli kalır.
+
 ## 0.18.1
 ### Hata düzeltmeleri
 - **Trade açılışı düzeltildi ("search is no longer valid").** Trade artık her zaman GÜNCEL aktif lig ile açılır (sabit/eski lig kullanılmıyordu); fiyat-kontrolüyle aynı çalışan yol kullanılır. Canlı doğrulandı: gerçek bow sorgusu geçerli sonuç döndürüyor.

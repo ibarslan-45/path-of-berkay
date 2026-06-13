@@ -283,17 +283,23 @@ export function buildTradeQuery(qi: QueryItem, opts: BuildQueryOpts = {}): {
     status: { option: onlineOnly ? 'online' : 'any' }
   }
   // Rare/Magic'te isim aranmaz (rastgele). Unique'te isim, aksi halde taban "type".
+  // 0.18.2: `type` YALNIZ GEÇERLİ TAM base ise konur (ör. "Recurve Bow"); kategori adı ("Bow") trade2'de
+  // "Unknown item base type" (400) verir → onun yerine `category` (type_filters) kullanılır (aşağıda).
   if (qi.rarity === 'Unique' && qi.name) query.name = qi.name
   else if (qi.baseType) query.type = qi.baseType
 
   if (filters.length) query.stats = [{ type: 'and', filters }]
   else query.stats = [{ type: 'and', filters: [] }]
 
+  const fl: Record<string, { filters: Record<string, unknown> }> = {}
   // misc_filters: ilvl (alt sınır) + 0.18.0 SOKET SAYISI (kullanıcı "Soket: N" açtıysa; rune statı yerine).
   const misc: Record<string, { min?: number }> = {}
   if (opts.ilvlMin !== false && typeof qi.itemLevel === 'number') misc.ilvl = { min: Math.max(1, qi.itemLevel - 2) }
   if (qi.socketFilter && typeof qi.sockets === 'number' && qi.sockets > 0) misc.sockets = { min: qi.sockets }
-  if (Object.keys(misc).length) query.filters = { misc_filters: { filters: misc } }
+  if (Object.keys(misc).length) fl.misc_filters = { filters: misc }
+  // type_filters.category — base tam base değilken kategoriyle daralt (canlı doğrulı: weapon.bow/armour.quiver/accessory.ring…)
+  if (qi.category) fl.type_filters = { filters: { category: { option: qi.category } } }
+  if (Object.keys(fl).length) query.filters = fl
 
   return {
     body: { query, sort: { price: 'asc' } },
