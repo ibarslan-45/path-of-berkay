@@ -18,6 +18,8 @@ import { execSync, execFile } from 'child_process'
 import { createHash } from 'crypto'
 import areasData from '../data/areas.json'
 import { nextAllowedFromHeaders, searchPathCandidates } from './poe-rate'
+// 0.17.4: Ctrl+C gibi OS-kritik accel'leri ASLA global bağlama (sistem kopyalaması serbest kalsın).
+import { sanitizeShortcut } from './shortcut-sanitize'
 import { buildLlmRequest, parseLlmResponse, notesCacheKey, chunkNotes, DEFAULT_MODELS, type LlmProvider } from './llm'
 import { autoUpdater } from 'electron-updater'
 import { UPDATE } from '../config/update'
@@ -294,14 +296,15 @@ function loadSettings(): void {
       const pc = raw.priceCheck
       appSettings.priceCheck = {
         enabled: pc.enabled !== false,
-        shortcut: typeof pc.shortcut === 'string' && pc.shortcut ? pc.shortcut : 'CommandOrControl+D'
+        // Ctrl+C gibi yasaklı accel kayıtlıysa güvenli varsayılana düş (sistem kopyalaması serbest kalsın).
+        shortcut: sanitizeShortcut(typeof pc.shortcut === 'string' ? pc.shortcut : '', 'CommandOrControl+D')
       }
     }
     if (raw && raw.dangerCheck) {
       const dc = raw.dangerCheck
       appSettings.dangerCheck = {
         enabled: dc.enabled !== false,
-        shortcut: typeof dc.shortcut === 'string' && dc.shortcut ? dc.shortcut : 'CommandOrControl+E'
+        shortcut: sanitizeShortcut(typeof dc.shortcut === 'string' ? dc.shortcut : '', 'CommandOrControl+E')
       }
     }
     if (raw && typeof raw.autoCopy === 'boolean') appSettings.autoCopy = raw.autoCopy
@@ -314,6 +317,13 @@ function loadSettings(): void {
     }
     if (raw && typeof raw.firstRunDone === 'boolean') appSettings.firstRunDone = raw.firstRunDone
     if (raw && typeof raw.lastSeenVersion === 'string') appSettings.lastSeenVersion = raw.lastSeenVersion
+    // Yasaklı kısayol (ör. eski Ctrl+C) dosyada kaldıysa düzeltilmiş hâlini KALICI yaz (bir daha bağlanmasın).
+    const rawPc = raw && raw.priceCheck && typeof raw.priceCheck.shortcut === 'string' ? raw.priceCheck.shortcut : ''
+    const rawDc = raw && raw.dangerCheck && typeof raw.dangerCheck.shortcut === 'string' ? raw.dangerCheck.shortcut : ''
+    if ((rawPc && rawPc !== appSettings.priceCheck.shortcut) || (rawDc && rawDc !== appSettings.dangerCheck.shortcut)) {
+      console.log('[shortcut] yasaklı kısayol düzeltildi → kalıcı yazılıyor')
+      saveSettings()
+    }
   } catch {
     // yok
   }
@@ -1469,9 +1479,13 @@ function registerLevelingIpc(): void {
         priceShortcutChanged = true
         if (!pp.enabled) priceWindow?.hide()
       }
-      if (typeof pp.shortcut === 'string' && pp.shortcut && pp.shortcut !== appSettings.priceCheck.shortcut) {
-        appSettings.priceCheck.shortcut = pp.shortcut
-        priceShortcutChanged = true
+      if (typeof pp.shortcut === 'string' && pp.shortcut) {
+        // Ctrl+C gibi yasaklı accel'i reddet (sistem kopyalamasını engellemesin) → Ctrl+D'ye düş.
+        const sane = sanitizeShortcut(pp.shortcut, 'CommandOrControl+D')
+        if (sane !== appSettings.priceCheck.shortcut) {
+          appSettings.priceCheck.shortcut = sane
+          priceShortcutChanged = true
+        }
       }
     }
     let dangerShortcutChanged = false
@@ -1482,9 +1496,12 @@ function registerLevelingIpc(): void {
         dangerShortcutChanged = true
         if (!dp.enabled) dangerWindow?.hide()
       }
-      if (typeof dp.shortcut === 'string' && dp.shortcut && dp.shortcut !== appSettings.dangerCheck.shortcut) {
-        appSettings.dangerCheck.shortcut = dp.shortcut
-        dangerShortcutChanged = true
+      if (typeof dp.shortcut === 'string' && dp.shortcut) {
+        const sane = sanitizeShortcut(dp.shortcut, 'CommandOrControl+E')
+        if (sane !== appSettings.dangerCheck.shortcut) {
+          appSettings.dangerCheck.shortcut = sane
+          dangerShortcutChanged = true
+        }
       }
     }
     if (typeof patch.autoCopy === 'boolean') appSettings.autoCopy = patch.autoCopy
@@ -1875,7 +1892,9 @@ function applyPriceShortcut(): void {
     console.log('[price] kısayol kapalı (ayar)')
     return
   }
-  const accel = appSettings.priceCheck.shortcut
+  // Defans: Ctrl+C asla bağlanmasın (sistem kopyalaması serbest). Yasaklıysa Ctrl+D'ye düş.
+  const accel = sanitizeShortcut(appSettings.priceCheck.shortcut, 'CommandOrControl+D')
+  appSettings.priceCheck.shortcut = accel
   try {
     const ok = globalShortcut.register(accel, () => void showPriceCheck())
     priceShortcutOk = ok
@@ -1952,7 +1971,8 @@ function applyDangerShortcut(): void {
     console.log('[danger] kısayol kapalı (ayar)')
     return
   }
-  const accel = appSettings.dangerCheck.shortcut
+  const accel = sanitizeShortcut(appSettings.dangerCheck.shortcut, 'CommandOrControl+E')
+  appSettings.dangerCheck.shortcut = accel
   try {
     const ok = globalShortcut.register(accel, () => void showDangerCheck())
     dangerShortcutOk = ok

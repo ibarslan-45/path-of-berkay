@@ -235,6 +235,10 @@ const gemGroups = computed<GemGroup[]>(() => {
     }))
     .filter((g) => g.actives.length || g.supports.length)
 })
+// #3 (0.17.4): bu build silah seti kullanıyor ama HİÇBİR gem grubuna set atanmamış mı?
+// (Mobalytics'te gem→weaponSet çoğu build'de null.) Öyleyse gem bölümünde DÜRÜST not göster
+// (rozet yerine "gem'ler silah setine göre ayrılmamış") — boş bırakma.
+const gemsHaveSetData = computed(() => gemGroups.value.some((g) => g.set != null))
 // gem işaretleme id'si (ad + aktif/support)
 function gemDoneId(name: string, support: boolean): string {
   return gemProgressId(sig.value, name, support)
@@ -435,6 +439,10 @@ const progressSummary = computed(() => {
       <section class="gv-gems panel-frame">
         <div class="gv-sec-head">✦ {{ tr('Yetenek Taşları (Socket Grupları)', 'Skill Gems (Socket Groups)') }}</div>
         <div v-if="!gemGroups.length" class="gv-empty">{{ tr('Bu aşamada gem verisi yok', 'No gem data for this stage') }}</div>
+        <!-- #3: build silah seti kullanıyor ama gem'lere set atanmamış → dürüst not (rozet yerine) -->
+        <div v-if="hasWeaponSets && !gemsHaveSetData && gemGroups.length" class="gv-gemsetnote">
+          ⓘ {{ tr('Bu build’de gem’ler silah setine göre ayrılmamış (kaynak veri set bilgisi içermiyor).', 'This build does not assign gems to weapon sets (source data has no set info).') }}
+        </div>
         <div v-for="(grp, i) in gemGroups" :key="i" class="gv-group" :class="{ 'gv-group--dim': dimForSet(grp.set) }">
           <div v-if="hasWeaponSets && grp.set" class="gv-group-set" :class="'gv-setbadge--s' + grp.set">{{ setBadge(grp.set) }} {{ tr('(silaha soketli)', '(in weapon)') }}</div>
           <div
@@ -775,6 +783,15 @@ const progressSummary = computed(() => {
 .gv-empty {
   font-size: 11px;
   color: var(--text-muted);
+}
+.gv-gemsetnote {
+  font-size: 11px;
+  color: #c2b283;
+  background: rgba(184, 154, 102, 0.08);
+  border-left: 2px solid rgba(184, 154, 102, 0.45);
+  padding: 4px 8px;
+  margin-bottom: 6px;
+  line-height: 1.35;
 }
 .gv-treecount {
   font-size: 10px;

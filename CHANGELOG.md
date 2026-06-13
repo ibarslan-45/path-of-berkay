@@ -3,6 +3,12 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.4
+### Hata düzeltmeleri
+- **KRİTİK: Ctrl+C ile kopyalama artık her yerde çalışıyor.** PoBe açıkken bilgisayarda hiçbir yerde (ve oyunda) Ctrl+C ile kopyalanamıyordu — uygulama, fiyat kısayolu yanlışlıkla Ctrl+C'ye atanmışsa onu sistem genelinde ele geçiriyordu. Artık Ctrl+C (ve Ctrl+V/Ctrl+X) hiçbir koşulda global kısayol olarak bağlanmıyor; böyle bir ayar varsa otomatik olarak güvenli varsayılana (fiyat = Ctrl+D, tehlike = Ctrl+E) düzeltilir. Bu yüzden oyunda eşya kopyalama → değer okuma akışı da düzeldi.
+- **Gem'lerin silah setine ait olup olmadığı dürüstçe belirtiliyor.** Bir build gem'leri silah setine göre ayırmıyorsa (kaynak veride set bilgisi yoksa), gem bölümünde boş bırakmak yerine "Bu build'de gem'ler silah setine göre ayrılmamış" notu gösterilir.
+- **Teşhis günlüğü.** Her fiyat/tehlike kısayolu basışında `pobe-pricelog.txt` (uygulama veri klasörü) dosyasına ön plandaki pencere, pano içeriği ve eşya tanıma sonucu yazılır — sorun yaşarsan paylaşabilirsin.
+
 ## 0.17.3
 ### Hata düzeltmeleri
 - **Oyunda değer okuma çalışıyor (odak koruması ayrıldı).** Fiyat/tehlike kısayolu (Ctrl+D/Ctrl+E) artık her zaman panoyu okuyup paneli gösterir — kısayolu bilerek bastığın için ön plan kontrolü beklemez. Odak koruması yalnızca otomatik kopyalama (oyuna sentetik Ctrl+C gönderme) için geçerlidir; Ctrl+C'ye hâlâ tepki verilmez.
