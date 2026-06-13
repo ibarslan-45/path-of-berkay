@@ -139,13 +139,15 @@ export async function estimateValue(qi: QueryItem): Promise<PriceEstimate> {
   }
 }
 
-/** QueryItem için trade2 aramasını TARAYICIDA aç (otomatik alım değil). */
+/** QueryItem için trade2 aramasını aç (otomatik alım değil; program-içi trade penceresinde).
+ *  #2: Kullanıcının overlay'deki SEÇİMLERİ birebir gider — yalnız enabled stat'lar filtre, min değer
+ *  TAM uygulanır (valueBand:1; estimate'teki 0.9 "benzer" bandı DEĞİL, kullanıcının istediği eşik). */
 export async function openItemInTrade(qi: QueryItem): Promise<boolean> {
   const league = await ensureLeague()
   if (!league) return false
   await ensureStats()
   rematchQueryItem(qi)
-  const q = buildTradeQuery(qi)
+  const q = buildTradeQuery(qi, { valueBand: 1 })
   const search = await window.api?.price?.tradeSearch(league, q.body)
   if (search?.ok && search.queryId) {
     window.api?.price?.openTradeUrl(tradeSearchUrl(league, search.queryId))

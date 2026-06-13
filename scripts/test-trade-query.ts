@@ -167,6 +167,50 @@ check('1 eşleşti (Life)', rep2.matched.length === 1, rep2.matched.length)
 check('2 eşleşmedi (ColdRes+CannotFreeze)', rep2.unmatched.length === 2, rep2.unmatched.map((u) => u.text))
 check('eşleşmeyen metni taşır', rep2.unmatched.some((u) => /Cannot be Frozen/.test(u.text)))
 
+// --- 0.17.5: LOCAL silah hasar rolları 4/4 eşleşmeli (Beast Stinger Recurve Bow) ---
+console.log('\nlocal silah hasarı 4/4 (Beast Stinger Recurve Bow):')
+setRuntimeStats([
+  { id: 'explicit.stat_3336890334', text: 'Adds # to # Lightning Damage', tr: '', type: 'explicit' },
+  { id: 'explicit.stat_1037193709', text: 'Adds # to # Cold Damage', tr: '', type: 'explicit' },
+  { id: 'explicit.stat_709508406', text: 'Adds # to # Fire Damage', tr: '', type: 'explicit' },
+  { id: 'explicit.stat_1940865751', text: 'Adds # to # Physical Damage', tr: '', type: 'explicit' },
+  { id: 'explicit.stat_1202301673', text: '+# to Level of all Projectile Skills', tr: '', type: 'explicit' },
+  // tuzak: "to Attacks" GLOBAL varyantı (local ile karışmamalı)
+  { id: 'explicit.stat_1754445556', text: 'Adds # to # Lightning damage to Attacks', tr: '', type: 'explicit' }
+])
+const BOW = `Item Class: Bows
+Rarity: Rare
+Beast Stinger
+Recurve Bow
+--------
+Physical Damage: 29-54
+Attacks per Second: 1.20
+--------
+Requirements:
+Level: 33
+Dex: 79
+--------
+Item Level: 45
+--------
+Adds 1 to 10 Lightning Damage
+Adds 7 to 16 Cold Damage
+Adds 1 to 16 Lightning Damage
++1 to Level of all Projectile Skills`
+const qiBow = rematchQueryItem(parsedToQueryItem(parseClipboard(BOW)!))
+check('4 mod parse + eşleşti', qiBow.mods.length === 4 && qiBow.mods.every((m) => m.matched), qiBow.mods.map((m) => m.matched))
+check('Cold Damage eşleşti (1037193709)', qiBow.mods.some((m) => m.statId === 'explicit.stat_1037193709'))
+const lightningMods = qiBow.mods.filter((m) => m.statId === 'explicit.stat_3336890334')
+check('İKİ Lightning satırı da local stat-id (3336890334)', lightningMods.length === 2, lightningMods.length)
+check('Projectile Skills eşleşti', qiBow.mods.some((m) => m.statId === 'explicit.stat_1202301673'))
+const repBow = describeMatch(qiBow)
+check('4/4 eşleşti, 0 eşleşmedi', repBow.matched.length === 4 && repBow.unmatched.length === 0, { m: repBow.matched.length, u: repBow.unmatched.map((u) => u.text) })
+const qBow = buildTradeQuery(qiBow)
+check('buildTradeQuery usedStats = 4', qBow.usedStats === 4, qBow.usedStats)
+// #2: min değer band=1 ile TAM uygulanır (estimate'teki 0.9 değil)
+const qExact = buildTradeQuery(qiBow, { valueBand: 1 })
+const coldF = (qExact.body.query as { stats: Array<{ filters: Array<{ id: string; value?: { min?: number } }> }> }).stats[0].filters.find((f) => f.id === 'explicit.stat_1037193709')
+check('band=1 → Cold min = 7 (TAM, 6 değil)', coldF?.value?.min === 7, coldF?.value?.min)
+
 console.log(`\nSONUÇ: ${pass} geçti, ${fail} kaldı`)
 console.log(
   STATS_AVAILABLE

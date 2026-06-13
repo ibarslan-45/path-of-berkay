@@ -774,6 +774,10 @@ const POE_UA =
   'Path of Berkay/0.10 (PoE2 price-check; contact: app user) Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36'
 // trade2 stat cache (runtime; renderer statik boş iskeleti bununla doldurur)
 const tradeStatsCachePath = (): string => join(app.getPath('userData'), 'pobe-trade-stats.json')
+// 0.17.5: cache ŞEMA versiyonu. Eski sürümlerde oluşmuş cache local silah hasar statlarını
+// ("Adds # to # Cold/Lightning Damage") eksik içerebiliyordu → 4/4 yerine 2/4 eşleşme. Versiyon
+// artınca eski cache YOK SAYILIR + taze çekilir (tüm local weapon damage stat'ları dahil gelir).
+const STATS_CACHE_VERSION = 2
 
 // --- Kibar seri kuyruk: pathofexile.com isteklerini sıraya dizer + boşluk bırakır ---
 const MIN_SPACING_MS = 1500 // ardışık PoE isteği arası en az boşluk (kibar)
@@ -846,7 +850,8 @@ function registerPriceIpc(): void {
     if (!force) {
       try {
         const cached = JSON.parse(readFileSync(tradeStatsCachePath(), 'utf-8'))
-        if (cached && Array.isArray(cached.stats) && cached.stats.length)
+        // Yalnız GÜNCEL şema versiyonundaki cache kullanılır; eski/versiyonsuz cache → taze çek.
+        if (cached && cached.version === STATS_CACHE_VERSION && Array.isArray(cached.stats) && cached.stats.length)
           return { ok: true, stats: cached.stats, cached: true }
       } catch {
         // cache yok → ağdan çek
@@ -858,7 +863,7 @@ function registerPriceIpc(): void {
     const stats: Array<{ id: string; text: string; type: string }> = []
     for (const g of groups) for (const e of g.entries ?? []) if (e.id && e.text) stats.push({ id: e.id, text: e.text, type: e.type ?? g.id })
     try {
-      writeFileSync(tradeStatsCachePath(), JSON.stringify({ generated: Date.now(), stats }), 'utf-8')
+      writeFileSync(tradeStatsCachePath(), JSON.stringify({ version: STATS_CACHE_VERSION, generated: Date.now(), stats }), 'utf-8')
     } catch {
       // cache yazılamazsa sorun değil
     }
@@ -961,9 +966,10 @@ function registerPriceIpc(): void {
     }
   })
 
-  // Hazır trade2 arama URL'sini varsayılan TARAYICIDA aç (otomatik alım değil; kullanıcı gözüyle).
+  // Hazır trade2 arama URL'sini PROGRAM-İÇİ trade penceresinde aç (0.17.5; otomatik alım değil).
+  // Yalnız pathofexile.com/trade2 URL'leri kabul edilir; pencere kapatılabilir + geri butonlu.
   ipcMain.on('trade:open-url', (_e, url: string) => {
-    if (typeof url === 'string' && /^https:\/\/(www\.)?pathofexile\.com\/trade2\//.test(url)) shell.openExternal(url)
+    if (typeof url === 'string' && /^https:\/\/(www\.)?pathofexile\.com\/trade2\//.test(url)) createTradeWindow(url)
   })
   // Fiyat overlay'ini gizle (renderer × düğmesi)
   ipcMain.on('priceoverlay:close', () => priceWindow?.hide())
@@ -1766,6 +1772,63 @@ function repositionOverlayCorner(): void {
 // ----------------------------------------------------------------------------
 let priceShortcutOk = false
 let registeredAccel = ''
+// PROGRAM-İÇİ TRADE PENCERESI (0.17.5): "Trade'de Aç" varsayılan tarayıcı yerine kendi penceremizde
+// pathofexile.com/trade2'yi yükler. GÜVENLİK: yalnız pathofexile.com'a navigasyona izin (will-navigate),
+// popup'lar reddedilir, contextIsolation+sandbox korunur, Node yok. Kapatılabilir (native çerçeve) +
+// sayfaya enjekte edilen GERİ butonu (history.back) + mouse geri tuşu.
+let tradeWindow: BrowserWindow | null = null
+const BACK_BTN_JS = `(function(){try{
+  if(document.getElementById('pobe-back'))return;
+  var b=document.createElement('button');b.id='pobe-back';b.textContent='\\u2190 Geri';
+  b.style.cssText='position:fixed;top:8px;left:8px;z-index:2147483647;font:600 13px system-ui,sans-serif;color:#1a1408;background:linear-gradient(#d9b765,#c19a45);border:1px solid #8a6f2e;border-radius:4px;padding:5px 12px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.4)';
+  b.onclick=function(){history.back()};
+  document.body.appendChild(b);
+}catch(e){}})()`
+function isPoeTradeUrl(url: string): boolean {
+  return typeof url === 'string' && /^https:\/\/(www\.)?pathofexile\.com\//i.test(url)
+}
+function createTradeWindow(url: string): void {
+  if (tradeWindow && !tradeWindow.isDestroyed()) {
+    tradeWindow.loadURL(url)
+    if (tradeWindow.isMinimized()) tradeWindow.restore()
+    tradeWindow.focus()
+    return
+  }
+  const wa = screen.getPrimaryDisplay().workArea
+  const w = Math.min(1180, wa.width - 40)
+  const h = Math.min(840, wa.height - 40)
+  tradeWindow = new BrowserWindow({
+    x: wa.x + Math.round((wa.width - w) / 2),
+    y: wa.y + Math.round((wa.height - h) / 2),
+    width: w,
+    height: h,
+    title: 'Path of Berkay — Trade',
+    autoHideMenuBar: true,
+    backgroundColor: '#0a0e10',
+    icon: appIconPath(),
+    webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false }
+  })
+  const wc = tradeWindow.webContents
+  // GÜVENLİK: yalnız pathofexile.com'a in-window navigasyon; diğer her şey reddedilir (izinliyse tarayıcı).
+  wc.on('will-navigate', (e, navUrl) => {
+    if (!isPoeTradeUrl(navUrl)) {
+      e.preventDefault()
+      if (isAllowedExternalUrl(navUrl)) shell.openExternal(navUrl)
+    }
+  })
+  wc.setWindowOpenHandler((d) => {
+    if (isAllowedExternalUrl(d.url)) shell.openExternal(d.url)
+    return { action: 'deny' }
+  })
+  // GERİ butonu: sayfaya enjekte edilir (history.back). Her gezinmede yeniden eklenir.
+  wc.on('did-finish-load', () => wc.executeJavaScript(BACK_BTN_JS).catch(() => {}))
+  wc.on('did-navigate-in-page', () => wc.executeJavaScript(BACK_BTN_JS).catch(() => {}))
+  tradeWindow.on('closed', () => {
+    tradeWindow = null
+  })
+  tradeWindow.loadURL(url)
+}
+
 let priceWindow: BrowserWindow | null = null
 
 function createPriceWindow(): void {

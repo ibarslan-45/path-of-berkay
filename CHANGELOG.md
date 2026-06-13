@@ -3,6 +3,12 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.5
+### İyileştirmeler
+- **Tüm statlar fiyat sorgusunda eşleşiyor.** Yerel silah hasar rolları dahil ("Adds # to # Cold/Lightning/Fire/Physical Damage") artık eksiksiz trade stat-id'lerine eşleniyor; eski/eksik bir stat tablosu önbelleği varsa otomatik tazelenir. (Örn. Beast Stinger yayı → 4/4 stat.)
+- **Overlay'deki seçimlerin trade'e yansıması.** Tahmini değer panelinde bir statı aç/kapatıp min değerini değiştirdiğinde, "Trade'de Aç" tam olarak bu seçimlerle açılır — yalnızca işaretli statlar filtre olur ve girdiğin min değerler birebir uygulanır.
+- **Trade program içinde açılıyor.** "Trade'de Aç" artık varsayılan tarayıcı yerine programın kendi penceresinde pathofexile.com/trade2'yi açar (kapatılabilir + geri butonu). Yalnızca pathofexile.com'a izin verilir.
+
 ## 0.17.4
 ### Hata düzeltmeleri
 - **KRİTİK: Ctrl+C ile kopyalama artık her yerde çalışıyor.** PoBe açıkken bilgisayarda hiçbir yerde (ve oyunda) Ctrl+C ile kopyalanamıyordu — uygulama, fiyat kısayolu yanlışlıkla Ctrl+C'ye atanmışsa onu sistem genelinde ele geçiriyordu. Artık Ctrl+C (ve Ctrl+V/Ctrl+X) hiçbir koşulda global kısayol olarak bağlanmıyor; böyle bir ayar varsa otomatik olarak güvenli varsayılana (fiyat = Ctrl+D, tehlike = Ctrl+E) düzeltilir. Bu yüzden oyunda eşya kopyalama → değer okuma akışı da düzeldi.
