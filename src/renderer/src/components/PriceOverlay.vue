@@ -22,9 +22,18 @@ const result = ref<PriceEstimate | null>(null)
 const errCode = ref('')
 const lastQi = ref<QueryItem | null>(null)
 const lastParsed = ref<ParsedItem | null>(null)
-// Faz 4: stat filtreleri (eşleşen mod'lar)
-const filterMods = computed(() => lastQi.value?.mods.filter((m) => m.matched) ?? [])
+// Faz 4: stat filtreleri (eşleşen mod'lar). 0.17.9: rune/soket kaynaklı modlar AYRI grupta.
+const filterMods = computed(() => lastQi.value?.mods.filter((m) => m.matched && !m.fromRune) ?? [])
+const runeMods = computed(() => lastQi.value?.mods.filter((m) => m.fromRune) ?? [])
 const activeFilterCount = computed(() => filterMods.value.filter((m) => m.enabled).length)
+// soket bilgisi (panelde göster)
+const socketInfo = computed(() => {
+  const p = lastParsed.value
+  if (!p) return ''
+  const n = p.sockets || p.runes.length
+  if (!n && !p.runes.length) return ''
+  return `${n || p.runes.length} ${isTr.value ? 'soket' : 'socket'}`
+})
 
 // --- Build karşılaştırma (Faz 3) ---
 const compareSlot = ref<string>('')
@@ -231,6 +240,27 @@ onBeforeUnmount(() => {
             <div class="po-filters-hint">{{ tr('stat ekle/çıkar veya min değiştir → değer anında güncellenir', 'toggle a stat or change min → value updates live') }}</div>
           </div>
 
+          <!-- 0.17.9: RÜNLER / SOKETLER — eşyanın KENDİ modu değil, rune/soket kaynaklı. Varsayılan
+               trade sorgusuna GİRMEZ (fiyatı şişirmesin); kullanıcı isterse tek tek dahil edebilir. -->
+          <div v-if="runeMods.length" class="po-filters po-runes">
+            <div class="po-filters-head">
+              <span>⛬ {{ tr('Rünler / Soketler', 'Runes / Sockets') }}<span v-if="socketInfo"> · {{ socketInfo }}</span></span>
+            </div>
+            <div v-for="(m, i) in runeMods" :key="'r' + i" class="po-filter" :class="{ 'po-filter--off': !m.enabled }">
+              <input type="checkbox" v-model="m.enabled" @change="scheduleEstimate" />
+              <span class="po-filter-text">{{ m.text }}</span>
+              <input
+                v-if="m.enabled && m.value !== null"
+                type="number"
+                class="po-filter-min"
+                :value="m.value"
+                :title="tr('min değer', 'min value')"
+                @input="m.value = ($event.target as HTMLInputElement).valueAsNumber; scheduleEstimate()"
+              />
+            </div>
+            <div class="po-filters-hint">{{ tr('rune/soket statları varsayılan ARANMAZ (eşyanın kendi modu değil); aramak istersen işaretle', 'rune/socket stats are NOT searched by default (not the item’s own mod); tick to include') }}</div>
+          </div>
+
           <!-- build karşılaştırma (build içe aktarılmışsa) -->
           <div v-if="trackedBuild && compareResult" class="po-cmp">
             <div class="po-cmp-head">
@@ -424,6 +454,13 @@ onBeforeUnmount(() => {
   margin-top: 7px;
   border-top: 1px solid rgba(201, 161, 74, 0.25);
   padding-top: 5px;
+}
+/* rune/soket grubu — soluk mor tonu, eşyanın kendi modundan ayırt edilir */
+.po-runes {
+  border-top-color: rgba(150, 130, 200, 0.35);
+}
+.po-runes .po-filters-head {
+  color: #b6a6da;
 }
 .po-filters-head {
   display: flex;

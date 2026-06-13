@@ -3,6 +3,11 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.9
+### İyileştirmeler
+- **Rün/soket statları fiyat sorgusundan ayrıldı.** Eşyadaki "(rune)" etiketli ve soket kaynaklı statlar artık normal mod filtresine girmiyor (fiyatı şişirmiyordu) — ayrı "Rünler / Soketler" grubunda gösterilir, varsayılan aranmaz; istersen tek tek işaretleyip dahil edebilirsin. Soket sayısı da gösterilir.
+- **Build eşyalarını trade'de arama.** Build görünümündeki her eşyada "Trade'de Ara" butonu: eşyanın tabanı + öne çıkan birkaç moduyla makul (gevşek) bir arama açar (ideal çok-modlu eşyalar sıfır sonuç vermesin); trade'de daraltabilirsin.
+
 ## 0.17.8
 ### Hata düzeltmeleri
 - **Trade penceresi Cloudflare doğrulama döngüsü düzeltildi.** Pencere artık gerçek bir tarayıcı kimliği (Chromium'un kendi sürümünden türetilmiş, "Electron" içermeyen User-Agent) kullanır; böylece "verify you are human" ekranını kendin tıklayıp geçebilirsin. Oturum kalıcıdır (doğrulama bir kez geçince tekrar sorulmaz).

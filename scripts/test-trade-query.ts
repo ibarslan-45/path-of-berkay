@@ -148,7 +148,9 @@ const rep = describeMatch(qiFull)
 check('7 mod eşleşti (hepsi)', rep.matched.length === 7, { matched: rep.matched.length, unmatched: rep.unmatched.map((u) => u.text) })
 check('eşleşmeyen yok', rep.unmatched.length === 0, rep.unmatched)
 const qFull = buildTradeQuery(qiFull)
-check('usedStats = 7', qFull.usedStats === 7, qFull.usedStats)
+// 0.17.9: rune mod ("+25% to Fire Resistance (rune)") varsayılan KAPALI → 7 değil 6 filtre.
+check('usedStats = 6 (rune varsayılan hariç)', qFull.usedStats === 6, qFull.usedStats)
+check('rune modu fromRune + enabled=false', qiFull.mods.some((m) => m.fromRune && !m.enabled && /Fire Resistance/.test(m.text)))
 
 console.log('\ndescribeMatch — eşleşmeyen "doğrulanmalı":')
 setRuntimeStats([{ id: 'explicit.stat_life', text: '+# to maximum Life', tr: '', type: 'explicit' }])
@@ -212,8 +214,18 @@ check('İKİ Lightning satırı da yakalandı (rune + prefix, kaybolmadı)', lig
 check('Projectile Skills eşleşti', qiBow.mods.some((m) => m.statId === 'explicit.stat_1202301673'))
 const repBow = describeMatch(qiBow)
 check('4/4 eşleşti, 0 eşleşmedi', repBow.matched.length === 4 && repBow.unmatched.length === 0, { m: repBow.matched.length, u: repBow.unmatched.map((u) => u.text) })
+// 0.17.9: RUNE/SOKET AYRIMI — "(rune)" satırı eşyanın kendi modu değil → varsayılan trade'e GİRMEZ.
+const runeM = qiBow.mods.filter((m) => m.fromRune)
+const ownM = qiBow.mods.filter((m) => !m.fromRune)
+check('1 rune-kaynaklı mod (Adds 1 to 10 Lightning, rune)', runeM.length === 1 && runeM[0].text === 'Adds 1 to 10 Lightning Damage', runeM.map((m) => m.text))
+check('rune modu kind=rune + VARSAYILAN KAPALI (enabled=false)', runeM[0].kind === 'rune' && runeM[0].enabled === false, { k: runeM[0]?.kind, e: runeM[0]?.enabled })
+check('3 eşyaya-ait mod (1-16 Lightning, Cold, Projectile) AÇIK', ownM.length === 3 && ownM.every((m) => m.enabled), ownM.map((m) => `${m.text}:${m.enabled}`))
 const qBow = buildTradeQuery(qiBow)
-check('buildTradeQuery usedStats = 4', qBow.usedStats === 4, qBow.usedStats)
+check('buildTradeQuery usedStats = 3 (rune HARİÇ)', qBow.usedStats === 3, qBow.usedStats)
+// kullanıcı rune modunu İŞARETLERSE dahil edilir → 4
+runeM[0].enabled = true
+check('rune toggle açık → usedStats = 4', buildTradeQuery(qiBow).usedStats === 4, buildTradeQuery(qiBow).usedStats)
+runeM[0].enabled = false // testin kalanı için geri kapat
 // #1: filtre ETİKETLERİ temiz (gömülü tier parantezi yok)
 check('etiketler temiz (parantez yok)', qiBow.mods.every((m) => !/\(\d/.test(m.text)), qiBow.mods.map((m) => m.text))
 // #1: "Adds A to B" modları ranged + İKİ değer (low/high) eşyanın gerçek sayıları

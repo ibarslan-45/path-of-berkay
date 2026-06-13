@@ -93,6 +93,9 @@ export interface QueryMod {
   ranged: boolean // "Adds # to #" tipi (iki düzenlenebilir kutu); aksi tek kutu
   kind: QueryModKind
   enabled: boolean // kullanıcı aç/kapat (değersiz mod'u çıkar + yeniden ara)
+  // 0.17.9: rune/soket kaynaklı mı (eşyanın KENDİ modu değil). Varsayılan trade sorgusuna GİRMEZ
+  // (enabled=false); UI'da ayrı "Rünler / Soketler" grubunda, kullanıcı isterse açabilir.
+  fromRune: boolean
   // eşleşme sonucu (UI için):
   statId?: string
   matched: boolean
@@ -153,6 +156,7 @@ export function parsedToQueryItem(p: {
     const st = matchStat(pattern, kind)
     const nums = numbersFromLine(clean)
     const ranged = isRangedPattern(pattern) && nums.length >= 2
+    const fromRune = kind === 'rune' // rune/soket kaynaklı → varsayılan trade sorgusuna girmez
     return {
       pattern,
       text: clean, // gömülü tier parantezi olmadan ("Adds 1 to 16 Lightning Damage")
@@ -160,7 +164,8 @@ export function parsedToQueryItem(p: {
       valueHi: ranged ? nums[1] : null,
       ranged,
       kind: (kind || 'explicit') as QueryModKind,
-      enabled: true,
+      enabled: !fromRune, // eşyanın kendi modları açık; rune/soket KAPALI (fiyatı şişirmesin)
+      fromRune,
       statId: st?.id,
       matched: !!st
     }
@@ -222,7 +227,8 @@ export function itemStateToQueryItem(it: {
     const st = matchStat(pattern, kind)
     const nums = numbersFromLine(clean)
     const ranged = isRangedPattern(pattern) && nums.length >= 2
-    return { pattern, text: clean, value: nums.length ? nums[0] : null, valueHi: ranged ? nums[1] : null, ranged, kind, enabled: true, statId: st?.id, matched: !!st }
+    const fromRune = kind === 'rune'
+    return { pattern, text: clean, value: nums.length ? nums[0] : null, valueHi: ranged ? nums[1] : null, ranged, kind, enabled: !fromRune, fromRune, statId: st?.id, matched: !!st }
   }
   const mods = [
     ...(it.implicits ?? []).map((m) => toMod(m.en, 'implicit')),

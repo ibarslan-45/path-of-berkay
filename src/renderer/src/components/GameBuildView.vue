@@ -10,6 +10,8 @@ import type { MatchedItem } from '../lib/pob-match'
 import { trackedStage, setStage, requestCraft } from '../lib/build-target'
 import { buildSig, slotProgressId, modProgressId, gemProgressId, nodeProgressId } from '../lib/build-progress'
 import { slotWeaponSet, buildHasWeaponSets } from '../lib/weapon-set'
+import { buildItemTradeQuery } from '../lib/build-compare'
+import { openItemInTrade } from '../lib/price-check'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import gemsData from '../../../data/gems.json'
 import treeData from '../../../data/passive-tree.json'
@@ -160,6 +162,18 @@ function craftItem(item: PobItem | null): void {
     itemLevel: item.itemLevel
   })
   emit('craft')
+}
+// 0.17.9: bu eşyayı TRADE'DE ARA (gevşek: taban + ilk birkaç mod). Trade penceresi/tarayıcı ayara göre açılır.
+const tradeBusy = ref(false)
+async function tradeItem(item: PobItem | null): Promise<void> {
+  if (!item || tradeBusy.value) return
+  tradeBusy.value = true
+  try {
+    const mi = matchedById.value.get(item.id)
+    await openItemInTrade(buildItemTradeQuery({ ...item, pureBase: mi?.pureBase }))
+  } finally {
+    tradeBusy.value = false
+  }
 }
 // #2: seçili AŞAMANIN gear'ı. stageSlots verilmişse (Mobalytics: variant başına gear) onu kullan,
 // yoksa tek `slots` (PoB/.build/Maxroll). stageIdx'e bağlı → variant değişince gear da yenilenir.
@@ -412,6 +426,13 @@ const progressSummary = computed(() => {
                 :title="tr('Bu eşyayı Craft Simülatörü’ne gönder (hedef olarak)', 'Send this item to the Craft Simulator (as target)')"
                 @click="craftItem(c.item)"
               >⚒ {{ tr('Craft’la', 'Craft') }}</button>
+              <button
+                v-if="c.item"
+                class="gv-tradebtn"
+                :disabled="tradeBusy"
+                :title="tr('Bu eşyayı trade’de ara (taban + öne çıkan modlar; gevşek)', 'Search this item on trade (base + top mods; loose)')"
+                @click="tradeItem(c.item)"
+              >↗ {{ tr('Trade’de Ara', 'Trade') }}</button>
             </div>
             <template v-if="c.item">
               <div class="gv-item-name">{{ c.item.name || c.item.base }}</div>
@@ -898,6 +919,26 @@ const progressSummary = computed(() => {
 }
 .gv-craftbtn:hover {
   background: linear-gradient(#ecc279, #d6a052);
+}
+.gv-tradebtn {
+  margin-left: 4px;
+  font: inherit;
+  font-size: 10.5px;
+  font-variant: small-caps;
+  color: #e3c172;
+  background: transparent;
+  border: 1px solid rgba(201, 161, 74, 0.55);
+  border-radius: 2px;
+  padding: 1px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.gv-tradebtn:hover {
+  background: rgba(201, 161, 74, 0.14);
+}
+.gv-tradebtn:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 .gv-item-mods--check {
   color: inherit;

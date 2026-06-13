@@ -24,7 +24,7 @@ import { exportBuild, buildFileName, type ExportReport } from '../lib/build-expo
 import { importDotBuild, type ImportReport } from '../lib/build-import'
 import { generateFilter, THEMES, DEFAULT_THEME, validateFilter, type Strictness, type FilterAnalysis } from '../lib/filter-gen'
 import GameBuildView from './GameBuildView.vue'
-import { pobItemToQueryItem } from '../lib/build-compare'
+import { pobItemToQueryItem, buildItemTradeQuery } from '../lib/build-compare'
 import { openItemInTrade, ensureStats } from '../lib/price-check'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import passivesData from '../../../data/passives.json'
@@ -665,9 +665,8 @@ async function openItemTrade(it: MatchedItem): Promise<void> {
   if (tradeBusy.value) return
   tradeBusy.value = true
   try {
-    const src = { ...it, base: it.pureBase || it.base }
-    const { qi } = pobItemToQueryItem(src)
-    await openItemInTrade(qi)
+    // 0.17.9: GEVŞEK ara (taban + ilk birkaç mod) — ideal çok-modlu build eşyası 0 sonuç vermesin.
+    await openItemInTrade(buildItemTradeQuery(it))
   } finally {
     tradeBusy.value = false
   }

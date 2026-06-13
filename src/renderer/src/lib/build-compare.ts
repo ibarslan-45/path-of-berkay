@@ -40,6 +40,7 @@ export function pobItemToQueryItem(it: PobItem): { qi: QueryItem; searchableMods
     ranged: false,
     kind: 'explicit',
     enabled: true,
+    fromRune: false,
     statId: n.statId,
     matched: !!n.statId
   }))
@@ -52,6 +53,25 @@ export function pobItemToQueryItem(it: PobItem): { qi: QueryItem; searchableMods
     mods
   }
   return { qi, searchableMods: mods.filter((m) => m.matched).length }
+}
+
+/**
+ * Build eşyasından GEVŞEK trade sorgusu (0.17.9 — "Trade'de Ara"). Build eşyaları çok-modlu "ideal"
+ * item olabilir → TÜM modlarla arama 0 sonuç verir. Bu yüzden taban + yalnız ilk `maxMods` eşleşen modu
+ * etkin bırakırız (kullanıcı trade'de daraltabilir). pureBase varsa taban olarak onu kullanır.
+ */
+export function buildItemTradeQuery(it: PobItem & { pureBase?: string }, maxMods = 3): QueryItem {
+  const { qi } = pobItemToQueryItem({ ...it, base: it.pureBase || it.base })
+  let kept = 0
+  for (const m of qi.mods) {
+    if (m.matched && kept < maxMods) {
+      m.enabled = true
+      kept++
+    } else {
+      m.enabled = false
+    }
+  }
+  return qi
 }
 
 export interface NormMod {
