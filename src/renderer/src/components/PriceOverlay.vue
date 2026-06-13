@@ -62,7 +62,16 @@ let unsubSettings: (() => void) | null = null
 
 async function handleClipboard(text: string): Promise<void> {
   const parsed = parseClipboard(text)
-  if (!isPriceableItem(parsed)) {
+  const ok = isPriceableItem(parsed)
+  // Teşhis (0.17.3): parse sonucunu log'a yaz (uçtan uca görünürlük; kullanıcı log'u yollayabilir)
+  let reason = ''
+  if (!parsed) reason = 'parse-null'
+  else if (parsed.rarity === 'Gem' || parsed.rarity === 'Currency') reason = 'gem/currency'
+  else if (!ok) reason = 'no-item-content'
+  window.api?.priceLog?.(
+    `PRICE-PARSE ok=${ok} rarity=${parsed ? parsed.rarity : '-'} class="${parsed ? parsed.itemClass : '-'}" base="${parsed ? parsed.baseType : '-'}" impl=${parsed ? parsed.implicits.length : 0} expl=${parsed ? parsed.explicits.length : 0} reason=${reason}`
+  )
+  if (!ok) {
     status.value = 'invalid'
     itemName.value = ''
     return

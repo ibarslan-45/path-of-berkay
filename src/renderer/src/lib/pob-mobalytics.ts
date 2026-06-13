@@ -27,6 +27,9 @@ interface MbSub {
 interface MbGemGroup {
   activeSkill?: MbActive | null
   subSkills?: MbSub[]
+  // Gem'in ait olduğu silah seti (varsa). Çoğu build'de null (gem'ler sete özel değil) → rozet yok (dürüst).
+  weaponSet?: number | null
+  grantedByWeaponSet?: number | null
 }
 interface MbCommonItem {
   slug?: string
@@ -39,6 +42,10 @@ interface MbCommonItem {
 interface MbSlot {
   commonItem?: MbCommonItem | null
   runes?: Array<{ slug?: string }>
+  // SİLAH SETLERİ: mainHand/offHand'de eşya DOĞRUDAN commonItem değil, set1/set2 altında nested.
+  // set1 = Silah Seti 1, set2 = Silah Seti 2 (swap). (#1/#2 kök neden — eskiden commonItem null → atlanıyordu.)
+  set1?: MbSlot | null
+  set2?: MbSlot | null
 }
 interface MbTreeSet {
   selectedSlugs?: string[] | null
@@ -198,6 +205,37 @@ function resolveEquipSlot(slotKey: string, itemClassSlug: string, taken: Record<
   if (WEAPON_CLASS_RE.test(cls)) return !taken['Weapon 1'] ? 'Weapon 1' : !taken['Weapon 2'] ? 'Weapon 2' : ''
   return '' // gerçekten eşya değil (priorityList vb.)
 }
+/**
+ * Bir equipment girdisini {pobSlot, ci, runes} listesine genişlet (#1/#2 KÖK NEDEN):
+ * SİLAH SETLERİ — mainHand/offHand'de eşya DOĞRUDAN commonItem değil, set1/set2 altında nested.
+ *   set1 → "Weapon N" (Silah Seti 1), set2 → "Weapon N Swap" (Silah Seti 2). Eskiden `slot.commonItem`
+ *   null olduğu için silah/yan el TAMAMEN atlanıyordu. Diğer slotlar (zırh/takı/flask) doğrudan commonItem.
+ */
+function expandEquip(
+  slotKey: string,
+  slot: MbSlot | null,
+  taken: Record<string, string>
+): Array<{ pobSlot: string; ci: MbCommonItem; runes?: Array<{ slug?: string }> }> {
+  if (!slot) return []
+  const valid = (ci?: MbCommonItem | null): ci is MbCommonItem => !!ci && !!(ci.name || ci.itemClassSlug)
+  // (b) set1/set2 yuvalanması (silah/yan el)
+  if (!slot.commonItem && (slot.set1 || slot.set2)) {
+    const s1 = slot.set1?.commonItem
+    const s2 = slot.set2?.commonItem
+    let base = EQUIP_SLOT[(slotKey || '').toLowerCase()] // mainHand→Weapon 1, offHand→Weapon 2
+    if (!base) base = resolveEquipSlot(slotKey, s1?.itemClassSlug || s2?.itemClassSlug || '', taken)
+    if (!base) return []
+    const out: Array<{ pobSlot: string; ci: MbCommonItem; runes?: Array<{ slug?: string }> }> = []
+    if (valid(s1)) out.push({ pobSlot: base, ci: s1, runes: slot.set1?.runes })
+    if (valid(s2)) out.push({ pobSlot: base + ' Swap', ci: s2, runes: slot.set2?.runes })
+    return out
+  }
+  // (a) doğrudan commonItem (zırh/takı/flask)
+  const ci = slot.commonItem
+  if (!valid(ci)) return []
+  const pobSlot = resolveEquipSlot(slotKey, ci.itemClassSlug || '', taken)
+  return pobSlot ? [{ pobSlot, ci, runes: slot.runes }] : []
+}
 // itemClassSlug ("body-armour","lifeflask","warstaff") → okunur taban (tam taban değil; "doğrulanmalı")
 function humanizeClass(slug: string): string {
   let s = (slug || '').replace(/-/g, ' ')
@@ -242,7 +280,11 @@ export function mobalyticsToPob(data: MobalyticsData, _meta: MobalyticsMeta = {}
           support: true
         })
       }
-      return { label: '', mainActiveSkill: 1, gems }
+      // Gem grubunun silah seti (varsa) → slot adına çevir ki GameBuildView `slotWeaponSet` ile rozet
+      // gösterebilsin. Mobalytics weaponSet 0-indeksli (0=Set 1, 1=Set 2). null → slot yok (rozet yok).
+      const ws = typeof grp.weaponSet === 'number' ? grp.weaponSet : typeof grp.grantedByWeaponSet === 'number' ? grp.grantedByWeaponSet : null
+      const slot = ws == null ? undefined : ws >= 1 ? 'Weapon 1 Swap' : 'Weapon 1'
+      return { label: '', mainActiveSkill: 1, gems, slot }
     })
     return { id: 'mb' + vi, title: v.name || 'Variant ' + (vi + 1), groups }
   })
@@ -293,28 +335,27 @@ export function mobalyticsToPob(data: MobalyticsData, _meta: MobalyticsMeta = {}
     const slots: Record<string, string> = {}
     let idx = 0
     for (const [slotKey, slot] of Object.entries(v.equipment ?? {})) {
-      const ci = slot?.commonItem
-      if (!ci || (!ci.name && !ci.itemClassSlug)) continue
-      const pobSlot = resolveEquipSlot(slotKey, ci.itemClassSlug || '', slots)
-      if (!pobSlot) continue // priorityList vb. eşya değil (silah dahil hiçbir slota oturmadı)
-      const mods = (ci.explicitDescriptions ?? []).map((d) => (d.description || '').trim()).filter(Boolean)
-      for (const r of slot?.runes ?? []) {
-        if (r.slug) mods.push('(Rune) ' + humanizeGemSlug(r.slug.replace(/^soulcore-/, '')))
+      for (const { pobSlot, ci, runes } of expandEquip(slotKey, slot, slots)) {
+        if (slots[pobSlot]) continue
+        const mods = (ci.explicitDescriptions ?? []).map((d) => (d.description || '').trim()).filter(Boolean)
+        for (const r of runes ?? []) {
+          if (r.slug) mods.push('(Rune) ' + humanizeGemSlug(r.slug.replace(/^soulcore-/, '')))
+        }
+        const rarity = ci.isUnique ? 'UNIQUE' : mods.length ? 'RARE' : 'NORMAL'
+        const base = humanizeClass(ci.itemClassSlug || '')
+        const id = 'mb' + vi + '_' + idx++
+        items.push({
+          id,
+          rarity,
+          name: (ci.name || base || '').trim(),
+          base,
+          itemLevel: 0,
+          levelReq: 0,
+          mods,
+          iconUrl: ci.iconURL || undefined // Mobalytics CDN ikonu (bundled taban eşleşmezse fallback)
+        })
+        slots[pobSlot] = id
       }
-      const rarity = ci.isUnique ? 'UNIQUE' : mods.length ? 'RARE' : 'NORMAL'
-      const base = humanizeClass(ci.itemClassSlug || '')
-      const id = 'mb' + vi + '_' + idx++
-      items.push({
-        id,
-        rarity,
-        name: (ci.name || base || '').trim(),
-        base,
-        itemLevel: 0,
-        levelReq: 0,
-        mods,
-        iconUrl: ci.iconURL || undefined // Mobalytics CDN ikonu (bundled taban eşleşmezse fallback)
-      })
-      slots[pobSlot] = id
     }
     return slots
   })

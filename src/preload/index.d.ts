@@ -189,6 +189,7 @@ interface WindowControlsAPI {
     close: () => void
   }
   clipboardRead: () => Promise<string>
+  priceLog: (line: string) => void
   dangerCheck: {
     onCheck: (cb: (text: string) => void) => () => void
     close: () => void

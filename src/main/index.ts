@@ -3,6 +3,7 @@ import { join } from 'path'
 import {
   readFileSync,
   writeFileSync,
+  appendFileSync,
   existsSync,
   mkdirSync,
   statSync,
@@ -960,6 +961,10 @@ function registerPriceIpc(): void {
   ipcMain.on('dangeroverlay:close', () => dangerWindow?.hide())
   // Uygulama-içi "Panodan al" (Faz 8): main panoyu okur (yalnız okuma; ToS uyumlu).
   ipcMain.handle('clipboard:read', () => clipboard.readText() || '')
+  // Teşhis (0.17.3): renderer parse sonucunu log'a ekler (pobe-pricelog.txt) — uçtan uca görünürlük.
+  ipcMain.on('price:log', (_e, line: unknown) => {
+    if (typeof line === 'string' && line) pricelog(line.slice(0, 240))
+  })
 }
 
 function registerLevelingIpc(): void {
@@ -1773,16 +1778,16 @@ function createPriceWindow(): void {
     priceWindow = null
   })
 }
-// ODAK KORUMASI (0.17.2): fiyat VE tehlike kısayolları YALNIZ ön plandaki pencere "Path of Exile 2"
-// iken çalışır. Başka pencere (tarayıcı vb.) odaktayken kısayol HİÇBİR ŞEY yapmaz — panel açılmaz,
-// pano okunmaz, tuş gönderilmez. Pano-izleyici YOKTUR; tek tetikleyici atanmış global kısayoldur.
-// Tek PowerShell çağrısında: ön plan pencere başlığını P/Invoke ile al → PoE2 ise (autoCopy açıksa)
-// oyuna Ctrl+C gönder. Awakened PoE / Exiled Exchange ile aynı yöntem.
-// Dönüş: 'sent' (PoE2 + kopya gönderildi), 'poe2' (PoE2 ama kopya yok), 'notpoe2' (başka pencere/odak yok).
+// ODAK KORUMASI AYRILDI (0.17.3): Adanmış kısayol (Ctrl+D/Ctrl+E) kullanıcı BİLEREK bastığı için
+// HER ZAMAN panoyu okur + paneli gösterir — odak koruması GEREKTİRMEZ (oyunda da çalışır).
+// Odak koruması SADECE oto-kopyalama (sentetik Ctrl+C gönderme) içindir: yalnız ön plan PoE2 iken
+// oyuna tuş gönderilir. Pano-izleyici YOKTUR; Ctrl+C'ye tepki YOKTUR (tek tetikleyici global kısayol).
+// PS: ön plan başlığını P/Invoke ile al; doCopy + başlık "Path of Exile" içeriyorsa SendKeys ^c.
 function fgPrepScript(doCopy: boolean): string {
-  const action = doCopy
-    ? `Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^c'); Write-Output 'sent'`
-    : `Write-Output 'poe2'`
+  // başlık eşleşmesi case-insensitive substring (-like '*Path of Exile*'); başlık her zaman yazdırılır.
+  const maybeSend = doCopy
+    ? `if ($t -like '*Path of Exile*') { Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^c'); Write-Output 'SENT' }`
+    : ``
   return `
 $ErrorActionPreference='SilentlyContinue'
 Add-Type @"
@@ -1798,19 +1803,16 @@ $h = [PoBeFg]::GetForegroundWindow()
 $sb = New-Object System.Text.StringBuilder 256
 [void][PoBeFg]::GetWindowText($h, $sb, 256)
 $t = $sb.ToString()
-if ($t -like 'Path of Exile 2*') {
-  ${action}
-} else {
-  Write-Output 'notpoe2'
-}`
+Write-Output ("TITLE:" + $t)
+${maybeSend}`
 }
 /**
- * Ön plan penceresi PoE2 mi? PoE2 ise ve doCopy true ise oyuna Ctrl+C gönderir.
- * 'sent' = PoE2 + kopya gönderildi (pano güncellenmesini beklemek için); 'poe2' = PoE2 ama kopya yok;
- * 'notpoe2' = başka pencere odakta (kısayolu yok say). Windows dışında her zaman 'notpoe2'.
+ * Ön plan başlığını al; doCopy + PoE2 ön planda ise oyuna Ctrl+C gönderir.
+ * Dönüş: { title, sent }. title = ön-pencere başlığı (log için); sent = Ctrl+C gönderildi mi.
+ * Windows dışında { title:'', sent:false }. ÇÖKMEZ (hata → boş).
  */
-function foregroundPrep(doCopy: boolean): Promise<'sent' | 'poe2' | 'notpoe2'> {
-  if (process.platform !== 'win32') return Promise.resolve('notpoe2')
+function foregroundPrep(doCopy: boolean): Promise<{ title: string; sent: boolean }> {
+  if (process.platform !== 'win32') return Promise.resolve({ title: '', sent: false })
   return new Promise((resolve) => {
     try {
       execFile(
@@ -1818,28 +1820,38 @@ function foregroundPrep(doCopy: boolean): Promise<'sent' | 'poe2' | 'notpoe2'> {
         ['-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-Command', fgPrepScript(doCopy)],
         { windowsHide: true, timeout: 2500 },
         (_err, stdout) => {
-          const out = (stdout || '').trim()
-          if (/sent/.test(out)) resolve('sent')
-          else if (/\bpoe2\b/.test(out)) resolve('poe2')
-          else resolve('notpoe2')
+          const out = (stdout || '').replace(/\r/g, '')
+          const m = out.match(/TITLE:(.*)/)
+          resolve({ title: m ? m[1].trim() : '', sent: /(^|\n)SENT/.test(out) })
         }
       )
     } catch {
-      resolve('notpoe2')
+      resolve({ title: '', sent: false })
     }
   })
 }
 
-// Kısayola basıldı: ÖN PLAN PoE2 DEĞİLSE hiçbir şey yapma (odak koruması). PoE2 ise (autoCopy açıksa
-// oyuna Ctrl+C gönder) PANODAKİ metni oku → fiyat penceresine gönder (showInactive: odağı çalmaz).
+// TEŞHİS LOG'U (0.17.3): her fiyat/tehlike kısayolu basışı userData/pobe-pricelog.txt'ye yazılır.
+// Kullanıcı oyunda deneyip log'u yollayabilir (pano zinciri uçtan uca görünür). Sessiz; hata yutar.
+function pricelog(line: string): void {
+  try {
+    const p = join(app.getPath('userData'), 'pobe-pricelog.txt')
+    appendFileSync(p, `[${new Date().toISOString()}] ${line}\n`)
+  } catch {
+    /* log hatası işlevi bozmasın */
+  }
+}
+
+// Kısayola basıldı (0.17.3): HER ZAMAN panoyu oku + paneli göster (kullanıcı bilerek bastı; odak koruması
+// YOK). autoCopy AÇIK ise odak korumalı sentetik Ctrl+C (yalnız PoE2 ön planda) gönderilir, sonra bekle.
+// Pano metni DÜZ STRING olarak gider (proxy/clone yok — webContents.send string serileştirir).
 async function showPriceCheck(): Promise<void> {
   const fg = await foregroundPrep(appSettings.autoCopy)
-  if (fg === 'notpoe2') {
-    console.log('[price] PoE2 ön planda değil — kısayol yok sayıldı (odak koruması)')
-    return
-  }
-  if (fg === 'sent') await sleep(160) // oyunun kopyaladığı eşya panoya yazılana kadar kısa bekle
+  if (fg.sent) await sleep(160) // oyunun kopyaladığı eşya panoya yazılana kadar kısa bekle
   const text = clipboard.readText() || ''
+  pricelog(
+    `PRICE fg="${fg.title}" autoCopy=${appSettings.autoCopy} sentCopy=${fg.sent} clipLen=${text.length} clip80="${text.slice(0, 80).replace(/\n/g, '⏎')}"`
+  )
   createPriceWindow()
   if (!priceWindow) return
   const send = (): void => priceWindow?.webContents.send('price:check', text)
@@ -1911,13 +1923,13 @@ function createDangerWindow(): void {
   })
 }
 async function showDangerCheck(): Promise<void> {
+  // 0.17.3: HER ZAMAN oku + göster (odak koruması yok); autoCopy yalnız PoE2 ön planda Ctrl+C gönderir.
   const fg = await foregroundPrep(appSettings.autoCopy)
-  if (fg === 'notpoe2') {
-    console.log('[danger] PoE2 ön planda değil — kısayol yok sayıldı (odak koruması)')
-    return
-  }
-  if (fg === 'sent') await sleep(160)
+  if (fg.sent) await sleep(160)
   const text = clipboard.readText() || ''
+  pricelog(
+    `DANGER fg="${fg.title}" autoCopy=${appSettings.autoCopy} sentCopy=${fg.sent} clipLen=${text.length} clip80="${text.slice(0, 80).replace(/\n/g, '⏎')}"`
+  )
   createDangerWindow()
   if (!dangerWindow) return
   const send = (): void => dangerWindow?.webContents.send('danger:check', text)

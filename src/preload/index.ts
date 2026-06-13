@@ -183,6 +183,8 @@ const api = {
   },
   // Uygulama-içi "Panodan al" — main panoyu okur (yalnız okuma)
   clipboardRead: (): Promise<string> => ipcRenderer.invoke('clipboard:read'),
+  // Teşhis log'u (0.17.3): renderer parse sonucunu pobe-pricelog.txt'ye ekler
+  priceLog: (line: string): void => ipcRenderer.send('price:log', line),
   // --- Oyun-içi tehlike kontrolü overlay'i (Faz 8). Yalnız pano okuma; girdi otomasyonu YOK. ---
   dangerCheck: {
     onCheck: (cb: (text: string) => void): (() => void) => {

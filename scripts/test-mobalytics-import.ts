@@ -5,6 +5,7 @@
  * Çalıştırma: npx tsx scripts/test-mobalytics-import.ts
  */
 import { mobalyticsToPob, type MobalyticsData } from '../src/renderer/src/lib/pob-mobalytics'
+import { slotWeaponSet, buildHasWeaponSets } from '../src/renderer/src/lib/weapon-set'
 
 let pass = 0,
   fail = 0
@@ -71,25 +72,21 @@ const data: MobalyticsData = {
             explicitDescriptions: [{ description: '50% increased Recovery rate' }]
           }
         },
-        // #5: silah anahtarı EQUIP_SLOT'ta yok ('weapon') → item-class 'bow' çıkarımıyla Weapon 1'e oturmalı
-        weapon: {
-          commonItem: {
-            slug: 'bow-fourbow-rare',
-            isUnique: false,
-            name: 'Doom Spire',
-            itemClassSlug: 'bow',
-            explicitDescriptions: [{ description: '+25 to Dexterity' }]
+        // #1/#2 GERÇEK YAPI: mainHand/offHand'de eşya DOĞRUDAN commonItem değil, set1/set2 altında nested.
+        // set1 → Weapon 1 (Set 1), set2 → Weapon 1 Swap (Set 2). Eskiden commonItem null → silah atlanıyordu.
+        mainHand: {
+          set1: {
+            commonItem: { slug: 'bow-fourbow-rare', isUnique: false, name: 'Warden Bow', itemClassSlug: 'bow', explicitDescriptions: [{ description: '49% increased Physical Damage' }] }
+          },
+          set2: {
+            commonItem: { slug: 'talisman-rare', isUnique: false, name: 'Changeling Talisman', itemClassSlug: 'talisman', explicitDescriptions: [{ description: '+30 to Spirit' }] }
           }
         },
-        // off-hand quiver, tanınmayan anahtar ('secondaryWeapon') → item-class 'quiver' → Weapon 2
-        secondaryWeapon: {
-          commonItem: {
-            slug: 'quiver-fourquiver-rare',
-            isUnique: false,
-            name: 'Doom Quiver',
-            itemClassSlug: 'quiver',
-            explicitDescriptions: [{ description: '+15% to Critical Damage Bonus' }]
-          }
+        offHand: {
+          set1: {
+            commonItem: { slug: 'quiver-fourquiver-rare', isUnique: false, name: 'Broadhead Quiver', itemClassSlug: 'quiver', explicitDescriptions: [{ description: '+1 to Level of all Projectile Skills' }] }
+          },
+          set2: { commonItem: null } // set 2'de yan el yok
         },
         priorityList: null // eşya değil → atlanmalı
       }
@@ -135,12 +132,16 @@ check('variant 1 specs = [55,60]', JSON.stringify(pob.specs[1].nodes) === '[55,6
 console.log('\nGear — HER variant KENDİ seti (#2): stageSlots[vi]:')
 check('stageSlots 2 variant', pob.stageSlots?.length === 2, pob.stageSlots?.length)
 const ss0 = pob.stageSlots![0]
-check('5 eşya (amulet+body+flask+bow+quiver; priorityList atlandı)', pob.items.length === 5, pob.items.length)
-// #5: silah + off-hand item-class çıkarımıyla slotlandı
-const bow = pob.items.find((i) => i.name === 'Doom Spire')!
-check('bow Weapon 1 slotunda (anahtar tanınmadı → class çıkarımı)', ss0['Weapon 1'] === bow.id, ss0)
-const quiv = pob.items.find((i) => i.name === 'Doom Quiver')!
-check('quiver Weapon 2 slotunda (class çıkarımı)', ss0['Weapon 2'] === quiv.id, ss0)
+check('6 eşya (amulet+body+flask+bow+talisman+quiver; priorityList atlandı)', pob.items.length === 6, pob.items.length)
+// #1/#2: silah set1/set2 yuvalanması → Weapon 1 / Weapon 1 Swap / Weapon 2
+const bow = pob.items.find((i) => i.name === 'Warden Bow')!
+check('bow (mainHand.set1) Weapon 1 slotunda', ss0['Weapon 1'] === bow.id, ss0)
+const tali = pob.items.find((i) => i.name === 'Changeling Talisman')!
+check('talisman (mainHand.set2) Weapon 1 Swap slotunda (Set 2)', ss0['Weapon 1 Swap'] === tali.id, ss0)
+const quiv = pob.items.find((i) => i.name === 'Broadhead Quiver')!
+check('quiver (offHand.set1) Weapon 2 slotunda', ss0['Weapon 2'] === quiv.id, ss0)
+check('Weapon 1 = Set 1, Weapon 1 Swap = Set 2', slotWeaponSet('Weapon 1') === 1 && slotWeaponSet('Weapon 1 Swap') === 2)
+check('build dual-set algılandı (hasWeaponSets)', buildHasWeaponSets(pob) === true)
 const amu = pob.items.find((i) => i.name === "Serpent's Egg")!
 check('amulet UNIQUE', amu.rarity === 'UNIQUE')
 check('variant0 amulet slot Amulet', ss0['Amulet'] === amu.id, ss0)

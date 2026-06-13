@@ -3,6 +3,13 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.3
+### Hata düzeltmeleri
+- **Oyunda değer okuma çalışıyor (odak koruması ayrıldı).** Fiyat/tehlike kısayolu (Ctrl+D/Ctrl+E) artık her zaman panoyu okuyup paneli gösterir — kısayolu bilerek bastığın için ön plan kontrolü beklemez. Odak koruması yalnızca otomatik kopyalama (oyuna sentetik Ctrl+C gönderme) için geçerlidir; Ctrl+C'ye hâlâ tepki verilmez.
+- **Silah ve yan el artık görünüyor (Mobalytics).** Bazı Mobalytics build'lerinde silah/ok kılıfı oyun görünümünde hiç görünmüyordu; silahların iki silah seti (set 1/set 2) altında saklandığı yapı doğru çözülüyor — ana el, yan el ve set-2 (swap) silahları tam kartla render edilir.
+- **Set 1 / Set 2 rozetleri eşyalarda.** Çift silah seti kullanan build'lerde her silah "Set 1"/"Set 2" rozetiyle etiketlenir (ör. yay+ok kılıfı = Set 1, talisman = Set 2). Build tek setse rozet gösterilmez. (Gem set verisi yalnızca build sağlamışsa gösterilir; çoğu build sağlamaz.)
+- **Teşhis günlüğü.** Her fiyat/tehlike kısayolu basışında `pobe-pricelog.txt` dosyasına (uygulama veri klasörü) bir satır yazılır: zaman, ön plandaki pencere başlığı, pano metni uzunluğu ve ilk 80 karakter, eşya tanıma sonucu. Sorun yaşarsan bu dosyayı paylaşabilirsin.
+
 ## 0.17.2
 ### Hata düzeltmeleri
 - **Fiyat/tehlike kısayolu yalnızca oyun ön plandayken çalışır.** Tahmini değer paneli artık SADECE atadığın fiyat kısayoluyla (varsayılan Ctrl+D) ve yalnız ön plandaki pencere "Path of Exile 2" iken açılır. Başka bir uygulamadayken (ör. tarayıcı) Ctrl+C ya da kısayol hiçbir şey yapmaz — pano dinlenmez, panel açılmaz.
