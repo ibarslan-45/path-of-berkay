@@ -381,10 +381,20 @@ export function isPriceableItem(p: ParsedItem | null): p is ParsedItem {
   return !!(p.itemClass && hasContent)
 }
 
-/** Bir mod satırını eşleştirme kalıbına çevirir: sayıları '#', boşlukları sadeleştirir.
- *  (mods_sim/trade_stats EN-anahtar formatıyla uyumlu — '+' işareti korunur, '#'e çevrilir.) */
+/**
+ * "Advanced Mod Descriptions" AÇIK iken oyun, rolled değerin yanına o tier'ın değer-aralığını PARANTEZ
+ * içinde gömer: "Adds 1 to 16(13-19) Lightning Damage", "Adds 7(6-9) to 16(10-16) Cold Damage".
+ * Bu gömülü `(min-max)` parantezleri stat-id eşleşmesini bozar (pattern "Adds # to #(#-#) …" oluyor).
+ * Bunları KALDIR → gerçek rolled sayı kalır: "16(13-19)"→"16", "7(6-9)"→"7". (0.17.6 KÖK NEDEN fix.)
+ * Yalnız bir RAKAMIN hemen yanındaki parantez hedeflenir → "(rune)"/"(implicit)"/"(augmented)" etkilenmez.
+ */
+export function stripValueRanges(s: string): string {
+  return (s || '').replace(/(\d)\(\d+(?:\.\d+)?(?:\s*[-–]\s*\d+(?:\.\d+)?)?\)/g, '$1')
+}
+
+/** Bir mod satırını eşleştirme kalıbına çevirir: gömülü değer-aralığı parantezlerini at, sayıları '#'. */
 export function modToPattern(line: string): string {
-  return line
+  return stripValueRanges(line)
     .replace(/\d+(?:\.\d+)?/g, '#')
     .replace(/#\s*[-–]\s*#/g, '#') // "# - #" aralığı tek #
     .replace(/[ \t]{2,}/g, ' ')

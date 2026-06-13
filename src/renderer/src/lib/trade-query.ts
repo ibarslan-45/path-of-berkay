@@ -7,6 +7,7 @@
 // otomatik alım YOK — fiyat tahmini benzer ilanlardan, link tarayıcıda açılır.
 
 import tradeStatsData from '../../../data/trade_stats.json'
+import { stripValueRanges } from './clipboard-parse'
 
 export interface TradeStat {
   id: string
@@ -104,9 +105,10 @@ export interface QueryItem {
   mods: QueryMod[]
 }
 
-/** Bir mod satırından filtre için ilk sayısal değeri çıkar ("+88 to ..." → 88). */
+/** Bir mod satırından filtre için ilk sayısal değeri çıkar ("+88 to ..." → 88).
+ *  Gömülü değer-aralığı parantezleri (Advanced mod) önce temizlenir → "16(13-19)" yerine 16 okunur. */
 export function valueFromLine(line: string): number | null {
-  const m = line.match(/-?\d+(?:\.\d+)?/)
+  const m = stripValueRanges(line).match(/-?\d+(?:\.\d+)?/)
   return m ? parseFloat(m[0]) : null
 }
 
@@ -135,7 +137,8 @@ export function parsedToQueryItem(p: {
   enchants?: { text: string; kind: string }[]
 }): QueryItem {
   const toMod = (text: string, kind: string): QueryMod => {
-    const pattern = text.replace(/\d+(?:\.\d+)?/g, '#').replace(/#\s*[-–]\s*#/g, '#').trim()
+    // Gömülü değer-aralığı parantezlerini (Advanced mod: "16(13-19)") önce temizle → doğru pattern.
+    const pattern = stripValueRanges(text).replace(/\d+(?:\.\d+)?/g, '#').replace(/#\s*[-–]\s*#/g, '#').trim()
     const st = matchStat(pattern, kind)
     return {
       pattern,
@@ -200,7 +203,7 @@ export function itemStateToQueryItem(it: {
 }): QueryItem {
   const toMod = (en: string, kind: QueryModKind): QueryMod => {
     const clean = en.replace(/\n/g, ' ').trim()
-    const pattern = clean.replace(/\d+(?:\.\d+)?/g, '#').replace(/#\s*[-–]\s*#/g, '#').trim()
+    const pattern = stripValueRanges(clean).replace(/\d+(?:\.\d+)?/g, '#').replace(/#\s*[-–]\s*#/g, '#').trim()
     const st = matchStat(pattern, kind)
     return { pattern, text: clean, value: valueFromLine(en), kind, enabled: true, statId: st?.id, matched: !!st }
   }

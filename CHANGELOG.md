@@ -3,6 +3,10 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.6
+### Hata düzeltmeleri
+- **"Advanced Mod Descriptions" açıkken tüm statlar eşleşiyor.** Oyun, açıklamalı modda değerin yanına aralık gömüyordu ("Adds 1 to 16(13-19) Lightning Damage", "Adds 7(6-9) to 16(10-16) Cold Damage"); bu gömülü parantezler stat eşleşmesini bozuyordu. Artık temizleniyor — bu modlar da doğru trade stat-id'sine eşleşiyor ve filtre değeri gerçek rolled sayıdan alınıyor (örn. yay → 4/4 stat).
+
 ## 0.17.5
 ### İyileştirmeler
 - **Tüm statlar fiyat sorgusunda eşleşiyor.** Yerel silah hasar rolları dahil ("Adds # to # Cold/Lightning/Fire/Physical Damage") artık eksiksiz trade stat-id'lerine eşleniyor; eski/eksik bir stat tablosu önbelleği varsa otomatik tazelenir. (Örn. Beast Stinger yayı → 4/4 stat.)
