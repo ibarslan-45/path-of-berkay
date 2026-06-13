@@ -71,6 +71,26 @@ const data: MobalyticsData = {
             explicitDescriptions: [{ description: '50% increased Recovery rate' }]
           }
         },
+        // #5: silah anahtarı EQUIP_SLOT'ta yok ('weapon') → item-class 'bow' çıkarımıyla Weapon 1'e oturmalı
+        weapon: {
+          commonItem: {
+            slug: 'bow-fourbow-rare',
+            isUnique: false,
+            name: 'Doom Spire',
+            itemClassSlug: 'bow',
+            explicitDescriptions: [{ description: '+25 to Dexterity' }]
+          }
+        },
+        // off-hand quiver, tanınmayan anahtar ('secondaryWeapon') → item-class 'quiver' → Weapon 2
+        secondaryWeapon: {
+          commonItem: {
+            slug: 'quiver-fourquiver-rare',
+            isUnique: false,
+            name: 'Doom Quiver',
+            itemClassSlug: 'quiver',
+            explicitDescriptions: [{ description: '+15% to Critical Damage Bonus' }]
+          }
+        },
         priorityList: null // eşya değil → atlanmalı
       }
     },
@@ -115,7 +135,12 @@ check('variant 1 specs = [55,60]', JSON.stringify(pob.specs[1].nodes) === '[55,6
 console.log('\nGear — HER variant KENDİ seti (#2): stageSlots[vi]:')
 check('stageSlots 2 variant', pob.stageSlots?.length === 2, pob.stageSlots?.length)
 const ss0 = pob.stageSlots![0]
-check('3 eşya (priorityList atlandı)', pob.items.length === 3, pob.items.length)
+check('5 eşya (amulet+body+flask+bow+quiver; priorityList atlandı)', pob.items.length === 5, pob.items.length)
+// #5: silah + off-hand item-class çıkarımıyla slotlandı
+const bow = pob.items.find((i) => i.name === 'Doom Spire')!
+check('bow Weapon 1 slotunda (anahtar tanınmadı → class çıkarımı)', ss0['Weapon 1'] === bow.id, ss0)
+const quiv = pob.items.find((i) => i.name === 'Doom Quiver')!
+check('quiver Weapon 2 slotunda (class çıkarımı)', ss0['Weapon 2'] === quiv.id, ss0)
 const amu = pob.items.find((i) => i.name === "Serpent's Egg")!
 check('amulet UNIQUE', amu.rarity === 'UNIQUE')
 check('variant0 amulet slot Amulet', ss0['Amulet'] === amu.id, ss0)

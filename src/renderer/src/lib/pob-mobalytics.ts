@@ -148,24 +148,55 @@ function deriveClassName(nodeIds: number[]): string {
   return best
 }
 
-// ---- itemClassSlug → PoB slot / okunur taban ----
+// ---- equipment slot anahtarı → PoB slot ----
+// Mobalytics değişik anahtarlar kullanabilir (mainHand/weapon/weapon1…); hepsini KÜÇÜK harf eşle.
 const EQUIP_SLOT: Record<string, string> = {
   amulet: 'Amulet',
   belt: 'Belt',
   body: 'Body Armour',
+  bodyarmour: 'Body Armour',
+  bodyarmor: 'Body Armour',
+  chest: 'Body Armour',
   boots: 'Boots',
   gloves: 'Gloves',
   helmet: 'Helmet',
-  leftRing: 'Ring 1',
-  rightRing: 'Ring 2',
-  extraRing: 'Ring 3',
-  mainHand: 'Weapon 1',
-  offHand: 'Weapon 2',
+  helm: 'Helmet',
+  leftring: 'Ring 1',
+  rightring: 'Ring 2',
+  ring1: 'Ring 1',
+  ring2: 'Ring 2',
+  extraring: 'Ring 3',
+  ring3: 'Ring 3',
+  // SİLAH/yan el — tüm bilinen anahtar varyantları (#5: eksik silah/off-hand kök nedeni)
+  mainhand: 'Weapon 1',
+  weapon: 'Weapon 1',
+  weapon1: 'Weapon 1',
+  mainweapon: 'Weapon 1',
+  weaponone: 'Weapon 1',
+  offhand: 'Weapon 2',
+  weapon2: 'Weapon 2',
+  offweapon: 'Weapon 2',
+  secondary: 'Weapon 2',
+  shield: 'Weapon 2',
+  quiver: 'Weapon 2',
   flask1: 'Flask 1',
   flask2: 'Flask 2',
   charm1: 'Charm 1',
   charm2: 'Charm 2',
   charm3: 'Charm 3'
+}
+// item-class slug'ından slot çıkarımı (slotKey tanınmazsa yedek). Silah sınıfları → Weapon 1,
+// yan el sınıfları (quiver/shield/focus) → Weapon 2. (#5: Mobalytics weapon anahtarı bilinmediğinde.)
+const OFFHAND_CLASS_RE = /quiver|shield|buckler|focus/i
+const WEAPON_CLASS_RE = /bow|crossbow|wand|sceptre|scepter|staff|stave|mace|axe|sword|dagger|claw|spear|flail|warstaff|quarterstaff/i
+/** Bir equipment girdisi için PoB slotunu çöz: anahtar eşlemesi → item-class çıkarımı (silah dahil). */
+function resolveEquipSlot(slotKey: string, itemClassSlug: string, taken: Record<string, string>): string {
+  const direct = EQUIP_SLOT[(slotKey || '').toLowerCase()]
+  if (direct) return direct
+  const cls = (itemClassSlug || '').toLowerCase()
+  if (OFFHAND_CLASS_RE.test(cls)) return taken['Weapon 2'] ? '' : 'Weapon 2'
+  if (WEAPON_CLASS_RE.test(cls)) return !taken['Weapon 1'] ? 'Weapon 1' : !taken['Weapon 2'] ? 'Weapon 2' : ''
+  return '' // gerçekten eşya değil (priorityList vb.)
 }
 // itemClassSlug ("body-armour","lifeflask","warstaff") → okunur taban (tam taban değil; "doğrulanmalı")
 function humanizeClass(slug: string): string {
@@ -264,8 +295,8 @@ export function mobalyticsToPob(data: MobalyticsData, _meta: MobalyticsMeta = {}
     for (const [slotKey, slot] of Object.entries(v.equipment ?? {})) {
       const ci = slot?.commonItem
       if (!ci || (!ci.name && !ci.itemClassSlug)) continue
-      const pobSlot = EQUIP_SLOT[slotKey]
-      if (!pobSlot) continue // priorityList vb. eşya değil
+      const pobSlot = resolveEquipSlot(slotKey, ci.itemClassSlug || '', slots)
+      if (!pobSlot) continue // priorityList vb. eşya değil (silah dahil hiçbir slota oturmadı)
       const mods = (ci.explicitDescriptions ?? []).map((d) => (d.description || '').trim()).filter(Boolean)
       for (const r of slot?.runes ?? []) {
         if (r.slug) mods.push('(Rune) ' + humanizeGemSlug(r.slug.replace(/^soulcore-/, '')))

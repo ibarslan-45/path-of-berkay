@@ -490,13 +490,58 @@ function skillLabel(s: { en: string; tr: string | null }): string {
 }
 
 const items = computed(() => build.value?.items ?? [])
+// #7: Liste görünümü — eşyaları kanonik slot sırasına diz (okunur "slot → eşya" listesi).
+const SLOT_ORDER = [
+  'Weapon 1', 'Weapon 2', 'Weapon 1 Swap', 'Weapon 2 Swap', 'Helmet', 'Body Armour',
+  'Gloves', 'Boots', 'Amulet', 'Ring 1', 'Ring 2', 'Ring 3', 'Belt'
+]
+function slotRank(slot: string | null | undefined): number {
+  if (!slot) return 999
+  const i = SLOT_ORDER.indexOf(slot)
+  if (i >= 0) return i
+  if (/flask/i.test(slot)) return 100
+  if (/charm/i.test(slot)) return 110
+  if (/jewel/i.test(slot)) return 120
+  return 200
+}
+// slot için okunur kısa etiket (TR), özel ad değil
+function slotLabel(slot: string | null | undefined): string {
+  if (!slot) return props.isTr ? 'Diğer' : 'Other'
+  if (/weapon 1 swap/i.test(slot)) return props.isTr ? 'Silah (Set 2)' : 'Weapon (Set 2)'
+  if (/weapon 2 swap/i.test(slot)) return props.isTr ? 'Yan El (Set 2)' : 'Offhand (Set 2)'
+  if (/weapon 1/i.test(slot)) return props.isTr ? 'Silah' : 'Weapon'
+  if (/weapon 2/i.test(slot)) return props.isTr ? 'Yan El' : 'Offhand'
+  return slot
+}
+// Aktif aşamanın gear'ı (stageSlots[stageIdx] ya da tek `slots`) → slot ANAHTARINDAN doğru etiket;
+// variant'lar karışmaz (oyun görünümüyle aynı kaynak). Slota oturmayan eşyalar sonda "Diğer".
+const listItems = computed<Array<{ slot: string | null; item: MatchedItem }>>(() => {
+  const b = build.value
+  if (!b) return []
+  const raw = trackedBuild.value
+  const slots = (raw?.stageSlots?.[stageIdx.value] ?? raw?.slots ?? {}) as Record<string, string>
+  const byId = new Map(b.items.map((i) => [i.id, i]))
+  const out: Array<{ slot: string | null; item: MatchedItem }> = []
+  const seen = new Set<string>()
+  for (const [slotKey, id] of Object.entries(slots).sort((a, c) => slotRank(a[0]) - slotRank(c[0]))) {
+    const it = byId.get(id)
+    if (!it || seen.has(id)) continue
+    seen.add(id)
+    out.push({ slot: slotKey, item: it })
+  }
+  // Tek-set build'de (stageSlots yok) slota oturmayan kalan eşyaları ekle. Çok-variant'ta (stageSlots
+  // var) EKLEME — aksi halde diğer variant'ların eşyaları listeyi kirletir.
+  if (!raw?.stageSlots) for (const it of b.items) if (!seen.has(it.id)) out.push({ slot: it.slot, item: it })
+  return out
+})
 const selItem = computed<MatchedItem | null>(
   () => items.value.find((i) => i.id === selectedItemId.value) ?? null
 )
 // Eşyaya tıklayınca seç + (slot varsa) Craft/Overlay karşılaştırması için hedef slotu işaretle.
-function pickItem(i: MatchedItem): void {
+function pickItem(i: MatchedItem, slot?: string | null): void {
   selectedItemId.value = i.id
-  if (i.slot) selectedSlot.value = i.slot
+  const s = slot ?? i.slot
+  if (s) selectedSlot.value = s
 }
 
 // --- Faz 2 (export epic): .build dosyası oluştur (BuildPlanner) ---
@@ -628,7 +673,8 @@ async function openItemTrade(it: MatchedItem): Promise<void> {
   }
 }
 function gemName(g: { nameSpec: string; tr: string | null }): string {
-  return props.isTr && g.tr ? g.tr : g.nameSpec
+  // #4: gem adı HER ZAMAN İngilizce (özel adlar çevrilmez; oyun İngilizce).
+  return g.nameSpec
 }
 function itemName(i: MatchedItem): string {
   return i.name || i.pureBase
@@ -990,17 +1036,21 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
 
       <!-- SAĞ: eşya listesi + seçili eşya detayı + regex/quest yer tutucu -->
       <section class="bld-right panel-frame">
-        <div class="bld-itemrow">
+        <!-- #7: okunur slot → eşya listesi (slot etiketi + ikon + ad), kanonik sıralı -->
+        <div class="bld-itemlist">
           <button
-            v-for="i in items"
-            :key="i.id"
-            class="bld-itembtn"
-            :class="{ 'bld-itembtn--on': i.id === selectedItemId, 'bld-itembtn--miss': !i.matched, 'bld-itembtn--cmp': i.slot && i.slot === selectedSlot }"
-            :title="itemName(i) + (i.slot ? ' — ' + i.slot : '')"
-            @click="pickItem(i)"
+            v-for="e in listItems"
+            :key="e.item.id + (e.slot || '')"
+            class="bld-itemli"
+            :class="{ 'bld-itemli--on': e.item.id === selectedItemId, 'bld-itemli--miss': !e.item.matched, 'bld-itemli--cmp': e.slot && e.slot === selectedSlot }"
+            :title="itemName(e.item) + (e.slot ? ' — ' + e.slot : '')"
+            @click="pickItem(e.item, e.slot)"
           >
-            <img v-if="iconUrl(itemMap, i.icon)" :src="iconUrl(itemMap, i.icon)!" alt="" />
-            <span v-else class="bld-itemph">◆</span>
+            <span class="bld-itemli-slot">{{ slotLabel(e.slot) }}</span>
+            <img v-if="iconUrl(itemMap, e.item.icon)" :src="iconUrl(itemMap, e.item.icon)!" class="bld-itemli-ic" alt="" />
+            <span v-else class="bld-itemli-ic bld-itemph">◆</span>
+            <span class="bld-itemli-name" :class="'rar-' + e.item.rarity.toLowerCase()">{{ itemName(e.item) }}</span>
+            <span v-if="e.slot && e.slot === selectedSlot" class="bld-itemli-cmp">✓</span>
           </button>
         </div>
 
@@ -1736,39 +1786,71 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
   padding: 1px 6px;
   border-radius: 2px;
 }
-.bld-itemrow {
+/* #7: okunur slot → eşya listesi */
+.bld-itemlist {
   flex: none;
+  max-height: 240px;
+  overflow-y: auto;
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+  flex-direction: column;
+  gap: 2px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(184, 154, 102, 0.2);
 }
-.bld-itembtn {
-  width: 38px;
-  height: 38px;
+.bld-itemli {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid var(--frame-brown, #4a3d28);
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid transparent;
+  border-left: 2px solid rgba(184, 154, 102, 0.35);
   cursor: pointer;
-  padding: 0;
+  padding: 3px 6px;
+  font: inherit;
 }
-.bld-itembtn img {
-  width: 32px;
-  height: 32px;
+.bld-itemli:hover {
+  background: rgba(184, 154, 102, 0.1);
+}
+.bld-itemli-slot {
+  flex: none;
+  width: 92px;
+  font-size: 11px;
+  font-variant: small-caps;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bld-itemli-ic {
+  flex: none;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
 }
-.bld-itembtn--on {
+.bld-itemli-name {
+  flex: 1;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bld-itemli-cmp {
+  flex: none;
+  color: #9fb4d8;
+  font-size: 12px;
+}
+.bld-itemli--on {
   border-color: var(--gem-teal);
-  box-shadow: 0 0 0 1px var(--gem-teal);
+  border-left-color: var(--gem-teal);
+  background: rgba(74, 160, 140, 0.12);
 }
-.bld-itembtn--miss {
-  opacity: 0.5;
+.bld-itemli--miss {
+  opacity: 0.55;
 }
-.bld-itembtn--cmp {
-  box-shadow: 0 0 0 2px #7890b8;
+.bld-itemli--cmp {
+  border-left-color: #7890b8;
 }
 .bld-cmptarget {
   color: #9fb4d8;

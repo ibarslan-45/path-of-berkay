@@ -147,7 +147,14 @@ function countSockets(socketText: string): number {
 /** Ham clipboard metnini ParsedItem'a çevir. Tanınmazsa rarity:'Unknown' döner (çökmez). */
 export function parseClipboard(raw: string): ParsedItem | null {
   if (!raw || typeof raw !== 'string') return null
-  const text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim()
+  // Sağlamlık (0.17.2): bazı panolarda baştaki BOM / sıfır-genişlik karakter ilk satırın
+  // "Item Class:"/"Rarity:" eşleşmesini bozar → temizle. Satır içi BOM'ları da at.
+  const text = raw
+    .replace(/^﻿/, '')
+    .replace(/[﻿​‎‏]/g, '')
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .trim()
   if (!text) return null
 
   const item: ParsedItem = {
@@ -358,6 +365,20 @@ export function parseClipboard(raw: string): ParsedItem | null {
   item.runes = item.explicits.filter((m) => m.kind === 'rune').map((m) => m.text)
 
   return item
+}
+
+/**
+ * Panodaki metin fiyatlandırılabilir/karşılaştırılabilir bir EŞYA mı? (0.17.2 — gerçek eşyaların
+ * "geçerli eşya yok" demesini önler.) Gem/Currency hariç; Normal/Magic/Rare/Unique VEYA rarity
+ * okunamasa bile itemClass + (mod/taban) varsa eşya kabul edilir (dürüst: stat yakalama için yeter).
+ */
+export function isPriceableItem(p: ParsedItem | null): p is ParsedItem {
+  if (!p) return false
+  if (p.rarity === 'Gem' || p.rarity === 'Currency') return false
+  const hasContent = !!(p.baseType || p.name || p.explicits.length || p.implicits.length)
+  if (['Normal', 'Magic', 'Rare', 'Unique'].includes(p.rarity)) return hasContent
+  // rarity okunamadı (Unknown) ama eşya gövdesi belli → yine de kabul (item-class + mod)
+  return !!(p.itemClass && hasContent)
 }
 
 /** Bir mod satırını eşleştirme kalıbına çevirir: sayıları '#', boşlukları sadeleştirir.

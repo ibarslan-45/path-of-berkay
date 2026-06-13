@@ -81,5 +81,21 @@ check('tahminde de hedef mod eşleşir (Life)', seed5.targets.length >= 1, seed5
 // "Superior" öneki soyulur
 check('Superior öneki soyulur', matchSimBase('Superior Sapphire Ring')?.en === 'Sapphire Ring', matchSimBase('Superior Sapphire Ring')?.en)
 
+// #3 (0.17.2): Felt Cap (Helmet) → SOL taraf DOĞRU base olmalı (Bow'a DÜŞMEMELİ).
+console.log('\n#3 — Felt Cap (Helmet) doğru base (Bow değil):')
+const felt = craftSeedFromItem({
+  base: 'Felt Cap',
+  pureBase: 'Felt Cap',
+  name: 'Doom Veil',
+  itemClass: 'Helmets',
+  rarity: 'Rare',
+  mods: ['+19 to maximum Life', '+8 to Dexterity'],
+  itemLevel: 65
+})
+check('Felt Cap → baseEn Felt Cap', felt.baseEn === 'Felt Cap', felt.baseEn)
+check('Felt Cap → itemClass Helmet', felt.itemClass === 'Helmet', felt.itemClass)
+check('Felt Cap → kesin eşleşme (tahmin değil)', felt.baseSuggested === false)
+check('Felt Cap → Bow DEĞİL', !/bow/i.test(felt.baseEn || ''))
+
 console.log(`\n${pass} geçti, ${fail} kaldı`)
 process.exit(fail ? 1 : 0)

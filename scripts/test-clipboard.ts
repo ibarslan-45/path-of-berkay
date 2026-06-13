@@ -2,7 +2,7 @@
  * test-clipboard.ts — clipboard-parse.ts birim testi (saf, ağsız).
  * Gerçek PoE2 Ctrl+C örnekleriyle doğrular.  Çalıştırma: npx tsx scripts/test-clipboard.ts
  */
-import { parseClipboard, modToPattern } from '../src/renderer/src/lib/clipboard-parse'
+import { parseClipboard, modToPattern, isPriceableItem } from '../src/renderer/src/lib/clipboard-parse'
 
 let pass = 0
 let fail = 0
@@ -229,6 +229,32 @@ check('hiçbir mod metni "Modifier"/"{" içermez', !adv.explicits.concat(adv.imp
 check('crafted inline etiket olmadan tespit', adv.explicits.some((m) => m.kind === 'crafted' && /Fire Spell/.test(m.text)))
 check('fractured annotation’dan + fractured=true', adv.fractured === true && adv.explicits.some((m) => m.kind === 'fractured' && /Strength/.test(m.text)))
 check('Life mod düz explicit', adv.explicits.some((m) => m.kind === 'explicit' && /maximum Life/.test(m.text)))
+
+// --- Örnek 10 (0.17.2): BOM + isPriceableItem sağlamlık (KRİTİK 2: "geçerli eşya yok" regresyonu) ---
+console.log('\nÖrnek 10 — BOM/zero-width temizliği + isPriceableItem:')
+const BOM = '﻿' + RARE // bazı panolarda baştaki BOM ilk satırı bozar
+const bomItem = parseClipboard(BOM)!
+check('BOM’a rağmen Item Class okundu', bomItem.itemClass === 'Body Armours', bomItem.itemClass)
+check('BOM’a rağmen rarity Rare', bomItem.rarity === 'Rare', bomItem.rarity)
+check('BOM’lu Rare fiyatlandırılabilir', isPriceableItem(bomItem) === true)
+check('normal Rare fiyatlandırılabilir', isPriceableItem(parseClipboard(RARE)) === true)
+check('boş metin fiyatlandırılamaz', isPriceableItem(parseClipboard('selam dünya')) === false)
+check('null fiyatlandırılamaz', isPriceableItem(null) === false)
+// rarity satırı olmayan ama Item Class + mod taşıyan eşya → yine de kabul (Unknown fallback)
+const NORARITY = `Item Class: Helmets
+Doom Veil
+Felt Cap
+--------
+Item Level: 65
+--------
++19 to maximum Life
++8 to Dexterity`
+const nr = parseClipboard(NORARITY)!
+check('rarity satırsız ama itemClass+mod → kabul', isPriceableItem(nr) === true, { rarity: nr.rarity, cls: nr.itemClass, ex: nr.explicits.length })
+// Gem/Currency fiyatlandırılamaz
+check('Currency fiyatlandırılamaz', isPriceableItem(parseClipboard(`Item Class: Stackable Currency
+Rarity: Currency
+Chaos Orb`)) === false)
 
 console.log(`\nSONUÇ: ${pass} geçti, ${fail} kaldı`)
 process.exit(fail ? 1 : 0)

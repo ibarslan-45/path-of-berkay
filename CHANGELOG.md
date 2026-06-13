@@ -3,6 +3,15 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.2
+### Hata düzeltmeleri
+- **Fiyat/tehlike kısayolu yalnızca oyun ön plandayken çalışır.** Tahmini değer paneli artık SADECE atadığın fiyat kısayoluyla (varsayılan Ctrl+D) ve yalnız ön plandaki pencere "Path of Exile 2" iken açılır. Başka bir uygulamadayken (ör. tarayıcı) Ctrl+C ya da kısayol hiçbir şey yapmaz — pano dinlenmez, panel açılmaz.
+- **Gerçek eşya artık doğru tanınıyor.** Bazı durumlarda gerçek bir eşya kopyalanmasına rağmen "Panoda geçerli eşya yok" diyordu; pano metnindeki gizli karakterler temizlenip eşya tanıma esnetildi — stat yakalama uçtan uca çalışıyor.
+- **Eşyadan Craft'a doğru taban geliyor.** Bir eşyada "Craft'la"ya basınca sol tarafta yanlış (önceki oturumdan kalan) bir taban çıkabiliyordu; artık tıklanan eşyanın doğru tabanı yüklenir (Helmet → Helmet tabanı).
+- **Statlar ve adlar her zaman İngilizce.** Karşılaştırma ve Craft panellerinde stat/mod metni ve item/taban/gem adları artık İngilizce kalır ("+19 to maximum Life", "+8 to Dexterity"); yalnızca çevre etiketler Türkçe.
+- **Silah, yan el ve eksik eşyalar görünüyor.** Mobalytics build'lerinde silah/ok kılıfı bazen hiç gösterilmiyordu; tüm gear slotları (Silah 1/2, yan el/ok kılıfı dahil) artık render edilir ve Set 1/Set 2 rozetleriyle etiketlenir.
+- **Liste görünümü düzenlendi.** Build "Liste" görünümü artık okunur, hizalı satırlar halinde (slot → eşya → modlar), seçili aşamanın eşyalarıyla.
+
 ## 0.17.1
 ### Hata düzeltmeleri
 - **İşaretlenebilir ilerleme artık kalıcı.** Build görünümündeki tikler (item/stat/gem/support/pasif) kapat-aç'ta korunuyor — 0.17.0'daki sandbox değişikliğinden sonra bir IPC serileştirme hatası tikleri sessizce düşürüyordu; düzeltildi.

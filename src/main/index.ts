@@ -1773,11 +1773,17 @@ function createPriceWindow(): void {
     priceWindow = null
   })
 }
-// Tek-tuş (0.17.0): autoCopy açıkken kısayola basınca, YALNIZ ön plandaki pencere "Path of Exile 2"
-// ise oyuna Ctrl+C gönderir (odak koruması — başka uygulamaya tuş enjekte ETMEZ), kısa bekler, panoyu
-// okuruz. Tek PowerShell çağrısında: ön plan pencere başlığını P/Invoke ile al → eşleşirse SendKeys ^c.
-// Awakened PoE / Exiled Exchange ile aynı yöntem; varsayılan KAPALI, ayardan açılır.
-const FG_COPY_PS = `
+// ODAK KORUMASI (0.17.2): fiyat VE tehlike kısayolları YALNIZ ön plandaki pencere "Path of Exile 2"
+// iken çalışır. Başka pencere (tarayıcı vb.) odaktayken kısayol HİÇBİR ŞEY yapmaz — panel açılmaz,
+// pano okunmaz, tuş gönderilmez. Pano-izleyici YOKTUR; tek tetikleyici atanmış global kısayoldur.
+// Tek PowerShell çağrısında: ön plan pencere başlığını P/Invoke ile al → PoE2 ise (autoCopy açıksa)
+// oyuna Ctrl+C gönder. Awakened PoE / Exiled Exchange ile aynı yöntem.
+// Dönüş: 'sent' (PoE2 + kopya gönderildi), 'poe2' (PoE2 ama kopya yok), 'notpoe2' (başka pencere/odak yok).
+function fgPrepScript(doCopy: boolean): string {
+  const action = doCopy
+    ? `Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.SendKeys]::SendWait('^c'); Write-Output 'sent'`
+    : `Write-Output 'poe2'`
+  return `
 $ErrorActionPreference='SilentlyContinue'
 Add-Type @"
 using System;
@@ -1793,34 +1799,46 @@ $sb = New-Object System.Text.StringBuilder 256
 [void][PoBeFg]::GetWindowText($h, $sb, 256)
 $t = $sb.ToString()
 if ($t -like 'Path of Exile 2*') {
-  Add-Type -AssemblyName System.Windows.Forms
-  [System.Windows.Forms.SendKeys]::SendWait('^c')
-  Write-Output 'sent'
+  ${action}
 } else {
-  Write-Output 'skip'
+  Write-Output 'notpoe2'
 }`
-/** Ön plan PoE2 ise oyuna Ctrl+C gönderir. Gönderdiyse true döner (pano güncellenmesini beklemek için). */
-function sendCopyKeystrokeIfPoe2(): Promise<boolean> {
-  if (process.platform !== 'win32') return Promise.resolve(false)
+}
+/**
+ * Ön plan penceresi PoE2 mi? PoE2 ise ve doCopy true ise oyuna Ctrl+C gönderir.
+ * 'sent' = PoE2 + kopya gönderildi (pano güncellenmesini beklemek için); 'poe2' = PoE2 ama kopya yok;
+ * 'notpoe2' = başka pencere odakta (kısayolu yok say). Windows dışında her zaman 'notpoe2'.
+ */
+function foregroundPrep(doCopy: boolean): Promise<'sent' | 'poe2' | 'notpoe2'> {
+  if (process.platform !== 'win32') return Promise.resolve('notpoe2')
   return new Promise((resolve) => {
     try {
       execFile(
         'powershell.exe',
-        ['-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-Command', FG_COPY_PS],
+        ['-NoProfile', '-NonInteractive', '-WindowStyle', 'Hidden', '-Command', fgPrepScript(doCopy)],
         { windowsHide: true, timeout: 2500 },
-        (_err, stdout) => resolve(/sent/.test(stdout || ''))
+        (_err, stdout) => {
+          const out = (stdout || '').trim()
+          if (/sent/.test(out)) resolve('sent')
+          else if (/\bpoe2\b/.test(out)) resolve('poe2')
+          else resolve('notpoe2')
+        }
       )
     } catch {
-      resolve(false)
+      resolve('notpoe2')
     }
   })
 }
 
-// Kısayola basıldı: (autoCopy ise oyuna Ctrl+C gönder) PANODAKİ metni oku → fiyat penceresine
-// gönder (showInactive: oyunun odağını çalmaz).
+// Kısayola basıldı: ÖN PLAN PoE2 DEĞİLSE hiçbir şey yapma (odak koruması). PoE2 ise (autoCopy açıksa
+// oyuna Ctrl+C gönder) PANODAKİ metni oku → fiyat penceresine gönder (showInactive: odağı çalmaz).
 async function showPriceCheck(): Promise<void> {
-  // autoCopy AÇIK + ön plan PoE2 ise oyuna Ctrl+C gönder; aksi halde yalnız mevcut panoyu oku (odak koruması).
-  if (appSettings.autoCopy && (await sendCopyKeystrokeIfPoe2())) await sleep(140)
+  const fg = await foregroundPrep(appSettings.autoCopy)
+  if (fg === 'notpoe2') {
+    console.log('[price] PoE2 ön planda değil — kısayol yok sayıldı (odak koruması)')
+    return
+  }
+  if (fg === 'sent') await sleep(160) // oyunun kopyaladığı eşya panoya yazılana kadar kısa bekle
   const text = clipboard.readText() || ''
   createPriceWindow()
   if (!priceWindow) return
@@ -1893,7 +1911,12 @@ function createDangerWindow(): void {
   })
 }
 async function showDangerCheck(): Promise<void> {
-  if (appSettings.autoCopy && (await sendCopyKeystrokeIfPoe2())) await sleep(140)
+  const fg = await foregroundPrep(appSettings.autoCopy)
+  if (fg === 'notpoe2') {
+    console.log('[danger] PoE2 ön planda değil — kısayol yok sayıldı (odak koruması)')
+    return
+  }
+  if (fg === 'sent') await sleep(160)
   const text = clipboard.readText() || ''
   createDangerWindow()
   if (!dangerWindow) return

@@ -125,9 +125,9 @@ const baseOptions = computed<SimBase[]>(() => {
     .slice(0, 300)
 })
 function baseLabel(b: SimBase): string {
-  const name = props.isTr && b.tr ? b.tr : b.en
+  // #4: taban adı HER ZAMAN İngilizce (özel adlar çevrilmez); yalnız çevre etiket TR olabilir.
   const cls = baseSearch.value.trim() ? b.item_class + ' · ' : ''
-  return cls + name + ' (ilvl ' + b.drop_level + '+)'
+  return cls + b.en + ' (ilvl ' + b.drop_level + '+)'
 }
 // aramayla seçilen taban farklı sınıftansa sınıfı da güncelle
 function onBaseSelect(): void {
@@ -662,6 +662,10 @@ watch([selBaseEn, ilvl], () => saveCraft())
 
 onMounted(async () => {
   const raw = (await window.api?.craft?.get()) ?? ''
+  // #3 (0.17.2): bu await ÇÖZÜLENE kadar senkron mount'ta "Craft'la" tohumu uygulanmış olabilir
+  // (seedApplied). Öyleyse kayıtlı craft state'i (önceki oturumun tabanı, ör. Gemini Bow) tohumun
+  // ÜZERİNE YAZMAMALI — aksi halde tıklanan eşya yerine yanlış taban görünür.
+  if (seedApplied.value) return
   if (!raw) return
   try {
     const c = JSON.parse(raw)
@@ -720,10 +724,12 @@ onMounted(() => {
 
 // --- Part 5: build eşyasından gelen "Craft'la" tohumunu uygula (SOL=taban, SAĞ=hedef modlar) ---
 const seedSource = ref<CraftSeedItem | null>(null) // gösterim için orijinal build eşyası
+const seedApplied = ref(false) // #3: bir "Craft'la" tohumu uygulandı mı (kayıtlı-craft yükleyici ezmesin)
 const seedUnmatched = ref<string[]>([])
 const seedNotice = ref<{ baseEn: string; matched: number; unmatched: number; suggested: boolean } | null>(null)
 function applyCraftSeed(it: CraftSeedItem): void {
   const seed = craftSeedFromItem(it)
+  seedApplied.value = true // kayıtlı-craft yükleyici (async) tohumu ezmesin
   seedSource.value = it
   seedUnmatched.value = seed.unmatched
   // baseEn artık item-class tahminiyle de dolabilir (baseSuggested) — selClass SIM sınıfı listede olmalı.
@@ -1067,7 +1073,8 @@ function parts(text: string): { t: string; num: boolean }[] {
             <div class="cs-tip-rarity">
               {{ rarityLabel }}<span v-if="item.corrupted" class="cs-corrupt-tag">{{ tr('CORRUPTED', 'CORRUPTED') }}</span>
             </div>
-            <div class="cs-tip-name" :class="{ 'cs-name-corrupt': item.corrupted }">{{ props.isTr && selBase?.tr ? selBase?.tr : selBase?.en }}</div>
+            <!-- #4: taban/eşya adı HER ZAMAN İngilizce (oyun İngilizce; özel adlar çevrilmez) -->
+            <div class="cs-tip-name" :class="{ 'cs-name-corrupt': item.corrupted }">{{ selBase?.en }}</div>
           </div>
           <div class="cs-tip-sub">
             {{ tr('Item Seviyesi', 'Item Level') }}: <b>{{ item.ilvl }}</b>
@@ -1224,7 +1231,8 @@ function parts(text: string): { t: string; num: boolean }[] {
               <ul class="cs-cmp-rows">
                 <li v-for="(row, i) in compareResult.rows" :key="i" class="cs-cmp-row" :class="'cs-cmp--' + row.status">
                   <span class="cs-cmp-tag" :class="tagClass(row)">{{ rowTag(row) }}</span>
-                  <span class="cs-cmp-text">{{ props.isTr && row.tr ? row.tr : row.en }}</span>
+                  <!-- #4: stat/mod metni HER ZAMAN İngilizce kalır (oyun terimleri çevrilmez) -->
+                  <span class="cs-cmp-text">{{ row.en }}</span>
                   <span v-if="row.kind === 'match' && row.approachPct !== null" class="cs-cmp-pct">{{ row.candidateValue }}/{{ row.targetValue }} · {{ row.approachPct }}%</span>
                   <span v-if="row.verify" class="cs-cmp-verify" :title="tr('stat-id eşleşmedi — doğrulanmalı', 'no stat-id match — verify')">?</span>
                 </li>

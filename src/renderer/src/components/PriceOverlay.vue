@@ -5,7 +5,7 @@
 // ToS: GİRDİ OTOMASYONU YOK (sentetik Ctrl+C yok). Yalnız pano okuma; hafıza yok.
 // Overlay yalnız oyunun Windowed Fullscreen / Borderless modunda görünür.
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { parseClipboard, type ParsedItem } from '../lib/clipboard-parse'
+import { parseClipboard, isPriceableItem, type ParsedItem } from '../lib/clipboard-parse'
 import { parsedToQueryItem, type QueryItem } from '../lib/trade-query'
 import { estimateValue, openItemInTrade, priceErrMsg, type PriceEstimate } from '../lib/price-check'
 import { ensureBuild, trackedBuild, gearSlots, slotItem, guessSlot } from '../lib/build-target'
@@ -62,11 +62,7 @@ let unsubSettings: (() => void) | null = null
 
 async function handleClipboard(text: string): Promise<void> {
   const parsed = parseClipboard(text)
-  const valid =
-    parsed &&
-    ['Normal', 'Magic', 'Rare', 'Unique'].includes(parsed.rarity) &&
-    (parsed.baseType || parsed.name || parsed.explicits.length || parsed.implicits.length)
-  if (!valid) {
+  if (!isPriceableItem(parsed)) {
     status.value = 'invalid'
     itemName.value = ''
     return
@@ -220,7 +216,8 @@ onBeforeUnmount(() => {
             <ul class="po-cmp-rows">
               <li v-for="(row, i) in compareResult.rows" :key="i" class="po-cmp-row" :class="'po-cmp--' + row.status">
                 <span class="po-cmp-tag" :class="tagClass(row)">{{ rowTag(row) }}</span>
-                <span class="po-cmp-text">{{ isTr && row.tr ? row.tr : row.en }}</span>
+                <!-- #4: stat/mod metni HER ZAMAN İngilizce kalır (oyun terimleri çevrilmez) -->
+                <span class="po-cmp-text">{{ row.en }}</span>
                 <span v-if="row.kind === 'match' && row.approachPct !== null" class="po-cmp-pct">{{ row.approachPct }}%</span>
               </li>
             </ul>
