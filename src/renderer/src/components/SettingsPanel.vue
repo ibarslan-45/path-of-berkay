@@ -28,6 +28,9 @@ interface AppSettings {
   dangerCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   autoCopy: boolean
   tradeOpen: 'app' | 'browser'
+  closeToTray: boolean
+  poe2AutoShow: boolean
+  launchOnStartup: boolean
   ui: { font: string; zoom: number }
   log: LogStatus
 }
@@ -59,6 +62,9 @@ const dangerShortcutOk = ref(true)
 const capturingDanger = ref(false)
 const autoCopy = ref(false) // 0.17.0: varsayılan KAPALI
 const tradeOpen = ref<'app' | 'browser'>('app') // 0.17.8: Trade nerede açılsın
+const closeToTray = ref(true) // 0.18.0
+const poe2AutoShow = ref(false)
+const launchOnStartup = ref(false)
 const uiFont = ref('helvetica')
 const uiZoom = ref(1)
 let unsub: (() => void) | null = null
@@ -82,6 +88,18 @@ function toggleAutoCopy(): void {
 function setTradeOpen(v: 'app' | 'browser'): void {
   tradeOpen.value = v
   window.api?.settings.set({ tradeOpen: v })
+}
+function toggleCloseToTray(): void {
+  closeToTray.value = !closeToTray.value
+  window.api?.settings.set({ closeToTray: closeToTray.value })
+}
+function togglePoe2AutoShow(): void {
+  poe2AutoShow.value = !poe2AutoShow.value
+  window.api?.settings.set({ poe2AutoShow: poe2AutoShow.value })
+}
+function toggleLaunchOnStartup(): void {
+  launchOnStartup.value = !launchOnStartup.value
+  window.api?.settings.set({ launchOnStartup: launchOnStartup.value })
 }
 
 // --- İletişim / Hakkında (ADIM D) ---
@@ -182,6 +200,9 @@ function apply(s: AppSettings): void {
   }
   if (typeof s.autoCopy === 'boolean') autoCopy.value = s.autoCopy
   if (s.tradeOpen === 'app' || s.tradeOpen === 'browser') tradeOpen.value = s.tradeOpen
+  if (typeof s.closeToTray === 'boolean') closeToTray.value = s.closeToTray
+  if (typeof s.poe2AutoShow === 'boolean') poe2AutoShow.value = s.poe2AutoShow
+  if (typeof s.launchOnStartup === 'boolean') launchOnStartup.value = s.launchOnStartup
   if (s.ui) {
     uiFont.value = s.ui.font || 'helvetica'
     uiZoom.value = s.ui.zoom ?? 1
@@ -616,6 +637,35 @@ function onCaptureDangerKey(e: KeyboardEvent): void {
           </div>
         </div>
 
+        <!-- 4b) SİSTEM TEPSİSİ (0.18.0) -->
+        <div class="set-sec">
+          <div class="set-label">{{ tr('Sistem tepsisi', 'System tray') }}</div>
+          <div class="set-toggle-row">
+            <span>{{ tr('Kapatınca (X) tepsiye küçült', 'Minimize to tray on close (X)') }}</span>
+            <div class="set-seg">
+              <button class="set-segbtn" :class="{ 'set-segbtn--on': closeToTray }" @click="!closeToTray && toggleCloseToTray()">{{ tr('Açık', 'On') }}</button>
+              <button class="set-segbtn" :class="{ 'set-segbtn--on': !closeToTray }" @click="closeToTray && toggleCloseToTray()">{{ tr('Kapalı', 'Off') }}</button>
+            </div>
+          </div>
+          <div class="set-toggle-row">
+            <span>{{ tr('PoE 2 açılınca PoBe’yi göster', 'Show PoBe when PoE 2 launches') }}</span>
+            <div class="set-seg">
+              <button class="set-segbtn" :class="{ 'set-segbtn--on': poe2AutoShow }" @click="!poe2AutoShow && togglePoe2AutoShow()">{{ tr('Açık', 'On') }}</button>
+              <button class="set-segbtn" :class="{ 'set-segbtn--on': !poe2AutoShow }" @click="poe2AutoShow && togglePoe2AutoShow()">{{ tr('Kapalı', 'Off') }}</button>
+            </div>
+          </div>
+          <div class="set-toggle-row">
+            <span>{{ tr('Windows ile başlat (tepside bekler)', 'Launch with Windows (waits in tray)') }}</span>
+            <div class="set-seg">
+              <button class="set-segbtn" :class="{ 'set-segbtn--on': launchOnStartup }" @click="!launchOnStartup && toggleLaunchOnStartup()">{{ tr('Açık', 'On') }}</button>
+              <button class="set-segbtn" :class="{ 'set-segbtn--on': !launchOnStartup }" @click="launchOnStartup && toggleLaunchOnStartup()">{{ tr('Kapalı', 'Off') }}</button>
+            </div>
+          </div>
+          <div class="set-hint">
+            {{ tr('PoBe sağ-alt sistem tepsisinde simge gösterir (sağ tık: Göster/Gizle, Çıkış). “Tepsiye küçült” açıkken pencereyi kapatmak programı kapatmaz — tepsiden “Çıkış” ile tam kapatırsın. “PoE 2 açılınca göster” yalnız oyun sürecinin başlamasını izler (hafıza okuma/otomasyon YOK).', 'PoBe shows a tray icon (right-click: Show/Hide, Exit). With “minimize to tray” on, closing the window doesn’t quit the app — use “Exit” from the tray. “Show when PoE 2 launches” only watches for the game process starting (no memory reading/automation).') }}
+          </div>
+        </div>
+
         <!-- 4b) OYUN-İÇİ FİYAT KONTROLÜ (Faz 2) -->
         <div class="set-sec">
           <div class="set-label">{{ tr('Oyun-içi Fiyat Kontrolü', 'In-game Price Check') }}</div>
@@ -804,6 +854,18 @@ function onCaptureDangerKey(e: KeyboardEvent): void {
   font-size: 13px;
   color: var(--gold-ornament);
   margin-bottom: 6px;
+}
+.set-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 12.5px;
+  color: var(--text-default, #cdc3aa);
+}
+.set-toggle-row .set-seg {
+  flex: none;
 }
 .set-soon {
   font-size: 10px;

@@ -3,6 +3,15 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.18.0
+### İyileştirmeler
+- **Build ekranı düzeni + buton çakışması düzeltildi.** Ekipman kartları daha geniş, "Craft'la" ve "Trade'de Ara" butonları kart başlığının üstüne taşmıyor — kendi satırlarında, pencere küçükken de okunur.
+- **Build eşyasında "Trade'de Ara" artık çalışıyor.** Trade sorgusu doğrudan trade sayfasında açılır (POST gerektirmeyen yöntem); Cloudflare/ağ engeli olsa bile pencere eşyanın tabanı + öne çıkan modlarıyla açılır.
+- **Rün/soket: stat yerine soket sayısı.** Ründeki özellik artık fiyat sorgusuna hiç eklenmez (yanlıştı); onun yerine eşyanın "Soket sayısı"nı işaretleyip filtreleyebilirsin (rünün statı değil).
+- **Sistem tepsisi (tray).** PoBe sağ-alt tepside simge gösterir; sağ tık menüsünden Göster/Gizle ve Çıkış. Ayara göre pencereyi kapatmak (X) programı tepsiye küçültür.
+- **Tepsiden "Çıkış" tam kapatır.** Arka planda zombi süreç kalmaz; ayrıca çift örnek engellenir (ikinci başlatma mevcut pencereyi öne getirir).
+- **PoE 2 açılınca otomatik göster (opsiyonel).** Ayar açıkken PoBe tepside beklerken oyun başlayınca pencere öne gelir. "Windows ile başlat" seçeneği de eklendi (varsayılan kapalı). Oyunla etkileşim yalnız süreç adını izlemektir — hafıza okuma/otomasyon yok.
+
 ## 0.17.9
 ### İyileştirmeler
 - **Rün/soket statları fiyat sorgusundan ayrıldı.** Eşyadaki "(rune)" etiketli ve soket kaynaklı statlar artık normal mod filtresine girmiyor (fiyatı şişirmiyordu) — ayrı "Rünler / Soketler" grubunda gösterilir, varsayılan aranmaz; istersen tek tek işaretleyip dahil edebilirsin. Soket sayısı da gösterilir.

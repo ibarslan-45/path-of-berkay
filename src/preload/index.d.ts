@@ -30,6 +30,9 @@ interface AppSettings {
   dangerCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   autoCopy: boolean // tek-tuş oto-kopyala (varsayılan KAPALI; yalnız PoE2 odaktayken tetiklenir)
   tradeOpen: 'app' | 'browser' // Trade'de Aç: program-içi pencere | varsayılan tarayıcı
+  closeToTray: boolean // X → tepsiye küçült
+  poe2AutoShow: boolean // PoE2 açılınca pencereyi göster
+  launchOnStartup: boolean // Windows ile başlat
   ui: { font: string; zoom: number }
   firstRunDone: boolean
   lastSeenVersion: string
@@ -45,6 +48,9 @@ interface SettingsPatch {
   dangerCheck?: { enabled?: boolean; shortcut?: string }
   autoCopy?: boolean
   tradeOpen?: 'app' | 'browser'
+  closeToTray?: boolean
+  poe2AutoShow?: boolean
+  launchOnStartup?: boolean
   ui?: Partial<{ font: string; zoom: number }>
   firstRunDone?: boolean
   lastSeenVersion?: string

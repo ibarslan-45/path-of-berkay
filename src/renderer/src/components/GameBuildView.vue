@@ -420,19 +420,6 @@ const progressSummary = computed(() => {
               <span v-else class="gv-slot-icon gv-slot-icon--ph">◇</span>
               <span class="gv-slot-label">{{ c.label }}</span>
               <span v-if="hasWeaponSets && c.set" class="gv-setbadge" :class="'gv-setbadge--s' + c.set">{{ setBadge(c.set) }}</span>
-              <button
-                v-if="c.item"
-                class="gv-craftbtn"
-                :title="tr('Bu eşyayı Craft Simülatörü’ne gönder (hedef olarak)', 'Send this item to the Craft Simulator (as target)')"
-                @click="craftItem(c.item)"
-              >⚒ {{ tr('Craft’la', 'Craft') }}</button>
-              <button
-                v-if="c.item"
-                class="gv-tradebtn"
-                :disabled="tradeBusy"
-                :title="tr('Bu eşyayı trade’de ara (taban + öne çıkan modlar; gevşek)', 'Search this item on trade (base + top mods; loose)')"
-                @click="tradeItem(c.item)"
-              >↗ {{ tr('Trade’de Ara', 'Trade') }}</button>
             </div>
             <template v-if="c.item">
               <div class="gv-item-name">{{ c.item.name || c.item.base }}</div>
@@ -450,6 +437,20 @@ const progressSummary = computed(() => {
                 </li>
               </ul>
               <div v-else class="gv-item-nomods">{{ tr('— mod verisi yok (doğrulanmalı)', '— no mod data (verify)') }}</div>
+              <!-- #1: aksiyon butonları KENDİ satırında (başlıkla çakışmaz) -->
+              <div class="gv-slot-actions">
+                <button
+                  class="gv-craftbtn"
+                  :title="tr('Bu eşyayı Craft Simülatörü’ne gönder (hedef olarak)', 'Send this item to the Craft Simulator (as target)')"
+                  @click="craftItem(c.item)"
+                >⚒ {{ tr('Craft’la', 'Craft') }}</button>
+                <button
+                  class="gv-tradebtn"
+                  :disabled="tradeBusy"
+                  :title="tr('Bu eşyayı trade’de ara (taban + öne çıkan modlar; gevşek)', 'Search this item on trade (base + top mods; loose)')"
+                  @click="tradeItem(c.item)"
+                >↗ {{ tr('Trade’de Ara', 'Trade') }}</button>
+              </div>
             </template>
             <div v-else class="gv-slot-empty">{{ tr('boş', 'empty') }}</div>
           </div>
@@ -616,8 +617,9 @@ const progressSummary = computed(() => {
 }
 .gv-gear-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+  align-items: start;
 }
 .gv-slot {
   border: 1px solid rgba(184, 154, 102, 0.25);
@@ -625,6 +627,15 @@ const progressSummary = computed(() => {
   border-left-width: 3px;
   padding: 9px 11px;
   border-radius: 3px;
+  min-width: 0;
+  overflow: hidden;
+}
+/* #1: aksiyon butonları kendi satırında — başlık/label ile çakışmaz, dar kartta da düzgün sarar */
+.gv-slot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
 }
 .gv-slot--sm {
   grid-column: auto;
@@ -905,7 +916,6 @@ const progressSummary = computed(() => {
   background: rgba(111, 176, 88, 0.08);
 }
 .gv-craftbtn {
-  margin-left: auto;
   font: inherit;
   font-size: 10.5px;
   font-variant: small-caps;
@@ -913,7 +923,7 @@ const progressSummary = computed(() => {
   background: linear-gradient(#e0b46a, #c89446);
   border: 1px solid #9a7330;
   border-radius: 2px;
-  padding: 1px 8px;
+  padding: 2px 9px;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -921,7 +931,6 @@ const progressSummary = computed(() => {
   background: linear-gradient(#ecc279, #d6a052);
 }
 .gv-tradebtn {
-  margin-left: 4px;
   font: inherit;
   font-size: 10.5px;
   font-variant: small-caps;
@@ -929,7 +938,7 @@ const progressSummary = computed(() => {
   background: transparent;
   border: 1px solid rgba(201, 161, 74, 0.55);
   border-radius: 2px;
-  padding: 1px 8px;
+  padding: 2px 9px;
   cursor: pointer;
   white-space: nowrap;
 }

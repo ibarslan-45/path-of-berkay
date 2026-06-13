@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, dialog, screen, net, globalShortcut, clipboard, session } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog, screen, net, globalShortcut, clipboard, session, Tray, Menu, nativeImage } from 'electron'
 import { join } from 'path'
 import {
   readFileSync,
@@ -210,6 +210,10 @@ interface AppSettings {
   autoCopy: boolean
   // 0.17.8: "Trade'de Aç" nerede açılsın — 'app' (program-içi pencere) | 'browser' (varsayılan tarayıcı).
   tradeOpen: 'app' | 'browser'
+  // 0.18.0 sistem tepsisi: X kapatınca tepsiye küçült | PoE2 açılınca pencereyi göster | Windows ile başlat.
+  closeToTray: boolean
+  poe2AutoShow: boolean
+  launchOnStartup: boolean
   // Arayüz yazı tipi + ölçeği (0.15.1). font: 'helvetica'|'system'|'serif'; zoom: webContents zoom faktörü.
   ui: { font: string; zoom: number }
   // İlk açılış tanıtımı (onboarding) gösterildi mi (Cila ADIM 2).
@@ -232,6 +236,9 @@ let appSettings: AppSettings = {
   dangerCheck: { enabled: true, shortcut: 'CommandOrControl+E' },
   autoCopy: false, // 0.17.0: tek-tuş oto-kopyala VARSAYILAN KAPALI (kullanıcı açarsa yalnız PoE2 odaktayken çalışır)
   tradeOpen: 'app', // 0.17.8: varsayılan program-içi pencere; challenge'a takılırsa "Tarayıcıda Aç" sunulur
+  closeToTray: true, // 0.18.0: X → tepsiye küçült (tepsi menüsünden Çıkış tam kapatır)
+  poe2AutoShow: false, // PoE2 açılınca pencereyi öne getir (varsayılan kapalı)
+  launchOnStartup: false, // Windows ile başlat (varsayılan kapalı)
   ui: { font: 'helvetica', zoom: 1 },
   firstRunDone: false,
   lastSeenVersion: ''
@@ -312,6 +319,9 @@ function loadSettings(): void {
     }
     if (raw && typeof raw.autoCopy === 'boolean') appSettings.autoCopy = raw.autoCopy
     if (raw && (raw.tradeOpen === 'app' || raw.tradeOpen === 'browser')) appSettings.tradeOpen = raw.tradeOpen
+    if (raw && typeof raw.closeToTray === 'boolean') appSettings.closeToTray = raw.closeToTray
+    if (raw && typeof raw.poe2AutoShow === 'boolean') appSettings.poe2AutoShow = raw.poe2AutoShow
+    if (raw && typeof raw.launchOnStartup === 'boolean') appSettings.launchOnStartup = raw.launchOnStartup
     if (raw && raw.ui && typeof raw.ui === 'object') {
       const u = raw.ui
       appSettings.ui = {
@@ -346,6 +356,9 @@ function saveSettings(): void {
         dangerCheck: appSettings.dangerCheck,
         autoCopy: appSettings.autoCopy,
         tradeOpen: appSettings.tradeOpen,
+        closeToTray: appSettings.closeToTray,
+        poe2AutoShow: appSettings.poe2AutoShow,
+        launchOnStartup: appSettings.launchOnStartup,
         ui: appSettings.ui,
         firstRunDone: appSettings.firstRunDone,
         lastSeenVersion: appSettings.lastSeenVersion
@@ -375,6 +388,9 @@ function fullSettings(): Omit<AppSettings, 'advisor'> & {
   dangerCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   autoCopy: boolean
   tradeOpen: 'app' | 'browser'
+  closeToTray: boolean
+  poe2AutoShow: boolean
+  launchOnStartup: boolean
   ui: { font: string; zoom: number }
   firstRunDone: boolean
   lastSeenVersion: string
@@ -404,6 +420,9 @@ function fullSettings(): Omit<AppSettings, 'advisor'> & {
     },
     autoCopy: appSettings.autoCopy,
     tradeOpen: appSettings.tradeOpen,
+    closeToTray: appSettings.closeToTray,
+    poe2AutoShow: appSettings.poe2AutoShow,
+    launchOnStartup: appSettings.launchOnStartup,
     ui: appSettings.ui,
     firstRunDone: appSettings.firstRunDone,
     lastSeenVersion: appSettings.lastSeenVersion,
@@ -1521,6 +1540,15 @@ function registerLevelingIpc(): void {
     }
     if (typeof patch.autoCopy === 'boolean') appSettings.autoCopy = patch.autoCopy
     if (patch.tradeOpen === 'app' || patch.tradeOpen === 'browser') appSettings.tradeOpen = patch.tradeOpen
+    if (typeof patch.closeToTray === 'boolean') appSettings.closeToTray = patch.closeToTray
+    if (typeof patch.poe2AutoShow === 'boolean') {
+      appSettings.poe2AutoShow = patch.poe2AutoShow
+      applyPoe2Watch()
+    }
+    if (typeof patch.launchOnStartup === 'boolean') {
+      appSettings.launchOnStartup = patch.launchOnStartup
+      applyLoginItem()
+    }
     let zoomChanged = false
     if (patch.ui && typeof patch.ui === 'object') {
       const pu = patch.ui as { font?: string; zoom?: number }
@@ -2197,6 +2225,105 @@ function applyUiZoom(): void {
   }
 }
 
+// ============================================================================
+// SİSTEM TEPSİSİ + TEMİZ ÇIKIŞ + PoE2 İZLEME (0.18.0)
+// ----------------------------------------------------------------------------
+let tray: Tray | null = null
+let isQuitting = false // tepsiden "Çıkış" → gerçekten kapan (X yalnız tepsiye küçültür)
+let poe2WatchTimer: ReturnType<typeof setInterval> | null = null
+let poe2WasRunning = false
+
+/** Ana pencereyi göster + öne getir (tepsiden/PoE2 açılınca). */
+function showMainWindow(): void {
+  if (!mainWin) {
+    createWindow()
+    return
+  }
+  if (mainWin.isMinimized()) mainWin.restore()
+  if (!mainWin.isVisible()) mainWin.show()
+  mainWin.focus()
+}
+
+/** Sistem tepsisi ikonu + sağ-tık menüsü (Göster/Gizle, Çıkış). */
+function createTray(): void {
+  if (tray) return
+  let img = nativeImage.createFromPath(join(__dirname, '../../build/icon.png'))
+  if (!img.isEmpty()) img = img.resize({ width: 16, height: 16 })
+  tray = new Tray(img.isEmpty() ? nativeImage.createEmpty() : img)
+  tray.setToolTip('Path of Berkay')
+  const rebuild = (): void => {
+    const visible = !!mainWin && mainWin.isVisible()
+    tray?.setContextMenu(
+      Menu.buildFromTemplate([
+        { label: visible ? 'Gizle' : 'Göster', click: () => (visible && mainWin ? mainWin.hide() : showMainWindow()) },
+        { type: 'separator' },
+        { label: 'Çıkış', click: () => quitApp() }
+      ])
+    )
+  }
+  rebuild()
+  tray.on('click', () => (mainWin && mainWin.isVisible() ? mainWin.hide() : showMainWindow()))
+  tray.on('right-click', rebuild)
+  // pencere görünürlüğü değişince menü etiketini tazele
+  if (mainWin) {
+    mainWin.on('show', rebuild)
+    mainWin.on('hide', rebuild)
+  }
+}
+
+/** Tam çıkış: bayrağı kaldır, temizlik will-quit'te yapılır. */
+function quitApp(): void {
+  isQuitting = true
+  app.quit()
+}
+
+/** Windows ile başlat (app.setLoginItemSettings). Yalnız paketlide anlamlı; dev'de no-op güvenli. */
+function applyLoginItem(): void {
+  if (process.platform !== 'win32') return
+  try {
+    app.setLoginItemSettings({ openAtLogin: appSettings.launchOnStartup, args: ['--hidden'] })
+  } catch (e) {
+    console.log('[startup] login item ayarlanamadı:', (e as Error).message)
+  }
+}
+
+// PoE2 süreç izleme: PathOfExile.exe / PathOfExileSteam.exe çalışıyor mu (tasklist poll).
+// Hafıza okuma/injection YOK — yalnız süreç adı listesi (ToS uyumlu). Başlama anında pencereyi göster.
+function isPoe2Running(): Promise<boolean> {
+  if (process.platform !== 'win32') return Promise.resolve(false)
+  return new Promise((resolve) => {
+    try {
+      execFile(
+        'tasklist',
+        ['/fi', 'imagename eq PathOfExile*', '/nh'],
+        { windowsHide: true, timeout: 4000 },
+        (_err, stdout) => {
+          const out = (stdout || '').toLowerCase()
+          resolve(/pathofexile(steam)?\.exe/.test(out))
+        }
+      )
+    } catch {
+      resolve(false)
+    }
+  })
+}
+function applyPoe2Watch(): void {
+  if (poe2WatchTimer) {
+    clearInterval(poe2WatchTimer)
+    poe2WatchTimer = null
+  }
+  if (!appSettings.poe2AutoShow || process.platform !== 'win32') return
+  poe2WasRunning = false
+  poe2WatchTimer = setInterval(async () => {
+    const running = await isPoe2Running()
+    if (running && !poe2WasRunning) {
+      console.log('[poe2] başladı → PoBe penceresi gösteriliyor')
+      showMainWindow()
+    }
+    poe2WasRunning = running
+  }, 5000)
+}
+
 function createWindow(): void {
   // Ana uygulama penceresi. Frameless: turuncu Electron cubugu yerine
   // renderer icindeki kendi koyu baslik barimizi kullaniriz.
@@ -2226,6 +2353,13 @@ function createWindow(): void {
   // Renderer'daki ozel baslik bari dugmeleri icin pencere kontrolleri.
   ipcMain.on('window:minimize', () => mainWindow.minimize())
   ipcMain.on('window:close', () => mainWindow.close())
+  // 0.18.0: X → closeToTray ise gerçekten kapatma, tepsiye küçült. Çıkış yalnız tepsi menüsünden.
+  mainWindow.on('close', (e) => {
+    if (!isQuitting && appSettings.closeToTray && tray) {
+      e.preventDefault()
+      mainWindow.hide()
+    }
+  })
   ipcMain.on('window:toggle-maximize', () => {
     if (mainWindow.isMaximized()) mainWindow.unmaximize()
     else mainWindow.maximize()
@@ -2272,7 +2406,13 @@ function createWindow(): void {
   }
 }
 
+// 0.18.0: TEK ÖRNEK kilidi — ikinci başlatma mevcut pencereyi öne getirir, çift süreç olmaz.
+const gotSingleInstanceLock = app.requestSingleInstanceLock()
+if (!gotSingleInstanceLock) app.quit()
+app.on('second-instance', () => showMainWindow())
+
 app.whenReady().then(() => {
+  if (!gotSingleInstanceLock) return // ikinci örnek → çık (yukarıda app.quit çağrıldı)
   electronApp.setAppUserModelId('com.pathofberkay.pobe')
   // 0.17.8: TÜM webContents'in varsayılan UA'sı = gerçek Chromium UA (Electron/app token YOK) → tutarlı,
   // Cloudflare'a "gerçek tarayıcı" gibi görünür. Trade penceresi de aynı UA'yı kullanır.
@@ -2290,25 +2430,41 @@ app.whenReady().then(() => {
   registerLevelingIpc()
   registerPriceIpc()
   createWindow()
+  createTray() // 0.18.0 sistem tepsisi (Göster/Gizle, Çıkış)
+  applyLoginItem() // Windows ile başlat ayarı
+  applyPoe2Watch() // PoE2 açılınca pencereyi göster (ayar açıksa)
   startWatcher()
   applyOverlayMode()
   applyPriceShortcut()
   applyDangerShortcut()
   initUpdater() // açılışta sessiz güncelleme kontrolü (ADIM C; dev/portable → devre dışı)
+  // --hidden ile başladıysa (Windows ile başlat) pencereyi gösterme; tepside bekle.
+  if (process.argv.includes('--hidden') && mainWin) mainWin.hide()
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
 
+app.on('before-quit', () => {
+  isQuitting = true // 'close' engelini kaldır → pencere gerçekten kapanır
+})
 app.on('will-quit', () => {
+  // 0.18.0: tam temizlik — zombie süreç kalmasın (watcher + overlay + kısayol + tepsi + poll timer).
   stopWatcher()
   closeOverlay()
   globalShortcut.unregisterAll()
+  if (poe2WatchTimer) {
+    clearInterval(poe2WatchTimer)
+    poe2WatchTimer = null
+  }
+  if (tray) {
+    tray.destroy()
+    tray = null
+  }
 })
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+  // closeToTray + tepsi varken pencere gizlenir (kapanmaz) → buraya düşmez, tepside çalışmaya devam.
+  if (process.platform !== 'darwin') app.quit()
 })

@@ -7,6 +7,7 @@
 import {
   buildTradeQuery,
   tradeSearchUrl,
+  tradeQueryUrl,
   statsAvailable,
   setRuntimeStats,
   rematchQueryItem,
@@ -139,21 +140,30 @@ export async function estimateValue(qi: QueryItem): Promise<PriceEstimate> {
   }
 }
 
-/** QueryItem için trade2 aramasını aç (otomatik alım değil; program-içi trade penceresinde).
- *  #2: Kullanıcının overlay'deki SEÇİMLERİ birebir gider — yalnız enabled stat'lar filtre, min değer
- *  TAM uygulanır (valueBand:1; estimate'teki 0.9 "benzer" bandı DEĞİL, kullanıcının istediği eşik). */
+/** QueryItem için trade2 aramasını aç (otomatik alım değil; program-içi trade penceresinde / tarayıcıda).
+ *  #2: Kullanıcının SEÇİMLERİ birebir gider (yalnız enabled stat, min TAM = valueBand:1). 0.18.0: POST
+ *  araması başarısız olsa BİLE (CF/ağ) `?q=` URL'siyle pencere AÇILIR — "Trade'de Ara" tepkisiz kalmaz. */
 export async function openItemInTrade(qi: QueryItem): Promise<boolean> {
   const league = await ensureLeague()
-  if (!league) return false
   await ensureStats()
   rematchQueryItem(qi)
-  const q = buildTradeQuery(qi, { valueBand: 1 })
-  const search = await window.api?.price?.tradeSearch(league, q.body)
-  if (search?.ok && search.queryId) {
-    window.api?.price?.openTradeUrl(tradeSearchUrl(league, search.queryId))
-    return true
+  const lg = league || 'Standard' // lig alınamasa bile bir URL aç (kullanıcı ligi sitede değiştirir)
+  // 1) POST → kısa/temiz queryId URL'si (çalışırsa en iyisi)
+  try {
+    if (league) {
+      const q = buildTradeQuery(qi, { valueBand: 1 })
+      const search = await window.api?.price?.tradeSearch(league, q.body)
+      if (search?.ok && search.queryId) {
+        window.api?.price?.openTradeUrl(tradeSearchUrl(league, search.queryId))
+        return true
+      }
+    }
+  } catch {
+    /* POST hatası → ?q= URL'sine düş */
   }
-  return false
+  // 2) FALLBACK: ?q= URL → POST gerekmez, CF/ağ engelinde bile trade penceresi sorguyla açılır
+  window.api?.price?.openTradeUrl(tradeQueryUrl(lg, qi, { valueBand: 1 }))
+  return true
 }
 
 /** Hata kodu → iki dilli kullanıcı mesajı. */

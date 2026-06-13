@@ -116,6 +116,9 @@ export interface QueryItem {
   itemLevel: number | null
   category?: string // opsiyonel trade type_filter kategorisi
   mods: QueryMod[]
+  // 0.18.0: eşyanın SOKET sayısı + kullanıcının "soket sayısı filtresi" tercihi (rune statı DEĞİL).
+  sockets?: number
+  socketFilter?: boolean
 }
 
 /** Bir mod satırından filtre için ilk sayısal değeri çıkar ("+88 to ..." → 88).
@@ -148,6 +151,8 @@ export function parsedToQueryItem(p: {
   implicits: { text: string; kind: string }[]
   explicits: { text: string; kind: string }[]
   enchants?: { text: string; kind: string }[]
+  sockets?: number
+  runes?: string[]
 }): QueryItem {
   const toMod = (text: string, kind: string): QueryMod => {
     // Gömülü değer-aralığı parantezlerini (Advanced mod: "16(13-19)") temizle → doğru pattern + TEMİZ etiket.
@@ -181,7 +186,9 @@ export function parsedToQueryItem(p: {
     name: p.name,
     rarity: p.rarity,
     itemLevel: p.itemLevel,
-    mods
+    mods,
+    sockets: p.sockets || (p.runes ? p.runes.length : 0),
+    socketFilter: false // varsayılan kapalı; kullanıcı "Soket: N" ile açar
   }
 }
 
@@ -256,6 +263,9 @@ export function buildTradeQuery(qi: QueryItem, opts: BuildQueryOpts = {}): {
   const filters: Array<{ id: string; value?: { min?: number } }> = []
   const unmatched: QueryMod[] = []
   for (const m of qi.mods) {
+    // 0.18.0: rune/soket kaynaklı statlar ASLA stat filtresi olmaz (ründeki özellik aranmaz);
+    // bunun yerine aşağıda SOKET SAYISI filtresi kullanılır.
+    if (m.fromRune) continue
     if (!m.enabled) continue
     if (!m.matched || !m.statId) {
       if (m.enabled) unmatched.push(m)
@@ -282,11 +292,11 @@ export function buildTradeQuery(qi: QueryItem, opts: BuildQueryOpts = {}): {
   if (filters.length) query.stats = [{ type: 'and', filters }]
   else query.stats = [{ type: 'and', filters: [] }]
 
-  if (opts.ilvlMin !== false && typeof qi.itemLevel === 'number') {
-    query.filters = {
-      misc_filters: { filters: { ilvl: { min: Math.max(1, qi.itemLevel - 2) } } }
-    }
-  }
+  // misc_filters: ilvl (alt sınır) + 0.18.0 SOKET SAYISI (kullanıcı "Soket: N" açtıysa; rune statı yerine).
+  const misc: Record<string, { min?: number }> = {}
+  if (opts.ilvlMin !== false && typeof qi.itemLevel === 'number') misc.ilvl = { min: Math.max(1, qi.itemLevel - 2) }
+  if (qi.socketFilter && typeof qi.sockets === 'number' && qi.sockets > 0) misc.sockets = { min: qi.sockets }
+  if (Object.keys(misc).length) query.filters = { misc_filters: { filters: misc } }
 
   return {
     body: { query, sort: { price: 'asc' } },
@@ -295,8 +305,16 @@ export function buildTradeQuery(qi: QueryItem, opts: BuildQueryOpts = {}): {
   }
 }
 
-/** POST /search dönüşündeki query-id ile tarayıcıda açılacak trade2 URL'si. */
+/** POST /search dönüşündeki query-id ile açılacak trade2 URL'si (kısa, temiz). */
 export function tradeSearchUrl(league: string, queryId: string): string {
   const lg = encodeURIComponent(league)
   return `https://www.pathofexile.com/trade2/search/poe2/${lg}/${queryId}`
+}
+
+/** POST gerektirmeden sorguyu doğrudan trade sayfasında açan URL (?q=<json>). CF/ağ engelinde bile
+ *  pencere açılır (GGG'nin standart "arama linki" mekanizması). 0.18.0 — build "Trade'de Ara" buna güvenir. */
+export function tradeQueryUrl(league: string, qi: QueryItem, opts: BuildQueryOpts = {}): string {
+  const lg = encodeURIComponent(league)
+  const { body } = buildTradeQuery(qi, opts)
+  return `https://www.pathofexile.com/trade2/search/poe2/${lg}?q=${encodeURIComponent(JSON.stringify(body))}`
 }

@@ -197,6 +197,8 @@ Requirements:
 Level: 33
 Dex: 79
 --------
+Sockets: S
+--------
 Item Level: 45
 --------
 Adds 1 to 10 Lightning Damage (rune)
@@ -222,10 +224,21 @@ check('rune modu kind=rune + VARSAYILAN KAPALI (enabled=false)', runeM[0].kind =
 check('3 eşyaya-ait mod (1-16 Lightning, Cold, Projectile) AÇIK', ownM.length === 3 && ownM.every((m) => m.enabled), ownM.map((m) => `${m.text}:${m.enabled}`))
 const qBow = buildTradeQuery(qiBow)
 check('buildTradeQuery usedStats = 3 (rune HARİÇ)', qBow.usedStats === 3, qBow.usedStats)
-// kullanıcı rune modunu İŞARETLERSE dahil edilir → 4
+// 0.18.0: rune statı ASLA aranmaz — enabled=true yapılsa BİLE filtreye girmez (stat değil).
 runeM[0].enabled = true
-check('rune toggle açık → usedStats = 4', buildTradeQuery(qiBow).usedStats === 4, buildTradeQuery(qiBow).usedStats)
-runeM[0].enabled = false // testin kalanı için geri kapat
+check('rune enabled olsa BİLE usedStats = 3 (rün statı asla aranmaz)', buildTradeQuery(qiBow).usedStats === 3, buildTradeQuery(qiBow).usedStats)
+runeM[0].enabled = false
+// 0.18.0: SOKET SAYISI filtresi — qi.sockets algılandı; socketFilter açılınca misc_filters.sockets gelir.
+check('soket sayısı algılandı (Sockets: S → 1)', qiBow.sockets === 1, qiBow.sockets)
+const noSock = buildTradeQuery(qiBow)
+const miscNo = (noSock.body.query as { filters?: { misc_filters?: { filters?: Record<string, unknown> } } }).filters?.misc_filters?.filters || {}
+check('socketFilter kapalıyken soket filtresi YOK', !('sockets' in miscNo))
+qiBow.socketFilter = true
+const withSock = buildTradeQuery(qiBow)
+const miscYes = (withSock.body.query as { filters: { misc_filters: { filters: Record<string, { min?: number }> } } }).filters.misc_filters.filters
+check('socketFilter açıkken misc_filters.sockets.min = 1', miscYes.sockets?.min === 1, miscYes.sockets)
+check('soket filtresi açık olsa da usedStats hâlâ 3 (rün statı değil)', withSock.usedStats === 3, withSock.usedStats)
+qiBow.socketFilter = false
 // #1: filtre ETİKETLERİ temiz (gömülü tier parantezi yok)
 check('etiketler temiz (parantez yok)', qiBow.mods.every((m) => !/\(\d/.test(m.text)), qiBow.mods.map((m) => m.text))
 // #1: "Adds A to B" modları ranged + İKİ değer (low/high) eşyanın gerçek sayıları
