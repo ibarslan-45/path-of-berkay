@@ -64,6 +64,46 @@ jobs:
           Add-Content -Path $info -Value "Workflow:   ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           Get-Content $info
 
+      - name: Generate bilingual release notes (from CHANGELOG)
+        shell: pwsh
+        run: |
+          # Etiketten sürümü çıkar (v0.18.2 → 0.18.2) ve CHANGELOG.md'den o sürümün BLOĞUNU ayıkla.
+          $ver = '${{ github.ref_name }}' -replace '^v',''
+          $lines = Get-Content -Path CHANGELOG.md -Encoding UTF8
+          $out = New-Object System.Collections.Generic.List[string]
+          $cap = $false
+          foreach ($ln in $lines) {
+            if ($ln -match '^##\s+(.+?)\s*$') {
+              if ($cap) { break }                                  # sonraki sürüm başlığı → blok bitti
+              if ($Matches[1].Trim() -eq $ver) { $cap = $true; continue }
+            }
+            if ($cap) { $out.Add($ln) }
+          }
+          $notes = ($out -join "`n").Trim()
+          if ([string]::IsNullOrWhiteSpace($notes)) { $notes = "## $ver" }
+          # Doğrulama bölümü (iki dilli) + SHA256SUMS içeriği (kod bloğu).
+          $bt = ([char]96).ToString() * 3
+          $sha = (Get-Content -Path release/SHA256SUMS.txt -Raw).Trim()
+          $footer = @(
+            "",
+            "---",
+            "## 🔒 Doğrulama / Verification",
+            "🇹🇷 Bu build GitHub Actions tarafından **kaynaktan** üretildi (windows-latest: ``npm ci`` → ``npm run build`` → ``electron-builder``). Üçüncü taraf imzası/yüklemesi yoktur.",
+            "🇬🇧 This build was produced **from source** by GitHub Actions (no third-party signing/upload).",
+            "",
+            "- Commit: ``${{ github.sha }}``",
+            "- Tag: ``${{ github.ref_name }}``",
+            "- Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
+            "",
+            "**SHA-256** (``SHA256SUMS.txt`` ektedir):",
+            $bt,
+            $sha,
+            $bt
+          ) -join "`n"
+          Set-Content -Path RELEASE_NOTES.md -Value ($notes + "`n" + $footer) -Encoding utf8
+          Write-Host "----- RELEASE_NOTES.md -----"
+          Get-Content RELEASE_NOTES.md
+
       - name: Create GitHub Release (pre-release)
         uses: softprops/action-gh-release@v2
         with:
@@ -71,17 +111,8 @@ jobs:
           tag_name: ${{ github.ref_name }}
           prerelease: true
           fail_on_unmatched_files: true
-          body: |
-            Bu build GitHub Actions tarafından **kaynaktan** üretildi (windows-latest: `npm ci` → `npm run build` → `electron-builder`). Üçüncü taraf imzası/yüklemesi yoktur.
-
-            - Kaynak commit: `${{ github.sha }}`
-            - Etiket: `${{ github.ref_name }}`
-            - Çalıştırma kaydı (loglar): ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-
-            SHA-256 toplamları **SHA256SUMS.txt** olarak ektedir. Kendiniz aynı commit'i çekip `npm run dist` ile derleyerek SHA-256'ları karşılaştırabilirsiniz (bkz. README — "Doğrulanabilir build").
-
-            ---
-            This build was produced **from source** by GitHub Actions (no third-party signing/upload). SHA-256 checksums are attached as **SHA256SUMS.txt**; you can reproduce it from the same commit with `npm run dist` and compare.
+          generate_release_notes: false
+          body_path: RELEASE_NOTES.md
           files: |
             release/PathOfBerkay-Setup-*.exe
             release/PathOfBerkay-*-portable.exe

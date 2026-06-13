@@ -1,55 +1,103 @@
 # Path of Berkay — Değişiklik Günlüğü / Changelog
 
-> Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
-> (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
+> Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
+> Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
 ## 0.18.2
-### Hata düzeltmeleri
-- **Build eşyasında "Trade'de Ara" artık gerçekten çalışıyor.** Build eşyalarının taban adı bir kategoriydi ("Bow", "Body Armour") ve trade bunu geçersiz sayıp tüm aramayı reddediyordu ("search is no longer valid"). Artık geçerli tam taban varsa o, yoksa kategori filtresi (ör. yay → bow kategorisi) kullanılır; arama hatasız açılır. Canlı doğrulandı (yay, ok kılıfı, zırh, yüzük, kolye → geçerli sonuç).
-- **Yalnızca çözülen modlar sorguya eklenir.** Eşleşmeyen modlar atlanır; sorgu her durumda geçerli kalır.
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 🔎 **Build eşyasında "Trade'de Ara" artık gerçekten çalışıyor.** Build eşyalarının tabanı bir kategoriydi ("Yay", "Gövde Zırhı") ve trade bunu geçersiz sayıp aramayı reddediyordu. Artık geçerli tam taban yoksa kategori filtresi (ör. yay) kullanılıp arama hatasız açılıyor.
+- 🎯 **Sorguya yalnızca tanınan modlar ekleniyor;** eşleşmeyen modlar atlanır, arama her zaman geçerli kalır.
+### 🇬🇧 English
+#### 🐛 Fixes
+- 🔎 **"Search in Trade" from build items now actually works.** Build item bases were a category ("Bow", "Body Armour") which trade rejected as invalid. It now falls back to a category filter (e.g. bow) when there's no valid exact base, so the search opens without errors.
+- 🎯 **Only recognized mods are added to the query;** unmatched mods are skipped so the search stays valid.
 
 ## 0.18.1
-### Hata düzeltmeleri
-- **Trade açılışı düzeltildi ("search is no longer valid").** Trade artık her zaman GÜNCEL aktif lig ile açılır (sabit/eski lig kullanılmıyordu); fiyat-kontrolüyle aynı çalışan yol kullanılır. Canlı doğrulandı: gerçek bow sorgusu geçerli sonuç döndürüyor.
-- **Trade filtre değerleri eşyayla uyuşuyor.** "Adds A to B" modlarında artık eşyanın gerçek (alt) rolled değeri girilir (ortalama değil); tek değerli modlarda gerçek sayı. Eşleşmeyen modlar sorguya eklenmez.
-- **Soket sayısı filtresi gerçekten uygulanıyor.** Rünün statı yerine eşyanın soket sayısı trade sorgusuna eklenir (canlı API kabul ediyor).
-- **Tepsi/pencere ikonu görünüyor.** Boş kare yerine PoBe ikonu gösteriliyor (doğru .ico kullanılıyor).
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 🔗 **Trade açılışı düzeltildi** ("search is no longer valid") — artık her zaman güncel aktif lig ile açılıyor.
+- 🔢 **Trade filtre değerleri eşyayla uyuşuyor** — eşyanın gerçek (alt) rolled değerleri girilir.
+- 🔩 **Soket sayısı filtresi gerçekten uygulanıyor** (rünün statı yerine eşyanın soket sayısı).
+- 🖼️ **Tepsi/pencere ikonu görünüyor** (boş kare düzeltildi).
+### 🇬🇧 English
+#### 🐛 Fixes
+- 🔗 **Trade open fixed** ("search is no longer valid") — now always uses the current active league.
+- 🔢 **Trade filter values match the item** — the item's real (low) rolled values are used.
+- 🔩 **Socket-count filter is actually applied** (item's socket count instead of the rune's stat).
+- 🖼️ **Tray/window icon shows up** (blank square fixed).
 
 ## 0.18.0
-### İyileştirmeler
-- **Build ekranı düzeni + buton çakışması düzeltildi.** Ekipman kartları daha geniş, "Craft'la" ve "Trade'de Ara" butonları kart başlığının üstüne taşmıyor — kendi satırlarında, pencere küçükken de okunur.
-- **Build eşyasında "Trade'de Ara" artık çalışıyor.** Trade sorgusu doğrudan trade sayfasında açılır (POST gerektirmeyen yöntem); Cloudflare/ağ engeli olsa bile pencere eşyanın tabanı + öne çıkan modlarıyla açılır.
-- **Rün/soket: stat yerine soket sayısı.** Ründeki özellik artık fiyat sorgusuna hiç eklenmez (yanlıştı); onun yerine eşyanın "Soket sayısı"nı işaretleyip filtreleyebilirsin (rünün statı değil).
-- **Sistem tepsisi (tray).** PoBe sağ-alt tepside simge gösterir; sağ tık menüsünden Göster/Gizle ve Çıkış. Ayara göre pencereyi kapatmak (X) programı tepsiye küçültür.
-- **Tepsiden "Çıkış" tam kapatır.** Arka planda zombi süreç kalmaz; ayrıca çift örnek engellenir (ikinci başlatma mevcut pencereyi öne getirir).
-- **PoE 2 açılınca otomatik göster (opsiyonel).** Ayar açıkken PoBe tepside beklerken oyun başlayınca pencere öne gelir. "Windows ile başlat" seçeneği de eklendi (varsayılan kapalı). Oyunla etkileşim yalnız süreç adını izlemektir — hafıza okuma/otomasyon yok.
+### 🇹🇷 Türkçe
+#### ✨ Yenilikler
+- 🔔 **Sistem tepsisi.** PoBe sağ-alt tepside simge gösterir (sağ tık: Göster/Gizle, Çıkış). Pencereyi kapatmak (X) ayara göre tepsiye küçültür.
+- 🚪 **Tepsiden "Çıkış" tam kapatır** (arka planda süreç kalmaz); çift örnek engellenir.
+- 🎮 **PoE 2 açılınca otomatik göster** (opsiyonel) + **Windows ile başlat** seçeneği.
+#### ⚡ İyileştirmeler
+- 🧹 **Build ekranı ferahlatıldı;** "Craft'la"/"Trade'de Ara" butonları başlıkla çakışmıyor.
+- 🔩 **Rün/soket: stat yerine soket sayısı** filtrelenir.
+### 🇬🇧 English
+#### ✨ New
+- 🔔 **System tray.** PoBe shows a tray icon (right-click: Show/Hide, Exit). Closing the window (X) minimizes to tray per setting.
+- 🚪 **"Exit" from the tray fully quits** (no leftover process); a second launch is prevented.
+- 🎮 **Show automatically when PoE 2 launches** (optional) + **Launch with Windows** option.
+#### ⚡ Improvements
+- 🧹 **Roomier build screen;** "Craft"/"Trade" buttons no longer overlap the header.
+- 🔩 **Runes/sockets: filter by socket count** instead of the rune's stat.
 
 ## 0.17.9
-### İyileştirmeler
-- **Rün/soket statları fiyat sorgusundan ayrıldı.** Eşyadaki "(rune)" etiketli ve soket kaynaklı statlar artık normal mod filtresine girmiyor (fiyatı şişirmiyordu) — ayrı "Rünler / Soketler" grubunda gösterilir, varsayılan aranmaz; istersen tek tek işaretleyip dahil edebilirsin. Soket sayısı da gösterilir.
-- **Build eşyalarını trade'de arama.** Build görünümündeki her eşyada "Trade'de Ara" butonu: eşyanın tabanı + öne çıkan birkaç moduyla makul (gevşek) bir arama açar (ideal çok-modlu eşyalar sıfır sonuç vermesin); trade'de daraltabilirsin.
+### 🇹🇷 Türkçe
+#### ⚡ İyileştirmeler
+- 🔩 **Rün/soket statları fiyat sorgusundan ayrıldı** — ayrı "Rünler / Soketler" grubu; varsayılan aranmaz.
+- 🔎 **Build eşyalarını trade'de arama** — taban + öne çıkan modlarla makul (gevşek) arama.
+### 🇬🇧 English
+#### ⚡ Improvements
+- 🔩 **Rune/socket stats split out of the price query** — separate "Runes / Sockets" group; not searched by default.
+- 🔎 **Search build items in trade** — a reasonable (loose) search by base + top mods.
 
 ## 0.17.8
-### Hata düzeltmeleri
-- **Trade penceresi Cloudflare doğrulama döngüsü düzeltildi.** Pencere artık gerçek bir tarayıcı kimliği (Chromium'un kendi sürümünden türetilmiş, "Electron" içermeyen User-Agent) kullanır; böylece "verify you are human" ekranını kendin tıklayıp geçebilirsin. Oturum kalıcıdır (doğrulama bir kez geçince tekrar sorulmaz).
-- **Tarayıcıda açma seçeneği.** Ayarlar → "Trade'de Aç — nerede": Programda (varsayılan) ya da Varsayılan tarayıcıda. Program-içi pencerede doğrulama takılırsa otomatik "Tarayıcıda Aç" butonu çıkar; istediğin an da kullanabilirsin. (Doğrulama otomatik geçilmez — yalnızca pencere gerçek tarayıcı gibi davranır.)
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- ☁️ **Trade penceresi Cloudflare doğrulama döngüsü düzeltildi** — gerçek tarayıcı kimliği kullanılır, kalıcı oturum (tekrar sorulmaz).
+- 🌐 **Tarayıcıda açma seçeneği** — Ayarlar → "Trade'de Aç — nerede"; takılırsa "Tarayıcıda Aç" butonu çıkar.
+- 🎟️ **Steam ile giriş** — Steam OpenID giriş akışı tamamlanabilir.
+### 🇬🇧 English
+#### 🐛 Fixes
+- ☁️ **Trade window Cloudflare loop fixed** — uses a real browser identity, persistent session (no repeated checks).
+- 🌐 **Open-in-browser option** — Settings → "Open in Trade — where"; an "Open in Browser" button appears if it gets stuck.
+- 🎟️ **Sign in with Steam** — the Steam OpenID login flow can complete.
 
 ## 0.17.7
-### İyileştirmeler
-- **Filtre etiketleri temiz + iki değer kutusu.** Fiyat panelindeki stat etiketleri artık gömülü tier aralığını göstermez ("Adds 1 to 16 Lightning Damage"). "Adds A to B" tipi modlarda alt ve üst değer için iki ayrı düzenlenebilir kutu (varsayılanları eşyanın gerçek değerleri); her ikisini değiştirince trade sorgusu güncellenir. Tek sayılı modlar tek kutu kalır.
-- **Mobalytics gem silah seti gösteriliyor.** Bir build gem'leri Set 1 / Set 2'ye ayırıyorsa artık doğru gösterilir (ör. Ice Shot = Set 1, Freezing Mark = Set 2). Kaynak veride set bilgisi yoksa eskisi gibi paylaşılan kabul edilir.
-- **Program-içi trade penceresi sağlamlaştırıldı.** Kalıcı oturum (çerezler kaybolmaz), yükleme zaman aşımı + hata durumunda "Yenile" / "Tarayıcıda Aç" butonları.
-- **Steam ile giriş.** Trade penceresi artık normal bir tarayıcı kimliği kullanır, kalıcı oturum tutar ve Steam giriş alan adlarına izin verir; Steam OpenID giriş akışı tamamlanabilir.
+### 🇹🇷 Türkçe
+#### ⚡ İyileştirmeler
+- 🏷️ **Temiz filtre etiketleri + çift değer kutusu** — "Adds A to B" modlarında alt/üst için iki ayrı kutu.
+- 💎 **Mobalytics gem silah seti** gösteriliyor (ör. Ice Shot = Set 1, Freezing Mark = Set 2).
+- 🪟 **Program-içi trade penceresi sağlamlaştırıldı** (kalıcı oturum, "Yenile"/"Tarayıcıda Aç").
+### 🇬🇧 English
+#### ⚡ Improvements
+- 🏷️ **Clean filter labels + dual value boxes** — two boxes (low/high) for "Adds A to B" mods.
+- 💎 **Mobalytics gem weapon set** is shown (e.g. Ice Shot = Set 1, Freezing Mark = Set 2).
+- 🪟 **In-app trade window hardened** (persistent session, "Reload"/"Open in Browser").
 
 ## 0.17.6
-### Hata düzeltmeleri
-- **"Advanced Mod Descriptions" açıkken tüm statlar eşleşiyor.** Oyun, açıklamalı modda değerin yanına aralık gömüyordu ("Adds 1 to 16(13-19) Lightning Damage", "Adds 7(6-9) to 16(10-16) Cold Damage"); bu gömülü parantezler stat eşleşmesini bozuyordu. Artık temizleniyor — bu modlar da doğru trade stat-id'sine eşleşiyor ve filtre değeri gerçek rolled sayıdan alınıyor (örn. yay → 4/4 stat).
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 🎯 **"Advanced Mod Descriptions" açıkken tüm statlar eşleşiyor** — değerin yanına gömülü aralık ("16(13-19)") artık temizleniyor.
+### 🇬🇧 English
+#### 🐛 Fixes
+- 🎯 **All stats match with "Advanced Mod Descriptions" on** — the embedded range next to the value ("16(13-19)") is now stripped.
 
 ## 0.17.5
-### İyileştirmeler
-- **Tüm statlar fiyat sorgusunda eşleşiyor.** Yerel silah hasar rolları dahil ("Adds # to # Cold/Lightning/Fire/Physical Damage") artık eksiksiz trade stat-id'lerine eşleniyor; eski/eksik bir stat tablosu önbelleği varsa otomatik tazelenir. (Örn. Beast Stinger yayı → 4/4 stat.)
-- **Overlay'deki seçimlerin trade'e yansıması.** Tahmini değer panelinde bir statı aç/kapatıp min değerini değiştirdiğinde, "Trade'de Aç" tam olarak bu seçimlerle açılır — yalnızca işaretli statlar filtre olur ve girdiğin min değerler birebir uygulanır.
-- **Trade program içinde açılıyor.** "Trade'de Aç" artık varsayılan tarayıcı yerine programın kendi penceresinde pathofexile.com/trade2'yi açar (kapatılabilir + geri butonu). Yalnızca pathofexile.com'a izin verilir.
+### 🇹🇷 Türkçe
+#### ⚡ İyileştirmeler
+- ✅ **Tüm statlar fiyat sorgusunda eşleşiyor** (yerel silah hasar rolları dahil); eski stat tablosu önbelleği otomatik tazelenir.
+- 🎛️ **Overlay seçimleri trade'e yansıyor** — yalnız işaretli statlar + girdiğin min değerler.
+- 🪟 **Trade program içinde açılıyor** (kapatılabilir + geri butonu; yalnız pathofexile.com).
+### 🇬🇧 English
+#### ⚡ Improvements
+- ✅ **All stats match in the price query** (including local weapon damage rolls); a stale stat-table cache auto-refreshes.
+- 🎛️ **Overlay selections carry over to trade** — only ticked stats + the min values you entered.
+- 🪟 **Trade opens inside the app** (closable + back button; pathofexile.com only).
 
 ## 0.17.4
 ### Hata düzeltmeleri
