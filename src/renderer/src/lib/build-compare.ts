@@ -36,6 +36,8 @@ export function pobItemToQueryItem(it: PobItem): { qi: QueryItem; searchableMods
     pattern: n.pattern,
     text: n.raw,
     value: n.value,
+    valueHi: null, // build "Trade'de Aç" tek-değer kullanır (iki-kutu UI overlay'e özel)
+    ranged: false,
     kind: 'explicit',
     enabled: true,
     statId: n.statId,

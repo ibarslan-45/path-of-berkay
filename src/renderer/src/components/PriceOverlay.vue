@@ -201,8 +201,26 @@ onBeforeUnmount(() => {
             <div v-for="(m, i) in filterMods" :key="i" class="po-filter" :class="{ 'po-filter--off': !m.enabled }">
               <input type="checkbox" v-model="m.enabled" @change="scheduleEstimate" />
               <span class="po-filter-text">{{ m.text }}</span>
+              <!-- "Adds A to B" → İKİ düzenlenebilir kutu (alt + üst); tek-sayılı mod → tek kutu -->
+              <template v-if="m.enabled && m.ranged">
+                <input
+                  type="number"
+                  class="po-filter-min"
+                  :value="m.value"
+                  :title="tr('alt değer', 'low value')"
+                  @input="m.value = ($event.target as HTMLInputElement).valueAsNumber; scheduleEstimate()"
+                />
+                <span class="po-filter-sep">–</span>
+                <input
+                  type="number"
+                  class="po-filter-min"
+                  :value="m.valueHi"
+                  :title="tr('üst değer', 'high value')"
+                  @input="m.valueHi = ($event.target as HTMLInputElement).valueAsNumber; scheduleEstimate()"
+                />
+              </template>
               <input
-                v-if="m.enabled && m.value !== null"
+                v-else-if="m.enabled && m.value !== null"
                 type="number"
                 class="po-filter-min"
                 :value="m.value"
@@ -451,9 +469,14 @@ onBeforeUnmount(() => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.po-filter-sep {
+  flex: none;
+  color: #8c8060;
+  font-size: 10px;
+}
 .po-filter-min {
   flex: none;
-  width: 46px;
+  width: 40px;
   font: inherit;
   font-size: 9.5px;
   color: #f0d896;

@@ -27,9 +27,11 @@ interface MbSub {
 interface MbGemGroup {
   activeSkill?: MbActive | null
   subSkills?: MbSub[]
-  // Gem'in ait olduğu silah seti (varsa). Çoğu build'de null (gem'ler sete özel değil) → rozet yok (dürüst).
-  weaponSet?: number | null
-  grantedByWeaponSet?: number | null
+  // Gem'in ait olduğu silah seti. GERÇEK VERİ (probe ile doğrulı): STRING "set1"/"set2" (sayı DEĞİL!) veya
+  // null (sete özel değil → paylaşılan/persistent, rozet yok). Leveling variant'larda hepsi null; endgame'de
+  // Ice Shot="set1", Freezing Mark="set2" vb.
+  weaponSet?: string | null
+  grantedByWeaponSet?: string | null
 }
 interface MbCommonItem {
   slug?: string
@@ -280,10 +282,11 @@ export function mobalyticsToPob(data: MobalyticsData, _meta: MobalyticsMeta = {}
           support: true
         })
       }
-      // Gem grubunun silah seti (varsa) → slot adına çevir ki GameBuildView `slotWeaponSet` ile rozet
-      // gösterebilsin. Mobalytics weaponSet 0-indeksli (0=Set 1, 1=Set 2). null → slot yok (rozet yok).
-      const ws = typeof grp.weaponSet === 'number' ? grp.weaponSet : typeof grp.grantedByWeaponSet === 'number' ? grp.grantedByWeaponSet : null
-      const slot = ws == null ? undefined : ws >= 1 ? 'Weapon 1 Swap' : 'Weapon 1'
+      // Gem grubunun silah seti → slot adına çevir ki GameBuildView `slotWeaponSet` ile rozet göstersin.
+      // GERÇEK VERİ: weaponSet STRING "set1"/"set2" (veya null). set1→"Weapon 1" (Set 1), set2→"Weapon 1 Swap"
+      // (Set 2), null→slot yok (paylaşılan, rozet yok). (0.17.7 fix: eskiden number sanılıyordu → hiç okunmuyordu.)
+      const ws = (grp.weaponSet || grp.grantedByWeaponSet || '').toString().toLowerCase()
+      const slot = ws === 'set2' ? 'Weapon 1 Swap' : ws === 'set1' ? 'Weapon 1' : undefined
       return { label: '', mainActiveSkill: 1, gems, slot }
     })
     return { id: 'mb' + vi, title: v.name || 'Variant ' + (vi + 1), groups }

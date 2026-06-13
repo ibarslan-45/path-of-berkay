@@ -1194,8 +1194,14 @@ function parts(text: string): { t: string; num: boolean }[] {
             <div v-for="(m, i) in filterMods" :key="i" class="cs-filter" :class="{ 'cs-filter--off': !m.enabled }">
               <input type="checkbox" v-model="m.enabled" @change="scheduleEstimate" />
               <span class="cs-filter-text">{{ m.text }}</span>
+              <!-- "Adds A to B" → İKİ kutu (alt + üst); tek-sayılı mod → tek kutu -->
+              <template v-if="m.enabled && m.ranged">
+                <input type="number" class="cs-filter-min" :value="m.value" :title="tr('alt değer', 'low value')" @input="m.value = ($event.target as HTMLInputElement).valueAsNumber; scheduleEstimate()" />
+                <span class="cs-filter-sep">–</span>
+                <input type="number" class="cs-filter-min" :value="m.valueHi" :title="tr('üst değer', 'high value')" @input="m.valueHi = ($event.target as HTMLInputElement).valueAsNumber; scheduleEstimate()" />
+              </template>
               <input
-                v-if="m.enabled && m.value !== null"
+                v-else-if="m.enabled && m.value !== null"
                 type="number"
                 class="cs-filter-min"
                 :value="m.value"
@@ -2205,9 +2211,14 @@ function parts(text: string): { t: string; num: boolean }[] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.cs-filter-sep {
+  flex: none;
+  color: #8c8060;
+  font-size: 10px;
+}
 .cs-filter-min {
   flex: none;
-  width: 52px;
+  width: 44px;
   font: inherit;
   font-size: 10px;
   color: #f0d896;

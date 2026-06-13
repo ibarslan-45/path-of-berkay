@@ -28,11 +28,14 @@ const data: MobalyticsData = {
               { gemSlug: 'supportperpetualchargeplayer', gemType: 'SUPPORT' },
               { gemSlug: 'supportnovaprojectilesplayer', gemType: 'SUPPORT' },
               { gemSlug: 'totallymadeupsupportplayer', gemType: 'SUPPORT' } // eşleşmeyecek → "eşleşmedi"
-            ]
+            ],
+            // GERÇEK VERİ: weaponSet STRING "set1"/"set2" (probe ile doğrulı). #4 fix.
+            weaponSet: 'set1'
           },
           {
             activeSkill: { gemSlug: 'heraldoficeplayer', name: 'Herald of Ice', level: 1 },
-            subSkills: []
+            subSkills: [],
+            weaponSet: 'set2'
           }
         ]
       },
@@ -119,6 +122,13 @@ check('support gemId bağlandı', g0.find((g) => g.nameSpec === 'Perpetual Charg
 const unmatchedSup = g0.filter((g) => g.support && g.gemId === '')
 check('eşleşmeyen support gemId boş (1 tane: uydurma slug)', unmatchedSup.length === 1, unmatchedSup.map((g) => g.nameSpec))
 check('eşleşmeyen support yine de bir nameSpec taşır', !!unmatchedSup[0]?.nameSpec, unmatchedSup[0]?.nameSpec)
+
+console.log('\n#4 — gem silah seti (weaponSet STRING "set1"/"set2"):')
+const grp0 = pob.skillSets[0].groups[0] as { slot?: string }
+const grp1 = pob.skillSets[0].groups[1] as { slot?: string }
+check('set1 grubu slot "Weapon 1" → Set 1', slotWeaponSet(grp0.slot) === 1, grp0.slot)
+check('set2 grubu slot "Weapon 1 Swap" → Set 2', slotWeaponSet(grp1.slot) === 2, grp1.slot)
+check('gem set verisi VAR (gemsHaveSetData true olur)', !!grp0.slot && !!grp1.slot)
 
 console.log('\nPassives (node-XXXXX → numeric, benzersiz; set1Tree birleşik #6):')
 const sp0 = pob.specs[0].nodes

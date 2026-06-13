@@ -87,13 +87,23 @@ export function setRuntimeStats(stats: TradeStat[]): void {
 export type QueryModKind = 'explicit' | 'implicit' | 'crafted' | 'fractured' | 'rune' | 'enchant'
 export interface QueryMod {
   pattern: string // EN '#' kalıbı
-  text: string // okunabilir ham satır (UI toggle listesinde gösterilir)
-  value: number | null // filtre için min değer (ilk sayı)
+  text: string // okunabilir TEMİZ satır (gömülü tier-aralığı parantezleri SOYULMUŞ; UI etiketi)
+  value: number | null // filtre alt değeri (ilk sayı)
+  valueHi: number | null // "Adds A to B" modlarında ÜST değer (B); tek-sayılı modlarda null
+  ranged: boolean // "Adds # to #" tipi (iki düzenlenebilir kutu); aksi tek kutu
   kind: QueryModKind
   enabled: boolean // kullanıcı aç/kapat (değersiz mod'u çıkar + yeniden ara)
   // eşleşme sonucu (UI için):
   statId?: string
   matched: boolean
+}
+/** Pattern "Adds # to #" / "#-#" tipi mi (iki sayılı aralık mod)? */
+function isRangedPattern(pattern: string): boolean {
+  return /#\s*(?:to|[-–])\s*#/.test(pattern)
+}
+/** Temiz satırdan tüm sayısal değerleri sırayla çıkar ([low, high, ...]). */
+function numbersFromLine(line: string): number[] {
+  return (stripValueRanges(line).match(/-?\d+(?:\.\d+)?/g) || []).map(parseFloat).filter((n) => Number.isFinite(n))
 }
 
 export interface QueryItem {
@@ -137,13 +147,18 @@ export function parsedToQueryItem(p: {
   enchants?: { text: string; kind: string }[]
 }): QueryItem {
   const toMod = (text: string, kind: string): QueryMod => {
-    // Gömülü değer-aralığı parantezlerini (Advanced mod: "16(13-19)") önce temizle → doğru pattern.
-    const pattern = stripValueRanges(text).replace(/\d+(?:\.\d+)?/g, '#').replace(/#\s*[-–]\s*#/g, '#').trim()
+    // Gömülü değer-aralığı parantezlerini (Advanced mod: "16(13-19)") temizle → doğru pattern + TEMİZ etiket.
+    const clean = stripValueRanges(text).trim()
+    const pattern = clean.replace(/\d+(?:\.\d+)?/g, '#').replace(/#\s*[-–]\s*#/g, '#').trim()
     const st = matchStat(pattern, kind)
+    const nums = numbersFromLine(clean)
+    const ranged = isRangedPattern(pattern) && nums.length >= 2
     return {
       pattern,
-      text: text.trim(),
-      value: valueFromLine(text),
+      text: clean, // gömülü tier parantezi olmadan ("Adds 1 to 16 Lightning Damage")
+      value: nums.length ? nums[0] : null,
+      valueHi: ranged ? nums[1] : null,
+      ranged,
       kind: (kind || 'explicit') as QueryModKind,
       enabled: true,
       statId: st?.id,
@@ -202,10 +217,12 @@ export function itemStateToQueryItem(it: {
   implicits?: { en: string }[]
 }): QueryItem {
   const toMod = (en: string, kind: QueryModKind): QueryMod => {
-    const clean = en.replace(/\n/g, ' ').trim()
-    const pattern = stripValueRanges(clean).replace(/\d+(?:\.\d+)?/g, '#').replace(/#\s*[-–]\s*#/g, '#').trim()
+    const clean = stripValueRanges(en.replace(/\n/g, ' ')).trim()
+    const pattern = clean.replace(/\d+(?:\.\d+)?/g, '#').replace(/#\s*[-–]\s*#/g, '#').trim()
     const st = matchStat(pattern, kind)
-    return { pattern, text: clean, value: valueFromLine(en), kind, enabled: true, statId: st?.id, matched: !!st }
+    const nums = numbersFromLine(clean)
+    const ranged = isRangedPattern(pattern) && nums.length >= 2
+    return { pattern, text: clean, value: nums.length ? nums[0] : null, valueHi: ranged ? nums[1] : null, ranged, kind, enabled: true, statId: st?.id, matched: !!st }
   }
   const mods = [
     ...(it.implicits ?? []).map((m) => toMod(m.en, 'implicit')),
@@ -239,7 +256,13 @@ export function buildTradeQuery(qi: QueryItem, opts: BuildQueryOpts = {}): {
       continue
     }
     const f: { id: string; value?: { min?: number } } = { id: m.statId }
-    if (typeof m.value === 'number') f.value = { min: Math.max(0, Math.floor(m.value * band)) }
+    // "Adds A to B" modlarında trade, eklenen hasarın ORTALAMASINI indeksler → filtre min = ort(low,high).
+    // Tek-sayılı modlarda min = değer. band: estimate'te 0.9 (benzer-veya-daha-iyi), trade-open'da 1 (TAM).
+    if (m.ranged && typeof m.value === 'number' && typeof m.valueHi === 'number') {
+      f.value = { min: Math.max(0, Math.floor(((m.value + m.valueHi) / 2) * band)) }
+    } else if (typeof m.value === 'number') {
+      f.value = { min: Math.max(0, Math.floor(m.value * band)) }
+    }
     filters.push(f)
   }
 

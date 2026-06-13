@@ -3,6 +3,13 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.7
+### İyileştirmeler
+- **Filtre etiketleri temiz + iki değer kutusu.** Fiyat panelindeki stat etiketleri artık gömülü tier aralığını göstermez ("Adds 1 to 16 Lightning Damage"). "Adds A to B" tipi modlarda alt ve üst değer için iki ayrı düzenlenebilir kutu (varsayılanları eşyanın gerçek değerleri); her ikisini değiştirince trade sorgusu güncellenir. Tek sayılı modlar tek kutu kalır.
+- **Mobalytics gem silah seti gösteriliyor.** Bir build gem'leri Set 1 / Set 2'ye ayırıyorsa artık doğru gösterilir (ör. Ice Shot = Set 1, Freezing Mark = Set 2). Kaynak veride set bilgisi yoksa eskisi gibi paylaşılan kabul edilir.
+- **Program-içi trade penceresi sağlamlaştırıldı.** Kalıcı oturum (çerezler kaybolmaz), yükleme zaman aşımı + hata durumunda "Yenile" / "Tarayıcıda Aç" butonları.
+- **Steam ile giriş.** Trade penceresi artık normal bir tarayıcı kimliği kullanır, kalıcı oturum tutar ve Steam giriş alan adlarına izin verir; Steam OpenID giriş akışı tamamlanabilir.
+
 ## 0.17.6
 ### Hata düzeltmeleri
 - **"Advanced Mod Descriptions" açıkken tüm statlar eşleşiyor.** Oyun, açıklamalı modda değerin yanına aralık gömüyordu ("Adds 1 to 16(13-19) Lightning Damage", "Adds 7(6-9) to 16(10-16) Cold Damage"); bu gömülü parantezler stat eşleşmesini bozuyordu. Artık temizleniyor — bu modlar da doğru trade stat-id'sine eşleşiyor ve filtre değeri gerçek rolled sayıdan alınıyor (örn. yay → 4/4 stat).

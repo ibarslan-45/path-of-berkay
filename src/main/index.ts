@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow, ipcMain, dialog, screen, net, globalShortcut, clipboard } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, dialog, screen, net, globalShortcut, clipboard, session } from 'electron'
 import { join } from 'path'
 import {
   readFileSync,
@@ -1772,11 +1772,24 @@ function repositionOverlayCorner(): void {
 // ----------------------------------------------------------------------------
 let priceShortcutOk = false
 let registeredAccel = ''
-// PROGRAM-İÇİ TRADE PENCERESI (0.17.5): "Trade'de Aç" varsayılan tarayıcı yerine kendi penceremizde
-// pathofexile.com/trade2'yi yükler. GÜVENLİK: yalnız pathofexile.com'a navigasyona izin (will-navigate),
-// popup'lar reddedilir, contextIsolation+sandbox korunur, Node yok. Kapatılabilir (native çerçeve) +
-// sayfaya enjekte edilen GERİ butonu (history.back) + mouse geri tuşu.
+// PROGRAM-İÇİ TRADE PENCERESI: "Trade'de Aç" varsayılan tarayıcı yerine kendi penceremizde
+// pathofexile.com/trade2'yi yükler. GÜVENLİK: yalnız PoE + Steam-giriş domainlerine navigasyon izni;
+// diğerleri reddedilir, contextIsolation+sandbox, Node yok. Native çerçeve (kapatılabilir) + enjekte GERİ butonu.
+// 0.17.7: KALICI partition (persist:trade → çerez/oturum kalır, Steam girişi tamamlanır), Chrome UA
+// (Steam varsayılan Electron UA'yı tıkamasın), did-fail-load/timeout → Yenile + Tarayıcıda Aç butonları.
 let tradeWindow: BrowserWindow | null = null
+const TRADE_PARTITION = 'persist:trade'
+const TRADE_UA =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+// İzinli host'lar: PoE + Steam OpenID giriş akışı (steamcommunity + *.steampowered.com).
+function isTradeNavHost(url: string): boolean {
+  try {
+    const h = new URL(url).hostname.toLowerCase()
+    return /(^|\.)pathofexile\.com$/.test(h) || /(^|\.)steamcommunity\.com$/.test(h) || /(^|\.)steampowered\.com$/.test(h)
+  } catch {
+    return false
+  }
+}
 const BACK_BTN_JS = `(function(){try{
   if(document.getElementById('pobe-back'))return;
   var b=document.createElement('button');b.id='pobe-back';b.textContent='\\u2190 Geri';
@@ -1784,8 +1797,55 @@ const BACK_BTN_JS = `(function(){try{
   b.onclick=function(){history.back()};
   document.body.appendChild(b);
 }catch(e){}})()`
-function isPoeTradeUrl(url: string): boolean {
-  return typeof url === 'string' && /^https:\/\/(www\.)?pathofexile\.com\//i.test(url)
+// Yükleme takılır/başarısız olursa gösterilen hata sayfası: "Yenile" (location.href) + "Tarayıcıda Aç"
+// (target=_blank → setWindowOpenHandler → harici tarayıcı). IPC/preload gerekmez.
+function tradeErrorHtml(url: string): string {
+  const u = url.replace(/'/g, '%27')
+  return `data:text/html;charset=utf-8,${encodeURIComponent(`<!doctype html><html><head><meta charset="utf-8"><title>Trade</title></head>
+<body style="margin:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0e10;color:#d8cdb4;font-family:system-ui,sans-serif">
+<div style="text-align:center;max-width:420px;padding:24px">
+<div style="font-size:15px;color:#e0a44f;margin-bottom:6px">⚠ Trade sayfası yüklenemedi</div>
+<div style="font-size:12.5px;color:#b8a982;line-height:1.5;margin-bottom:18px">Bağlantı takıldı veya zaman aşımına uğradı. Yeniden deneyebilir ya da tarayıcıda açabilirsin.</div>
+<button onclick="location.href='${u}'" style="font:600 13px system-ui;color:#1a1408;background:linear-gradient(#d9b765,#c19a45);border:1px solid #8a6f2e;border-radius:4px;padding:8px 18px;cursor:pointer;margin:4px">↻ Yenile</button>
+<a href="${u}" target="_blank" style="display:inline-block;font:600 13px system-ui;color:#e3c172;background:transparent;border:1px solid rgba(201,161,74,.55);border-radius:4px;padding:8px 18px;cursor:pointer;margin:4px;text-decoration:none">Tarayıcıda Aç ↗</a>
+</div></body></html>`)}`
+}
+/** Bir webContents'e güvenlik + UA + GERİ butonu kancalarını uygula (ana pencere + Steam popup'ları). */
+function wireTradeContents(wc: Electron.WebContents): void {
+  wc.setUserAgent(TRADE_UA)
+  wc.on('will-navigate', (e, navUrl) => {
+    if (!isTradeNavHost(navUrl)) {
+      e.preventDefault()
+      if (isAllowedExternalUrl(navUrl)) shell.openExternal(navUrl)
+    }
+  })
+  // Steam giriş popup'ları (steamcommunity/steampowered) AYNI partition'da child pencerede açılır;
+  // pathofexile.com target=_blank ("Tarayıcıda Aç") harici tarayıcıya; diğerleri reddedilir.
+  wc.setWindowOpenHandler((d) => {
+    const h = (() => {
+      try {
+        return new URL(d.url).hostname.toLowerCase()
+      } catch {
+        return ''
+      }
+    })()
+    if (/(^|\.)steamcommunity\.com$/.test(h) || /(^|\.)steampowered\.com$/.test(h)) {
+      return {
+        action: 'allow',
+        overrideBrowserWindowOptions: {
+          autoHideMenuBar: true,
+          width: 900,
+          height: 760,
+          webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false, partition: TRADE_PARTITION }
+        }
+      }
+    }
+    if (isAllowedExternalUrl(d.url)) shell.openExternal(d.url)
+    return { action: 'deny' }
+  })
+  wc.on('did-create-window', (child) => wireTradeContents(child.webContents))
+  wc.on('did-finish-load', () => wc.executeJavaScript(BACK_BTN_JS).catch(() => {}))
+  wc.on('did-navigate-in-page', () => wc.executeJavaScript(BACK_BTN_JS).catch(() => {}))
 }
 function createTradeWindow(url: string): void {
   if (tradeWindow && !tradeWindow.isDestroyed()) {
@@ -1794,6 +1854,9 @@ function createTradeWindow(url: string): void {
     tradeWindow.focus()
     return
   }
+  // Kalıcı partition + Chrome UA (çerez/oturum kalır; Steam UA tıkamasın).
+  const ses = session.fromPartition(TRADE_PARTITION)
+  ses.setUserAgent(TRADE_UA)
   const wa = screen.getPrimaryDisplay().workArea
   const w = Math.min(1180, wa.width - 40)
   const h = Math.min(840, wa.height - 40)
@@ -1806,26 +1869,32 @@ function createTradeWindow(url: string): void {
     autoHideMenuBar: true,
     backgroundColor: '#0a0e10',
     icon: appIconPath(),
-    webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false }
+    webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false, partition: TRADE_PARTITION }
   })
   const wc = tradeWindow.webContents
-  // GÜVENLİK: yalnız pathofexile.com'a in-window navigasyon; diğer her şey reddedilir (izinliyse tarayıcı).
-  wc.on('will-navigate', (e, navUrl) => {
-    if (!isPoeTradeUrl(navUrl)) {
-      e.preventDefault()
-      if (isAllowedExternalUrl(navUrl)) shell.openExternal(navUrl)
+  wireTradeContents(wc)
+  // Yükleme takıldı/başarısız → hata sayfası (Yenile + Tarayıcıda Aç). -3 = kullanıcı/iç iptal, yok say.
+  let loadTimer: ReturnType<typeof setTimeout> | null = null
+  const clearLoadTimer = (): void => {
+    if (loadTimer) {
+      clearTimeout(loadTimer)
+      loadTimer = null
     }
+  }
+  const showError = (): void => {
+    clearLoadTimer()
+    if (tradeWindow && !tradeWindow.isDestroyed()) tradeWindow.webContents.loadURL(tradeErrorHtml(url)).catch(() => {})
+  }
+  wc.on('did-fail-load', (_e, errorCode, _desc, validatedURL, isMainFrame) => {
+    if (isMainFrame && errorCode !== -3 && !/^data:/.test(validatedURL)) showError()
   })
-  wc.setWindowOpenHandler((d) => {
-    if (isAllowedExternalUrl(d.url)) shell.openExternal(d.url)
-    return { action: 'deny' }
-  })
-  // GERİ butonu: sayfaya enjekte edilir (history.back). Her gezinmede yeniden eklenir.
-  wc.on('did-finish-load', () => wc.executeJavaScript(BACK_BTN_JS).catch(() => {}))
-  wc.on('did-navigate-in-page', () => wc.executeJavaScript(BACK_BTN_JS).catch(() => {}))
+  wc.on('dom-ready', clearLoadTimer)
+  wc.on('did-finish-load', clearLoadTimer)
   tradeWindow.on('closed', () => {
+    clearLoadTimer()
     tradeWindow = null
   })
+  loadTimer = setTimeout(showError, 25000) // 25 sn içinde DOM gelmezse hata sayfası
   tradeWindow.loadURL(url)
 }
 

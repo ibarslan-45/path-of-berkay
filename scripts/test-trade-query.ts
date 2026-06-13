@@ -214,10 +214,23 @@ const repBow = describeMatch(qiBow)
 check('4/4 eşleşti, 0 eşleşmedi', repBow.matched.length === 4 && repBow.unmatched.length === 0, { m: repBow.matched.length, u: repBow.unmatched.map((u) => u.text) })
 const qBow = buildTradeQuery(qiBow)
 check('buildTradeQuery usedStats = 4', qBow.usedStats === 4, qBow.usedStats)
-// Cold değeri GÖMÜLÜ aralıktan değil GERÇEK rolled sayıdan (7), band=1 ile TAM uygulanır
+// #1: filtre ETİKETLERİ temiz (gömülü tier parantezi yok)
+check('etiketler temiz (parantez yok)', qiBow.mods.every((m) => !/\(\d/.test(m.text)), qiBow.mods.map((m) => m.text))
+// #1: "Adds A to B" modları ranged + İKİ değer (low/high) eşyanın gerçek sayıları
+const cold = qiBow.mods.find((m) => m.statId === 'explicit.stat_1037193709')!
+check('Cold ranged + low=7, high=16 (gerçek değerler)', cold.ranged === true && cold.value === 7 && cold.valueHi === 16, { r: cold.ranged, lo: cold.value, hi: cold.valueHi })
+check('Cold etiketi temiz "Adds 7 to 16 Cold Damage"', cold.text === 'Adds 7 to 16 Cold Damage', cold.text)
+const proj = qiBow.mods.find((m) => m.statId === 'explicit.stat_1202301673')!
+check('Projectile tek-değer (ranged değil)', proj.ranged === false && proj.valueHi === null, { r: proj.ranged, hi: proj.valueHi })
+// ranged trade filtresi: low/high ORTALAMASI (band=1) → (7+16)/2 = 11
 const qExact = buildTradeQuery(qiBow, { valueBand: 1 })
 const coldF = (qExact.body.query as { stats: Array<{ filters: Array<{ id: string; value?: { min?: number } }> }> }).stats[0].filters.find((f) => f.id === 'explicit.stat_1037193709')
-check('Cold min = 7 (gerçek değer, 6/10 değil)', coldF?.value?.min === 7, coldF?.value?.min)
+check('Cold filtre min = ort(7,16) = 11', coldF?.value?.min === 11, coldF?.value?.min)
+// kullanıcı high'ı 20 yaparsa filtre min güncellenir → (7+20)/2 = 13
+cold.valueHi = 20
+const qEdited = buildTradeQuery(qiBow, { valueBand: 1 })
+const coldF2 = (qEdited.body.query as { stats: Array<{ filters: Array<{ id: string; value?: { min?: number } }> }> }).stats[0].filters.find((f) => f.id === 'explicit.stat_1037193709')
+check('high düzenlenince filtre min = ort(7,20) = 13', coldF2?.value?.min === 13, coldF2?.value?.min)
 
 console.log(`\nSONUÇ: ${pass} geçti, ${fail} kaldı`)
 console.log(
