@@ -247,15 +247,12 @@ check('Cold ranged + low=7, high=16 (gerçek değerler)', cold.ranged === true &
 check('Cold etiketi temiz "Adds 7 to 16 Cold Damage"', cold.text === 'Adds 7 to 16 Cold Damage', cold.text)
 const proj = qiBow.mods.find((m) => m.statId === 'explicit.stat_1202301673')!
 check('Projectile tek-değer (ranged değil)', proj.ranged === false && proj.valueHi === null, { r: proj.ranged, hi: proj.valueHi })
-// ranged trade filtresi: low/high ORTALAMASI (band=1) → (7+16)/2 = 11
+// 0.18.1: trade filtre min = eşyanın GERÇEK ALT değeri (7) — sitede görünen sayı eşyayla uyuşur (ort DEĞİL).
 const qExact = buildTradeQuery(qiBow, { valueBand: 1 })
 const coldF = (qExact.body.query as { stats: Array<{ filters: Array<{ id: string; value?: { min?: number } }> }> }).stats[0].filters.find((f) => f.id === 'explicit.stat_1037193709')
-check('Cold filtre min = ort(7,16) = 11', coldF?.value?.min === 11, coldF?.value?.min)
-// kullanıcı high'ı 20 yaparsa filtre min güncellenir → (7+20)/2 = 13
-cold.valueHi = 20
-const qEdited = buildTradeQuery(qiBow, { valueBand: 1 })
-const coldF2 = (qEdited.body.query as { stats: Array<{ filters: Array<{ id: string; value?: { min?: number } }> }> }).stats[0].filters.find((f) => f.id === 'explicit.stat_1037193709')
-check('high düzenlenince filtre min = ort(7,20) = 13', coldF2?.value?.min === 13, coldF2?.value?.min)
+check('Cold filtre min = 7 (eşyanın alt değeri, ortalama 11 DEĞİL)', coldF?.value?.min === 7, coldF?.value?.min)
+const projF = (qExact.body.query as { stats: Array<{ filters: Array<{ id: string; value?: { min?: number } }> }> }).stats[0].filters.find((f) => f.id === 'explicit.stat_1202301673')
+check('Projectile filtre min = 1 (gerçek rolled)', projF?.value?.min === 1, projF?.value?.min)
 
 console.log(`\nSONUÇ: ${pass} geçti, ${fail} kaldı`)
 console.log(

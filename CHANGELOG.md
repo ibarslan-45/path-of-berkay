@@ -3,6 +3,13 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.18.1
+### Hata düzeltmeleri
+- **Trade açılışı düzeltildi ("search is no longer valid").** Trade artık her zaman GÜNCEL aktif lig ile açılır (sabit/eski lig kullanılmıyordu); fiyat-kontrolüyle aynı çalışan yol kullanılır. Canlı doğrulandı: gerçek bow sorgusu geçerli sonuç döndürüyor.
+- **Trade filtre değerleri eşyayla uyuşuyor.** "Adds A to B" modlarında artık eşyanın gerçek (alt) rolled değeri girilir (ortalama değil); tek değerli modlarda gerçek sayı. Eşleşmeyen modlar sorguya eklenmez.
+- **Soket sayısı filtresi gerçekten uygulanıyor.** Rünün statı yerine eşyanın soket sayısı trade sorgusuna eklenir (canlı API kabul ediyor).
+- **Tepsi/pencere ikonu görünüyor.** Boş kare yerine PoBe ikonu gösteriliyor (doğru .ico kullanılıyor).
+
 ## 0.18.0
 ### İyileştirmeler
 - **Build ekranı düzeni + buton çakışması düzeltildi.** Ekipman kartları daha geniş, "Craft'la" ve "Trade'de Ara" butonları kart başlığının üstüne taşmıyor — kendi satırlarında, pencere küçükken de okunur.

@@ -2210,9 +2210,15 @@ function applyDangerShortcut(): void {
 
 // Uygulama ikonu: paketliyken .exe ikonu (electron-builder win.icon) görevi görür;
 // dev/preview'da pencere/taskbar ikonu için build/icon.png'i kullan (yoksa undefined).
+// 0.18.1: Uygulama/tepsi ikonu (.ico — Windows tray + pencere/görev çubuğu çok-boyut destekler).
+// Dev: build/icon.ico (repo). Paketli: extraResources → process.resourcesPath/icon.ico. Bulunamazsa png/undefined.
 function appIconPath(): string | undefined {
-  const p = join(__dirname, '../../build/icon.png')
-  return existsSync(p) ? p : undefined
+  const ico = join(__dirname, '../../build/icon.ico')
+  if (existsSync(ico)) return ico
+  const res = join(process.resourcesPath || '', 'icon.ico')
+  if (existsSync(res)) return res
+  const png = join(__dirname, '../../build/icon.png')
+  return existsSync(png) ? png : undefined
 }
 
 // Arayüz ölçeği (0.15.1): tüm UI'yi tek seferde ölçekler (webContents zoom). Ayar değişince/açılışta uygulanır.
@@ -2247,9 +2253,13 @@ function showMainWindow(): void {
 /** Sistem tepsisi ikonu + sağ-tık menüsü (Göster/Gizle, Çıkış). */
 function createTray(): void {
   if (tray) return
-  let img = nativeImage.createFromPath(join(__dirname, '../../build/icon.png'))
-  if (!img.isEmpty()) img = img.resize({ width: 16, height: 16 })
-  tray = new Tray(img.isEmpty() ? nativeImage.createEmpty() : img)
+  // 0.18.1: .ico kullan (Windows tray 16/32 boyutlarını içinden seçer; devasa PNG resize boş çıkıyordu).
+  const iconPath = appIconPath()
+  let img = iconPath ? nativeImage.createFromPath(iconPath) : nativeImage.createEmpty()
+  // .ico değilse (png fallback) tepsi için 16px'e indir; .ico'da OS doğru boyutu seçer.
+  if (!img.isEmpty() && iconPath && !/\.ico$/i.test(iconPath)) img = img.resize({ width: 16, height: 16 })
+  console.log('[tray] icon:', iconPath, '| empty:', img.isEmpty())
+  tray = new Tray(img)
   tray.setToolTip('Path of Berkay')
   const rebuild = (): void => {
     const visible = !!mainWin && mainWin.isVisible()

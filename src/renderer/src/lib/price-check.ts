@@ -140,29 +140,33 @@ export async function estimateValue(qi: QueryItem): Promise<PriceEstimate> {
   }
 }
 
-/** QueryItem için trade2 aramasını aç (otomatik alım değil; program-içi trade penceresinde / tarayıcıda).
- *  #2: Kullanıcının SEÇİMLERİ birebir gider (yalnız enabled stat, min TAM = valueBand:1). 0.18.0: POST
- *  araması başarısız olsa BİLE (CF/ağ) `?q=` URL'siyle pencere AÇILIR — "Trade'de Ara" tepkisiz kalmaz. */
+/**
+ * QueryItem için trade2 aramasını aç (otomatik alım değil; trade penceresi/tarayıcı). TEK paylaşılan yol —
+ * hem fiyat-overlay'i hem build "Trade'de Ara" bunu kullanır. Kullanıcı seçimleri birebir (enabled stat,
+ * min TAM = valueBand:1). 0.18.1: lig DİNAMİK (ensureLeague — fiyatın kullandığı kaynak); hardcoded
+ * 'Standard' KALDIRILDI ("no longer valid" sebebiydi). POST başarısızsa DOĞRU ligli `?q=` URL'sine düşer.
+ */
 export async function openItemInTrade(qi: QueryItem): Promise<boolean> {
   const league = await ensureLeague()
   await ensureStats()
   rematchQueryItem(qi)
-  const lg = league || 'Standard' // lig alınamasa bile bir URL aç (kullanıcı ligi sitede değiştirir)
-  // 1) POST → kısa/temiz queryId URL'si (çalışırsa en iyisi)
+  if (!league) {
+    console.log('[trade] lig alınamadı → açılamıyor (ağ?)')
+    return false // yanlış ligle "no longer valid" üretmektense açma
+  }
+  // 1) POST → kısa/temiz queryId URL'si (çalışırsa en iyisi; lig DOĞRU)
   try {
-    if (league) {
-      const q = buildTradeQuery(qi, { valueBand: 1 })
-      const search = await window.api?.price?.tradeSearch(league, q.body)
-      if (search?.ok && search.queryId) {
-        window.api?.price?.openTradeUrl(tradeSearchUrl(league, search.queryId))
-        return true
-      }
+    const q = buildTradeQuery(qi, { valueBand: 1 })
+    const search = await window.api?.price?.tradeSearch(league, q.body)
+    if (search?.ok && search.queryId) {
+      window.api?.price?.openTradeUrl(tradeSearchUrl(league, search.queryId))
+      return true
     }
   } catch {
     /* POST hatası → ?q= URL'sine düş */
   }
-  // 2) FALLBACK: ?q= URL → POST gerekmez, CF/ağ engelinde bile trade penceresi sorguyla açılır
-  window.api?.price?.openTradeUrl(tradeQueryUrl(lg, qi, { valueBand: 1 }))
+  // 2) FALLBACK: AYNI dinamik ligle ?q= URL (POST gerekmez; CF'i pencere kendi geçer). Yanlış lig YOK.
+  window.api?.price?.openTradeUrl(tradeQueryUrl(league, qi, { valueBand: 1 }))
   return true
 }
 

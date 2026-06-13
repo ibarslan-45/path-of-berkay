@@ -272,13 +272,10 @@ export function buildTradeQuery(qi: QueryItem, opts: BuildQueryOpts = {}): {
       continue
     }
     const f: { id: string; value?: { min?: number } } = { id: m.statId }
-    // "Adds A to B" modlarında trade, eklenen hasarın ORTALAMASINI indeksler → filtre min = ort(low,high).
-    // Tek-sayılı modlarda min = değer. band: estimate'te 0.9 (benzer-veya-daha-iyi), trade-open'da 1 (TAM).
-    if (m.ranged && typeof m.value === 'number' && typeof m.valueHi === 'number') {
-      f.value = { min: Math.max(0, Math.floor(((m.value + m.valueHi) / 2) * band)) }
-    } else if (typeof m.value === 'number') {
-      f.value = { min: Math.max(0, Math.floor(m.value * band)) }
-    }
+    // 0.18.1: filtre min = eşyanın GERÇEK rolled (ALT) değeri — trade sitesinde görünen sayı eşyayla uyuşur.
+    // ("Adds A to B"da alt=A; ortalama KULLANILMAZ — kullanıcı 11 yerine eşyadaki 7'yi görür.) band: estimate
+    // 0.9 (benzer-veya-daha-iyi), trade-open 1 (TAM). Tek-değerli modda da m.value = gerçek rolled sayı.
+    if (typeof m.value === 'number') f.value = { min: Math.max(0, Math.floor(m.value * band)) }
     filters.push(f)
   }
 
