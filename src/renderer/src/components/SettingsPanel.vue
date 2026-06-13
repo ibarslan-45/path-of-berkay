@@ -27,6 +27,7 @@ interface AppSettings {
   priceCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   dangerCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   autoCopy: boolean
+  tradeOpen: 'app' | 'browser'
   ui: { font: string; zoom: number }
   log: LogStatus
 }
@@ -57,6 +58,7 @@ const dangerShortcut = ref('CommandOrControl+E')
 const dangerShortcutOk = ref(true)
 const capturingDanger = ref(false)
 const autoCopy = ref(false) // 0.17.0: varsayılan KAPALI
+const tradeOpen = ref<'app' | 'browser'>('app') // 0.17.8: Trade nerede açılsın
 const uiFont = ref('helvetica')
 const uiZoom = ref(1)
 let unsub: (() => void) | null = null
@@ -76,6 +78,10 @@ function setUiZoom(): void {
 function toggleAutoCopy(): void {
   autoCopy.value = !autoCopy.value
   window.api?.settings.set({ autoCopy: autoCopy.value })
+}
+function setTradeOpen(v: 'app' | 'browser'): void {
+  tradeOpen.value = v
+  window.api?.settings.set({ tradeOpen: v })
 }
 
 // --- İletişim / Hakkında (ADIM D) ---
@@ -175,6 +181,7 @@ function apply(s: AppSettings): void {
     dangerShortcutOk.value = s.dangerCheck.shortcutOk
   }
   if (typeof s.autoCopy === 'boolean') autoCopy.value = s.autoCopy
+  if (s.tradeOpen === 'app' || s.tradeOpen === 'browser') tradeOpen.value = s.tradeOpen
   if (s.ui) {
     uiFont.value = s.ui.font || 'helvetica'
     uiZoom.value = s.ui.zoom ?? 1
@@ -594,6 +601,18 @@ function onCaptureDangerKey(e: KeyboardEvent): void {
           </div>
           <div class="set-hint">
             {{ tr('VARSAYILAN KAPALI. Açıkken kısayola (fiyat Ctrl+D / tehlike Ctrl+E) basınca program oyuna Ctrl+C gönderir, kısa bekler, panoyu okur ve paneli gösterir — tek tuş yeter (Awakened PoE / Exiled Exchange ile aynı yöntem). ÖNEMLİ: tuş YALNIZCA ön plandaki pencere “Path of Exile 2” iken gönderilir; başka pencere odaktaysa hiçbir şey gönderilmez (yalnız mevcut pano okunur). Kapalıyken kendin Ctrl+C yaparsın. Dürüst not: açıkken oyuna tuş gönderdiği için klasik “sadece pano okuma”dan bir adım ileridir (girdi simülasyonu); kendi sorumluluğunda kullan.', 'OFF BY DEFAULT. When on, pressing the shortcut (price Ctrl+D / danger Ctrl+E) makes the app send Ctrl+C to the game, wait briefly, read the clipboard and show the panel — one key is enough (same method as Awakened PoE / Exiled Exchange). IMPORTANT: the key is sent ONLY when the foreground window is “Path of Exile 2”; if any other window is focused nothing is sent (only the existing clipboard is read). When off, you press Ctrl+C yourself. Honest note: when on it sends a key to the game, going one step beyond pure clipboard reading (input simulation); use at your own discretion.') }}
+          </div>
+        </div>
+
+        <!-- 4a-ter) TRADE'DE AÇ NEREDE (0.17.8) — program-içi pencere | varsayılan tarayıcı -->
+        <div class="set-sec">
+          <div class="set-label">{{ tr('Trade’de Aç — nerede açılsın', 'Open in Trade — where') }}</div>
+          <div class="set-seg" style="margin-bottom: 7px">
+            <button class="set-segbtn" :class="{ 'set-segbtn--on': tradeOpen === 'app' }" @click="tradeOpen !== 'app' && setTradeOpen('app')">{{ tr('Programda', 'In app') }}</button>
+            <button class="set-segbtn" :class="{ 'set-segbtn--on': tradeOpen === 'browser' }" @click="tradeOpen !== 'browser' && setTradeOpen('browser')">{{ tr('Tarayıcıda', 'Browser') }}</button>
+          </div>
+          <div class="set-hint">
+            {{ tr('Varsayılan “Programda”: trade sayfası program-içi pencerede açılır (kapatılabilir + geri butonu). Cloudflare “doğrulama” ekranını kendin tıklayıp geçersin; takılırsa pencerede “Tarayıcıda Aç” butonu çıkar. “Tarayıcıda”yı seçersen trade her zaman varsayılan tarayıcında açılır. (Doğrulama otomatik geçilmez — yalnız gerçek tarayıcı gibi davranılır.)', 'Default “In app”: the trade page opens inside the app window (closable + back button). You pass the Cloudflare “verify you are human” check yourself; if it gets stuck a “Open in Browser” button appears. Choose “Browser” to always open trade in your default browser. (The check is never auto-solved — the window just behaves like a real browser.)') }}
           </div>
         </div>
 

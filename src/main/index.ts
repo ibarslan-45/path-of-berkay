@@ -208,6 +208,8 @@ interface AppSettings {
   // Tek-tuş fiyat/tehlike (0.15.1): kısayola basınca önce oyuna Ctrl+C gönder, panoyu oku.
   // VARSAYILAN AÇIK. Awakened PoE / Exiled Exchange ile aynı yöntem; kapatılabilir (kullanıcı kendi Ctrl+C'sini yapar).
   autoCopy: boolean
+  // 0.17.8: "Trade'de Aç" nerede açılsın — 'app' (program-içi pencere) | 'browser' (varsayılan tarayıcı).
+  tradeOpen: 'app' | 'browser'
   // Arayüz yazı tipi + ölçeği (0.15.1). font: 'helvetica'|'system'|'serif'; zoom: webContents zoom faktörü.
   ui: { font: string; zoom: number }
   // İlk açılış tanıtımı (onboarding) gösterildi mi (Cila ADIM 2).
@@ -229,6 +231,7 @@ let appSettings: AppSettings = {
   priceCheck: { enabled: true, shortcut: 'CommandOrControl+D' },
   dangerCheck: { enabled: true, shortcut: 'CommandOrControl+E' },
   autoCopy: false, // 0.17.0: tek-tuş oto-kopyala VARSAYILAN KAPALI (kullanıcı açarsa yalnız PoE2 odaktayken çalışır)
+  tradeOpen: 'app', // 0.17.8: varsayılan program-içi pencere; challenge'a takılırsa "Tarayıcıda Aç" sunulur
   ui: { font: 'helvetica', zoom: 1 },
   firstRunDone: false,
   lastSeenVersion: ''
@@ -308,6 +311,7 @@ function loadSettings(): void {
       }
     }
     if (raw && typeof raw.autoCopy === 'boolean') appSettings.autoCopy = raw.autoCopy
+    if (raw && (raw.tradeOpen === 'app' || raw.tradeOpen === 'browser')) appSettings.tradeOpen = raw.tradeOpen
     if (raw && raw.ui && typeof raw.ui === 'object') {
       const u = raw.ui
       appSettings.ui = {
@@ -341,6 +345,7 @@ function saveSettings(): void {
         priceCheck: appSettings.priceCheck,
         dangerCheck: appSettings.dangerCheck,
         autoCopy: appSettings.autoCopy,
+        tradeOpen: appSettings.tradeOpen,
         ui: appSettings.ui,
         firstRunDone: appSettings.firstRunDone,
         lastSeenVersion: appSettings.lastSeenVersion
@@ -369,6 +374,7 @@ function fullSettings(): Omit<AppSettings, 'advisor'> & {
   priceCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   dangerCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   autoCopy: boolean
+  tradeOpen: 'app' | 'browser'
   ui: { font: string; zoom: number }
   firstRunDone: boolean
   lastSeenVersion: string
@@ -397,6 +403,7 @@ function fullSettings(): Omit<AppSettings, 'advisor'> & {
       shortcutOk: dangerShortcutOk
     },
     autoCopy: appSettings.autoCopy,
+    tradeOpen: appSettings.tradeOpen,
     ui: appSettings.ui,
     firstRunDone: appSettings.firstRunDone,
     lastSeenVersion: appSettings.lastSeenVersion,
@@ -966,10 +973,12 @@ function registerPriceIpc(): void {
     }
   })
 
-  // Hazır trade2 arama URL'sini PROGRAM-İÇİ trade penceresinde aç (0.17.5; otomatik alım değil).
-  // Yalnız pathofexile.com/trade2 URL'leri kabul edilir; pencere kapatılabilir + geri butonlu.
+  // Hazır trade2 arama URL'sini aç (otomatik alım değil). Ayara göre: 'app' → program-içi pencere
+  // (kapatılabilir + geri + "Tarayıcıda Aç"); 'browser' → doğrudan varsayılan tarayıcı. (0.17.8)
   ipcMain.on('trade:open-url', (_e, url: string) => {
-    if (typeof url === 'string' && /^https:\/\/(www\.)?pathofexile\.com\/trade2\//.test(url)) createTradeWindow(url)
+    if (typeof url !== 'string' || !/^https:\/\/(www\.)?pathofexile\.com\/trade2\//.test(url)) return
+    if (appSettings.tradeOpen === 'browser') shell.openExternal(url)
+    else createTradeWindow(url)
   })
   // Fiyat overlay'ini gizle (renderer × düğmesi)
   ipcMain.on('priceoverlay:close', () => priceWindow?.hide())
@@ -1511,6 +1520,7 @@ function registerLevelingIpc(): void {
       }
     }
     if (typeof patch.autoCopy === 'boolean') appSettings.autoCopy = patch.autoCopy
+    if (patch.tradeOpen === 'app' || patch.tradeOpen === 'browser') appSettings.tradeOpen = patch.tradeOpen
     let zoomChanged = false
     if (patch.ui && typeof patch.ui === 'object') {
       const pu = patch.ui as { font?: string; zoom?: number }
@@ -1779,8 +1789,11 @@ let registeredAccel = ''
 // (Steam varsayılan Electron UA'yı tıkamasın), did-fail-load/timeout → Yenile + Tarayıcıda Aç butonları.
 let tradeWindow: BrowserWindow | null = null
 const TRADE_PARTITION = 'persist:trade'
-const TRADE_UA =
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+// 0.17.8: GERÇEK UA — sürümü Electron'un GÖMÜLÜ Chromium'undan (process.versions.chrome) türet.
+// "Electron/..." ve uygulama adı token'ları ÇIKARILDI (bot işareti). Böylece UA major sürümü, Chromium'un
+// kendi gönderdiği sec-ch-ua client-hint'leriyle EŞLEŞİR → Cloudflare "verify you are human" döngüsü kırılır.
+// (Captcha bypass YOK; amaç pencerenin gerçek tarayıcı gibi davranıp kullanıcının doğrulamayı geçebilmesi.)
+const TRADE_UA = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${process.versions.chrome} Safari/537.36`
 // İzinli host'lar: PoE + Steam OpenID giriş akışı (steamcommunity + *.steampowered.com).
 function isTradeNavHost(url: string): boolean {
   try {
@@ -1797,6 +1810,34 @@ const BACK_BTN_JS = `(function(){try{
   b.onclick=function(){history.back()};
   document.body.appendChild(b);
 }catch(e){}})()`
+// "Tarayıcıda Aç ↗" butonu (sağ üst, HER ZAMAN): target=_blank → setWindowOpenHandler → harici tarayıcı.
+// Kullanıcı CF döngüsünden ya da herhangi bir anda gerçek tarayıcıya kaçabilir. (IPC/preload gerekmez.)
+function openExternalBtnJs(url: string): string {
+  const u = url.replace(/'/g, '%27').replace(/\\/g, '%5C')
+  return `(function(){try{
+  if(document.getElementById('pobe-ext'))return;
+  var a=document.createElement('a');a.id='pobe-ext';a.href='${u}';a.target='_blank';a.textContent='Tarayıcıda Aç \\u2197';
+  a.style.cssText='position:fixed;top:8px;right:8px;z-index:2147483647;font:600 12px system-ui,sans-serif;color:#e3c172;background:rgba(20,16,10,.92);border:1px solid rgba(201,161,74,.6);border-radius:4px;padding:5px 12px;cursor:pointer;text-decoration:none;box-shadow:0 2px 6px rgba(0,0,0,.4)';
+  document.body.appendChild(a);
+}catch(e){}})()`
+}
+// 15 sn sonra Cloudflare "verify you are human" hâlâ duruyorsa BELİRGİN banner ("Tarayıcıda Aç") göster.
+// CF doğrulamasını OTOMATİK GEÇMEZ/ÇÖZMEZ — yalnız kullanıcıya gerçek-tarayıcı kaçış yolu sunar.
+function cfBannerJs(url: string): string {
+  const u = url.replace(/'/g, '%27').replace(/\\/g, '%5C')
+  return `(function(){try{
+  var t=(document.title||'').toLowerCase();
+  var cf = t.indexOf('just a moment')>=0 || t.indexOf('verify you are human')>=0 || !!document.querySelector('#challenge-running,#cf-challenge-running,.cf-turnstile,#turnstile-wrapper,iframe[src*="challenges.cloudflare.com"]');
+  if(!cf) return;
+  if(document.getElementById('pobe-cfbanner'))return;
+  var d=document.createElement('div');d.id='pobe-cfbanner';
+  d.style.cssText='position:fixed;left:0;right:0;bottom:0;z-index:2147483647;background:#1a140c;border-top:1px solid #8a6f2e;color:#d8cdb4;font:13px system-ui,sans-serif;padding:10px 14px;display:flex;align-items:center;gap:12px;justify-content:center';
+  d.innerHTML='<span>Doğrulama uzun sürüyor. Burada tamamlayabilir ya da tarayıcıda açabilirsin.</span>';
+  var a=document.createElement('a');a.href='${u}';a.target='_blank';a.textContent='Tarayıcıda Aç \\u2197';
+  a.style.cssText='color:#1a1408;background:linear-gradient(#d9b765,#c19a45);border:1px solid #8a6f2e;border-radius:4px;padding:6px 14px;text-decoration:none;font-weight:600';
+  d.appendChild(a);document.body.appendChild(d);
+}catch(e){}})()`
+}
 // Yükleme takılır/başarısız olursa gösterilen hata sayfası: "Yenile" (location.href) + "Tarayıcıda Aç"
 // (target=_blank → setWindowOpenHandler → harici tarayıcı). IPC/preload gerekmez.
 function tradeErrorHtml(url: string): string {
@@ -1810,8 +1851,9 @@ function tradeErrorHtml(url: string): string {
 <a href="${u}" target="_blank" style="display:inline-block;font:600 13px system-ui;color:#e3c172;background:transparent;border:1px solid rgba(201,161,74,.55);border-radius:4px;padding:8px 18px;cursor:pointer;margin:4px;text-decoration:none">Tarayıcıda Aç ↗</a>
 </div></body></html>`)}`
 }
-/** Bir webContents'e güvenlik + UA + GERİ butonu kancalarını uygula (ana pencere + Steam popup'ları). */
-function wireTradeContents(wc: Electron.WebContents): void {
+/** Bir webContents'e güvenlik + UA + GERİ/Tarayıcıda-Aç butonu kancalarını uygula.
+ *  tradeUrl verilirse (ana pencere) "Tarayıcıda Aç" butonu enjekte edilir; Steam child'larda verilmez. */
+function wireTradeContents(wc: Electron.WebContents, tradeUrl?: string): void {
   wc.setUserAgent(TRADE_UA)
   wc.on('will-navigate', (e, navUrl) => {
     if (!isTradeNavHost(navUrl)) {
@@ -1844,8 +1886,12 @@ function wireTradeContents(wc: Electron.WebContents): void {
     return { action: 'deny' }
   })
   wc.on('did-create-window', (child) => wireTradeContents(child.webContents))
-  wc.on('did-finish-load', () => wc.executeJavaScript(BACK_BTN_JS).catch(() => {}))
-  wc.on('did-navigate-in-page', () => wc.executeJavaScript(BACK_BTN_JS).catch(() => {}))
+  const inject = (): void => {
+    wc.executeJavaScript(BACK_BTN_JS).catch(() => {})
+    if (tradeUrl) wc.executeJavaScript(openExternalBtnJs(tradeUrl)).catch(() => {})
+  }
+  wc.on('did-finish-load', inject)
+  wc.on('did-navigate-in-page', inject)
 }
 function createTradeWindow(url: string): void {
   if (tradeWindow && !tradeWindow.isDestroyed()) {
@@ -1854,9 +1900,10 @@ function createTradeWindow(url: string): void {
     tradeWindow.focus()
     return
   }
-  // Kalıcı partition + Chrome UA (çerez/oturum kalır; Steam UA tıkamasın).
+  // Kalıcı partition + gerçek Chromium UA (çerez/oturum — cf_clearance dahil — diske yazılır, Steam tıkamaz).
   const ses = session.fromPartition(TRADE_PARTITION)
   ses.setUserAgent(TRADE_UA)
+  console.log('[trade] partition persist:trade UA:', ses.getUserAgent())
   const wa = screen.getPrimaryDisplay().workArea
   const w = Math.min(1180, wa.width - 40)
   const h = Math.min(840, wa.height - 40)
@@ -1872,26 +1919,43 @@ function createTradeWindow(url: string): void {
     webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false, partition: TRADE_PARTITION }
   })
   const wc = tradeWindow.webContents
-  wireTradeContents(wc)
+  wireTradeContents(wc, url) // url → "Tarayıcıda Aç" butonu enjekte edilir
   // Yükleme takıldı/başarısız → hata sayfası (Yenile + Tarayıcıda Aç). -3 = kullanıcı/iç iptal, yok say.
   let loadTimer: ReturnType<typeof setTimeout> | null = null
-  const clearLoadTimer = (): void => {
+  let cfTimer: ReturnType<typeof setTimeout> | null = null
+  const clearTimers = (): void => {
     if (loadTimer) {
       clearTimeout(loadTimer)
       loadTimer = null
     }
+    if (cfTimer) {
+      clearTimeout(cfTimer)
+      cfTimer = null
+    }
   }
   const showError = (): void => {
-    clearLoadTimer()
+    if (loadTimer) {
+      clearTimeout(loadTimer)
+      loadTimer = null
+    }
     if (tradeWindow && !tradeWindow.isDestroyed()) tradeWindow.webContents.loadURL(tradeErrorHtml(url)).catch(() => {})
   }
   wc.on('did-fail-load', (_e, errorCode, _desc, validatedURL, isMainFrame) => {
     if (isMainFrame && errorCode !== -3 && !/^data:/.test(validatedURL)) showError()
   })
-  wc.on('dom-ready', clearLoadTimer)
-  wc.on('did-finish-load', clearLoadTimer)
+  // sayfa DOM'u geldi → yükleme timeout'unu iptal et; 15 sn sonra CF challenge hâlâ duruyorsa banner göster.
+  wc.on('dom-ready', () => {
+    if (loadTimer) {
+      clearTimeout(loadTimer)
+      loadTimer = null
+    }
+    if (cfTimer) clearTimeout(cfTimer)
+    cfTimer = setTimeout(() => {
+      if (tradeWindow && !tradeWindow.isDestroyed()) wc.executeJavaScript(cfBannerJs(url)).catch(() => {})
+    }, 15000)
+  })
   tradeWindow.on('closed', () => {
-    clearLoadTimer()
+    clearTimers()
     tradeWindow = null
   })
   loadTimer = setTimeout(showError, 25000) // 25 sn içinde DOM gelmezse hata sayfası
@@ -2210,6 +2274,10 @@ function createWindow(): void {
 
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.pathofberkay.pobe')
+  // 0.17.8: TÜM webContents'in varsayılan UA'sı = gerçek Chromium UA (Electron/app token YOK) → tutarlı,
+  // Cloudflare'a "gerçek tarayıcı" gibi görünür. Trade penceresi de aynı UA'yı kullanır.
+  app.userAgentFallback = TRADE_UA
+  console.log('[trade] UA:', TRADE_UA, '| contains Electron:', /electron/i.test(TRADE_UA))
 
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)

@@ -3,6 +3,11 @@
 > Sürüm notları hem uygulama-içi güncelleme bildiriminde gösterilir hem de `changelog.json`
 > (host'ta, opsiyonel) üretmek için kaynaktır. Her yayında en üste yeni sürümü ekle.
 
+## 0.17.8
+### Hata düzeltmeleri
+- **Trade penceresi Cloudflare doğrulama döngüsü düzeltildi.** Pencere artık gerçek bir tarayıcı kimliği (Chromium'un kendi sürümünden türetilmiş, "Electron" içermeyen User-Agent) kullanır; böylece "verify you are human" ekranını kendin tıklayıp geçebilirsin. Oturum kalıcıdır (doğrulama bir kez geçince tekrar sorulmaz).
+- **Tarayıcıda açma seçeneği.** Ayarlar → "Trade'de Aç — nerede": Programda (varsayılan) ya da Varsayılan tarayıcıda. Program-içi pencerede doğrulama takılırsa otomatik "Tarayıcıda Aç" butonu çıkar; istediğin an da kullanabilirsin. (Doğrulama otomatik geçilmez — yalnızca pencere gerçek tarayıcı gibi davranır.)
+
 ## 0.17.7
 ### İyileştirmeler
 - **Filtre etiketleri temiz + iki değer kutusu.** Fiyat panelindeki stat etiketleri artık gömülü tier aralığını göstermez ("Adds 1 to 16 Lightning Damage"). "Adds A to B" tipi modlarda alt ve üst değer için iki ayrı düzenlenebilir kutu (varsayılanları eşyanın gerçek değerleri); her ikisini değiştirince trade sorgusu güncellenir. Tek sayılı modlar tek kutu kalır.

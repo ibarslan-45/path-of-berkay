@@ -29,6 +29,7 @@ interface AppSettings {
   priceCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   dangerCheck: { enabled: boolean; shortcut: string; shortcutOk: boolean }
   autoCopy: boolean // tek-tuş oto-kopyala (varsayılan KAPALI; yalnız PoE2 odaktayken tetiklenir)
+  tradeOpen: 'app' | 'browser' // Trade'de Aç: program-içi pencere | varsayılan tarayıcı
   ui: { font: string; zoom: number }
   firstRunDone: boolean
   lastSeenVersion: string
@@ -43,6 +44,7 @@ interface SettingsPatch {
   priceCheck?: { enabled?: boolean; shortcut?: string }
   dangerCheck?: { enabled?: boolean; shortcut?: string }
   autoCopy?: boolean
+  tradeOpen?: 'app' | 'browser'
   ui?: Partial<{ font: string; zoom: number }>
   firstRunDone?: boolean
   lastSeenVersion?: string
