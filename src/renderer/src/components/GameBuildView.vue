@@ -113,13 +113,21 @@ async function ensureRemote(url?: string): Promise<void> {
   const r = await window.api?.cacheIcon?.(url).catch(() => null)
   if (r?.ok && r.dataUrl) remoteIcons.value = { ...remoteIcons.value, [url]: r.dataUrl }
 }
-// item için ikon: (1) bundled taban ikonu; (2) uzak iconUrl (cache); (3) yok → placeholder
+// item için ikon (sorun #3 — yanlış base ikonu):
+// EŞYA-ÖZGÜ CDN ikonu (iconUrl) VARSA ÖNCELİKLİDİR. Sebep: Mobalytics yapısal verisinde taban yalnız
+// SINIF adının insanileştirilmişidir ("Ring","Body Armour"). Bazı sınıf adları (örn. "Ring") items.json'da
+// GERÇEK bir tabana denk gelip o tabanın GENEL ikonunu döndürüyordu → eşyanın gerçek ikonu yerine yanlış
+// genel ikon. CDN iconUrl her zaman eşyaya özgü/doğru → onu tercih et; yoksa bundled taban ikonu (PoB/.build,
+// burada taban TAM ad → doğru). Hiçbiri yoksa placeholder.
 function itemIcon(item: PobItem | null): string | null {
   if (!item) return null
-  const b = bundledIconById.value.get(item.id)
-  if (b) return b
-  if (item.iconUrl) return remoteIcons.value[item.iconUrl] ?? null
-  return null
+  if (item.iconUrl) {
+    const cdn = remoteIcons.value[item.iconUrl]
+    if (cdn) return cdn
+    // CDN yükleniyor: geçici olarak bundled taban ikonu (varsa), yoksa yüklenene kadar placeholder
+    return bundledIconById.value.get(item.id) ?? null
+  }
+  return bundledIconById.value.get(item.id) ?? null
 }
 const GEAR_SLOTS: Array<{ slot: string; tr: string; en: string }> = [
   { slot: 'Weapon 1', tr: 'Silah', en: 'Weapon' },
@@ -203,13 +211,50 @@ const gearCells = computed<GearCell[]>(() => {
   }
   return cells
 })
-// bir gear hücresinin slot + mod id'leri (işaretleme)
+// --- Sorun #4: rune ayrıştırma ---
+// Eşya modları içinde rune bilgisi iki biçimde gelebilir:
+//   (a) "(Rune) Iron"  → rune KİMLİĞİ (Mobalytics: takılı rune adı; bu satır stat değil, rune'un kendisi)
+//   (b) "+X ... (rune)" → rune KAYNAKLI stat (clipboard biçimi; modun yanına rozet)
+const RUNE_NAME_RE = /^\(\s*rune\s*\)\s*/i
+const RUNE_SUFFIX_RE = /\s*\(\s*(?:rune|soul core)\s*\)\s*$/i
+interface VMod {
+  text: string // gösterilecek temiz metin
+  orig: string // orijinal satır (progress id'si için — değişmez)
+  idx: number // item.mods içindeki orijinal index
+  fromRune: boolean
+}
+interface CellParsed {
+  mods: VMod[] // görünür mod kontrol listesi (rune kimlik satırları HARİÇ)
+  runes: string[] // takılı rune adları (Rünler satırı)
+}
+function parseCell(c: GearCell): CellParsed {
+  const mods: VMod[] = []
+  const runes: string[] = []
+  if (!c.item) return { mods, runes }
+  c.item.mods.forEach((m, idx) => {
+    if (RUNE_NAME_RE.test(m)) {
+      runes.push(m.replace(RUNE_NAME_RE, '').trim())
+      return
+    }
+    if (RUNE_SUFFIX_RE.test(m)) {
+      mods.push({ text: m.replace(RUNE_SUFFIX_RE, '').trim(), orig: m, idx, fromRune: true })
+      return
+    }
+    mods.push({ text: m, orig: m, idx, fromRune: false })
+  })
+  return { mods, runes }
+}
+// gearCells + her hücrenin ayrıştırılmış mod/rune verisi (template tek kaynaktan okur)
+const cellInfo = computed(() => gearCells.value.map((c) => ({ c, ...parseCell(c) })))
+
+// bir gear hücresinin slot + mod id'leri (işaretleme). NOT: rune kimlik satırları (Rünler'e taşınan)
+// kontrol listesine GİRMEZ → id'ler de yalnız görünür modlar için (özet sayımı tutarlı).
 function cellSlotId(c: GearCell): string {
   return slotProgressId(sig.value, c.slot)
 }
 function cellModIds(c: GearCell): string[] {
   if (!c.item) return []
-  return c.item.mods.map((m, i) => modProgressId(sig.value, c.slot, i, m))
+  return parseCell(c).mods.map((vm) => modProgressId(sig.value, c.slot, vm.idx, vm.orig))
 }
 // slot başlığını işaretle → o slotun TÜM modlarını da işaretle/kaldır
 function toggleSlot(c: GearCell): void {
@@ -253,9 +298,11 @@ const gemGroups = computed<GemGroup[]>(() => {
 // (Mobalytics'te gem→weaponSet çoğu build'de null.) Öyleyse gem bölümünde DÜRÜST not göster
 // (rozet yerine "gem'ler silah setine göre ayrılmamış") — boş bırakma.
 const gemsHaveSetData = computed(() => gemGroups.value.some((g) => g.set != null))
-// gem işaretleme id'si (ad + aktif/support)
-function gemDoneId(name: string, support: boolean): string {
-  return gemProgressId(sig.value, name, support)
+// gem işaretleme id'si — BİLEŞİK anahtar (grup index + grup-içi sıra + ad). Aynı isimli gem birden çok
+// socket grubunda olunca (örn. "Elemental Armament") ada-göre anahtar ÇAKIŞIYORDU → birini işaretleyince
+// diğeri de işaretleniyordu. groupIdx (gemGroups sırası) + idx (aktif/support içindeki sıra) ile benzersiz.
+function gemDoneId(groupIdx: number, support: boolean, idx: number, name: string): string {
+  return gemProgressId(sig.value, 'g' + groupIdx, support, idx, name)
 }
 
 // --- node adı/türü çözümü (passive-tree.json node[5]=pid → passivesById; canvas ile aynı köprü) ---
@@ -296,7 +343,27 @@ const addedNodes = computed<number[]>(() => {
   const prevSet = new Set(prev.nodes)
   return cur.nodes.filter((n) => !prevSet.has(n))
 })
-const showTree = ref(true) // varsayılan açık (aşama değişimi görsel olarak görünsün)
+// --- Sorun #2: bölümleri ALT ALTA tam genişlik + AÇ/KAPA (accordion); durum kalıcı (localStorage) ---
+type SecKey = 'equip' | 'gems' | 'tree'
+const LS_ACC = 'gv-accordion-v1'
+function loadAcc(): Record<SecKey, boolean> {
+  try {
+    const r = JSON.parse(localStorage.getItem(LS_ACC) || 'null')
+    if (r && typeof r === 'object') return { equip: r.equip !== false, gems: r.gems !== false, tree: r.tree !== false }
+  } catch {
+    /* yok say */
+  }
+  return { equip: true, gems: true, tree: true }
+}
+const openSec = ref<Record<SecKey, boolean>>(loadAcc())
+function toggleSec(k: SecKey): void {
+  openSec.value = { ...openSec.value, [k]: !openSec.value[k] }
+  try {
+    localStorage.setItem(LS_ACC, JSON.stringify(openSec.value))
+  } catch {
+    /* yok say */
+  }
+}
 
 // kayda değer (notable/keystone) tahsis edilen node'lar → işaretlenebilir liste (her node yerine
 // anlamlı node'lar; minör node'lar sayıyla gösterilir — dürüst, kullanışlı yorum)
@@ -361,10 +428,10 @@ const progressSummary = computed(() => {
     add(cellSlotId(c))
     for (const mid of cellModIds(c)) add(mid)
   }
-  for (const grp of gemGroups.value) {
-    for (const a of grp.actives) add(gemDoneId(a.name, false))
-    for (const s of grp.supports) add(gemDoneId(s.name, true))
-  }
+  gemGroups.value.forEach((grp, gi) => {
+    grp.actives.forEach((a, j) => add(gemDoneId(gi, false, j, a.name)))
+    grp.supports.forEach((s, k) => add(gemDoneId(gi, true, k, s.name)))
+  })
   for (const n of notableNodes.value) add(nodeDoneId(n.id))
   return { done, total, pct: total ? Math.round((done / total) * 100) : 0 }
 })
@@ -402,151 +469,181 @@ const progressSummary = computed(() => {
       <span class="gv-wset-note">{{ tr('silahlar, silaha soketli gem’ler ve sete özel pasifler etiketlenir', 'weapons, weapon-socketed gems and set-specific passives are labeled') }}</span>
     </div>
 
-    <div class="gv-cols">
-      <!-- SOL: GEAR paper-doll -->
-      <section class="gv-gear panel-frame">
-        <div class="gv-sec-head">⚔ {{ tr('Ekipman', 'Equipment') }}</div>
-        <div class="gv-gear-grid">
-          <div v-for="(c, i) in gearCells" :key="i" class="gv-slot" :class="[itemRarityClass(c.item), { 'gv-slot--empty': !c.item, 'gv-slot--done': c.item && isDone(cellSlotId(c)), 'gv-slot--dim': dimForSet(c.set) }]">
-            <div class="gv-slot-head">
-              <button
-                v-if="c.item"
-                class="gv-chk"
-                :class="{ 'gv-chk--on': isDone(cellSlotId(c)) }"
-                :title="tr('Bu eşyayı elde ettim', 'I obtained this item')"
-                @click="toggleSlot(c)"
-              >✓</button>
-              <img v-if="itemIcon(c.item)" :src="itemIcon(c.item)!" class="gv-slot-icon" alt="" />
-              <span v-else class="gv-slot-icon gv-slot-icon--ph">◇</span>
-              <span class="gv-slot-label">{{ c.label }}</span>
-              <span v-if="hasWeaponSets && c.set" class="gv-setbadge" :class="'gv-setbadge--s' + c.set">{{ setBadge(c.set) }}</span>
-            </div>
-            <template v-if="c.item">
-              <div class="gv-item-name">{{ c.item.name || c.item.base }}</div>
-              <div v-if="c.item.base && c.item.base !== c.item.name" class="gv-item-base">{{ c.item.base }}</div>
-              <ul v-if="c.item.mods.length" class="gv-item-mods gv-item-mods--check">
-                <li
-                  v-for="(m, j) in c.item.mods"
-                  :key="j"
-                  class="gv-modline"
-                  :class="{ 'gv-modline--done': isDone(modProgressId(sig, c.slot, j, m)) }"
-                  @click="toggleDone(modProgressId(sig, c.slot, j, m))"
-                >
-                  <span class="gv-chk gv-chk--sm" :class="{ 'gv-chk--on': isDone(modProgressId(sig, c.slot, j, m)) }">✓</span>
-                  <span class="gv-modtext">{{ m }}</span>
-                </li>
-              </ul>
-              <div v-else class="gv-item-nomods">{{ tr('— mod verisi yok (doğrulanmalı)', '— no mod data (verify)') }}</div>
-              <!-- #1: aksiyon butonları KENDİ satırında (başlıkla çakışmaz) -->
-              <div class="gv-slot-actions">
+    <!-- Sorun #2: bölümler ALT ALTA, tam genişlik, her biri AÇ/KAPA (accordion) -->
+    <div class="gv-stack">
+      <!-- ══ EKİPMAN ══ -->
+      <section class="gv-acc panel-frame">
+        <button class="gv-acc-head" @click="toggleSec('equip')">
+          <span class="gv-acc-caret">{{ openSec.equip ? '▾' : '▸' }}</span>
+          ⚔ {{ tr('Ekipman', 'Equipment') }}
+          <span class="gv-acc-count">{{ gearCells.filter((c) => c.item).length }} {{ tr('eşya', 'items') }}</span>
+        </button>
+        <div v-show="openSec.equip" class="gv-acc-body">
+          <div class="gv-gear-grid">
+            <div v-for="info in cellInfo" :key="info.c.slot" class="gv-slot" :class="[itemRarityClass(info.c.item), { 'gv-slot--empty': !info.c.item, 'gv-slot--done': info.c.item && isDone(cellSlotId(info.c)), 'gv-slot--dim': dimForSet(info.c.set) }]">
+              <div class="gv-slot-head">
                 <button
-                  class="gv-craftbtn"
-                  :title="tr('Bu eşyayı Craft Simülatörü’ne gönder (hedef olarak)', 'Send this item to the Craft Simulator (as target)')"
-                  @click="craftItem(c.item)"
-                >⚒ {{ tr('Craft’la', 'Craft') }}</button>
-                <button
-                  class="gv-tradebtn"
-                  :disabled="tradeBusy"
-                  :title="tr('Bu eşyayı trade’de ara (taban + öne çıkan modlar; gevşek)', 'Search this item on trade (base + top mods; loose)')"
-                  @click="tradeItem(c.item)"
-                >↗ {{ tr('Trade’de Ara', 'Trade') }}</button>
+                  v-if="info.c.item"
+                  class="gv-chk"
+                  :class="{ 'gv-chk--on': isDone(cellSlotId(info.c)) }"
+                  :title="tr('Bu eşyayı elde ettim', 'I obtained this item')"
+                  @click="toggleSlot(info.c)"
+                >✓</button>
+                <img v-if="itemIcon(info.c.item)" :src="itemIcon(info.c.item)!" class="gv-slot-icon" alt="" />
+                <span v-else class="gv-slot-icon gv-slot-icon--ph">◇</span>
+                <span class="gv-slot-label">{{ info.c.label }}</span>
+                <span v-if="hasWeaponSets && info.c.set" class="gv-setbadge" :class="'gv-setbadge--s' + info.c.set">{{ setBadge(info.c.set) }}</span>
               </div>
-            </template>
-            <div v-else class="gv-slot-empty">{{ tr('boş', 'empty') }}</div>
+              <template v-if="info.c.item">
+                <div class="gv-item-name">{{ info.c.item.name || info.c.item.base }}</div>
+                <div v-if="info.c.item.base && info.c.item.base !== info.c.item.name" class="gv-item-base">{{ info.c.item.base }}</div>
+                <ul v-if="info.mods.length" class="gv-item-mods gv-item-mods--check">
+                  <li
+                    v-for="m in info.mods"
+                    :key="m.idx"
+                    class="gv-modline"
+                    :class="{ 'gv-modline--done': isDone(modProgressId(sig, info.c.slot, m.idx, m.orig)) }"
+                    @click="toggleDone(modProgressId(sig, info.c.slot, m.idx, m.orig))"
+                  >
+                    <span class="gv-chk gv-chk--sm" :class="{ 'gv-chk--on': isDone(modProgressId(sig, info.c.slot, m.idx, m.orig)) }">✓</span>
+                    <span class="gv-modtext">{{ m.text }}</span>
+                    <!-- Sorun #4: rune kaynaklı stat → rozet -->
+                    <span v-if="m.fromRune" class="gv-runebadge" :title="tr('Bu stat bir rune’dan geliyor', 'This stat comes from a rune')">🔹 {{ tr('Rün', 'Rune') }}</span>
+                  </li>
+                </ul>
+                <div v-else-if="!info.runes.length" class="gv-item-nomods">{{ tr('— mod verisi yok (doğrulanmalı)', '— no mod data (verify)') }}</div>
+                <!-- Sorun #4: ayrı RÜNLER satırı — kaç soket / hangi rune takılı -->
+                <div v-if="info.runes.length" class="gv-runes">
+                  <span class="gv-runes-lbl">🔹 {{ tr('Rünler', 'Runes') }}</span>
+                  <span class="gv-runes-count">{{ info.runes.length }} {{ tr('soket', info.runes.length === 1 ? 'socket' : 'sockets') }}</span>
+                  <span
+                    v-for="(rn, ri) in info.runes"
+                    :key="ri"
+                    class="gv-rune-chip"
+                    :title="tr('Takılı rune', 'Socketed rune') + ': ' + rn"
+                  >{{ rn }}</span>
+                </div>
+                <!-- aksiyon butonları KENDİ satırında (başlıkla çakışmaz) -->
+                <div class="gv-slot-actions">
+                  <button
+                    class="gv-craftbtn"
+                    :title="tr('Bu eşyayı Craft Simülatörü’ne gönder (hedef olarak)', 'Send this item to the Craft Simulator (as target)')"
+                    @click="craftItem(info.c.item)"
+                  >⚒ {{ tr('Craft’la', 'Craft') }}</button>
+                  <button
+                    class="gv-tradebtn"
+                    :disabled="tradeBusy"
+                    :title="tr('Bu eşyayı trade’de ara (taban + öne çıkan modlar; gevşek)', 'Search this item on trade (base + top mods; loose)')"
+                    @click="tradeItem(info.c.item)"
+                  >↗ {{ tr('Trade’de Ara', 'Trade') }}</button>
+                </div>
+              </template>
+              <div v-else class="gv-slot-empty">{{ tr('boş', 'empty') }}</div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- SAĞ: GEM socket grupları -->
-      <section class="gv-gems panel-frame">
-        <div class="gv-sec-head">✦ {{ tr('Yetenek Taşları (Socket Grupları)', 'Skill Gems (Socket Groups)') }}</div>
-        <div v-if="!gemGroups.length" class="gv-empty">{{ tr('Bu aşamada gem verisi yok', 'No gem data for this stage') }}</div>
-        <!-- #3: build silah seti kullanıyor ama gem'lere set atanmamış → dürüst not (rozet yerine) -->
-        <div v-if="hasWeaponSets && !gemsHaveSetData && gemGroups.length" class="gv-gemsetnote">
-          ⓘ {{ tr('Bu build’de gem’ler silah setine göre ayrılmamış (kaynak veri set bilgisi içermiyor).', 'This build does not assign gems to weapon sets (source data has no set info).') }}
-        </div>
-        <div v-for="(grp, i) in gemGroups" :key="i" class="gv-group" :class="{ 'gv-group--dim': dimForSet(grp.set) }">
-          <div v-if="hasWeaponSets && grp.set" class="gv-group-set" :class="'gv-setbadge--s' + grp.set">{{ setBadge(grp.set) }} {{ tr('(silaha soketli)', '(in weapon)') }}</div>
-          <div
-            v-for="(a, j) in grp.actives"
-            :key="'a' + j"
-            class="gv-active gv-gemrow"
-            :class="{ 'gv-gemrow--done': isDone(gemDoneId(a.name, false)) }"
-            @click="toggleDone(gemDoneId(a.name, false))"
-          >
-            <span class="gv-chk gv-chk--sm" :class="{ 'gv-chk--on': isDone(gemDoneId(a.name, false)) }">✓</span>
-            <span class="gv-gemic gv-gemic--active">
-              <img v-if="a.icon" :src="a.icon" alt="" />
-              <span v-else class="gv-gemic-ph" :title="tr('görsel yok', 'no image')">◆</span>
-            </span>
-            <span class="gv-gem-name">{{ a.name }}</span>
-            <span v-if="a.level" class="gv-gem-lv">Lv {{ a.level }}</span>
+      <!-- ══ YETENEK TAŞLARI ══ -->
+      <section class="gv-acc panel-frame">
+        <button class="gv-acc-head" @click="toggleSec('gems')">
+          <span class="gv-acc-caret">{{ openSec.gems ? '▾' : '▸' }}</span>
+          ✦ {{ tr('Yetenek Taşları (Socket Grupları)', 'Skill Gems (Socket Groups)') }}
+          <span class="gv-acc-count">{{ gemGroups.length }} {{ tr('grup', 'groups') }}</span>
+        </button>
+        <div v-show="openSec.gems" class="gv-acc-body">
+          <div v-if="!gemGroups.length" class="gv-empty">{{ tr('Bu aşamada gem verisi yok', 'No gem data for this stage') }}</div>
+          <!-- build silah seti kullanıyor ama gem'lere set atanmamış → dürüst not (rozet yerine) -->
+          <div v-if="hasWeaponSets && !gemsHaveSetData && gemGroups.length" class="gv-gemsetnote">
+            ⓘ {{ tr('Bu build’de gem’ler silah setine göre ayrılmamış (kaynak veri set bilgisi içermiyor).', 'This build does not assign gems to weapon sets (source data has no set info).') }}
           </div>
-          <div v-if="grp.supports.length" class="gv-supports">
-            <span
-              v-for="(s, k) in grp.supports"
-              :key="'s' + k"
-              class="gv-support gv-gemrow"
-              :class="{ 'gv-gemrow--done': isDone(gemDoneId(s.name, true)) }"
-              :title="s.name"
-              @click="toggleDone(gemDoneId(s.name, true))"
-            >
-              <span class="gv-chk gv-chk--xs" :class="{ 'gv-chk--on': isDone(gemDoneId(s.name, true)) }">✓</span>
-              <span class="gv-gemic gv-gemic--support">
-                <img v-if="s.icon" :src="s.icon" alt="" />
-                <span v-else class="gv-gemic-ph" :title="tr('görsel yok', 'no image')">◆</span>
-              </span>
-              {{ s.name }}
-            </span>
+          <div class="gv-gem-grid">
+            <div v-for="(grp, i) in gemGroups" :key="i" class="gv-group" :class="{ 'gv-group--dim': dimForSet(grp.set) }">
+              <div v-if="hasWeaponSets && grp.set" class="gv-group-set" :class="'gv-setbadge--s' + grp.set">{{ setBadge(grp.set) }} {{ tr('(silaha soketli)', '(in weapon)') }}</div>
+              <div
+                v-for="(a, j) in grp.actives"
+                :key="'a' + j"
+                class="gv-active gv-gemrow"
+                :class="{ 'gv-gemrow--done': isDone(gemDoneId(i, false, j, a.name)) }"
+                @click="toggleDone(gemDoneId(i, false, j, a.name))"
+              >
+                <span class="gv-chk gv-chk--sm" :class="{ 'gv-chk--on': isDone(gemDoneId(i, false, j, a.name)) }">✓</span>
+                <span class="gv-gemic gv-gemic--active">
+                  <img v-if="a.icon" :src="a.icon" alt="" />
+                  <span v-else class="gv-gemic-ph" :title="tr('görsel yok', 'no image')">◆</span>
+                </span>
+                <span class="gv-gem-name">{{ a.name }}</span>
+                <span v-if="a.level" class="gv-gem-lv">Lv {{ a.level }}</span>
+              </div>
+              <div v-if="grp.supports.length" class="gv-supports">
+                <span
+                  v-for="(s, k) in grp.supports"
+                  :key="'s' + k"
+                  class="gv-support gv-gemrow"
+                  :class="{ 'gv-gemrow--done': isDone(gemDoneId(i, true, k, s.name)) }"
+                  :title="s.name"
+                  @click="toggleDone(gemDoneId(i, true, k, s.name))"
+                >
+                  <span class="gv-chk gv-chk--xs" :class="{ 'gv-chk--on': isDone(gemDoneId(i, true, k, s.name)) }">✓</span>
+                  <span class="gv-gemic gv-gemic--support">
+                    <img v-if="s.icon" :src="s.icon" alt="" />
+                    <span v-else class="gv-gemic-ph" :title="tr('görsel yok', 'no image')">◆</span>
+                  </span>
+                  {{ s.name }}
+                </span>
+              </div>
+              <div v-if="!grp.actives.length && grp.supports.length" class="gv-group-note">{{ tr('(yalnız support — ana gem eşleşmedi)', '(supports only — no active gem)') }}</div>
+            </div>
           </div>
-          <div v-if="!grp.actives.length && grp.supports.length" class="gv-group-note">{{ tr('(yalnız support — ana gem eşleşmedi)', '(supports only — no active gem)') }}</div>
         </div>
+      </section>
 
-        <!-- pasif ağaç -->
-        <div class="gv-sec-head" style="margin-top: 10px">
+      <!-- ══ PASİF AĞAÇ ══ -->
+      <section class="gv-acc panel-frame">
+        <button class="gv-acc-head" @click="toggleSec('tree')">
+          <span class="gv-acc-caret">{{ openSec.tree ? '▾' : '▸' }}</span>
           ✤ {{ tr('Pasif Ağaç', 'Passive Tree') }}
-          <span class="gv-treecount">{{ allocatedNodes.length }} {{ tr('node (bu aşamaya kadar)', 'nodes (through this stage)') }}</span>
+          <span class="gv-acc-count">{{ allocatedNodes.length }} {{ tr('node', 'nodes') }}</span>
           <span v-if="addedNodes.length && setFilter === 'all'" class="gv-treeadded">+{{ addedNodes.length }} {{ tr('bu aşamada', 'this stage') }}</span>
-          <button class="gv-treebtn" @click="showTree = !showTree">{{ showTree ? tr('Gizle', 'Hide') : tr('Ağacı göster', 'Show tree') }}</button>
-        </div>
-
-        <!-- Part 4: sete özel pasif node sayısı (yalnız passive set verisi varsa) -->
-        <div v-if="setNodes && setFilter !== 'all'" class="gv-wset-note gv-wset-note--tree">
-          {{ setFilter === 'set1' ? 'Set 1' : 'Set 2' }}: {{ (setFilter === 'set1' ? setNodes.set1 : setNodes.set2).length }} {{ tr('sete özel pasif (amber)', 'set-specific passives (amber)') }}
-        </div>
-
-        <div v-if="showTree" class="gv-treehint">
-          {{ tr('İpucu: ağaçtaki bir node’a tıkla → "elde ettim" (yeşil) işaretle; kapat-aç’ta kalır.', 'Tip: click a node on the tree → mark as acquired (green); persists across restarts.') }}
-        </div>
-        <PassiveTreeCanvas
-          v-if="showTree"
-          class="gv-treehost"
-          :passives-by-id="passivesById"
-          :is-tr="isTr"
-          :allocated="allocatedNodes"
-          :highlight="treeHighlight"
-          :done="acquiredNodeIds"
-          :markable="true"
-          @toggle-node="onToggleNode"
-        />
-
-        <!-- Part 2: kayda değer (notable/keystone) node işaretleme -->
-        <div v-if="notableNodes.length" class="gv-nodes">
-          <div class="gv-nodes-head">
-            {{ tr('Kayda Değer Pasifler (işaretle)', 'Notable Passives (check off)') }}
-            <span v-if="minorNodeCount" class="gv-nodes-minor">+{{ minorNodeCount }} {{ tr('küçük node', 'minor nodes') }}</span>
+        </button>
+        <div v-show="openSec.tree" class="gv-acc-body">
+          <!-- Part 4: sete özel pasif node sayısı (yalnız passive set verisi varsa) -->
+          <div v-if="setNodes && setFilter !== 'all'" class="gv-wset-note gv-wset-note--tree">
+            {{ setFilter === 'set1' ? 'Set 1' : 'Set 2' }}: {{ (setFilter === 'set1' ? setNodes.set1 : setNodes.set2).length }} {{ tr('sete özel pasif (amber)', 'set-specific passives (amber)') }}
           </div>
-          <div class="gv-nodes-grid">
-            <span
-              v-for="n in notableNodes"
-              :key="n.id"
-              class="gv-noderow"
-              :class="{ 'gv-noderow--done': isDone(nodeDoneId(n.id)) }"
-              @click="toggleDone(nodeDoneId(n.id))"
-            >
-              <span class="gv-chk gv-chk--xs" :class="{ 'gv-chk--on': isDone(nodeDoneId(n.id)) }">✓</span>
-              {{ n.name }}
-            </span>
+          <div class="gv-treehint">
+            {{ tr('İpucu: ağaçtaki bir node’a tıkla → "elde ettim" (yeşil) işaretle; kapat-aç’ta kalır.', 'Tip: click a node on the tree → mark as acquired (green); persists across restarts.') }}
+          </div>
+          <PassiveTreeCanvas
+            v-if="openSec.tree"
+            class="gv-treehost"
+            :passives-by-id="passivesById"
+            :is-tr="isTr"
+            :allocated="allocatedNodes"
+            :highlight="treeHighlight"
+            :done="acquiredNodeIds"
+            :markable="true"
+            @toggle-node="onToggleNode"
+          />
+
+          <!-- Part 2: kayda değer (notable/keystone) node işaretleme -->
+          <div v-if="notableNodes.length" class="gv-nodes">
+            <div class="gv-nodes-head">
+              {{ tr('Kayda Değer Pasifler (işaretle)', 'Notable Passives (check off)') }}
+              <span v-if="minorNodeCount" class="gv-nodes-minor">+{{ minorNodeCount }} {{ tr('küçük node', 'minor nodes') }}</span>
+            </div>
+            <div class="gv-nodes-grid">
+              <span
+                v-for="n in notableNodes"
+                :key="n.id"
+                class="gv-noderow"
+                :class="{ 'gv-noderow--done': isDone(nodeDoneId(n.id)) }"
+                @click="toggleDone(nodeDoneId(n.id))"
+              >
+                <span class="gv-chk gv-chk--xs" :class="{ 'gv-chk--on': isDone(nodeDoneId(n.id)) }">✓</span>
+                {{ n.name }}
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -587,18 +684,53 @@ const progressSummary = computed(() => {
   background: linear-gradient(#d9b765, #c19a45);
   border-color: #8a6f2e;
 }
-.gv-cols {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* Sorun #2: bölümler ALT ALTA, tam genişlik; tüm yığın tek scroll alanı */
+.gv-stack {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
   min-height: 0;
   flex: 1;
-}
-.gv-gear,
-.gv-gems {
-  padding: 9px 11px;
   overflow-y: auto;
-  min-height: 0;
+}
+/* accordion bölümü */
+.gv-acc {
+  padding: 0;
+  overflow: hidden;
+}
+.gv-acc-head {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  font-size: 16px;
+  color: var(--gold-ornament, #c9a14a);
+  background: rgba(0, 0, 0, 0.25);
+  border: none;
+  border-bottom: 1px solid rgba(184, 154, 102, 0.25);
+  padding: 9px 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.gv-acc-head:hover {
+  background: rgba(201, 161, 74, 0.08);
+}
+.gv-acc-caret {
+  font-size: 12px;
+  width: 14px;
+  color: var(--gold-ornament, #c9a14a);
+}
+.gv-acc-count {
+  font-size: 11px;
+  font-variant: normal;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+.gv-acc-body {
+  padding: 11px 13px;
 }
 .gv-sec-head {
   font-variant: small-caps;
@@ -717,13 +849,63 @@ const progressSummary = computed(() => {
 .gv-rar-normal .gv-item-name {
   color: #d8cdb4;
 }
+/* Sorun #2: gem grupları tam genişlikte rahat dizilsin (responsive çok-sütun) */
+.gv-gem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 9px;
+  align-items: start;
+}
 /* gem grupları */
 .gv-group {
   border: 1px solid rgba(122, 211, 197, 0.28);
   background: rgba(122, 211, 197, 0.05);
   padding: 8px 11px;
-  margin-bottom: 9px;
+  margin-bottom: 0;
   border-radius: 3px;
+}
+/* Sorun #4: rune rozeti + Rünler satırı */
+.gv-runebadge {
+  flex: none;
+  font-size: 10px;
+  color: #8fb8ff;
+  background: rgba(90, 130, 220, 0.16);
+  border: 1px solid rgba(120, 160, 235, 0.5);
+  border-radius: 3px;
+  padding: 0 5px;
+  margin-left: 4px;
+  white-space: nowrap;
+  align-self: center;
+}
+.gv-runes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px 7px;
+  margin-top: 7px;
+  padding: 5px 7px;
+  border: 1px solid rgba(120, 160, 235, 0.32);
+  background: rgba(90, 130, 220, 0.08);
+  border-radius: 3px;
+}
+.gv-runes-lbl {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #9cc0ff;
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+}
+.gv-runes-count {
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+.gv-rune-chip {
+  font-size: 11px;
+  color: #d6e2ff;
+  background: rgba(90, 130, 220, 0.2);
+  border: 1px solid rgba(120, 160, 235, 0.45);
+  border-radius: 3px;
+  padding: 1px 7px;
 }
 .gv-active {
   display: flex;

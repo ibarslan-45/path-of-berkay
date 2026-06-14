@@ -33,8 +33,12 @@ export function slotProgressId(sig: string, slot: string): string {
 export function modProgressId(sig: string, slot: string, index: number, text: string): string {
   return `md_${sig}_${hashStr(slot + '#' + index + '#' + text)}`
 }
-export function gemProgressId(sig: string, name: string, support: boolean): string {
-  return `gm_${sig}_${support ? 's' : 'a'}_${hashStr(name)}`
+// gem işaret id'si — BİLEŞİK anahtar (groupKey + grup-içi index + ad). Aynı isimli gem birden çok
+// socket grubunda olabilir (ör. "Elemental Armament" hem Lightning Arrow hem Lightning Rod altında);
+// yalnız ada göre anahtarlamak ÇAKIŞMAYA yol açıyordu (birini işaretleyince diğeri de işaretleniyordu).
+// groupKey = grup kimliği (ör. 'g0','g1'), index = grup içindeki aktif/support sırası.
+export function gemProgressId(sig: string, groupKey: string, support: boolean, index = 0, name = ''): string {
+  return `gm_${sig}_${support ? 's' : 'a'}_${hashStr(groupKey + '#' + index + '#' + name)}`
 }
 export function nodeProgressId(sig: string, nodeId: number): string {
   return `nd_${sig}_${nodeId}`
@@ -87,17 +91,19 @@ export function enumerateProgress(build: PobBuild | null, stageIdx = 0): Progres
     })
   }
 
-  // GEM + support (seçili aşama)
+  // GEM + support (seçili aşama). BİLEŞİK anahtar (grup index + grup-içi sıra + ad) → aynı isimli
+  // gem'ler farklı gruplarda ÇAKIŞMAZ (eski ada-göre dedup kaldırıldı; her grup-içi gem ayrı id).
   const ss = build.skillSets[Math.min(stageIdx, Math.max(0, build.skillSets.length - 1))]
-  const seenGem = new Set<string>()
+  let gi = 0
   for (const grp of ss?.groups ?? []) {
+    let ai = 0
+    let si = 0
     for (const g of grp.gems) {
       if (!g.nameSpec) continue
-      const key = (g.support ? 's:' : 'a:') + g.nameSpec
-      if (seenGem.has(key)) continue
-      seenGem.add(key)
-      sections[2].checks.push({ id: gemProgressId(sig, g.nameSpec, g.support), label: g.nameSpec })
+      const idx = g.support ? si++ : ai++
+      sections[2].checks.push({ id: gemProgressId(sig, 'g' + gi, g.support, idx, g.nameSpec), label: g.nameSpec })
     }
+    gi++
   }
 
   // PASİF node'lar (seçili aşamanın spec'i; başlık eşleşmesi → index → en çok node'lu)

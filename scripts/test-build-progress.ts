@@ -76,7 +76,16 @@ check('endgame 3 gem', m1.sections.find((s) => s.key === 'gems')!.checks.length 
 console.log('\nid kararlılığı + benzersizlik:')
 check('slot id kararlı', slotProgressId(sig, 'Ring 1') === slotProgressId(sig, 'Ring 1'))
 check('mod id kararlı', modProgressId(sig, 'Ring 1', 0, '+45 to maximum Life') === modProgressId(sig, 'Ring 1', 0, '+45 to maximum Life'))
-check('gem aktif≠support id', gemProgressId(sig, 'X', false) !== gemProgressId(sig, 'X', true))
+check('gem aktif≠support id', gemProgressId(sig, 'g0', false) !== gemProgressId(sig, 'g0', true))
+// BİLEŞİK anahtar: aynı isimli gem farklı GRUPLARDA çakışmamalı (kritik bug — bağlı checkbox)
+check(
+  'aynı gem farklı grup → farklı id',
+  gemProgressId(sig, 'g0', true, 0, 'Elemental Armament') !== gemProgressId(sig, 'g1', true, 0, 'Elemental Armament')
+)
+check(
+  'aynı gem aynı grup aynı sıra → aynı id (kararlı)',
+  gemProgressId(sig, 'g0', true, 0, 'Elemental Armament') === gemProgressId(sig, 'g0', true, 0, 'Elemental Armament')
+)
 check('node id numeric', nodeProgressId(sig, 103) === `nd_${sig}_103`)
 check('farklı slot → farklı mod id', modProgressId(sig, 'Ring 1', 0, 'X') !== modProgressId(sig, 'Helmet', 0, 'X'))
 const allIds = [

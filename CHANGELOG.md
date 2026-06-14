@@ -3,6 +3,20 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.18.3
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- ☑️ **Bağlı kutucuk hatası giderildi.** Bir skill'in support gem'ini (ör. "Elemental Armament") işaretleyince başka skill'deki aynı isimli gem de işaretleniyordu. Artık her kutucuk gruba/sıraya özgü benzersiz anahtar kullanır → bağımsız işaretlenir (modlar için de aynısı).
+- 📐 **Build ekranı yeniden düzenlendi.** Ekipman, Yetenek Taşları ve Pasif Ağaç artık yan yana sıkışmak yerine alt alta, tam genişlikte ve her biri aç/kapa (accordion) başlığıyla. Ekipman ve gem'ler ferah bir grid'e yayılır; aç/kapa durumu kayıtlı kalır.
+- 🖼️ **Yanlış eşya ikonları düzeltildi.** Bazı slotlarda genel sınıf ikonu (ör. yüzük) doğru eşya ikonunu eziyordu; artık eşyaya özgü ikon tercih edilir.
+- 🔹 **Rünler artık net.** Rün kaynaklı stat'ın yanında "🔹 Rün" rozeti, eşya kartında ayrı bir "Rünler" satırı (kaç soket, hangi rune takılı).
+### 🇬🇧 English
+#### 🐛 Fixes
+- ☑️ **Linked-checkbox bug fixed.** Checking a skill's support gem (e.g. "Elemental Armament") also checked the same-named gem under another skill. Each checkbox now uses a key unique to its group/position → independent (same for item mods).
+- 📐 **Build screen relaid out.** Equipment, Skill Gems and Passive Tree are now stacked full-width with collapsible (accordion) headers instead of being cramped side by side. Equipment and gems spread into a roomy grid; open/closed state is remembered.
+- 🖼️ **Wrong item icons fixed.** On some slots a generic class icon (e.g. a ring) overrode the correct item icon; the item-specific icon is now preferred.
+- 🔹 **Runes are now clear.** A "🔹 Rune" badge next to rune-sourced stats, plus a separate "Runes" line on the item card (socket count, which rune is fitted).
+
 ## 0.18.2
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler
