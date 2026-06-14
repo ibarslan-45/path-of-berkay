@@ -98,8 +98,8 @@ const OP_LIST: { op: OpName; en: string }[] = [
   { op: 'glassblower', en: "Glassblower's Bauble" }
 ]
 function opName(en: string): string {
-  const c = curByEn.get(en)
-  return props.isTr && c?.tr ? c.tr : en
+  // Currency adları özel ad → TR modunda da İNGİLİZCE ("Orb of Transmutation", "Regal Orb").
+  return en
 }
 
 // --- taban seçimi ---
@@ -207,7 +207,7 @@ function runeIcon(r: RuneSim): string | null {
   return curIconMap[(r.icon.split('/').pop() as string).replace(/\.png$/i, '')] ?? null
 }
 function runeName(r: RuneSim): string {
-  return props.isTr && r.tr ? r.tr : r.en
+  return r.en // özel ad → her zaman EN
 }
 function runeApplyState(r: RuneSim): { ok: boolean; reason: string } {
   return item.value ? canSocketRune(item.value, r) : { ok: false, reason: '—' }
@@ -223,7 +223,7 @@ function omenIcon(o: OmenSim): string | null {
   return curIconMap[(o.icon.split('/').pop() as string).replace(/\.png$/i, '')] ?? null
 }
 function omenName(o: OmenSim): string {
-  return props.isTr && o.tr ? o.tr : o.en
+  return o.en // özel ad → her zaman EN
 }
 function omenEffect(o: OmenSim): string {
   return props.isTr ? o.effect_tr : o.effect_en
@@ -241,7 +241,7 @@ function catIcon(c: CatalystSim): string | null {
   return curIconMap[(c.icon.split('/').pop() as string).replace(/\.png$/i, '')] ?? null
 }
 function catName(c: CatalystSim): string {
-  return props.isTr && c.tr ? c.tr : c.en
+  return c.en // özel ad → her zaman EN
 }
 function catApplyState(c: CatalystSim): { ok: boolean; reason: string } {
   return item.value ? canApplyCatalyst(item.value, c) : { ok: false, reason: '—' }
@@ -273,7 +273,7 @@ function essIcon(e: EssenceSim): string | null {
   return curIconMap[(e.icon.split('/').pop() as string).replace(/\.png$/i, '')] ?? null
 }
 function essName(e: EssenceSim): string {
-  return props.isTr && e.tr ? e.tr : e.en
+  return e.en // özel ad → her zaman EN
 }
 // özel essence mod'larının temiz TR'si (weight=0 oldukları için ham TR kaba)
 const SPECIAL_TR: Record<string, string> = {
@@ -369,6 +369,32 @@ function clearTargets(): void {
 const plan = computed<CraftPlan | null>(() =>
   item.value && targets.value.length ? planCraft(item.value, targets.value) : null
 )
+// Usta crafter'ın "mevcut durum değerlendirmesi" (rarity + dolu slotlar + hedef ilerleme + dolu taraf uyarısı)
+const stateAssessment = computed<string>(() => {
+  const it = item.value
+  const ts = targetStatus.value
+  if (!it || !ts) return ''
+  const rar = it.rarity === 'rare' ? 'Rare' : it.rarity === 'magic' ? 'Magic' : 'Normal' // rarity adı EN (özel)
+  const cap = it.rarity === 'rare' ? 3 : it.rarity === 'magic' ? 1 : 0
+  const pc = it.prefixes.length
+  const sc = it.suffixes.length
+  const met = ts.rows.filter((r) => r.met).length
+  const total = ts.rows.length
+  // eksik hedeflerin hangi tarafı dolu? (yer açmak gerekebilir)
+  const needPrefix = ts.rows.some((r) => !r.met && r.affix === 'prefix')
+  const needSuffix = ts.rows.some((r) => !r.met && r.affix === 'suffix')
+  const full: string[] = []
+  if (cap > 0 && needPrefix && pc >= cap) full.push(tr('önek tarafı dolu', 'prefix side full'))
+  if (cap > 0 && needSuffix && sc >= cap) full.push(tr('sonek tarafı dolu', 'suffix side full'))
+  const slots = cap > 0 ? `${pc}/${cap} ${tr('önek', 'prefix')}, ${sc}/${cap} ${tr('sonek', 'suffix')}` : tr('mod yok', 'no mods')
+  const tgt = `${tr('hedef', 'targets')} ${met}/${total}`
+  const warn = full.length ? ' · ⚠ ' + full.join(', ') : ''
+  return `${rar} ${tr('eşya', 'item')} · ${slots} · ${tgt}${warn}`
+})
+// bir adımın GÖRELİ maliyeti (£ işaretleri)
+function stepCost(s: PlanStep): string {
+  return '£'.repeat(s.action.costRank)
+}
 // bir ActionEval'in iki dilli adı (essence/omen/op/catalyst/rune)
 function actionName(a: ActionEval): string {
   if (a.essence) return essName(a.essence)
@@ -1258,6 +1284,9 @@ function parts(text: string): { t: string; num: boolean }[] {
             <span v-if="plan.kind === 'plan' || plan.kind === 'reached'" class="cs-adv-strat">{{ strategyLabel(plan.strategy) }}</span>
           </div>
 
+          <!-- USTA DEĞERLENDİRMESİ: eşyanın mevcut durumu (rarity + dolu slot + hedef ilerleme) -->
+          <div v-if="stateAssessment" class="cs-adv-assess">⌖ {{ tr('Durum değerlendirmesi', 'State assessment') }}: {{ stateAssessment }}</div>
+
           <!-- HEDEFE ULAŞILDI -->
           <div v-if="plan.kind === 'reached'">
             <div class="cs-adv-reached">★ {{ tr('Hedefe ulaşıldı!', 'Target reached!') }}</div>
@@ -1296,6 +1325,7 @@ function parts(text: string): { t: string; num: boolean }[] {
                 <li v-for="(s, i) in plan.steps" :key="i" class="cs-adv-step" :class="{ 'cs-adv-step--first': i === 0 }">
                   <span class="cs-adv-stepn">{{ i + 1 }}</span>
                   <span class="cs-adv-steptxt">{{ stepDesc(s) }}</span>
+                  <span class="cs-adv-stepcost" :title="tr('göreli maliyet', 'relative cost')">{{ stepCost(s) }}</span>
                   <span class="cs-adv-stepch" :class="{ 'cs-adv-stepch--sure': s.deterministic }">{{ chanceLabel(s) }}</span>
                 </li>
               </ol>
@@ -2457,6 +2487,16 @@ function parts(text: string): { t: string; num: boolean }[] {
   border-color: var(--gold-ornament);
 }
 /* strateji rozeti */
+.cs-adv-assess {
+  margin: 6px 0 2px;
+  padding: 5px 8px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #d6c8a6;
+  background: rgba(201, 161, 74, 0.08);
+  border-left: 2px solid rgba(201, 161, 74, 0.5);
+  border-radius: 2px;
+}
 .cs-adv-strat {
   margin-left: auto;
   font-size: 9.5px;
@@ -2539,6 +2579,12 @@ function parts(text: string): { t: string; num: boolean }[] {
 .cs-adv-steptxt {
   flex: 1;
   color: var(--text-default);
+}
+.cs-adv-stepcost {
+  flex: none;
+  font-size: 10px;
+  color: var(--gold-ornament, #c9a14a);
+  letter-spacing: -1px;
 }
 .cs-adv-stepch {
   flex: none;

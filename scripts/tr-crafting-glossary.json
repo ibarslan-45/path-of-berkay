@@ -1,289 +1,306 @@
 {
-  "_note": "Eşleşme anahtarı EN (proje talimatları). Adlar betimleyici -> 'proposed'. Terimler currency glossary ile tutarlı: Normal/Sihirli/Nadir, modifier=özellik, quality=kalite, prefix=önek, suffix=sonek. steps_tr uzunluğu steps_en ile birebir aynı. İSKELET kayıtlarda yalnızca 'tr' (ad) var; desc/steps bilinçli boş.",
-  "flow-basic": {
-    "tr": "Temel Nadir Eşya Üretimi",
-    "status": "proposed",
-    "desc": "Beyaz (Normal) bir tabandan Nadir eşya oluşturmanın standart yolu. Nadirliği adım adım yükseltirsin — Normal'den Sihirli'ye, Sihirli'den Nadir'e — sonra özellikleri ekleyip iyileştirirsin.",
-    "steps": [
-      "İstediğin tür ve eşya seviyesinde beyaz (Normal) bir taban eşyayla başla.",
-      "Bir Dönüştürme Küresi (Orb of Transmutation) ile onu Sihirli yap (1 özellik).",
-      "Bir Güçlendirme Küresi (Orb of Augmentation) ile ikinci Sihirli özelliği ekle.",
-      "Bir Asalet Küresi (Regal Orb) ile Sihirli eşyayı Nadir'e çevir; bir özellik daha eklenir.",
-      "Yüce Küreler (Exalted Orb) ile kalan özellik yuvalarını doldur (çoğu ekipmanda altıya kadar).",
-      "Sonuç kötüyse bir Kaos Küresi (Chaos Orb) tek bir kötü özelliği kaldırıp yenisini ekleyerek düzeltir."
-    ]
-  },
-  "flow-alchemy": {
-    "tr": "Simya Küresi ile Hızlı Nadir",
-    "status": "proposed",
-    "desc": "Sihirli aşamasını atlayan daha hızlı bir yol. Çabucak işe yarar bir Nadir gerektiğinde idealdir; örneğin bir Yol Taşı'nı (Waystone) veya seviye atlama eşyasını rollemek için.",
-    "steps": [
-      "Beyaz (Normal) bir taban eşyayla başla.",
-      "Bir Simya Küresi (Orb of Alchemy) ile onu doğrudan, tam başlangıç özellik setiyle Nadir eşyaya yükselt.",
-      "Yüce Küreler ile kalan özellikleri ekle.",
-      "Özellikler düşük çıktıysa bir İlahi Küre (Divine Orb) ile sayısal değerleri yeniden rolle."
-    ]
-  },
-  "flow-magic-base": {
-    "tr": "Sihirli-Taban (Alt-Regal) Yöntemi",
-    "status": "proposed",
-    "desc": "Nadir'e geçmeden önce belirli bir özelliği yakalamaya yönelik hedefli bir yöntem. İstediğin tek özelliği taşıyana dek Sihirli eşyayı rolleyip sonra bir Asalet Küresi ile sabitlersin.",
-    "steps": [
-      "Beyaz bir tabanı Dönüştürme Küresi ile Sihirli yap, sonra özelliğini oku.",
-      "Sihirli eşya hedeflediğin tek özelliğe sahip olana dek Dönüştürme (ve Güçlendirme) işlemini tekrarla.",
-      "O özelliği koruyarak Nadir'e yükseltmek için bir Asalet Küresi kullan.",
-      "Seçtiğin taban özelliğin etrafında eşyayı tamamlamak için Yüce Küreler ile devam et."
-    ]
-  },
-  "flow-essence-slam": {
-    "tr": "Öz ile Garantili Özellik (Essence Slam)",
-    "status": "proposed",
-    "desc": "Öz'ler (Essence) bir eşyayı yükseltirken belirli bir özelliği garanti eder; bu da build belirleyen bir statı sabitlemenin en güvenilir yoludur. Ulu (Greater) ve Kusursuz (Perfect) Öz'ler daha güçlü sürümleri garanti eder; Kusursuz Öz'ler Nadir bir eşya üzerinde çalışır, bir özelliği kaldırıp garanti edileni ekler.",
-    "steps": [
-      "Garanti ettiği özelliği build'inin ihtiyacı olan statla eşleşen Öz'ü seç.",
-      "Sihirli (veya Normal) bir eşyaya normal ya da Ulu Öz uygulayarak onu o özellik garantili Nadir'e çevir.",
-      "Zaten Nadir olan bir eşyada, bir özelliği kaldırıp garanti yüksek-kademe özelliği eklemek için Kusursuz Öz kullan.",
-      "Sabitlenen özelliğin etrafında kalan yuvaları Yüce Küreler ile tamamla."
-    ]
-  },
-  "flow-greater-perfect": {
-    "tr": "Ulu ve Kusursuz Kademeler",
-    "status": "proposed",
-    "desc": "Birçok küre normal, Ulu (Greater) ve Kusursuz (Perfect) kademelerde gelir. Yüksek kademeler daha yüksek bir minimum özellik seviyesi garanti eder; böylece ekledikleri/oluşturdukları özellikler en zayıf sürümler olarak çıkamaz. Taban eşya seviyen yeterince yüksek olduğunda kullan. (Kesin minimum-seviye eşikleri: doğrulama-bekleyen başvuruya bak.)",
-    "steps": [
-      "Taban eşya seviyenin, daha güçlü özellik kademelerinin çıkabileceği kadar yüksek olduğunu doğrula.",
-      "Normal küreden daha yüksek bir minimum özellik seviyesi dayatmak için Ulu küre (Dönüştürme, Asalet, Yüce, Kaos...) kullan.",
-      "En yüksek minimum seviye için Kusursuz küre kullan; üst seviye ve pinnacle craft'lara ayrılmıştır."
-    ]
-  },
-  "flow-annul": {
-    "tr": "Özellik Kaldırma (İptal Küresi)",
-    "status": "proposed",
-    "desc": "Bir İptal Küresi (Orb of Annulment) eşyadan rastgele bir özelliği kaldırır. Aksi halde iyi olan bir Nadir'den tek bir istenmeyen özelliği silmenin ana aracıdır ve hangi tarafın kaldırılacağını kontrol etmek için Omen'larla eşleşir.",
-    "steps": [
-      "Kaldırma rastgele olduğu için, eşyada riske atmaya razı olduğun bir özellik olduğundan emin ol.",
-      "Bir İptal Küresi kullanarak rastgele bir özelliği kaldır.",
-      "Bir tarafı hedeflemek için önce Sinistral/Dextral İptal Omen'ı etkinleştir; böylece yalnızca bir önek/sonek kaldırılabilir.",
-      "Bir yuva boşaldıktan sonra bir Yüce Küre ile daha iyi bir özellik ekle."
-    ]
-  },
-  "flow-divine": {
-    "tr": "Değer Mükemmelleştirme (İlahi Küre)",
-    "status": "proposed",
-    "desc": "Bir İlahi Küre (Divine Orb) eşyada zaten bulunan özelliklerin sayısal değerlerini, hangi özellikler olduğunu değiştirmeden yeniden roller. Eşyada tam istediğin özellikler olup bazı değerler düşük çıktığında son rötuş olarak kullan.",
-    "steps": [
-      "Eşyayı, üzerindeki her özellik korumak istediğin biri olacak şekilde tamamla.",
-      "Her özelliğin aralığı içinde sayısal değerleri rastgeleleştirmek için bir İlahi Küre kullan.",
-      "Önemli değerler yeterince yükselene dek tekrarla; her kullanım bağımsızdır."
-    ]
-  },
-  "flow-fracture": {
-    "tr": "Özellik Kilitleme (Kırma Küresi)",
-    "status": "proposed",
-    "desc": "Bir Kırma Küresi (Fracturing Orb) Nadir bir eşyada rastgele mevcut bir özelliği kalıcı olarak kilitler; o özellik artık kaldırılamaz veya değiştirilemez. İstediğin bir özelliği kırmak, gerisini yeniden rollerken onu korur ve deterministik 'izolasyon' craft'ının temelini oluşturur.",
-    "steps": [
-      "Korumak istediğin özelliği zaten taşıyan Nadir bir eşya oluştur.",
-      "Bir Kırma Küresi kullan; rastgele bir özellik kalıcı olarak kırılmış (kilitli) olur.",
-      "Kırılan özellik güvende olduğu için artık diğerlerini daha rahat İptal'leyebilir veya Kaos'layabilirsin."
-    ]
-  },
-  "flow-isolation": {
-    "tr": "İzolasyon Craft'ı (Kırma + Hedefli İptal)",
-    "status": "proposed",
-    "desc": "Kırmayı yan-hedefli İptal ile birleştiren deterministik bir teknik. İyi özellikleri kilitleyip sonra yalnızca kötü olanı tutan taraftan kaldırarak, tek bir belirli özelliği kesinlikle silebilirsin.",
-    "steps": [
-      "İyi özellik(ler)i kır; böylece kilitli ve güvende olurlar.",
-      "Hedeflenen tarafta kaldırılabilir tek özelliğin kötü olan olduğundan emin ol.",
-      "Eşleşen Sinistral/Dextral İptal Omen'ını etkinleştir, sonra bir İptal Küresi kullan.",
-      "Yalnızca kötü özellik kaldırılabilir olduğundan, deterministik biçimde silinir."
-    ]
-  },
-  "flow-chance": {
-    "tr": "Eşsiz Kumarı (Şans Küresi)",
-    "status": "proposed",
-    "desc": "Bir Şans Küresi (Orb of Chance) öngörülemez biçimde ya Normal bir eşyayı Eşsiz'e yükseltir ya da yok eder. Seçtiğin bir taban türünden belirli Eşsiz eşyaları avlamak için kullanılan bir kumardır.",
-    "steps": [
-      "Umduğun Eşsiz'e karşılık gelen Normal taban türünü seç.",
-      "Bir Şans Küresi kullan; eşya ya o tabanın rastgele bir Eşsiz'i olur ya da yok olur.",
-      "Başarısızlıkta yok olmaması için önce bir Şans Omen'ı (Omen of Chance) etkinleştir."
-    ]
-  },
-  "flow-vaal": {
-    "tr": "Vaal Küresi ile Bozma (Corrupt)",
-    "status": "proposed",
-    "desc": "Bir Vaal Küresi eşyayı öngörülemez biçimde değiştirir ve Bozar (Corrupt). Bozulma geri alınamaz ve eşya artık normal materyalle değiştirilemez; bu yüzden daima son adımdır — ekstra bir sonuç için yüksek-risk yüksek-ödül kumarı.",
-    "steps": [
-      "Yalnızca kaybetmeye ya da olduğu gibi bırakmaya razı olduğun bir eşyayı bozdur.",
-      "Bir Vaal Küresi kullan; sonuç bir implicit ekleyebilir, değerleri değiştirebilir, eşyayı değiştirmeyebilir ya da bozabilir.",
-      "Bozulmadan sonra eşya nihaidir ve normal materyalle üzerinde craft yapılamaz."
-    ]
-  },
-  "flow-quality": {
-    "tr": "Üretimden Önce Kalite Yükseltme",
-    "status": "proposed",
-    "desc": "Kalite, eşya türüne göre ölçeklenen küçük bonuslar verir (martial silahlarda daha çok fiziksel hasar, zırhlarda daha çok savunma). Özellikleri rollemeden önce veya sonra varsayılan üst sınır olan %20'ye çıkar.",
-    "steps": [
-      "Taban için doğru kalite materyalini seç: martial silahlar için Demirci Bileği Taşı (Blacksmith's Whetstone), caster silahları için Büyücü Kazıyıcısı (Arcanist's Etcher), zırhlar için Zırhçı Hurdası (Armourer's Scrap).",
-      "Eşya %20 kaliteye ulaşana dek tekrar tekrar uygula.",
-      "Beyaz tabanda kalite en ucuzdur; yeni bir üretim planlarken önce kaliteyi yükselt."
-    ]
-  },
-  "flow-omen-meta": {
-    "tr": "Omen ile Meta-Üretim",
-    "status": "proposed",
-    "desc": "Omen'lar, bir sonraki materyal kullanımının nasıl davranacağını değiştiren tüketilen eşyalardır ve özel meta-üretim sonuçları sağlar. Envanterde bir Omen'ı etkinleştir, sonra ilgili küreyi kullan. Tam liste için Crafting Omen'leri başvurusuna bak.",
-    "steps": [
-      "Omen'ı envantere koyup etkin yap; bir sonraki ilgili küre kullanıldığında tüketilir.",
-      "Yan hedefleme: Dextral Omen bir sonek; Sinistral Omen bir önek zorlar.",
-      "Miktar: Omen of Greater Exaltation bir sonraki Yüce Küre'nin tek seferde iki özellik eklemesini sağlar.",
-      "Omen'ları normalde kontrol edemeyeceğin sonuçları yönlendirmek için kullan; örneğin Yüce Küre'nin hangi tarafa ekleyeceği gibi."
-    ]
-  },
-  "flow-liquid-instill": {
-    "tr": "Liquid Emotion ile Kolye İşleme (Instill)",
-    "status": "proposed",
-    "desc": "Liquid Emotion'lar Hezeyan'a (Delirium) özgü materyallerdir. Bir kolyeye, Pasif Ağaç'tan alınan bir Kayda Değer (Notable) pasifi işlemeni sağlar (anoint karşılığı). Zaten dağıttığın bir Kayda Değer'i işlemek ek fayda vermez.",
-    "steps": [
-      "Hezeyan mekaniğinden Liquid Emotion topla; farklı duygular ve miktarlar farklı Kayda Değer'lere karşılık gelir.",
-      "Seçtiğin Kayda Değer pasifi işlemek için gereken Liquid Emotion bileşimini bir kolyeye uygula.",
-      "Bonusun boşa gitmemesi için ağaçta henüz dağıtmadığın bir Kayda Değer seç."
-    ]
-  },
-  "flow-crafted-cap": {
-    "tr": "Tek Crafted-Özellik Kuralı (0.5)",
-    "status": "proposed",
-    "desc": "0.5'te bir eşya aynı anda yalnızca bir crafted (zanaat) özellik taşıyabilir. Öz'ler, Runic Alloy'lar ve benzeri garanti-özellik yöntemlerinin hepsi bu tek crafted yuvası için yarışır; bu yüzden tek eşyaya birden çok garanti özellik yığma eski tekniği artık çalışmaz. Hangi tek garanti özelliğin en önemli olduğunu planla.",
-    "steps": [
-      "Eşyanın en çok ihtiyaç duyduğu tek garanti (crafted) özelliği belirle.",
-      "O yöntemi uygula (örneğin bir Öz) — tek crafted yuvasını işgal eder.",
-      "Eşyanın gerisini normal rastgele özelliklerle (Yüce Küreler) doldur; ikinci bir crafted özelliğe izin verilmez."
-    ]
-  },
-  "bench-salvage": {
-    "tr": "Hurdalama Tezgahı (Salvage Bench)",
-    "status": "proposed",
-    "desc": "Akt Bir'in başında ('Finding the Forge' görevi) açılan, eşyaları satmak yerine üretim materyaline ayıran bir tezgah. Kaliteyi kıymık olarak geri kazandırır ve soketli rune'ları serbest bırakır.",
-    "steps": [
-      "Hurdalama Tezgahı'nı sığınağına yerleştir ya da şehirdekini kullan.",
-      "Kaliteli bir eşyayı hurdala; eşleşen türde kalite kıymıkları geri kazanırsın.",
-      "Rune Soketi olan bir eşyayı hurdala; Zanaatkâr Kıymığı (Artificer's Shard) elde edersin (ve bazı soketlenebilirleri geri alırsın)."
-    ]
-  },
-  "bench-disenchant": {
-    "tr": "Büyü Bozma (Disenchant)",
-    "status": "proposed",
-    "desc": "Kamplardaki caster satıcıların (Una, Zarka, Servi gibi) sunduğu bir hizmet. İstenmeyen Sihirli ve Nadir eşyaları altın yerine materyal kıymıklarına çevirir.",
-    "steps": [
-      "İstemediğin Sihirli veya Nadir eşyaları bir caster satıcıya götür.",
-      "Bir Sihirli eşyanın büyüsünü boz; Dönüştürme Kıymığı (Transmutation Shard) alırsın.",
-      "Bir Nadir eşyanın büyüsünü boz; Asalet Kıymığı (Regal Shard) alırsın.",
-      "Bir türden on kıymığı birleştirerek ilgili küreyi oluştur (Dönüştürme Küresi veya Asalet Küresi)."
-    ]
-  },
-  "bench-reforge": {
-    "tr": "Yeniden Dövme ve Para Değişimi (3-to-1)",
-    "status": "proposed",
-    "desc": "Aynı türden birkaç alt eşyayı bir üst kademeden tekine birleştiren bir dönüşüm sistemi. Kıymıklar kürelere birleşir, daha küçük para birimleri daha büyüklerine yükselir; fazla düşen eşyaları daha yararlı bir şeye dönüştürür.",
-    "steps": [
-      "Aynı alt-kademe eşyadan bir yığın topla (örneğin on kıymık ya da üç küçük rune).",
-      "On eşleşen kıymığı küresine birleştir ya da bir küçük para biriminden üçünü bir üst kademeye yükselt.",
-      "İhtiyacın olmayan düşen eşyaları ihtiyacın olan para birimine çevirmek için dönüşümü kullan."
-    ]
-  },
-  "bench-genesis-tree": {
-    "tr": "Genesis Tree (Yarık Üretimi)",
-    "status": "proposed",
-    "desc": "Yarık (Breach) mekaniğine bağlı bir üretim sistemi. Yarıkların içinde düşen materyallerle (Wombgift ve Hive Blood) beslenir ve küçük bir ağaçta node dağıtarak kontrollü özelliklerle takı (yüzük, kolye, kemer) ve para birimi craftlamak için kullanılır. 0.5'te ayrıca Catalyst'lerin tek kaynağıdır; artık yaratıklardan düşmezler. (Tam node listesi doğrulama bekliyor.)",
-    "steps": [
-      "Yarık karşılaşmalarında yaratık öldürerek Wombgift ve Hive Blood topla.",
-      "Bunları Genesis Tree'de neyin craftlanacağını kontrol eden node'lara harca.",
-      "Garanti özelliklerle takı doğur ya da para birimi ve Catalyst üret."
-    ]
-  },
-  "bench-quality-catalyst": {
-    "tr": "Catalyst ile Kalite Uygulama",
-    "status": "proposed",
-    "desc": "Catalyst'ler yüzük, kolye ve mücevherlere kalite ekler; bu kalite düz bir bonus vermek yerine belirli bir özellik kategorisini güçlendirir. Her Catalyst türü bir özellik etiketini güçlendirir; Catalyst'i eşyanın ana özellikleriyle eşleştirmek değerlerini artırır. 0.5'te Catalyst'ler Genesis Tree'den gelir. Tam liste için Catalyst başvurusuna bak.",
-    "steps": [
-      "Yüzük, kolye veya mücevherindeki baskın özellik türünü belirle.",
-      "Kaliteyi yükseltmek için eşleşen Catalyst'i tekrar tekrar uygula; bu o özellik türünü ölçekler.",
-      "Farklı bir Catalyst türü uygulamak önceki kalite türünün yerini alır."
-    ]
-  },
-  "bench-gold": {
-    "tr": "Altın ile Satış ve Respec",
-    "status": "proposed",
-    "desc": "PoE2 şehir para birimi olarak Altın (Gold) kullanır. İstenmeyen eşyaları NPC satıcılara satarak Altın kazanır, dağıttığın Pasif Beceri puanlarını geri almak (respec) için harcarsın; böylece build'ini ayarlayabilirsin.",
-    "steps": [
-      "Fazla eşyaları herhangi bir şehir satıcısına satarak Altın al.",
-      "Pasif Ağaç'ı aç ve Altın ödeyerek dağıtılmış puanları tek tek geri al; maliyet karakter seviyesiyle artar.",
-      "Yeni karakter açmadan bir build'i yeniden ayarlamak için Altın ile respec kullan."
-    ]
-  },
-  "reference-omens": {
-    "tr": "Crafting Omen'leri Başvurusu",
-    "status": "proposed",
-    "desc": "Omen'lar, bir sonraki eşleşen materyalin nasıl davranacağını değiştiren tüketilenlerdir. Aşağıdaki liste crafting Omen'lerini gösterir; her girdinin etki metni eşyanın kendisinden gelir. Bir yan Omen'ı (Sinistral = önek, Dextral = sonek) adını taşıdığı küreyle eşleştir."
-  },
-  "reference-catalysts": {
-    "tr": "Catalyst Başvurusu",
-    "status": "proposed",
-    "desc": "Catalyst'ler takılara (ve mücevherlere) belirli bir özellik türünü güçlendiren kalite ekler. Aşağıdaki liste her Catalyst'i ve güçlendirdiği özellik kategorisini gösterir. Catalyst'i eşyanın ana özellikleriyle eşleştir."
-  },
-  "recipe-salvage-armour": {
-    "tr": "Hurdalama: Kaliteli Zırh → Zırhçı Hurdası",
-    "status": "proposed",
-    "desc": "Kalitesi olan bir zırh parçasını hurdalamak Zırhçı Hurdası (Armourer's Scrap) verir.",
-    "steps": ["Girdi: kalitesi olan bir zırh parçası.", "Çıktı: Zırhçı Hurdası (hurdalanan kaliteyle ölçeklenir)."]
-  },
-  "recipe-salvage-martial": {
-    "tr": "Hurdalama: Kaliteli Martial Silah → Demirci Bileği Taşı",
-    "status": "proposed",
-    "desc": "Kalitesi olan bir martial silahı hurdalamak Demirci Bileği Taşı (Blacksmith's Whetstone) verir.",
-    "steps": ["Girdi: kalitesi olan bir martial silah.", "Çıktı: Demirci Bileği Taşı."]
-  },
-  "recipe-salvage-caster": {
-    "tr": "Hurdalama: Kaliteli Caster Silah → Büyücü Kazıyıcısı",
-    "status": "proposed",
-    "desc": "Kalitesi olan bir caster silahı hurdalamak Büyücü Kazıyıcısı (Arcanist's Etcher) verir.",
-    "steps": ["Girdi: kalitesi olan bir caster silah.", "Çıktı: Büyücü Kazıyıcısı."]
-  },
-  "recipe-salvage-rune": {
-    "tr": "Hurdalama: Rune-Soketli Eşya → Zanaatkâr Kıymığı",
-    "status": "proposed",
-    "desc": "Rune Soketi olan bir eşyayı hurdalamak Zanaatkâr Kıymığı (Artificer's Shard) verir. On Zanaatkâr Kıymığı bir Zanaatkâr Küresi'ne (Artificer's Orb) birleşir; bu da eşyaya bir Rune Soketi ekler.",
-    "steps": [
-      "Girdi: bir veya daha çok Rune Soketi olan bir eşya.",
-      "Çıktı: Zanaatkâr Kıymığı/Kıymıkları.",
-      "On Zanaatkâr Kıymığı = bir Zanaatkâr Küresi."
-    ]
-  },
-  "recipe-disenchant-magic": {
-    "tr": "Büyü Bozma: Sihirli Eşya → Dönüştürme Kıymığı",
-    "status": "proposed",
-    "desc": "Bir caster satıcıda bir Sihirli eşyanın büyüsünü bozmak Dönüştürme Kıymığı (Transmutation Shard) verir. On kıymık bir Dönüştürme Küresi'ne birleşir.",
-    "steps": ["Girdi: istenmeyen bir Sihirli eşya.", "Çıktı: Dönüştürme Kıymığı/Kıymıkları.", "On kıymık = bir Dönüştürme Küresi."]
-  },
-  "recipe-disenchant-rare": {
-    "tr": "Büyü Bozma: Nadir Eşya → Asalet Kıymığı",
-    "status": "proposed",
-    "desc": "Bir caster satıcıda bir Nadir eşyanın büyüsünü bozmak Asalet Kıymığı (Regal Shard) verir. On kıymık bir Asalet Küresi'ne birleşir.",
-    "steps": ["Girdi: istenmeyen bir Nadir eşya.", "Çıktı: Asalet Kıymığı/Kıymıkları.", "On kıymık = bir Asalet Küresi."]
-  },
-  "skeleton-runeforging": {
-    "tr": "Runeforging ve Verisium (Runes of Aldur)",
-    "status": "proposed"
-  },
-  "skeleton-desecration": {
-    "tr": "Desecration ve Abyssal Kemikler",
-    "status": "proposed"
-  },
-  "skeleton-genesis-nodes": {
-    "tr": "Genesis Tree — Tam Node Listesi",
-    "status": "proposed"
-  },
-  "skeleton-tier-thresholds": {
-    "tr": "Ulu/Kusursuz Kademe Eşikleri",
-    "status": "proposed"
-  }
+ "_note": "Eşleşme anahtarı EN (proje talimatları). Adlar betimleyici -> 'proposed'. Terimler currency glossary ile tutarlı: Normal/Sihirli/Nadir, modifier=özellik, quality=kalite, prefix=önek, suffix=sonek. steps_tr uzunluğu steps_en ile birebir aynı. İSKELET kayıtlarda yalnızca 'tr' (ad) var; desc/steps bilinçli boş.",
+ "flow-basic": {
+  "tr": "Temel Rare Eşya Üretimi",
+  "status": "proposed",
+  "desc": "Beyaz (Normal) bir tabandan Rare eşya oluşturmanın standart yolu. Nadirliği adım adım yükseltirsin — Normal'den Magic'e, Magic'ten Rare'e — sonra özellikleri ekleyip iyileştirirsin.",
+  "steps": [
+   "İstediğin tür ve eşya seviyesinde beyaz (Normal) bir taban eşyayla başla.",
+   "Bir Orb of Transmutation ile onu Magic yap (1 özellik).",
+   "Bir Orb of Augmentation ile ikinci Magic özelliği ekle.",
+   "Bir Regal Orb ile Magic eşyayı Rare'e çevir; bir özellik daha eklenir.",
+   "Exalted Orb ile kalan özellik yuvalarını doldur (çoğu ekipmanda altıya kadar).",
+   "Sonuç kötüyse bir Chaos Orb tek bir kötü özelliği kaldırıp yenisini ekleyerek düzeltir."
+  ]
+ },
+ "flow-alchemy": {
+  "tr": "Orb of Alchemy ile Hızlı Rare",
+  "status": "proposed",
+  "desc": "Magic aşamasını atlayan daha hızlı bir yol. Çabucak işe yarar bir Rare gerektiğinde idealdir; örneğin bir Waystone veya seviye atlama eşyasını rollemek için.",
+  "steps": [
+   "Beyaz (Normal) bir taban eşyayla başla.",
+   "Bir Orb of Alchemy ile onu doğrudan, tam başlangıç özellik setiyle Rare eşyaya yükselt.",
+   "Exalted Orb ile kalan özellikleri ekle.",
+   "Özellikler düşük çıktıysa bir Divine Orb ile sayısal değerleri yeniden rolle."
+  ]
+ },
+ "flow-magic-base": {
+  "tr": "Magic-Taban (Alt-Regal) Yöntemi",
+  "status": "proposed",
+  "desc": "Rare'e geçmeden önce belirli bir özelliği yakalamaya yönelik hedefli bir yöntem. İstediğin tek özelliği taşıyana dek Magic eşyayı rolleyip sonra bir Regal Orb ile sabitlersin.",
+  "steps": [
+   "Beyaz bir tabanı Orb of Transmutation ile Magic yap, sonra özelliğini oku.",
+   "Magic eşya hedeflediğin tek özelliğe sahip olana dek Transmutation (ve Augmentation) işlemini tekrarla.",
+   "O özelliği koruyarak Rare'e yükseltmek için bir Regal Orb kullan.",
+   "Seçtiğin taban özelliğin etrafında eşyayı tamamlamak için Exalted Orb ile devam et."
+  ]
+ },
+ "flow-essence-slam": {
+  "tr": "Essence ile Garantili Özellik (Essence Slam)",
+  "status": "proposed",
+  "desc": "Essence'ler bir eşyayı yükseltirken belirli bir özelliği garanti eder; bu da build belirleyen bir statı sabitlemenin en güvenilir yoludur. Greater ve Perfect Essence'ler daha güçlü sürümleri garanti eder; Perfect Essence'ler Rare bir eşya üzerinde çalışır, bir özelliği kaldırıp garanti edileni ekler.",
+  "steps": [
+   "Garanti ettiği özelliği build'inin ihtiyacı olan statla eşleşen Essence'ü seç.",
+   "Magic bir eşyaya normal ya da Greater Essence uygulayarak onu o özellik garantili Rare'e çevir.",
+   "Zaten Rare olan bir eşyada, bir özelliği kaldırıp garanti yüksek-kademe özelliği eklemek için Perfect Essence kullan.",
+   "Sabitlenen özelliğin etrafında kalan yuvaları Exalted Orb ile tamamla."
+  ]
+ },
+ "flow-greater-perfect": {
+  "tr": "Greater ve Perfect Kademeler",
+  "status": "proposed",
+  "desc": "Birçok küre normal, Greater ve Perfect kademelerde gelir. Yüksek kademeler daha yüksek bir minimum özellik seviyesi garanti eder; böylece ekledikleri/oluşturdukları özellikler en zayıf sürümler olarak çıkamaz. Taban eşya seviyen yeterince yüksek olduğunda kullan. (Kesin minimum-seviye eşikleri: doğrulama-bekleyen başvuruya bak.)",
+  "steps": [
+   "Taban eşya seviyenin, daha güçlü özellik kademelerinin çıkabileceği kadar yüksek olduğunu doğrula.",
+   "Normal küreden daha yüksek bir minimum özellik seviyesi dayatmak için Greater küre (Transmutation, Regal, Exalted, Chaos...) kullan.",
+   "En yüksek minimum seviye için Perfect küre kullan; üst seviye ve pinnacle craft'lara ayrılmıştır."
+  ]
+ },
+ "flow-annul": {
+  "tr": "Özellik Kaldırma (Orb of Annulment)",
+  "status": "proposed",
+  "desc": "Bir Orb of Annulment eşyadan rastgele bir özelliği kaldırır. Aksi halde iyi olan bir Rare'den tek bir istenmeyen özelliği silmenin ana aracıdır ve hangi tarafın kaldırılacağını kontrol etmek için Omen'larla eşleşir.",
+  "steps": [
+   "Kaldırma rastgele olduğu için, eşyada riske atmaya razı olduğun bir özellik olduğundan emin ol.",
+   "Bir Orb of Annulment kullanarak rastgele bir özelliği kaldır.",
+   "Bir tarafı hedeflemek için önce Sinistral/Dextral Annul Omen'ı etkinleştir; böylece yalnızca bir önek/sonek kaldırılabilir.",
+   "Bir yuva boşaldıktan sonra bir Exalted Orb ile daha iyi bir özellik ekle."
+  ]
+ },
+ "flow-divine": {
+  "tr": "Değer Mükemmelleştirme (Divine Orb)",
+  "status": "proposed",
+  "desc": "Bir Divine Orb eşyada zaten bulunan özelliklerin sayısal değerlerini, hangi özellikler olduğunu değiştirmeden yeniden roller. Eşyada tam istediğin özellikler olup bazı değerler düşük çıktığında son rötuş olarak kullan.",
+  "steps": [
+   "Eşyayı, üzerindeki her özellik korumak istediğin biri olacak şekilde tamamla.",
+   "Her özelliğin aralığı içinde sayısal değerleri rastgeleleştirmek için bir Divine Orb kullan.",
+   "Önemli değerler yeterince yükselene dek tekrarla; her kullanım bağımsızdır."
+  ]
+ },
+ "flow-fracture": {
+  "tr": "Özellik Kilitleme (Fracturing Orb)",
+  "status": "proposed",
+  "desc": "Bir Fracturing Orb Rare bir eşyada rastgele mevcut bir özelliği kalıcı olarak kilitler; o özellik artık kaldırılamaz veya değiştirilemez. İstediğin bir özelliği kırmak, gerisini yeniden rollerken onu korur ve deterministik 'izolasyon' craft'ının temelini oluşturur.",
+  "steps": [
+   "Korumak istediğin özelliği zaten taşıyan Rare bir eşya oluştur.",
+   "Bir Fracturing Orb kullan; rastgele bir özellik kalıcı olarak kırılmış (kilitli) olur.",
+   "Kırılan özellik güvende olduğu için artık diğerlerini daha rahat Annul'leyebilir veya Chaos'layabilirsin."
+  ]
+ },
+ "flow-isolation": {
+  "tr": "İzolasyon Craft'ı (Fracturing + Hedefli Annul)",
+  "status": "proposed",
+  "desc": "Fracturing'i yan-hedefli Annul ile birleştiren deterministik bir teknik. İyi özellikleri kilitleyip sonra yalnızca kötü olanı tutan taraftan kaldırarak, tek bir belirli özelliği kesinlikle silebilirsin.",
+  "steps": [
+   "İyi özellik(ler)i kır; böylece kilitli ve güvende olurlar.",
+   "Hedeflenen tarafta kaldırılabilir tek özelliğin kötü olan olduğundan emin ol.",
+   "Eşleşen Sinistral/Dextral Annul Omen'ını etkinleştir, sonra bir Orb of Annulment kullan.",
+   "Yalnızca kötü özellik kaldırılabilir olduğundan, deterministik biçimde silinir."
+  ]
+ },
+ "flow-chance": {
+  "tr": "Unique Kumarı (Chance Orb)",
+  "status": "proposed",
+  "desc": "Bir Chance Orb (Orb of Chance) öngörülemez biçimde ya Normal bir eşyayı Unique'e yükseltir ya da yok eder. Seçtiğin bir taban türünden belirli Unique eşyaları avlamak için kullanılan bir kumardır.",
+  "steps": [
+   "Umduğun Unique'e karşılık gelen Normal taban türünü seç.",
+   "Bir Chance Orb kullan; eşya ya o tabanın rastgele bir Unique'i olur ya da yok olur.",
+   "Başarısızlıkta yok olmaması için önce bir Chance Omen'ı (Omen of Chance) etkinleştir."
+  ]
+ },
+ "flow-vaal": {
+  "tr": "Vaal Orb ile Bozma (Corrupt)",
+  "status": "proposed",
+  "desc": "Bir Vaal Orb eşyayı öngörülemez biçimde değiştirir ve Bozar (Corrupt). Bozulma geri alınamaz ve eşya artık normal materyalle değiştirilemez; bu yüzden daima son adımdır — ekstra bir sonuç için yüksek-risk yüksek-ödül kumarı.",
+  "steps": [
+   "Yalnızca kaybetmeye ya da olduğu gibi bırakmaya razı olduğun bir eşyayı bozdur.",
+   "Bir Vaal Orb kullan; sonuç bir implicit ekleyebilir, değerleri değiştirebilir, eşyayı değiştirmeyebilir ya da bozabilir.",
+   "Bozulmadan sonra eşya nihaidir ve normal materyalle üzerinde craft yapılamaz."
+  ]
+ },
+ "flow-quality": {
+  "tr": "Üretimden Önce Kalite Yükseltme",
+  "status": "proposed",
+  "desc": "Kalite, eşya türüne göre ölçeklenen küçük bonuslar verir (martial silahlarda daha çok fiziksel hasar, zırhlarda daha çok savunma). Özellikleri rollemeden önce veya sonra varsayılan üst sınır olan %20'ye çıkar.",
+  "steps": [
+   "Taban için doğru kalite materyalini seç: martial silahlar için Blacksmith's Whetstone, caster silahları için Büyücü Kazıyıcısı (Arcanist's Etcher), zırhlar için Armourer's Scrap.",
+   "Eşya %20 kaliteye ulaşana dek tekrar tekrar uygula.",
+   "Beyaz tabanda kalite en ucuzdur; yeni bir üretim planlarken önce kaliteyi yükselt."
+  ]
+ },
+ "flow-omen-meta": {
+  "tr": "Omen ile Meta-Üretim",
+  "status": "proposed",
+  "desc": "Omen'lar, bir sonraki materyal kullanımının nasıl davranacağını değiştiren tüketilen eşyalardır ve özel meta-üretim sonuçları sağlar. Envanterde bir Omen'ı etkinleştir, sonra ilgili küreyi kullan. Tam liste için Crafting Omen'leri başvurusuna bak.",
+  "steps": [
+   "Omen'ı envantere koyup etkin yap; bir sonraki ilgili küre kullanıldığında tüketilir.",
+   "Yan hedefleme: Dextral Omen bir sonek; Sinistral Omen bir önek zorlar.",
+   "Miktar: Omen of Greater Exaltation bir sonraki Exalted Orb tek seferde iki özellik eklemesini sağlar.",
+   "Omen'ları normalde kontrol edemeyeceğin sonuçları yönlendirmek için kullan; örneğin Exalted Orb hangi tarafa ekleyeceği gibi."
+  ]
+ },
+ "flow-liquid-instill": {
+  "tr": "Liquid Emotion ile Kolye İşleme (Instill)",
+  "status": "proposed",
+  "desc": "Liquid Emotion'lar Hezeyan'a (Delirium) özgü materyallerdir. Bir kolyeye, Pasif Ağaç'tan alınan bir Kayda Değer (Notable) pasifi işlemeni sağlar (anoint karşılığı). Zaten dağıttığın bir Kayda Değer'i işlemek ek fayda vermez.",
+  "steps": [
+   "Hezeyan mekaniğinden Liquid Emotion topla; farklı duygular ve miktarlar farklı Kayda Değer'lere karşılık gelir.",
+   "Seçtiğin Kayda Değer pasifi işlemek için gereken Liquid Emotion bileşimini bir kolyeye uygula.",
+   "Bonusun boşa gitmemesi için ağaçta henüz dağıtmadığın bir Kayda Değer seç."
+  ]
+ },
+ "flow-crafted-cap": {
+  "tr": "Tek Crafted-Özellik Kuralı (0.5)",
+  "status": "proposed",
+  "desc": "0.5'te bir eşya aynı anda yalnızca bir crafted (zanaat) özellik taşıyabilir. Essence'ler, Runic Alloy'lar ve benzeri garanti-özellik yöntemlerinin hepsi bu tek crafted yuvası için yarışır; bu yüzden tek eşyaya birden çok garanti özellik yığma eski tekniği artık çalışmaz. Hangi tek garanti özelliğin en önemli olduğunu planla.",
+  "steps": [
+   "Eşyanın en çok ihtiyaç duyduğu tek garanti (crafted) özelliği belirle.",
+   "O yöntemi uygula (örneğin bir Essence) — tek crafted yuvasını işgal eder.",
+   "Eşyanın gerisini normal rastgele özelliklerle (Exalted Orb) doldur; ikinci bir crafted özelliğe izin verilmez."
+  ]
+ },
+ "bench-salvage": {
+  "tr": "Hurdalama Tezgahı (Salvage Bench)",
+  "status": "proposed",
+  "desc": "Akt 1'in başında ('Finding the Forge' görevi) açılan, eşyaları satmak yerine üretim materyaline ayıran bir tezgah. Kaliteyi Shard olarak geri kazandırır ve soketli rune'ları serbest bırakır.",
+  "steps": [
+   "Hurdalama Tezgahı'nı sığınağına yerleştir ya da şehirdekini kullan.",
+   "Kaliteli bir eşyayı hurdala; eşleşen türde kalite Shard'ları geri kazanırsın.",
+   "Artificer's Shard elde edersin (ve bazı soketlenebilirleri geri alırsın)."
+  ]
+ },
+ "bench-disenchant": {
+  "tr": "Büyü Bozma (Disenchant)",
+  "status": "proposed",
+  "desc": "Kamplardaki caster satıcıların (Una, Zarka, Servi gibi) sunduğu bir hizmet. İstenmeyen Magic ve Rare eşyaları altın yerine materyal Shard'larına çevirir.",
+  "steps": [
+   "İstemediğin Magic veya Rare eşyaları bir caster satıcıya götür.",
+   "Transmutation Shard alırsın.",
+   "Regal Shard alırsın.",
+   "Bir türden on Shard birleştirerek ilgili küreyi oluştur (Orb of Transmutation veya Regal Orb)."
+  ]
+ },
+ "bench-reforge": {
+  "tr": "Yeniden Dövme ve Para Değişimi (3-to-1)",
+  "status": "proposed",
+  "desc": "Aynı türden birkaç alt eşyayı bir üst kademeden tekine birleştiren bir dönüşüm sistemi. Shards kürelere birleşir, daha küçük para birimleri daha büyüklerine yükselir; fazla düşen eşyaları daha yararlı bir şeye dönüştürür.",
+  "steps": [
+   "Aynı alt-kademe eşyadan bir yığın topla (örneğin on Shard ya da üç küçük rune).",
+   "On eşleşen Shard küresine birleştir ya da bir küçük para biriminden üçünü bir üst kademeye yükselt.",
+   "İhtiyacın olmayan düşen eşyaları ihtiyacın olan para birimine çevirmek için dönüşümü kullan."
+  ]
+ },
+ "bench-genesis-tree": {
+  "tr": "Genesis Tree (Breach Üretimi)",
+  "status": "proposed",
+  "desc": "Breach mekaniğine bağlı bir üretim sistemi. Breach'lerin içinde düşen materyallerle (Wombgift ve Hive Blood) beslenir ve küçük bir ağaçta node dağıtarak kontrollü özelliklerle takı (yüzük, kolye, kemer) ve para birimi craftlamak için kullanılır. 0.5'te ayrıca Catalyst'lerin tek kaynağıdır; artık yaratıklardan düşmezler. (Tam node listesi doğrulama bekliyor.)",
+  "steps": [
+   "Breach karşılaşmalarında yaratık öldürerek Wombgift ve Hive Blood topla.",
+   "Bunları Genesis Tree'de neyin craftlanacağını kontrol eden node'lara harca.",
+   "Garanti özelliklerle takı doğur ya da para birimi ve Catalyst üret."
+  ]
+ },
+ "bench-quality-catalyst": {
+  "tr": "Catalyst ile Kalite Uygulama",
+  "status": "proposed",
+  "desc": "Catalyst'ler yüzük, kolye ve mücevherlere kalite ekler; bu kalite düz bir bonus vermek yerine belirli bir özellik kategorisini güçlendirir. Her Catalyst türü bir özellik etiketini güçlendirir; Catalyst'i eşyanın ana özellikleriyle eşleştirmek değerlerini artırır. 0.5'te Catalyst'ler Genesis Tree'den gelir. Tam liste için Catalyst başvurusuna bak.",
+  "steps": [
+   "Yüzük, kolye veya mücevherindeki baskın özellik türünü belirle.",
+   "Kaliteyi yükseltmek için eşleşen Catalyst'i tekrar tekrar uygula; bu o özellik türünü ölçekler.",
+   "Farklı bir Catalyst türü uygulamak önceki kalite türünün yerini alır."
+  ]
+ },
+ "bench-gold": {
+  "tr": "Altın ile Satış ve Respec",
+  "status": "proposed",
+  "desc": "PoE2 şehir para birimi olarak Altın (Gold) kullanır. İstenmeyen eşyaları NPC satıcılara satarak Altın kazanır, dağıttığın Pasif Beceri puanlarını geri almak (respec) için harcarsın; böylece build'ini ayarlayabilirsin.",
+  "steps": [
+   "Fazla eşyaları herhangi bir şehir satıcısına satarak Altın al.",
+   "Pasif Ağaç'ı aç ve Altın ödeyerek dağıtılmış puanları tek tek geri al; maliyet karakter seviyesiyle artar.",
+   "Yeni karakter açmadan bir build'i yeniden ayarlamak için Altın ile respec kullan."
+  ]
+ },
+ "reference-omens": {
+  "tr": "Crafting Omen'leri Başvurusu",
+  "status": "proposed",
+  "desc": "Omen'lar, bir sonraki eşleşen materyalin nasıl davranacağını değiştiren tüketilenlerdir. Aşağıdaki liste crafting Omen'lerini gösterir; her girdinin etki metni eşyanın kendisinden gelir. Bir yan Omen'ı (Sinistral = önek, Dextral = sonek) adını taşıdığı küreyle eşleştir."
+ },
+ "reference-catalysts": {
+  "tr": "Catalyst Başvurusu",
+  "status": "proposed",
+  "desc": "Catalyst'ler takılara (ve mücevherlere) belirli bir özellik türünü güçlendiren kalite ekler. Aşağıdaki liste her Catalyst'i ve güçlendirdiği özellik kategorisini gösterir. Catalyst'i eşyanın ana özellikleriyle eşleştir."
+ },
+ "recipe-salvage-armour": {
+  "tr": "Hurdalama: Kaliteli Zırh → Armourer's Scrap",
+  "status": "proposed",
+  "desc": "Kalitesi olan bir zırh parçasını hurdalamak Armourer's Scrap verir.",
+  "steps": [
+   "Girdi: kalitesi olan bir zırh parçası.",
+   "Çıktı: Armourer's Scrap (hurdalanan kaliteyle ölçeklenir)."
+  ]
+ },
+ "recipe-salvage-martial": {
+  "tr": "Hurdalama: Kaliteli Martial Silah → Blacksmith's Whetstone",
+  "status": "proposed",
+  "desc": "Kalitesi olan bir martial silahı hurdalamak Blacksmith's Whetstone verir.",
+  "steps": [
+   "Girdi: kalitesi olan bir martial silah.",
+   "Çıktı: Blacksmith's Whetstone."
+  ]
+ },
+ "recipe-salvage-caster": {
+  "tr": "Hurdalama: Kaliteli Caster Silah → Büyücü Kazıyıcısı",
+  "status": "proposed",
+  "desc": "Kalitesi olan bir caster silahı hurdalamak Büyücü Kazıyıcısı (Arcanist's Etcher) verir.",
+  "steps": [
+   "Girdi: kalitesi olan bir caster silah.",
+   "Çıktı: Büyücü Kazıyıcısı."
+  ]
+ },
+ "recipe-salvage-rune": {
+  "tr": "Hurdalama: Rune-Soketli Eşya → Artificer's Shard",
+  "status": "proposed",
+  "desc": "Artificer's Shard verir. On Artificer's Shard bir Artificer's Orb birleşir; bu da eşyaya bir Rune Soketi ekler.",
+  "steps": [
+   "Girdi: bir veya daha çok Rune Soketi olan bir eşya.",
+   "Çıktı: Artificer's Shard/Shards.",
+   "On Artificer's Shard = bir Artificer's Orb."
+  ]
+ },
+ "recipe-disenchant-magic": {
+  "tr": "Büyü Bozma: Magic Eşya → Transmutation Shard",
+  "status": "proposed",
+  "desc": "Transmutation Shard verir. On Shard bir Orb of Transmutation birleşir.",
+  "steps": [
+   "Girdi: istenmeyen bir Magic eşya.",
+   "Çıktı: Transmutation Shard/Shards.",
+   "On Shard = bir Orb of Transmutation."
+  ]
+ },
+ "recipe-disenchant-rare": {
+  "tr": "Büyü Bozma: Rare Eşya → Regal Shard",
+  "status": "proposed",
+  "desc": "Regal Shard verir. On Shard bir Regal Orb birleşir.",
+  "steps": [
+   "Girdi: istenmeyen bir Rare eşya.",
+   "Çıktı: Regal Shard/Shards.",
+   "On Shard = bir Regal Orb."
+  ]
+ },
+ "skeleton-runeforging": {
+  "tr": "Runeforging ve Verisium (Runes of Aldur)",
+  "status": "proposed"
+ },
+ "skeleton-desecration": {
+  "tr": "Desecration ve Abyssal Kemikler",
+  "status": "proposed"
+ },
+ "skeleton-genesis-nodes": {
+  "tr": "Genesis Tree — Tam Node Listesi",
+  "status": "proposed"
+ },
+ "skeleton-tier-thresholds": {
+  "tr": "Greater/Perfect Kademe Eşikleri",
+  "status": "proposed"
+ }
 }

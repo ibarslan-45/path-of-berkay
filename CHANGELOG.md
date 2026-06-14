@@ -3,6 +3,18 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.19.4
+### 🇹🇷 Türkçe
+#### ✨ İyileştirmeler
+- 🌐 **Crafting çevirileri düzeltildi.** Crafting Referans ve Simülatör'de özel oyun terimleri artık İngilizce kalır ("Orb of Transmutation", "Regal Orb", "Chaos Orb", "Greater/Perfect", "Essence", "Waystone", "Magic/Rare") — eskiden "Dönüştürme Küresi", "Asalet Küresi", "Sihirli/Nadir" gibi çevriliyordu. Açıklamalar düzgün Türkçe kaldı.
+- ◆ **Usta Craft Yardımcısı derinleşti.** Öneriye "durum değerlendirmesi" eklendi (rarity, dolu önek/sonek slotları, hedef ilerleme, dolu taraf uyarısı); her plan adımında artık göreli maliyet (£) de gösterilir — mevcut → en iyi adım → yöntem/currency → şans + maliyet → alternatif → risk.
+- 🎯 **Hedef mod → koç yönlendirmesi.** Hedef Eşya paneline istediğin modu (grup + tier) ekle; koç o hedefe ulaşmak için adım adım yöntem/currency + şans/maliyet önerir ve hedef değişince anında güncellenir.
+### 🇬🇧 English
+#### ✨ Improvements
+- 🌐 **Crafting translations fixed.** In the Crafting reference and Simulator, proper game terms now stay English ("Orb of Transmutation", "Regal Orb", "Chaos Orb", "Greater/Perfect", "Essence", "Waystone", "Magic/Rare") — they used to be translated ("Dönüştürme Küresi", etc.). Descriptions remain proper Turkish.
+- ◆ **Master Craft Advisor deepened.** Each recommendation now opens with a "state assessment" (rarity, filled prefix/suffix slots, target progress, full-side warning); every plan step also shows its relative cost (£) — current state → best step → method/currency → chance + cost → alternative → risk.
+- 🎯 **Target mod → coach guidance.** Add the mod you want (group + tier) in the Target Item panel; the coach proposes step-by-step method/currency + chance/cost to reach it and updates instantly when the target changes.
+
 ## 0.19.3
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler

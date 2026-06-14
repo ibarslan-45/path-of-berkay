@@ -2,12 +2,12 @@
   {
     "id": "flow-basic",
     "en": "Basic Rare Item Crafting",
-    "tr": "Temel Nadir Eşya Üretimi",
+    "tr": "Temel Rare Eşya Üretimi",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "The standard path to build a Rare item from a white (Normal) base. You climb rarity step by step — Normal to Magic to Rare — then add and refine modifiers.",
-    "desc_tr": "Beyaz (Normal) bir tabandan Nadir eşya oluşturmanın standart yolu. Nadirliği adım adım yükseltirsin — Normal'den Sihirli'ye, Sihirli'den Nadir'e — sonra özellikleri ekleyip iyileştirirsin.",
+    "desc_tr": "Beyaz (Normal) bir tabandan Rare eşya oluşturmanın standart yolu. Nadirliği adım adım yükseltirsin — Normal'den Magic'e, Magic'ten Rare'e — sonra özellikleri ekleyip iyileştirirsin.",
     "steps_en": [
       "Start with a white (Normal) base item of the type and item level you want.",
       "Use an Orb of Transmutation to make it Magic (1 modifier).",
@@ -18,11 +18,11 @@
     ],
     "steps_tr": [
       "İstediğin tür ve eşya seviyesinde beyaz (Normal) bir taban eşyayla başla.",
-      "Bir Dönüştürme Küresi (Orb of Transmutation) ile onu Sihirli yap (1 özellik).",
-      "Bir Güçlendirme Küresi (Orb of Augmentation) ile ikinci Sihirli özelliği ekle.",
-      "Bir Asalet Küresi (Regal Orb) ile Sihirli eşyayı Nadir'e çevir; bir özellik daha eklenir.",
-      "Yüce Küreler (Exalted Orb) ile kalan özellik yuvalarını doldur (çoğu ekipmanda altıya kadar).",
-      "Sonuç kötüyse bir Kaos Küresi (Chaos Orb) tek bir kötü özelliği kaldırıp yenisini ekleyerek düzeltir."
+      "Bir Orb of Transmutation ile onu Magic yap (1 özellik).",
+      "Bir Orb of Augmentation ile ikinci Magic özelliği ekle.",
+      "Bir Regal Orb ile Magic eşyayı Rare'e çevir; bir özellik daha eklenir.",
+      "Exalted Orb ile kalan özellik yuvalarını doldur (çoğu ekipmanda altıya kadar).",
+      "Sonuç kötüyse bir Chaos Orb tek bir kötü özelliği kaldırıp yenisini ekleyerek düzeltir."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyUpgradeToMagic",
@@ -41,12 +41,12 @@
   {
     "id": "flow-alchemy",
     "en": "Quick Rare with Orb of Alchemy",
-    "tr": "Simya Küresi ile Hızlı Nadir",
+    "tr": "Orb of Alchemy ile Hızlı Rare",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "A faster route that skips the Magic stage. Best when you just need a serviceable Rare quickly, for example to roll a Waystone or a levelling item.",
-    "desc_tr": "Sihirli aşamasını atlayan daha hızlı bir yol. Çabucak işe yarar bir Nadir gerektiğinde idealdir; örneğin bir Yol Taşı'nı (Waystone) veya seviye atlama eşyasını rollemek için.",
+    "desc_tr": "Magic aşamasını atlayan daha hızlı bir yol. Çabucak işe yarar bir Rare gerektiğinde idealdir; örneğin bir Waystone veya seviye atlama eşyasını rollemek için.",
     "steps_en": [
       "Start with a white (Normal) base item.",
       "Use an Orb of Alchemy to upgrade it straight to a Rare item with a full starting set of modifiers.",
@@ -55,9 +55,9 @@
     ],
     "steps_tr": [
       "Beyaz (Normal) bir taban eşyayla başla.",
-      "Bir Simya Küresi (Orb of Alchemy) ile onu doğrudan, tam başlangıç özellik setiyle Nadir eşyaya yükselt.",
-      "Yüce Küreler ile kalan özellikleri ekle.",
-      "Özellikler düşük çıktıysa bir İlahi Küre (Divine Orb) ile sayısal değerleri yeniden rolle."
+      "Bir Orb of Alchemy ile onu doğrudan, tam başlangıç özellik setiyle Rare eşyaya yükselt.",
+      "Exalted Orb ile kalan özellikleri ekle.",
+      "Özellikler düşük çıktıysa bir Divine Orb ile sayısal değerleri yeniden rolle."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyUpgradeToRare",
@@ -74,12 +74,12 @@
   {
     "id": "flow-magic-base",
     "en": "Magic-Base (Alt-Regal) Method",
-    "tr": "Sihirli-Taban (Alt-Regal) Yöntemi",
+    "tr": "Magic-Taban (Alt-Regal) Yöntemi",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "A targeted method to land a specific modifier before committing to Rare. You roll the Magic item until it carries the one modifier you really want, then lock it in with a Regal Orb.",
-    "desc_tr": "Nadir'e geçmeden önce belirli bir özelliği yakalamaya yönelik hedefli bir yöntem. İstediğin tek özelliği taşıyana dek Sihirli eşyayı rolleyip sonra bir Asalet Küresi ile sabitlersin.",
+    "desc_tr": "Rare'e geçmeden önce belirli bir özelliği yakalamaya yönelik hedefli bir yöntem. İstediğin tek özelliği taşıyana dek Magic eşyayı rolleyip sonra bir Regal Orb ile sabitlersin.",
     "steps_en": [
       "Transmute a white base to Magic, then read its modifier.",
       "Repeat Transmutation (and Augmentation) until the Magic item has the single modifier you are aiming for.",
@@ -87,10 +87,10 @@
       "Continue with Exalted Orbs to complete the item around your chosen base modifier."
     ],
     "steps_tr": [
-      "Beyaz bir tabanı Dönüştürme Küresi ile Sihirli yap, sonra özelliğini oku.",
-      "Sihirli eşya hedeflediğin tek özelliğe sahip olana dek Dönüştürme (ve Güçlendirme) işlemini tekrarla.",
-      "O özelliği koruyarak Nadir'e yükseltmek için bir Asalet Küresi kullan.",
-      "Seçtiğin taban özelliğin etrafında eşyayı tamamlamak için Yüce Küreler ile devam et."
+      "Beyaz bir tabanı Orb of Transmutation ile Magic yap, sonra özelliğini oku.",
+      "Magic eşya hedeflediğin tek özelliğe sahip olana dek Transmutation (ve Augmentation) işlemini tekrarla.",
+      "O özelliği koruyarak Rare'e yükseltmek için bir Regal Orb kullan.",
+      "Seçtiğin taban özelliğin etrafında eşyayı tamamlamak için Exalted Orb ile devam et."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyUpgradeToMagic",
@@ -108,12 +108,12 @@
   {
     "id": "flow-essence-slam",
     "en": "Essence Slam (Guaranteed Modifier)",
-    "tr": "Öz ile Garantili Özellik (Essence Slam)",
+    "tr": "Essence ile Garantili Özellik (Essence Slam)",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "Essences upgrade an item while guaranteeing one specific modifier, which makes them the most reliable way to anchor a build-defining stat. Greater and Perfect Essences guarantee stronger versions; Perfect Essences act on a Rare item, removing one modifier and adding the guaranteed one.",
-    "desc_tr": "Öz'ler (Essence) bir eşyayı yükseltirken belirli bir özelliği garanti eder; bu da build belirleyen bir statı sabitlemenin en güvenilir yoludur. Ulu (Greater) ve Kusursuz (Perfect) Öz'ler daha güçlü sürümleri garanti eder; Kusursuz Öz'ler Nadir bir eşya üzerinde çalışır, bir özelliği kaldırıp garanti edileni ekler.",
+    "desc_tr": "Essence'ler bir eşyayı yükseltirken belirli bir özelliği garanti eder; bu da build belirleyen bir statı sabitlemenin en güvenilir yoludur. Greater ve Perfect Essence'ler daha güçlü sürümleri garanti eder; Perfect Essence'ler Rare bir eşya üzerinde çalışır, bir özelliği kaldırıp garanti edileni ekler.",
     "steps_en": [
       "Choose the Essence whose guaranteed modifier matches the stat your build needs.",
       "Apply a normal or Greater Essence to a Magic (or Normal) item to make it Rare with that modifier guaranteed.",
@@ -121,10 +121,10 @@
       "Finish the remaining slots with Exalted Orbs around the anchored modifier."
     ],
     "steps_tr": [
-      "Garanti ettiği özelliği build'inin ihtiyacı olan statla eşleşen Öz'ü seç.",
-      "Sihirli (veya Normal) bir eşyaya normal ya da Ulu Öz uygulayarak onu o özellik garantili Nadir'e çevir.",
-      "Zaten Nadir olan bir eşyada, bir özelliği kaldırıp garanti yüksek-kademe özelliği eklemek için Kusursuz Öz kullan.",
-      "Sabitlenen özelliğin etrafında kalan yuvaları Yüce Küreler ile tamamla."
+      "Garanti ettiği özelliği build'inin ihtiyacı olan statla eşleşen Essence'ü seç.",
+      "Magic bir eşyaya normal ya da Greater Essence uygulayarak onu o özellik garantili Rare'e çevir.",
+      "Zaten Rare olan bir eşyada, bir özelliği kaldırıp garanti yüksek-kademe özelliği eklemek için Perfect Essence kullan.",
+      "Sabitlenen özelliğin etrafında kalan yuvaları Exalted Orb ile tamamla."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyEssenceLife",
@@ -142,12 +142,12 @@
   {
     "id": "flow-greater-perfect",
     "en": "Greater & Perfect Currency Tiers",
-    "tr": "Ulu ve Kusursuz Kademeler",
+    "tr": "Greater ve Perfect Kademeler",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "Many orbs come in normal, Greater and Perfect tiers. Higher tiers guarantee a higher minimum modifier level, so the modifiers they add or create cannot roll as the weakest versions. Use them once your base item level is high enough to benefit. (Exact minimum-level thresholds: see the verification-pending reference.)",
-    "desc_tr": "Birçok küre normal, Ulu (Greater) ve Kusursuz (Perfect) kademelerde gelir. Yüksek kademeler daha yüksek bir minimum özellik seviyesi garanti eder; böylece ekledikleri/oluşturdukları özellikler en zayıf sürümler olarak çıkamaz. Taban eşya seviyen yeterince yüksek olduğunda kullan. (Kesin minimum-seviye eşikleri: doğrulama-bekleyen başvuruya bak.)",
+    "desc_tr": "Birçok küre normal, Greater ve Perfect kademelerde gelir. Yüksek kademeler daha yüksek bir minimum özellik seviyesi garanti eder; böylece ekledikleri/oluşturdukları özellikler en zayıf sürümler olarak çıkamaz. Taban eşya seviyen yeterince yüksek olduğunda kullan. (Kesin minimum-seviye eşikleri: doğrulama-bekleyen başvuruya bak.)",
     "steps_en": [
       "Confirm your base item level is high enough that stronger modifier tiers can appear.",
       "Use a Greater orb (Transmutation, Regal, Exalted, Chaos...) to enforce a higher minimum modifier level than the normal orb.",
@@ -155,8 +155,8 @@
     ],
     "steps_tr": [
       "Taban eşya seviyenin, daha güçlü özellik kademelerinin çıkabileceği kadar yüksek olduğunu doğrula.",
-      "Normal küreden daha yüksek bir minimum özellik seviyesi dayatmak için Ulu küre (Dönüştürme, Asalet, Yüce, Kaos...) kullan.",
-      "En yüksek minimum seviye için Kusursuz küre kullan; üst seviye ve pinnacle craft'lara ayrılmıştır."
+      "Normal küreden daha yüksek bir minimum özellik seviyesi dayatmak için Greater küre (Transmutation, Regal, Exalted, Chaos...) kullan.",
+      "En yüksek minimum seviye için Perfect küre kullan; üst seviye ve pinnacle craft'lara ayrılmıştır."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyAddModToRare2",
@@ -172,12 +172,12 @@
   {
     "id": "flow-annul",
     "en": "Removing a Modifier (Orb of Annulment)",
-    "tr": "Özellik Kaldırma (İptal Küresi)",
+    "tr": "Özellik Kaldırma (Orb of Annulment)",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "An Orb of Annulment removes one random modifier from an item. It is the key tool for deleting a single unwanted modifier from an otherwise good Rare, and it pairs with Omens to control which side is removed.",
-    "desc_tr": "Bir İptal Küresi (Orb of Annulment) eşyadan rastgele bir özelliği kaldırır. Aksi halde iyi olan bir Nadir'den tek bir istenmeyen özelliği silmenin ana aracıdır ve hangi tarafın kaldırılacağını kontrol etmek için Omen'larla eşleşir.",
+    "desc_tr": "Bir Orb of Annulment eşyadan rastgele bir özelliği kaldırır. Aksi halde iyi olan bir Rare'den tek bir istenmeyen özelliği silmenin ana aracıdır ve hangi tarafın kaldırılacağını kontrol etmek için Omen'larla eşleşir.",
     "steps_en": [
       "Make sure the item has a modifier you are willing to risk, since the removal is random.",
       "Use an Orb of Annulment to remove one random modifier.",
@@ -186,9 +186,9 @@
     ],
     "steps_tr": [
       "Kaldırma rastgele olduğu için, eşyada riske atmaya razı olduğun bir özellik olduğundan emin ol.",
-      "Bir İptal Küresi kullanarak rastgele bir özelliği kaldır.",
-      "Bir tarafı hedeflemek için önce Sinistral/Dextral İptal Omen'ı etkinleştir; böylece yalnızca bir önek/sonek kaldırılabilir.",
-      "Bir yuva boşaldıktan sonra bir Yüce Küre ile daha iyi bir özellik ekle."
+      "Bir Orb of Annulment kullanarak rastgele bir özelliği kaldır.",
+      "Bir tarafı hedeflemek için önce Sinistral/Dextral Annul Omen'ı etkinleştir; böylece yalnızca bir önek/sonek kaldırılabilir.",
+      "Bir yuva boşaldıktan sonra bir Exalted Orb ile daha iyi bir özellik ekle."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyRemoveMod",
@@ -206,12 +206,12 @@
   {
     "id": "flow-divine",
     "en": "Perfecting Values (Divine Orb)",
-    "tr": "Değer Mükemmelleştirme (İlahi Küre)",
+    "tr": "Değer Mükemmelleştirme (Divine Orb)",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "A Divine Orb re-rolls the numeric values of the modifiers already on an item, without changing which modifiers they are. Use it as the final polish once an item has exactly the modifiers you want but some values rolled low.",
-    "desc_tr": "Bir İlahi Küre (Divine Orb) eşyada zaten bulunan özelliklerin sayısal değerlerini, hangi özellikler olduğunu değiştirmeden yeniden roller. Eşyada tam istediğin özellikler olup bazı değerler düşük çıktığında son rötuş olarak kullan.",
+    "desc_tr": "Bir Divine Orb eşyada zaten bulunan özelliklerin sayısal değerlerini, hangi özellikler olduğunu değiştirmeden yeniden roller. Eşyada tam istediğin özellikler olup bazı değerler düşük çıktığında son rötuş olarak kullan.",
     "steps_en": [
       "Finish the item so every modifier on it is one you want to keep.",
       "Use a Divine Orb to randomise the numeric values within each modifier’s range.",
@@ -219,7 +219,7 @@
     ],
     "steps_tr": [
       "Eşyayı, üzerindeki her özellik korumak istediğin biri olacak şekilde tamamla.",
-      "Her özelliğin aralığı içinde sayısal değerleri rastgeleleştirmek için bir İlahi Küre kullan.",
+      "Her özelliğin aralığı içinde sayısal değerleri rastgeleleştirmek için bir Divine Orb kullan.",
       "Önemli değerler yeterince yükselene dek tekrarla; her kullanım bağımsızdır."
     ],
     "related": [
@@ -235,21 +235,21 @@
   {
     "id": "flow-fracture",
     "en": "Locking a Modifier (Fracturing Orb)",
-    "tr": "Özellik Kilitleme (Kırma Küresi)",
+    "tr": "Özellik Kilitleme (Fracturing Orb)",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "A Fracturing Orb permanently locks one random existing modifier on a Rare item so it can never be removed or changed. Fracturing a modifier you want protects it while you re-roll the rest, and underpins deterministic \"isolation\" crafting.",
-    "desc_tr": "Bir Kırma Küresi (Fracturing Orb) Nadir bir eşyada rastgele mevcut bir özelliği kalıcı olarak kilitler; o özellik artık kaldırılamaz veya değiştirilemez. İstediğin bir özelliği kırmak, gerisini yeniden rollerken onu korur ve deterministik 'izolasyon' craft'ının temelini oluşturur.",
+    "desc_tr": "Bir Fracturing Orb Rare bir eşyada rastgele mevcut bir özelliği kalıcı olarak kilitler; o özellik artık kaldırılamaz veya değiştirilemez. İstediğin bir özelliği kırmak, gerisini yeniden rollerken onu korur ve deterministik 'izolasyon' craft'ının temelini oluşturur.",
     "steps_en": [
       "Build a Rare item that already holds the modifier you want to protect.",
       "Use a Fracturing Orb; one random modifier becomes fractured (locked) permanently.",
       "Because the fractured modifier is safe, you can now Annul or Chaos the others more freely."
     ],
     "steps_tr": [
-      "Korumak istediğin özelliği zaten taşıyan Nadir bir eşya oluştur.",
-      "Bir Kırma Küresi kullan; rastgele bir özellik kalıcı olarak kırılmış (kilitli) olur.",
-      "Kırılan özellik güvende olduğu için artık diğerlerini daha rahat İptal'leyebilir veya Kaos'layabilirsin."
+      "Korumak istediğin özelliği zaten taşıyan Rare bir eşya oluştur.",
+      "Bir Fracturing Orb kullan; rastgele bir özellik kalıcı olarak kırılmış (kilitli) olur.",
+      "Kırılan özellik güvende olduğu için artık diğerlerini daha rahat Annul'leyebilir veya Chaos'layabilirsin."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyFractureRare",
@@ -266,12 +266,12 @@
   {
     "id": "flow-isolation",
     "en": "Isolation Crafting (Fracture + Targeted Annul)",
-    "tr": "İzolasyon Craft'ı (Kırma + Hedefli İptal)",
+    "tr": "İzolasyon Craft'ı (Fracturing + Hedefli Annul)",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "A deterministic technique that combines fracturing with side-targeted Annulment. By locking the good modifiers and then removing only from the side that holds the bad one, you can delete a single specific modifier with certainty.",
-    "desc_tr": "Kırmayı yan-hedefli İptal ile birleştiren deterministik bir teknik. İyi özellikleri kilitleyip sonra yalnızca kötü olanı tutan taraftan kaldırarak, tek bir belirli özelliği kesinlikle silebilirsin.",
+    "desc_tr": "Fracturing'i yan-hedefli Annul ile birleştiren deterministik bir teknik. İyi özellikleri kilitleyip sonra yalnızca kötü olanı tutan taraftan kaldırarak, tek bir belirli özelliği kesinlikle silebilirsin.",
     "steps_en": [
       "Fracture the good modifier(s) so they are locked and safe.",
       "Make sure the only remaining removable modifier on the targeted side is the bad one.",
@@ -281,7 +281,7 @@
     "steps_tr": [
       "İyi özellik(ler)i kır; böylece kilitli ve güvende olurlar.",
       "Hedeflenen tarafta kaldırılabilir tek özelliğin kötü olan olduğundan emin ol.",
-      "Eşleşen Sinistral/Dextral İptal Omen'ını etkinleştir, sonra bir İptal Küresi kullan.",
+      "Eşleşen Sinistral/Dextral Annul Omen'ını etkinleştir, sonra bir Orb of Annulment kullan.",
       "Yalnızca kötü özellik kaldırılabilir olduğundan, deterministik biçimde silinir."
     ],
     "related": [
@@ -300,21 +300,21 @@
   {
     "id": "flow-chance",
     "en": "Gambling Uniques (Orb of Chance)",
-    "tr": "Eşsiz Kumarı (Şans Küresi)",
+    "tr": "Unique Kumarı (Chance Orb)",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "An Orb of Chance unpredictably either upgrades a Normal item to a Unique or destroys it. It is a gamble used to fish for specific Unique items from a chosen base type.",
-    "desc_tr": "Bir Şans Küresi (Orb of Chance) öngörülemez biçimde ya Normal bir eşyayı Eşsiz'e yükseltir ya da yok eder. Seçtiğin bir taban türünden belirli Eşsiz eşyaları avlamak için kullanılan bir kumardır.",
+    "desc_tr": "Bir Chance Orb (Orb of Chance) öngörülemez biçimde ya Normal bir eşyayı Unique'e yükseltir ya da yok eder. Seçtiğin bir taban türünden belirli Unique eşyaları avlamak için kullanılan bir kumardır.",
     "steps_en": [
       "Pick the Normal base type that corresponds to the Unique you are hoping for.",
       "Use an Orb of Chance; the item either becomes a random Unique of that base or is destroyed.",
       "Activate an Omen of Chance first so the item is not destroyed on failure."
     ],
     "steps_tr": [
-      "Umduğun Eşsiz'e karşılık gelen Normal taban türünü seç.",
-      "Bir Şans Küresi kullan; eşya ya o tabanın rastgele bir Eşsiz'i olur ya da yok olur.",
-      "Başarısızlıkta yok olmaması için önce bir Şans Omen'ı (Omen of Chance) etkinleştir."
+      "Umduğun Unique'e karşılık gelen Normal taban türünü seç.",
+      "Bir Chance Orb kullan; eşya ya o tabanın rastgele bir Unique'i olur ya da yok olur.",
+      "Başarısızlıkta yok olmaması için önce bir Chance Omen'ı (Omen of Chance) etkinleştir."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyUpgradeRandomly",
@@ -330,12 +330,12 @@
   {
     "id": "flow-vaal",
     "en": "Corrupting with Vaal Orbs",
-    "tr": "Vaal Küresi ile Bozma (Corrupt)",
+    "tr": "Vaal Orb ile Bozma (Corrupt)",
     "tr_status": "proposed",
     "subtype": "flow",
     "status": "ok",
     "desc_en": "A Vaal Orb modifies an item unpredictably and Corrupts it. Corruption is irreversible and the item can no longer be changed by normal currency, so it is always the final step — a high-risk, high-reward gamble for an extra outcome.",
-    "desc_tr": "Bir Vaal Küresi eşyayı öngörülemez biçimde değiştirir ve Bozar (Corrupt). Bozulma geri alınamaz ve eşya artık normal materyalle değiştirilemez; bu yüzden daima son adımdır — ekstra bir sonuç için yüksek-risk yüksek-ödül kumarı.",
+    "desc_tr": "Bir Vaal Orb eşyayı öngörülemez biçimde değiştirir ve Bozar (Corrupt). Bozulma geri alınamaz ve eşya artık normal materyalle değiştirilemez; bu yüzden daima son adımdır — ekstra bir sonuç için yüksek-risk yüksek-ödül kumarı.",
     "steps_en": [
       "Only corrupt an item you are willing to lose or leave exactly as it is.",
       "Use a Vaal Orb; the outcome may add an implicit, change values, leave it unchanged, or brick it.",
@@ -343,7 +343,7 @@
     ],
     "steps_tr": [
       "Yalnızca kaybetmeye ya da olduğu gibi bırakmaya razı olduğun bir eşyayı bozdur.",
-      "Bir Vaal Küresi kullan; sonuç bir implicit ekleyebilir, değerleri değiştirebilir, eşyayı değiştirmeyebilir ya da bozabilir.",
+      "Bir Vaal Orb kullan; sonuç bir implicit ekleyebilir, değerleri değiştirebilir, eşyayı değiştirmeyebilir ya da bozabilir.",
       "Bozulmadan sonra eşya nihaidir ve normal materyalle üzerinde craft yapılamaz."
     ],
     "related": [
@@ -371,7 +371,7 @@
       "Quality on a white base is cheapest, so quality first when planning a fresh craft."
     ],
     "steps_tr": [
-      "Taban için doğru kalite materyalini seç: martial silahlar için Demirci Bileği Taşı (Blacksmith's Whetstone), caster silahları için Büyücü Kazıyıcısı (Arcanist's Etcher), zırhlar için Zırhçı Hurdası (Armourer's Scrap).",
+      "Taban için doğru kalite materyalini seç: martial silahlar için Blacksmith's Whetstone, caster silahları için Büyücü Kazıyıcısı (Arcanist's Etcher), zırhlar için Armourer's Scrap.",
       "Eşya %20 kaliteye ulaşana dek tekrar tekrar uygula.",
       "Beyaz tabanda kalite en ucuzdur; yeni bir üretim planlarken önce kaliteyi yükselt."
     ],
@@ -405,8 +405,8 @@
     "steps_tr": [
       "Omen'ı envantere koyup etkin yap; bir sonraki ilgili küre kullanıldığında tüketilir.",
       "Yan hedefleme: Dextral Omen bir sonek; Sinistral Omen bir önek zorlar.",
-      "Miktar: Omen of Greater Exaltation bir sonraki Yüce Küre'nin tek seferde iki özellik eklemesini sağlar.",
-      "Omen'ları normalde kontrol edemeyeceğin sonuçları yönlendirmek için kullan; örneğin Yüce Küre'nin hangi tarafa ekleyeceği gibi."
+      "Miktar: Omen of Greater Exaltation bir sonraki Exalted Orb tek seferde iki özellik eklemesini sağlar.",
+      "Omen'ları normalde kontrol edemeyeceğin sonuçları yönlendirmek için kullan; örneğin Exalted Orb hangi tarafa ekleyeceği gibi."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyAddModToRare",
@@ -458,7 +458,7 @@
     "subtype": "flow",
     "status": "ok",
     "desc_en": "In 0.5 an item can hold only one crafted modifier at a time. Essences, Runic Alloys and similar guaranteed-modifier methods all compete for that single crafted slot, so the old technique of stacking several guaranteed modifiers on one item no longer works. Plan which single guaranteed modifier matters most.",
-    "desc_tr": "0.5'te bir eşya aynı anda yalnızca bir crafted (zanaat) özellik taşıyabilir. Öz'ler, Runic Alloy'lar ve benzeri garanti-özellik yöntemlerinin hepsi bu tek crafted yuvası için yarışır; bu yüzden tek eşyaya birden çok garanti özellik yığma eski tekniği artık çalışmaz. Hangi tek garanti özelliğin en önemli olduğunu planla.",
+    "desc_tr": "0.5'te bir eşya aynı anda yalnızca bir crafted (zanaat) özellik taşıyabilir. Essence'ler, Runic Alloy'lar ve benzeri garanti-özellik yöntemlerinin hepsi bu tek crafted yuvası için yarışır; bu yüzden tek eşyaya birden çok garanti özellik yığma eski tekniği artık çalışmaz. Hangi tek garanti özelliğin en önemli olduğunu planla.",
     "steps_en": [
       "Decide the one guaranteed (crafted) modifier the item most needs.",
       "Apply that method (for example an Essence) — it occupies the single crafted slot.",
@@ -466,8 +466,8 @@
     ],
     "steps_tr": [
       "Eşyanın en çok ihtiyaç duyduğu tek garanti (crafted) özelliği belirle.",
-      "O yöntemi uygula (örneğin bir Öz) — tek crafted yuvasını işgal eder.",
-      "Eşyanın gerisini normal rastgele özelliklerle (Yüce Küreler) doldur; ikinci bir crafted özelliğe izin verilmez."
+      "O yöntemi uygula (örneğin bir Essence) — tek crafted yuvasını işgal eder.",
+      "Eşyanın gerisini normal rastgele özelliklerle (Exalted Orb) doldur; ikinci bir crafted özelliğe izin verilmez."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyEssenceLife",
@@ -488,7 +488,7 @@
     "subtype": "bench",
     "status": "ok",
     "desc_en": "A bench unlocked early in Act One (the \"Finding the Forge\" quest) that breaks gear down into crafting currency instead of selling it. It recovers quality as shards and frees socketed runes.",
-    "desc_tr": "Akt Bir'in başında ('Finding the Forge' görevi) açılan, eşyaları satmak yerine üretim materyaline ayıran bir tezgah. Kaliteyi kıymık olarak geri kazandırır ve soketli rune'ları serbest bırakır.",
+    "desc_tr": "Akt 1'in başında ('Finding the Forge' görevi) açılan, eşyaları satmak yerine üretim materyaline ayıran bir tezgah. Kaliteyi Shard olarak geri kazandırır ve soketli rune'ları serbest bırakır.",
     "steps_en": [
       "Place the Salvage Bench in your hideout or use the one in town.",
       "Salvage a quality item to recover quality currency shards of the matching type.",
@@ -496,8 +496,8 @@
     ],
     "steps_tr": [
       "Hurdalama Tezgahı'nı sığınağına yerleştir ya da şehirdekini kullan.",
-      "Kaliteli bir eşyayı hurdala; eşleşen türde kalite kıymıkları geri kazanırsın.",
-      "Rune Soketi olan bir eşyayı hurdala; Zanaatkâr Kıymığı (Artificer's Shard) elde edersin (ve bazı soketlenebilirleri geri alırsın)."
+      "Kaliteli bir eşyayı hurdala; eşleşen türde kalite Shard'ları geri kazanırsın.",
+      "Artificer's Shard elde edersin (ve bazı soketlenebilirleri geri alırsın)."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyArmourQuality",
@@ -521,7 +521,7 @@
     "subtype": "bench",
     "status": "ok",
     "desc_en": "A service offered by the caster vendors at the Encampments (such as Una, Zarka and Servi). It converts unwanted Magic and Rare items into currency shards rather than gold.",
-    "desc_tr": "Kamplardaki caster satıcıların (Una, Zarka, Servi gibi) sunduğu bir hizmet. İstenmeyen Sihirli ve Nadir eşyaları altın yerine materyal kıymıklarına çevirir.",
+    "desc_tr": "Kamplardaki caster satıcıların (Una, Zarka, Servi gibi) sunduğu bir hizmet. İstenmeyen Magic ve Rare eşyaları altın yerine materyal Shard'larına çevirir.",
     "steps_en": [
       "Bring Magic or Rare items you do not want to a caster vendor.",
       "Disenchant a Magic item to receive Transmutation Shards.",
@@ -529,10 +529,10 @@
       "Combine ten shards of a type to form the matching orb (Orb of Transmutation or Regal Orb)."
     ],
     "steps_tr": [
-      "İstemediğin Sihirli veya Nadir eşyaları bir caster satıcıya götür.",
-      "Bir Sihirli eşyanın büyüsünü boz; Dönüştürme Kıymığı (Transmutation Shard) alırsın.",
-      "Bir Nadir eşyanın büyüsünü boz; Asalet Kıymığı (Regal Shard) alırsın.",
-      "Bir türden on kıymığı birleştirerek ilgili küreyi oluştur (Dönüştürme Küresi veya Asalet Küresi)."
+      "İstemediğin Magic veya Rare eşyaları bir caster satıcıya götür.",
+      "Transmutation Shard alırsın.",
+      "Regal Shard alırsın.",
+      "Bir türden on Shard birleştirerek ilgili küreyi oluştur (Orb of Transmutation veya Regal Orb)."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyUpgradeToMagicShard",
@@ -555,15 +555,15 @@
     "subtype": "bench",
     "status": "ok",
     "desc_en": "A conversion system that combines several of the same lower item into one of a higher tier. Shards combine into orbs, and lesser currencies step up into greater ones, turning surplus drops into something more useful.",
-    "desc_tr": "Aynı türden birkaç alt eşyayı bir üst kademeden tekine birleştiren bir dönüşüm sistemi. Kıymıklar kürelere birleşir, daha küçük para birimleri daha büyüklerine yükselir; fazla düşen eşyaları daha yararlı bir şeye dönüştürür.",
+    "desc_tr": "Aynı türden birkaç alt eşyayı bir üst kademeden tekine birleştiren bir dönüşüm sistemi. Shards kürelere birleşir, daha küçük para birimleri daha büyüklerine yükselir; fazla düşen eşyaları daha yararlı bir şeye dönüştürür.",
     "steps_en": [
       "Gather a stack of the same lower-tier item (for example ten shards, or three lesser runes).",
       "Combine ten matching shards into their orb, or step three of a lesser currency up into the next tier.",
       "Use the conversion to turn drops you do not need into the currency you do."
     ],
     "steps_tr": [
-      "Aynı alt-kademe eşyadan bir yığın topla (örneğin on kıymık ya da üç küçük rune).",
-      "On eşleşen kıymığı küresine birleştir ya da bir küçük para biriminden üçünü bir üst kademeye yükselt.",
+      "Aynı alt-kademe eşyadan bir yığın topla (örneğin on Shard ya da üç küçük rune).",
+      "On eşleşen Shard küresine birleştir ya da bir küçük para biriminden üçünü bir üst kademeye yükselt.",
       "İhtiyacın olmayan düşen eşyaları ihtiyacın olan para birimine çevirmek için dönüşümü kullan."
     ],
     "related": [
@@ -581,19 +581,19 @@
   {
     "id": "bench-genesis-tree",
     "en": "Genesis Tree (Breach Crafting)",
-    "tr": "Genesis Tree (Yarık Üretimi)",
+    "tr": "Genesis Tree (Breach Üretimi)",
     "tr_status": "proposed",
     "subtype": "bench",
     "status": "ok",
     "desc_en": "A crafting system tied to the Breach mechanic. It is fed by materials dropped inside Breaches (Wombgifts and Hive Blood) and is used to craft jewellery (rings, amulets, belts) and currency with controlled properties by allocating nodes on a small tree. In 0.5 it is also the sole source of Catalysts, which no longer drop from monsters. (The full node list is verification-pending.)",
-    "desc_tr": "Yarık (Breach) mekaniğine bağlı bir üretim sistemi. Yarıkların içinde düşen materyallerle (Wombgift ve Hive Blood) beslenir ve küçük bir ağaçta node dağıtarak kontrollü özelliklerle takı (yüzük, kolye, kemer) ve para birimi craftlamak için kullanılır. 0.5'te ayrıca Catalyst'lerin tek kaynağıdır; artık yaratıklardan düşmezler. (Tam node listesi doğrulama bekliyor.)",
+    "desc_tr": "Breach mekaniğine bağlı bir üretim sistemi. Breach'lerin içinde düşen materyallerle (Wombgift ve Hive Blood) beslenir ve küçük bir ağaçta node dağıtarak kontrollü özelliklerle takı (yüzük, kolye, kemer) ve para birimi craftlamak için kullanılır. 0.5'te ayrıca Catalyst'lerin tek kaynağıdır; artık yaratıklardan düşmezler. (Tam node listesi doğrulama bekliyor.)",
     "steps_en": [
       "Collect Wombgifts and Hive Blood by killing monsters inside Breach encounters.",
       "Spend them on the Genesis Tree to allocate nodes that control what is crafted.",
       "Birth jewellery with guaranteed properties, or produce currency and Catalysts."
     ],
     "steps_tr": [
-      "Yarık karşılaşmalarında yaratık öldürerek Wombgift ve Hive Blood topla.",
+      "Breach karşılaşmalarında yaratık öldürerek Wombgift ve Hive Blood topla.",
       "Bunları Genesis Tree'de neyin craftlanacağını kontrol eden node'lara harca.",
       "Garanti özelliklerle takı doğur ya da para birimi ve Catalyst üret."
     ],
@@ -740,19 +740,19 @@
   {
     "id": "recipe-salvage-armour",
     "en": "Salvage: Quality Armour to Armourer’s Scrap",
-    "tr": "Hurdalama: Kaliteli Zırh → Zırhçı Hurdası",
+    "tr": "Hurdalama: Kaliteli Zırh → Armourer's Scrap",
     "tr_status": "proposed",
     "subtype": "recipe",
     "status": "ok",
     "desc_en": "Salvaging a piece of armour that has quality returns Armourer’s Scrap.",
-    "desc_tr": "Kalitesi olan bir zırh parçasını hurdalamak Zırhçı Hurdası (Armourer's Scrap) verir.",
+    "desc_tr": "Kalitesi olan bir zırh parçasını hurdalamak Armourer's Scrap verir.",
     "steps_en": [
       "Input: an armour piece with quality.",
       "Output: Armourer’s Scrap (scaled to the quality salvaged)."
     ],
     "steps_tr": [
       "Girdi: kalitesi olan bir zırh parçası.",
-      "Çıktı: Zırhçı Hurdası (hurdalanan kaliteyle ölçeklenir)."
+      "Çıktı: Armourer's Scrap (hurdalanan kaliteyle ölçeklenir)."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyArmourQuality"
@@ -767,19 +767,19 @@
   {
     "id": "recipe-salvage-martial",
     "en": "Salvage: Quality Martial Weapon to Blacksmith’s Whetstone",
-    "tr": "Hurdalama: Kaliteli Martial Silah → Demirci Bileği Taşı",
+    "tr": "Hurdalama: Kaliteli Martial Silah → Blacksmith's Whetstone",
     "tr_status": "proposed",
     "subtype": "recipe",
     "status": "ok",
     "desc_en": "Salvaging a martial weapon that has quality returns Blacksmith’s Whetstone.",
-    "desc_tr": "Kalitesi olan bir martial silahı hurdalamak Demirci Bileği Taşı (Blacksmith's Whetstone) verir.",
+    "desc_tr": "Kalitesi olan bir martial silahı hurdalamak Blacksmith's Whetstone verir.",
     "steps_en": [
       "Input: a martial weapon with quality.",
       "Output: Blacksmith’s Whetstone."
     ],
     "steps_tr": [
       "Girdi: kalitesi olan bir martial silah.",
-      "Çıktı: Demirci Bileği Taşı."
+      "Çıktı: Blacksmith's Whetstone."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyWeaponQuality"
@@ -821,12 +821,12 @@
   {
     "id": "recipe-salvage-rune",
     "en": "Salvage: Rune-Socketed Gear to Artificer’s Shard",
-    "tr": "Hurdalama: Rune-Soketli Eşya → Zanaatkâr Kıymığı",
+    "tr": "Hurdalama: Rune-Soketli Eşya → Artificer's Shard",
     "tr_status": "proposed",
     "subtype": "recipe",
     "status": "ok",
     "desc_en": "Salvaging an item that has Rune Sockets returns Artificer’s Shards. Ten Artificer’s Shards combine into an Artificer’s Orb, which adds a Rune Socket to an item.",
-    "desc_tr": "Rune Soketi olan bir eşyayı hurdalamak Zanaatkâr Kıymığı (Artificer's Shard) verir. On Zanaatkâr Kıymığı bir Zanaatkâr Küresi'ne (Artificer's Orb) birleşir; bu da eşyaya bir Rune Soketi ekler.",
+    "desc_tr": "Artificer's Shard verir. On Artificer's Shard bir Artificer's Orb birleşir; bu da eşyaya bir Rune Soketi ekler.",
     "steps_en": [
       "Input: an item with one or more Rune Sockets.",
       "Output: Artificer’s Shard(s).",
@@ -834,8 +834,8 @@
     ],
     "steps_tr": [
       "Girdi: bir veya daha çok Rune Soketi olan bir eşya.",
-      "Çıktı: Zanaatkâr Kıymığı/Kıymıkları.",
-      "On Zanaatkâr Kıymığı = bir Zanaatkâr Küresi."
+      "Çıktı: Artificer's Shard/Shards.",
+      "On Artificer's Shard = bir Artificer's Orb."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyAddEquipmentSocketShard",
@@ -851,21 +851,21 @@
   {
     "id": "recipe-disenchant-magic",
     "en": "Disenchant: Magic Item to Transmutation Shard",
-    "tr": "Büyü Bozma: Sihirli Eşya → Dönüştürme Kıymığı",
+    "tr": "Büyü Bozma: Magic Eşya → Transmutation Shard",
     "tr_status": "proposed",
     "subtype": "recipe",
     "status": "ok",
     "desc_en": "Disenchanting a Magic item at a caster vendor returns Transmutation Shards. Ten shards combine into an Orb of Transmutation.",
-    "desc_tr": "Bir caster satıcıda bir Sihirli eşyanın büyüsünü bozmak Dönüştürme Kıymığı (Transmutation Shard) verir. On kıymık bir Dönüştürme Küresi'ne birleşir.",
+    "desc_tr": "Transmutation Shard verir. On Shard bir Orb of Transmutation birleşir.",
     "steps_en": [
       "Input: an unwanted Magic item.",
       "Output: Transmutation Shard(s).",
       "Ten shards = one Orb of Transmutation."
     ],
     "steps_tr": [
-      "Girdi: istenmeyen bir Sihirli eşya.",
-      "Çıktı: Dönüştürme Kıymığı/Kıymıkları.",
-      "On kıymık = bir Dönüştürme Küresi."
+      "Girdi: istenmeyen bir Magic eşya.",
+      "Çıktı: Transmutation Shard/Shards.",
+      "On Shard = bir Orb of Transmutation."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyUpgradeToMagicShard",
@@ -881,21 +881,21 @@
   {
     "id": "recipe-disenchant-rare",
     "en": "Disenchant: Rare Item to Regal Shard",
-    "tr": "Büyü Bozma: Nadir Eşya → Asalet Kıymığı",
+    "tr": "Büyü Bozma: Rare Eşya → Regal Shard",
     "tr_status": "proposed",
     "subtype": "recipe",
     "status": "ok",
     "desc_en": "Disenchanting a Rare item at a caster vendor returns Regal Shards. Ten shards combine into a Regal Orb.",
-    "desc_tr": "Bir caster satıcıda bir Nadir eşyanın büyüsünü bozmak Asalet Kıymığı (Regal Shard) verir. On kıymık bir Asalet Küresi'ne birleşir.",
+    "desc_tr": "Regal Shard verir. On Shard bir Regal Orb birleşir.",
     "steps_en": [
       "Input: an unwanted Rare item.",
       "Output: Regal Shard(s).",
       "Ten shards = one Regal Orb."
     ],
     "steps_tr": [
-      "Girdi: istenmeyen bir Nadir eşya.",
-      "Çıktı: Asalet Kıymığı/Kıymıkları.",
-      "On kıymık = bir Asalet Küresi."
+      "Girdi: istenmeyen bir Rare eşya.",
+      "Çıktı: Regal Shard/Shards.",
+      "On Shard = bir Regal Orb."
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyUpgradeMagicToRareShard",
@@ -930,7 +930,7 @@
       "Tree of Souls altındaki Lost Catacombs'a gir ve Runic Vault'u temizle — bu Verisium'u tanıtır ve Clearfell Camp'taki Verisium Anvil'ı açar.",
       "Verisium Anvil'da unique olmayan bir zırh parçası seç ve Verisium harcayarak Runic Ward ekle. Eşya seviyesi 55 altında bedelsizdir; 55+ ise bir miktar Evasion/Energy Shield feda edilir. (Maliyet örnekleri: düşük seviyede ~20 Verisium, yüksek seviye bir Austere Garb için ~470 — tek kaynak.)",
       "Farrow'un Bölüm 2 göreviyle 13 Alloy açılır: birini bir nadir eşyaya uygulamak rastgele bir özelliği kaldırıp garantili bir Alloy özelliği ekler (eşyanın tek crafted özelliği sayılır).",
-      "İsteğe bağlı rune→küre recipe'leri (tek kaynak, oyun içi doğrula): Tempest + Lightning → Güçlendirme Küresi (Augmentation); Earth + Arcane + Tidal → Asalet Küresi (Regal); Death + Soul + Power + Life → İlahi Küre (Divine).",
+      "İsteğe bağlı rune→küre recipe'leri (tek kaynak, oyun içi doğrula): Tempest + Lightning → Orb of Augmentation; Earth + Arcane + Tidal → Regal Orb (Regal); Death + Soul + Power + Life → Divine Orb (Divine).",
       "Aldur's Legacy (unique→rune): bir Aldur's Legacy rune'unu, corrupted olmayan bir Kalguuran/Ezomyte unique'in boş Augment yuvasına soketle; eşya yok edilir ve küçültülmüş bir 'Legacy' rune oluşur. Bu rune'u aynı tabandan başka bir eşyaya soketleyerek orijinalin zayıf bir sürümünü kazanırsın."
     ],
     "related": [
@@ -976,7 +976,7 @@
     "steps_tr": [
       "Not: 0.3 içeriği, 0.5'te core. Bir bölgede yeşil bir Abyssal yarık (fissure) bul ve yakındaki yaratıkları öldür; yarıklar kapanır ve Abyssal yaratıklar çıkar.",
       "Tüm yarıkları kapatıp Pit'i aç, sonra daha güçlü yaratıkları yenerek Abyssal Trove'un (sandık) yükselmesini sağla; Abyssal Kemikler düşer (Abyssal Armoury → zırh + Rib; Abyssal Arsenal → silah + Jawbone).",
-      "Bir kemiği uygun nadir eşyaya sağ tıklayıp uygula — bench gerekmez. Boş yuva varsa Yüce Küre (Exalted) gibi davranır; 6 özelliği dolu eşyada Kaos Küresi (Chaos) gibi davranır (bir özelliği kaldırır, gizli Desecrated özelliği ekler).",
+      "Bir kemiği uygun nadir eşyaya sağ tıklayıp uygula — bench gerekmez. Boş yuva varsa Exalted Orb (Exalted) gibi davranır; 6 özelliği dolu eşyada Chaos Orb (Chaos) gibi davranır (bir özelliği kaldırır, gizli Desecrated özelliği ekler).",
       "Well of Souls'a git (Bölüm 2: Mastodon Badlands → Lightless Passage, Lurking Creature ile konuştuktan sonra) ve Reveal'ı seç.",
       "Sunulan üç özellikten birini seç ve Confirm'le — bu kalıcıdır. Omen of Abyssal Echoes ile seçenekler bir kez yeniden çevrilebilir (pahalı, ~99 Exalted, tek kaynak).",
       "Endgame: Preserved Vertebrae ile Waystone'ları desecrate et; Kulemak's Invitation, Vessel of Kulemak pinnacle boss'una erişim verir."
@@ -1020,7 +1020,7 @@
     ],
     "steps_tr": [
       "Womb yapısı (çoğu kaynak; bazıları 4 dal der): Currency Womb (Lavish Wombgift → currency), Amulet Womb (Ornate), Ring Womb (Signet), Belt Womb (Banded), Breachstone Womb (Revelatory, 300 Breach Splinter'dan).",
-      "Doğrulanan node — 'For the Price of One' (Currency / Exalted Path): bir Yüce Küre (Exalted) ürettiğinde ekstra ikinci bir Yüce Küre daha verir. [doğrulandı]",
+      "Doğrulanan node — 'For the Price of One' (Currency / Exalted Path): bir Exalted Orb (Exalted) ürettiğinde ekstra ikinci bir Exalted Orb daha verir. [doğrulandı]",
       "Doğrulanan node — 'Imbue the Body' (Amulet): her craft edilen amulette seçilen bir direnci garanti eder; takip node'u o direncin minimum mod tier'ını yükseltir. [doğrulandı]",
       "Tek kaynak node — 'Bloodstone Amulet' (Amulet): bir Ornate Wombgift'in istenmeyen bir base'i atlamasını sağlar (kesin mekanik belirsiz). [tek kaynak]",
       "Breach Ring kalite tavanı kaynaklar arası çelişkili: standart ~%50, currency-dalı / maks-kalite mod ile %65'e kadar — oyun içi doğrula. [çelişkili]",
@@ -1039,12 +1039,12 @@
   {
     "id": "skeleton-tier-thresholds",
     "en": "Greater/Perfect Tier Thresholds",
-    "tr": "Ulu/Kusursuz Kademe Eşikleri",
+    "tr": "Greater/Perfect Kademe Eşikleri",
     "tr_status": "proposed",
     "subtype": "reference",
     "status": "ok",
     "desc_en": "Greater and Perfect orbs guarantee a minimum modifier level (the mod's required level, not its tier). The thresholds split into two groups: Transmutation & Augmentation (magic-craft orbs) → Greater 44, Perfect 70; Regal, Chaos & Exalted (rare-craft orbs) → Greater 35, Perfect 50. In 0.5 Greater Transmutation/Augmentation dropped from a minimum modifier level of 55 to 44 and can now begin dropping in Act 4. A rare item still holds at most 6 modifiers (3 prefix + 3 suffix), but under 0.5's single crafted-modifier rule only one may be a crafted modifier — Essences, Perfect Essences and the new Alloys all share that single crafted slot. These threshold numbers are verified (official 0.5 patch notes + domistae codex).",
-    "desc_tr": "Ulu (Greater) ve Kusursuz (Perfect) küreler garantili bir minimum özellik seviyesi (mod'un gerektirdiği seviye, tier'ı değil) sağlar. Eşikler iki gruba ayrılır: Dönüştürme & Güçlendirme (magic-craft küreleri) → Greater 44, Perfect 70; Asalet, Kaos & Yüce (rare-craft küreleri) → Greater 35, Perfect 50. 0.5'te Greater Dönüştürme/Güçlendirme'nin minimum özellik seviyesi 55'ten 44'e düştü ve artık Bölüm 4'te düşmeye başlayabilir. Bir nadir eşya hâlâ en fazla 6 özellik tutar (3 önek + 3 sonek), ama 0.5'in tek crafted-modifier kuralı altında bunlardan yalnızca biri crafted olabilir — Essence'lar, Perfect Essence'lar ve yeni Alloy'lar bu tek crafted yuvayı paylaşır. Bu eşik sayıları doğrulanmıştır (resmî 0.5 patch notları + domistae codex).",
+    "desc_tr": "Greater ve Perfect küreler garantili bir minimum özellik seviyesi (mod'un gerektirdiği seviye, tier'ı değil) sağlar. Eşikler iki gruba ayrılır: Transmutation & Augmentation (magic-craft küreleri) → Greater 44, Perfect 70; Regal, Chaos & Exalted (rare-craft küreleri) → Greater 35, Perfect 50. 0.5'te Greater Transmutation/Augmentation'nin minimum özellik seviyesi 55'ten 44'e düştü ve artık Bölüm 4'te düşmeye başlayabilir. Bir nadir eşya hâlâ en fazla 6 özellik tutar (3 önek + 3 sonek), ama 0.5'in tek crafted-modifier kuralı altında bunlardan yalnızca biri crafted olabilir — Essence'lar, Perfect Essence'lar ve yeni Alloy'lar bu tek crafted yuvayı paylaşır. Bu eşik sayıları doğrulanmıştır (resmî 0.5 patch notları + domistae codex).",
     "steps_en": [
       "Orb of Transmutation — Greater: min modifier level 44 (0.5; was 55), Perfect: 70. [verified]",
       "Orb of Augmentation — Greater: 44 (0.5; was 55), Perfect: 70. [verified]",
@@ -1055,13 +1055,13 @@
       "Single crafted-modifier rule (0.5): an item can have only one crafted modifier; Essences, Perfect Essences and Alloys each occupy that one slot and overwrite an existing crafted/Essence mod. Rare items still cap at 6 mods total. [verified]"
     ],
     "steps_tr": [
-      "Dönüştürme Küresi (Transmutation) — Greater: minimum özellik seviyesi 44 (0.5; eskiden 55), Perfect: 70. [doğrulandı]",
-      "Güçlendirme Küresi (Augmentation) — Greater: 44 (0.5; eskiden 55), Perfect: 70. [doğrulandı]",
-      "Asalet Küresi (Regal) — Greater: 35, Perfect: 50. [doğrulandı]",
-      "Kaos Küresi (Chaos) — Greater: 35, Perfect: 50. [doğrulandı]",
-      "Yüce Küre (Exalted) — Greater: 35, Perfect: 50. [doğrulandı]",
+      "Orb of Transmutation — Greater: minimum özellik seviyesi 44 (0.5; eskiden 55), Perfect: 70. [doğrulandı]",
+      "Orb of Augmentation — Greater: 44 (0.5; eskiden 55), Perfect: 70. [doğrulandı]",
+      "Regal Orb (Regal) — Greater: 35, Perfect: 50. [doğrulandı]",
+      "Chaos Orb (Chaos) — Greater: 35, Perfect: 50. [doğrulandı]",
+      "Exalted Orb (Exalted) — Greater: 35, Perfect: 50. [doğrulandı]",
       "Rune birleştirme 3-e-1 zinciridir: 3 Lesser → 1 Standard, 3 Standard → 1 Greater. Rune'larda Perfect kademesi yoktur (yalnızca Lesser/Standard/Greater). [tek kaynak]",
-      "Tek crafted-modifier kuralı (0.5): bir eşya yalnızca tek bir crafted özellik taşıyabilir; Essence'lar, Perfect Essence'lar ve Alloy'lar bu tek yuvayı kaplar ve mevcut bir crafted/Essence özelliğin üzerine yazar. Nadir eşyalar yine toplam 6 özellikle sınırlıdır. [doğrulandı]"
+      "Tek crafted-modifier kuralı (0.5): bir eşya yalnızca tek bir crafted özellik taşıyabilir; Essence'lar, Perfect Essence'lar ve Alloy'lar bu tek yuvayı kaplar ve mevcut bir crafted/Essence özelliğin üzerine yazar. Rare eşyalar yine toplam 6 özellikle sınırlıdır. [doğrulandı]"
     ],
     "related": [
       "Metadata/Items/Currency/CurrencyUpgradeToMagic",
