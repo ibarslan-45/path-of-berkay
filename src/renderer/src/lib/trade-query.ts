@@ -260,33 +260,43 @@ export function buildTradeQuery(qi: QueryItem, opts: BuildQueryOpts = {}): {
   const onlineOnly = opts.onlineOnly !== false
   const band = typeof opts.valueBand === 'number' ? opts.valueBand : 0.9
 
+  // 0.19.0 #7: UNIQUE eşya → ada + rarity'ye göre aranır (sabit modlar; rolled değerler ilandan ilana
+  // değiştiği için stat filtresi sonucu sıfırlar). Rare/Magic'te ad rastgele → ad aranmaz, stat filtrelenir.
+  const isUnique = qi.rarity === 'Unique' && !!qi.name
+
   const filters: Array<{ id: string; value?: { min?: number } }> = []
   const unmatched: QueryMod[] = []
-  for (const m of qi.mods) {
-    // 0.18.0: rune/soket kaynaklı statlar ASLA stat filtresi olmaz (ründeki özellik aranmaz);
-    // bunun yerine aşağıda SOKET SAYISI filtresi kullanılır.
-    if (m.fromRune) continue
-    if (!m.enabled) continue
-    if (!m.matched || !m.statId) {
-      if (m.enabled) unmatched.push(m)
-      continue
+  if (!isUnique) {
+    for (const m of qi.mods) {
+      // 0.18.0: rune/soket kaynaklı statlar ASLA stat filtresi olmaz (ründeki özellik aranmaz);
+      // bunun yerine aşağıda SOKET SAYISI filtresi kullanılır.
+      if (m.fromRune) continue
+      if (!m.enabled) continue
+      if (!m.matched || !m.statId) {
+        if (m.enabled) unmatched.push(m)
+        continue
+      }
+      const f: { id: string; value?: { min?: number } } = { id: m.statId }
+      // 0.18.1: filtre min = eşyanın GERÇEK rolled (ALT) değeri — trade sitesinde görünen sayı eşyayla uyuşur.
+      // ("Adds A to B"da alt=A; ortalama KULLANILMAZ — kullanıcı 11 yerine eşyadaki 7'yi görür.) band: estimate
+      // 0.9 (benzer-veya-daha-iyi), trade-open 1 (TAM). Tek-değerli modda da m.value = gerçek rolled sayı.
+      if (typeof m.value === 'number') f.value = { min: Math.max(0, Math.floor(m.value * band)) }
+      filters.push(f)
     }
-    const f: { id: string; value?: { min?: number } } = { id: m.statId }
-    // 0.18.1: filtre min = eşyanın GERÇEK rolled (ALT) değeri — trade sitesinde görünen sayı eşyayla uyuşur.
-    // ("Adds A to B"da alt=A; ortalama KULLANILMAZ — kullanıcı 11 yerine eşyadaki 7'yi görür.) band: estimate
-    // 0.9 (benzer-veya-daha-iyi), trade-open 1 (TAM). Tek-değerli modda da m.value = gerçek rolled sayı.
-    if (typeof m.value === 'number') f.value = { min: Math.max(0, Math.floor(m.value * band)) }
-    filters.push(f)
   }
 
   const query: Record<string, unknown> = {
     status: { option: onlineOnly ? 'online' : 'any' }
   }
-  // Rare/Magic'te isim aranmaz (rastgele). Unique'te isim, aksi halde taban "type".
   // 0.18.2: `type` YALNIZ GEÇERLİ TAM base ise konur (ör. "Recurve Bow"); kategori adı ("Bow") trade2'de
   // "Unknown item base type" (400) verir → onun yerine `category` (type_filters) kullanılır (aşağıda).
-  if (qi.rarity === 'Unique' && qi.name) query.name = qi.name
-  else if (qi.baseType) query.type = qi.baseType
+  // Unique'te ad (name) ARANIR; taban da geçerliyse type olarak eklenir (aynı isimli farklı base'leri ayırır).
+  if (isUnique) {
+    query.name = qi.name
+    if (qi.baseType) query.type = qi.baseType
+  } else if (qi.baseType) {
+    query.type = qi.baseType
+  }
 
   if (filters.length) query.stats = [{ type: 'and', filters }]
   else query.stats = [{ type: 'and', filters: [] }]
@@ -297,8 +307,12 @@ export function buildTradeQuery(qi: QueryItem, opts: BuildQueryOpts = {}): {
   if (opts.ilvlMin !== false && typeof qi.itemLevel === 'number') misc.ilvl = { min: Math.max(1, qi.itemLevel - 2) }
   if (qi.socketFilter && typeof qi.sockets === 'number' && qi.sockets > 0) misc.sockets = { min: qi.sockets }
   if (Object.keys(misc).length) fl.misc_filters = { filters: misc }
-  // type_filters.category — base tam base değilken kategoriyle daralt (canlı doğrulı: weapon.bow/armour.quiver/accessory.ring…)
-  if (qi.category) fl.type_filters = { filters: { category: { option: qi.category } } }
+  // type_filters: category (base tam base değilken; canlı doğrulı weapon.bow/armour.quiver/accessory.ring…)
+  //   + rarity (UNIQUE araması — yalnız unique ilanlar gelsin).
+  const typeF: Record<string, unknown> = {}
+  if (qi.category) typeF.category = { option: qi.category }
+  if (isUnique) typeF.rarity = { option: 'unique' }
+  if (Object.keys(typeF).length) fl.type_filters = { filters: typeF }
   if (Object.keys(fl).length) query.filters = fl
 
   return {

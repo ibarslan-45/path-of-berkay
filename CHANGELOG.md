@@ -3,6 +3,22 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.19.0
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 🧭 **Seçili aşama/variant artık korunuyor.** Build sekmesinden başka sekmeye geçip dönünce seçtiğin variant (örn. "lvl 15-23") sıfırlanmıyor; elle seçtiğin variant kalıcı kalır ve karakter-seviyesi otomatik takibi onu ezmez.
+- 💎 **Trade artık unique eşyaları bulur.** Unique bir eşyada "Trade'de Ara" → arama eşyanın ADIYLA + rarity (Unique) ile kurulur (rastgele stat'larla değil), böylece o unique gelir.
+- 🖼️ **Ascendancy görselleri doğru.** Build görünümünde ascendancy/sınıf emblemi adından doğru eşlenir (örn. Deadeye); eşleşme yoksa yanlış görsel yerine "ikon yok" gösterilir.
+- 🌳 **Pasif ağaç tam ekran.** Build'de pasif ağacı "Tam ekran" butonuyla büyütebilirsin; büyükken rahat yakınlaştır/kaydır ve node işaretleme çalışır (Esc ile kapanır).
+- 🔍 **Eksik görseller azaltıldı.** Gem ikon eşleşmesi daha esnek (büyük/küçük harf, noktalama, "Support" eki) — daha çok gem ikonu görünür; eşleşmeyenlerde yine "ikon yok".
+### 🇬🇧 English
+#### 🐛 Fixes
+- 🧭 **Selected stage/variant is now preserved.** Switching away from the Build tab and back no longer resets your chosen variant (e.g. "lvl 15-23"); a manually selected variant persists and character-level auto-tracking won't override it.
+- 💎 **Trade now finds unique items.** "Search on Trade" for a unique builds the query by the item NAME + rarity (Unique) instead of random stats, so the unique actually shows up.
+- 🖼️ **Ascendancy images are correct.** The ascendancy/class emblem in the build view is mapped from the name correctly (e.g. Deadeye); when nothing matches it shows "no icon" instead of a wrong image.
+- 🌳 **Full-screen passive tree.** Enlarge the passive tree with a "Full screen" button in the Build view; zoom/pan comfortably and node marking works while enlarged (Esc to close).
+- 🔍 **Fewer missing visuals.** Gem icon matching is more lenient (case, punctuation, "Support" suffix) so more gem icons resolve; unmatched ones still show "no icon".
+
 ## 0.18.5
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler

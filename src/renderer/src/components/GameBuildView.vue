@@ -4,15 +4,16 @@
 // birlikte) ve aldığı pasif ağaç node'ları (highlight) OYUNDAKİ GİBİ gösterilir.
 // Ham PobBuild kullanır (group yapısı korunur); gem/item/node ADLARI İngilizce orijinal kalır
 // (kullanıcı tercihi: özel adlar EN). Başlıklar/etiketler TR. Eksik veri "—"/"doğrulanmalı".
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue'
 import type { PobBuild, PobItem } from '../lib/pob'
 import type { MatchedItem } from '../lib/pob-match'
-import { trackedStage, setStage, requestCraft } from '../lib/build-target'
+import { trackedStage, pinStage, requestCraft } from '../lib/build-target'
 import { buildSig, slotProgressId, modProgressId, gemProgressId, nodeProgressId } from '../lib/build-progress'
 import { slotWeaponSet, buildHasWeaponSets } from '../lib/weapon-set'
 import { buildItemTradeQuery } from '../lib/build-compare'
 import { openItemInTrade } from '../lib/price-check'
 import { resolveRune } from '../lib/rune-info'
+import { buildEmblemUrl, deriveAscendancyName } from '../lib/ascendancy-icon'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import gemsData from '../../../data/gems.json'
 import treeData from '../../../data/passive-tree.json'
@@ -36,11 +37,25 @@ function runeIconUrl(iconPath: string | null): string | null {
 interface GemRec { en: string; icon: string | null }
 const gemRecs = ((gemsData as { records?: GemRec[] }).records ?? (gemsData as GemRec[]))
 const gemIconByEn = new Map<string, string>()
-for (const g of gemRecs) if (g.en && g.icon && !gemIconByEn.has(g.en)) gemIconByEn.set(g.en, g.icon)
-const ROMAN = /\s+(?:I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)$/
+// #1: normalize edilmiş indeks (küçük harf, roman/punctuation/boşluk soyulmuş) → daha çok gem eşleşir
+// (Mobalytics nameSpec'i casing/noktalama/"Support" eki bakımından gems.json `en`'den ufak farklı olabilir).
+const gemIconByNorm = new Map<string, string>()
+const ROMAN = /\s+(?:I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII)$/i
+function normGem(s: string): string {
+  return s.replace(ROMAN, '').toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+for (const g of gemRecs) {
+  if (!g.en || !g.icon) continue
+  if (!gemIconByEn.has(g.en)) gemIconByEn.set(g.en, g.icon)
+  const nk = normGem(g.en)
+  if (nk && !gemIconByNorm.has(nk)) gemIconByNorm.set(nk, g.icon)
+}
 function gemIcon(name: string): string | null {
   let path = gemIconByEn.get(name)
   if (!path) path = gemIconByEn.get(name.replace(ROMAN, '').trim())
+  // normalize fallback: casing/noktalama farklarını ve "Support" ekini hoş gör
+  if (!path) path = gemIconByNorm.get(normGem(name))
+  if (!path) path = gemIconByNorm.get(normGem(name.replace(/support$/i, '')))
   if (!path) return null
   return gemUrlByFile[path.split('/').pop() as string] ?? null
 }
@@ -62,6 +77,18 @@ const props = defineProps<{
 }>()
 const tr = (a: string, b: string): string => (props.isTr ? a : b)
 const emit = defineEmits<{ (e: 'craft'): void }>()
+
+// #2: ascendancy/sınıf adından DOĞRU emblem (veri-tabanlı eşleme; yoksa "ikon yok").
+const className = computed(() => props.raw.className || '')
+// ascendClassName doğrudan varsa onu kullan; yoksa (Mobalytics reconstruction) tahsis edilen
+// AĞAÇ node'larından türet (tüm aşamaların node'ları birleşik) — ör. ice-shot Ranger → Deadeye.
+const ascName = computed(() => {
+  if (props.raw.ascendClassName) return props.raw.ascendClassName
+  const all = new Set<number>()
+  for (const s of props.raw.specs ?? []) for (const n of s.nodes ?? []) all.add(n)
+  return deriveAscendancyName([...all], className.value) || ''
+})
+const emblemUrl = computed(() => buildEmblemUrl(className.value, ascName.value))
 
 // --- Part 2: "elde ettim" işaretleme (kalıcı; gear/mod/gem/node) ---
 const sig = computed(() => buildSig(props.raw))
@@ -99,7 +126,7 @@ const stageIdx = trackedStage
 const stages = computed(() => props.raw.skillSets ?? [])
 const stage = computed(() => stages.value[Math.min(stageIdx.value, Math.max(0, stages.value.length - 1))] ?? null)
 function selectStage(i: number): void {
-  setStage(i) // kalıcı yaz (trackedStage'i de günceller)
+  pinStage(i) // #6: kullanıcı elle seçti → pinle (seviye otomatik takibi ezmez) + kalıcı yaz
 }
 // seçili aşamanın başlığı (kapalı üst bölüm özetinde gösterilir)
 const currentStageTitle = computed(() => stage.value?.title || (props.isTr ? 'Aşama ' : 'Stage ') + (stageIdx.value + 1))
@@ -442,6 +469,20 @@ function onToggleNode(id: number): void {
   toggleDone(nodeDoneId(id))
 }
 
+// #8: pasif ağacı TAM EKRAN büyüt (rahat zoom/pan + büyükken işaretleme de çalışır). Esc ile kapanır.
+const treeFull = ref(false)
+function openTreeFull(): void {
+  treeFull.value = true
+}
+function closeTreeFull(): void {
+  treeFull.value = false
+}
+function onKeydown(e: KeyboardEvent): void {
+  if (e.key === 'Escape' && treeFull.value) closeTreeFull()
+}
+onMounted(() => window.addEventListener('keydown', onKeydown))
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
+
 // --- Part 4: silah seti (weapon set 1/2) ayrımı (yalnız VARSA) ---
 const setNodes = computed<{ set1: number[]; set2: number[] } | null>(() => {
   const s = stageSpec.value as { set1Nodes?: number[]; set2Nodes?: number[] } | null
@@ -492,6 +533,18 @@ const progressSummary = computed(() => {
 
 <template>
   <div class="gv">
+    <!-- #2: build kimliği — ascendancy/sınıf emblemi (DOĞRU eşleme) + ad. Emblem yoksa "ikon yok" (◆). -->
+    <div v-if="className || ascName" class="gv-ident">
+      <span class="gv-ident-em">
+        <img v-if="emblemUrl" :src="emblemUrl" :alt="ascName || className" />
+        <span v-else class="gv-ident-em-ph" :title="tr('ikon yok', 'no icon')">◆</span>
+      </span>
+      <span class="gv-ident-text">
+        <span v-if="ascName" class="gv-ident-asc">{{ ascName }}</span>
+        <span class="gv-ident-cls">{{ className }}</span>
+      </span>
+    </div>
+
     <!-- Sorun #3: üst İKİNCİL bölüm (aşama/variant + ilerleme + silah seti) küçültülebilir; VARSAYILAN
          KAPALI → üç ana bölüm öne çıksın. Kapalıyken tek satır özet (variant + ilerleme %). -->
     <div class="gv-top">
@@ -683,11 +736,16 @@ const progressSummary = computed(() => {
           <div v-if="setNodes && setFilter !== 'all'" class="gv-wset-note gv-wset-note--tree">
             {{ setFilter === 'set1' ? 'Set 1' : 'Set 2' }}: {{ (setFilter === 'set1' ? setNodes.set1 : setNodes.set2).length }} {{ tr('sete özel pasif (amber)', 'set-specific passives (amber)') }}
           </div>
-          <div class="gv-treehint">
-            {{ tr('İpucu: ağaçtaki bir node’a tıkla → "elde ettim" (yeşil) işaretle; kapat-aç’ta kalır.', 'Tip: click a node on the tree → mark as acquired (green); persists across restarts.') }}
+          <div class="gv-treebar2">
+            <span class="gv-treehint">
+              {{ tr('İpucu: ağaçtaki bir node’a tıkla → "elde ettim" (yeşil) işaretle; kapat-aç’ta kalır.', 'Tip: click a node on the tree → mark as acquired (green); persists across restarts.') }}
+            </span>
+            <button class="gv-treefullbtn" :title="tr('Pasif ağacı tam ekran büyüt', 'Enlarge passive tree to full screen')" @click="openTreeFull">
+              ⛶ {{ tr('Tam ekran', 'Full screen') }}
+            </button>
           </div>
           <PassiveTreeCanvas
-            v-if="openSec.tree"
+            v-if="openSec.tree && !treeFull"
             class="gv-treehost"
             :passives-by-id="passivesById"
             :is-tr="isTr"
@@ -719,6 +777,25 @@ const progressSummary = computed(() => {
           </div>
         </div>
       </section>
+    </div>
+
+    <!-- #8: pasif ağaç TAM EKRAN overlay (rahat zoom/pan; işaretleme tam ekranda da çalışır) -->
+    <div v-if="treeFull" class="gv-treefull">
+      <div class="gv-treefull-bar">
+        <span class="gv-treefull-title">✤ {{ tr('Pasif Ağaç — Tam Ekran', 'Passive Tree — Full Screen') }}</span>
+        <span class="gv-treefull-hint">{{ tr('Tekerlek: yakınlaştır · Sürükle: kaydır · Node’a tıkla: işaretle · Esc: kapat', 'Wheel: zoom · Drag: pan · Click node: mark · Esc: close') }}</span>
+        <button class="gv-treefull-close" @click="closeTreeFull">✕ {{ tr('Kapat', 'Close') }}</button>
+      </div>
+      <PassiveTreeCanvas
+        class="gv-treefull-canvas"
+        :passives-by-id="passivesById"
+        :is-tr="isTr"
+        :allocated="allocatedNodes"
+        :highlight="treeHighlight"
+        :done="acquiredNodeIds"
+        :markable="true"
+        @toggle-node="onToggleNode"
+      />
     </div>
 
     <!-- Sorun #1: rune tooltip (üstüne gelince etki metni) -->
@@ -1484,5 +1561,129 @@ const progressSummary = computed(() => {
   padding: 0 6px;
   border-radius: 2px;
   margin-bottom: 5px;
+}
+/* #2: build kimliği (ascendancy/sınıf emblemi + ad) */
+.gv-ident {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 6px 11px;
+  border: 1px solid rgba(184, 154, 102, 0.3);
+  border-radius: 4px;
+  background: linear-gradient(rgba(201, 161, 74, 0.08), rgba(0, 0, 0, 0.25));
+}
+.gv-ident-em {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(201, 161, 74, 0.5);
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.4);
+}
+.gv-ident-em img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gv-ident-em-ph {
+  color: var(--gold-ornament, #c9a14a);
+  font-size: 18px;
+  opacity: 0.7;
+}
+.gv-ident-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.gv-ident-asc {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--gold-title, #d6b15a);
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+}
+.gv-ident-cls {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+/* #8: ağaç araç çubuğu (ipucu + tam ekran butonu) */
+.gv-treebar2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 4px 0 2px;
+}
+.gv-treebar2 .gv-treehint {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+.gv-treefullbtn {
+  flex: none;
+  font: inherit;
+  font-size: 11px;
+  font-variant: small-caps;
+  letter-spacing: 0.03em;
+  color: #2a1f08;
+  background: linear-gradient(#e0b46a, #c89446);
+  border: 1px solid #9a7330;
+  border-radius: 2px;
+  padding: 3px 11px;
+  cursor: pointer;
+}
+.gv-treefullbtn:hover {
+  background: linear-gradient(#ecc279, #d6a052);
+}
+/* #8: tam ekran ağaç overlay */
+.gv-treefull {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-app, #0d0b07);
+}
+.gv-treefull-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: rgba(0, 0, 0, 0.55);
+  border-bottom: 1px solid rgba(184, 154, 102, 0.4);
+}
+.gv-treefull-title {
+  font-size: 15px;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  color: var(--gold-ornament, #c9a14a);
+}
+.gv-treefull-hint {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-right: auto;
+}
+.gv-treefull-close {
+  font: inherit;
+  font-size: 12px;
+  color: #e3c172;
+  background: transparent;
+  border: 1px solid rgba(201, 161, 74, 0.6);
+  border-radius: 3px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.gv-treefull-close:hover {
+  background: rgba(201, 161, 74, 0.16);
+}
+.gv-treefull-canvas {
+  flex: 1 1 auto;
+  min-height: 0;
 }
 </style>

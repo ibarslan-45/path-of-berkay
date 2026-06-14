@@ -254,6 +254,28 @@ check('Cold filtre min = 7 (eşyanın alt değeri, ortalama 11 DEĞİL)', coldF?
 const projF = (qExact.body.query as { stats: Array<{ filters: Array<{ id: string; value?: { min?: number } }> }> }).stats[0].filters.find((f) => f.id === 'explicit.stat_1202301673')
 check('Projectile filtre min = 1 (gerçek rolled)', projF?.value?.min === 1, projF?.value?.min)
 
+// 0.19.0 #7: UNIQUE eşya araması — ada + rarity'ye göre (stat filtresi YOK; sabit modlar rolled değişir)
+console.log('\nUNIQUE araması (#7):')
+const UNIQUE = `Item Class: Bows
+Rarity: Unique
+Widowhail
+Crude Bow
+--------
+Item Level: 65
+--------
+Bow Attacks fire an additional Arrow
+150% increased bonuses gained from equipped Quiver`
+const qiU = parsedToQueryItem(parseClipboard(UNIQUE)!)
+check('rarity Unique algılandı', qiU.rarity === 'Unique', qiU.rarity)
+check('unique adı taşındı', qiU.name === 'Widowhail', qiU.name)
+const qU = buildTradeQuery(qiU)
+const bodyU = qU.body as { query: { name?: string; type?: string; stats?: Array<{ filters: unknown[] }>; filters?: { type_filters?: { filters?: { rarity?: { option?: string } } } } } }
+check('query.name = unique adı', bodyU.query.name === 'Widowhail', bodyU.query.name)
+check('query.type = unique tabanı', bodyU.query.type === 'Crude Bow', bodyU.query.type)
+check('type_filters.rarity = unique', bodyU.query.filters?.type_filters?.filters?.rarity?.option === 'unique', bodyU.query.filters?.type_filters?.filters?.rarity)
+check('unique aramasında stat filtresi YOK (usedStats = 0)', qU.usedStats === 0, qU.usedStats)
+check('unique stat filtreleri boş', (bodyU.query.stats?.[0].filters.length ?? -1) === 0, bodyU.query.stats?.[0].filters.length)
+
 console.log(`\nSONUÇ: ${pass} geçti, ${fail} kaldı`)
 console.log(
   STATS_AVAILABLE

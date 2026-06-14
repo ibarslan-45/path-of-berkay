@@ -14,6 +14,8 @@ import {
   trackedMeta,
   commitBuild,
   setStage,
+  pinStage,
+  stagePinned,
   ensureBuild,
   requestCraft,
   clearBuild as clearBuildStore,
@@ -25,6 +27,7 @@ import { importDotBuild, type ImportReport } from '../lib/build-import'
 import { generateFilter, THEMES, DEFAULT_THEME, validateFilter, type Strictness, type FilterAnalysis } from '../lib/filter-gen'
 import GameBuildView from './GameBuildView.vue'
 import { pobItemToQueryItem, buildItemTradeQuery } from '../lib/build-compare'
+import { buildEmblemUrl, deriveAscendancyName } from '../lib/ascendancy-icon'
 import { openItemInTrade, ensureStats } from '../lib/price-check'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import passivesData from '../../../data/passives.json'
@@ -51,6 +54,21 @@ const code = ref('')
 const error = ref('')
 const build = ref<MatchedBuild | null>(null)
 const buildInfo = ref<{ className: string; ascendClassName: string; level: number } | null>(null)
+// #2: ascendancy/sınıf adından DOĞRU emblem (veri-tabanlı eşleme; yoksa null → gösterilmez).
+// ascendClassName boşsa (Mobalytics) tahsis edilen ağaç node'larından ascendancy'yi türet.
+const buildEmblem = computed(() => {
+  if (!buildInfo.value) return null
+  let asc = buildInfo.value.ascendClassName
+  if (!asc) {
+    const raw = trackedBuild.value
+    if (raw) {
+      const all = new Set<number>()
+      for (const s of raw.specs ?? []) for (const n of s.nodes ?? []) all.add(n)
+      asc = deriveAscendancyName([...all], buildInfo.value.className) || ''
+    }
+  }
+  return buildEmblemUrl(buildInfo.value.className, asc)
+})
 // Bug #1: aşama (variant) PAYLAŞILAN + KALICI store'dan — sekme/oturum/restart korunur.
 const stageIdx = trackedStage
 const viewMode = ref<'list' | 'game'>('game') // Faz 3: oyun-içi tarzı görünüm varsayılan
@@ -433,6 +451,9 @@ function pickFile(): void {
 // Seçili aşamayı mevcut karakter seviyesine göre ayarla (otomatik takip)
 function syncStageToLevel(): void {
   if (!build.value || curLevel.value == null) return
+  // #6: kullanıcı bir variant'ı ELLE seçtiyse otomatik seviye takibi seçimi EZMEZ
+  // (sekme değişimi / bölge-seviye değişimi sonrası seçili variant korunur).
+  if (stagePinned.value) return
   const titles = build.value.skillSets.map((s) => s.title)
   stageIdx.value = stageIndexForLevel(titles, curLevel.value)
 }
@@ -729,6 +750,7 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
         📝 {{ tr('Yazar Notları', 'Author Notes') }} {{ secOpen.notes ? '▾' : '▸' }}
       </button>
       <span v-if="buildInfo" class="bld-summary">
+        <img v-if="buildEmblem" :src="buildEmblem" class="bld-emblem" :alt="buildInfo.ascendClassName || buildInfo.className" />
         {{ buildInfo.className }}<span v-if="buildInfo.ascendClassName"> · {{ buildInfo.ascendClassName }}</span> · Lv {{ buildInfo.level }}
       </span>
       <button class="bld-btn bld-btn--sm" @click="clearBuild">{{ tr('Temizle', 'Clear') }}</button>
@@ -752,6 +774,7 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
           {{ tr('Bu build için filter oluştur', 'Create filter for this build') }} {{ filterOpen ? '▾' : '▸' }}
         </button>
         <span v-if="buildInfo" class="bld-summary">
+          <img v-if="buildEmblem" :src="buildEmblem" class="bld-emblem" :alt="buildInfo.ascendClassName || buildInfo.className" />
           {{ buildInfo.className }}<span v-if="buildInfo.ascendClassName"> · {{ buildInfo.ascendClassName }}</span> · Lv {{ buildInfo.level }}
         </span>
         <span v-if="error" class="bld-error">{{ error }}</span>
@@ -978,7 +1001,7 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
             :key="s.id"
             class="bld-stage"
             :class="{ 'bld-stage--on': i === stageIdx }"
-            @click="stageIdx = i"
+            @click="pinStage(i)"
           >
             {{ s.title || ('Set ' + (i + 1)) }}
           </button>
@@ -1020,7 +1043,7 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
             :key="s.id"
             class="bld-stage"
             :class="{ 'bld-stage--on': i === stageIdx }"
-            @click="stageIdx = i"
+            @click="pinStage(i)"
           >
             {{ s.title || ('Set ' + (i + 1)) }}
           </button>
@@ -1269,6 +1292,17 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
   font-size: 11px;
   font-variant: small-caps;
   color: var(--gem-teal);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.bld-emblem {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(201, 161, 74, 0.5);
+  flex: none;
 }
 .bld-error {
   font-size: 11px;

@@ -33,6 +33,12 @@ const buildRef = ref<PobBuild | null>(null)
 export const trackedBuild = buildRef
 /** Paylaşılan/kalıcı seçili aşama (variant) indexi — list & game görünümü ORTAK kullanır. */
 export const trackedStage = ref(0)
+/**
+ * Kullanıcı aşamayı/variant'ı ELLE seçti mi? (#6) true ise karakter-seviyesi otomatik takibi (syncStageToLevel)
+ * seçimi EZMEZ → sekme değişimi / seviye değişimi sonrası seçili variant KORUNUR. Kalıcı (snapshot meta).
+ * Yeni build içe aktarınca false (varsayılan: seviyeye göre otomatik takip).
+ */
+export const stagePinned = ref(false)
 /** Build meta (importedFrom/info/notes/atıf). */
 export const trackedMeta = ref<BuildMeta>(emptyMeta())
 /** Karşılaştırma için seçili slot adı (BuildView'da eşyaya tıklayınca da set edilir). */
@@ -74,28 +80,42 @@ export function commitBuild(raw: PobBuild, meta: BuildMeta, stage: number): void
   buildRef.value = raw
   trackedMeta.value = meta
   trackedStage.value = stage
+  stagePinned.value = false // yeni build → seviyeye göre otomatik takip (kullanıcı henüz elle seçmedi)
   clearSlotIfGone(raw)
   try {
     // meta düz (plain) klon olmalı — reactive proxy contextBridge'den geçmez (sandbox/contextIsolation).
-    window.api?.build?.setFull?.({ code: meta.code || '', built: JSON.stringify(raw), meta: JSON.parse(JSON.stringify({ ...meta, stage })) })
+    window.api?.build?.setFull?.({ code: meta.code || '', built: JSON.stringify(raw), meta: JSON.parse(JSON.stringify({ ...meta, stage, stagePinned: false })) })
   } catch {
     /* serialize/persist hatası build'i bozmasın */
   }
 }
 
-/** Seçili aşamayı değiştir + kalıcı yaz (variant da restart sonrası korunur). */
-export function setStage(stage: number): void {
-  trackedStage.value = stage
+/** Snapshot meta'yı (aşama + pin durumu dahil) kalıcı yaz. */
+function persistFull(stage: number): void {
   if (!buildRef.value) return
   try {
     window.api?.build?.setFull?.({
       code: trackedMeta.value.code || '',
       built: JSON.stringify(buildRef.value),
-      meta: JSON.parse(JSON.stringify({ ...trackedMeta.value, stage }))
+      meta: JSON.parse(JSON.stringify({ ...trackedMeta.value, stage, stagePinned: stagePinned.value }))
     })
   } catch {
     /* yoksay */
   }
+}
+
+/** Seçili aşamayı değiştir + kalıcı yaz (variant da restart sonrası korunur). Pin durumunu KORUR
+ *  (otomatik seviye senkronu bunu kullanır → pin'i bozmaz). */
+export function setStage(stage: number): void {
+  trackedStage.value = stage
+  persistFull(stage)
+}
+
+/** Kullanıcı aşamayı ELLE seçti (#6): pin'le → seviye otomatik takibi artık ezmez; kalıcı. */
+export function pinStage(stage: number): void {
+  stagePinned.value = true
+  trackedStage.value = stage
+  persistFull(stage)
 }
 
 /** Build'i temizle (bellek + kalıcı). */
@@ -103,6 +123,7 @@ export function clearBuild(): void {
   buildRef.value = null
   trackedMeta.value = emptyMeta()
   trackedStage.value = 0
+  stagePinned.value = false
   selectedSlot.value = ''
   restored = true
   window.api?.build?.set('') // setFull yerine: kod boşalt + snapshot temizle
@@ -118,7 +139,7 @@ export async function ensureBuild(): Promise<PobBuild | null> {
   inited = true
   const full = (await window.api?.build?.getFull?.().catch(() => null)) ?? null
   if (full) {
-    const meta = (full.meta && typeof full.meta === 'object' ? full.meta : {}) as Partial<BuildMeta> & { stage?: number }
+    const meta = (full.meta && typeof full.meta === 'object' ? full.meta : {}) as Partial<BuildMeta> & { stage?: number; stagePinned?: boolean }
     try {
       if (full.built) {
         buildRef.value = JSON.parse(full.built) as PobBuild
@@ -135,6 +156,7 @@ export async function ensureBuild(): Promise<PobBuild | null> {
         code: full.code || meta.code || ''
       }
       trackedStage.value = typeof meta.stage === 'number' ? meta.stage : 0
+      stagePinned.value = meta.stagePinned === true // kullanıcı önceden variant pinlediyse koru
     }
   } else {
     // eski sürüm uyumu: yalnız ham kod varsa
@@ -157,6 +179,7 @@ export async function ensureBuild(): Promise<PobBuild | null> {
         buildRef.value = null
         trackedMeta.value = emptyMeta()
         trackedStage.value = 0
+        stagePinned.value = false
       }
       return
     }
@@ -165,6 +188,7 @@ export async function ensureBuild(): Promise<PobBuild | null> {
       buildRef.value = importPob(c)
       trackedMeta.value = { ...emptyMeta(), importedFrom: 'pob', code: c }
       trackedStage.value = 0
+      stagePinned.value = false
     } catch {
       /* yoksay */
     }
