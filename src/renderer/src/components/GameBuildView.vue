@@ -14,51 +14,22 @@ import { buildItemTradeQuery } from '../lib/build-compare'
 import { openItemInTrade } from '../lib/price-check'
 import { resolveRune } from '../lib/rune-info'
 import { buildEmblemUrl, deriveAscendancyName } from '../lib/ascendancy-icon'
+import { resolveItemBaseIcon } from '../lib/item-icon'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import gemsData from '../../../data/gems.json'
 import treeData from '../../../data/passive-tree.json'
-import itemsData from '../../../data/items.json'
-import modsSimData from '../../../data/mods_sim.json'
 
 // --- bundled ikon çözümü (assets/gems + assets/items + assets/currency; ağ gerekmez) ---
 const gemAssets = import.meta.glob('../../assets/gems/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
-const itemAssets = import.meta.glob('../../assets/items/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 const currencyAssets = import.meta.glob('../../assets/currency/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 const gemUrlByFile: Record<string, string> = {}
 for (const p in gemAssets) gemUrlByFile[p.split('/').pop() as string] = gemAssets[p]
-const itemUrlByFile: Record<string, string> = {}
-for (const p in itemAssets) itemUrlByFile[p.split('/').pop() as string] = itemAssets[p]
 const currencyUrlByFile: Record<string, string> = {}
 for (const p in currencyAssets) currencyUrlByFile[p.split('/').pop() as string] = currencyAssets[p]
 // rune ikon yolu (assets/currency/...png) → bundled URL
 function runeIconUrl(iconPath: string | null): string | null {
   if (!iconPath) return null
   return currencyUrlByFile[iconPath.split('/').pop() as string] ?? null
-}
-// #B1.3: eşya ADINDAN bundled ikon (CDN gelmezse de görünür). Mobalytics'te item.name GERÇEK base/tam addır
-// ("Warden Bow", "Lapis Amulet", "Greater Life Flask"). İki kaynak: items.json (ekipman base'leri) +
-// mods_sim.json bases (flask/charm/talisman dahil). Eşleşme YOKSA null → "ikon yok" (yanlış generic KOYMAZ).
-const nameKey = (s: string): string => (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim()
-const iconFileByName = new Map<string, string>()
-function addName(en: string | undefined, icon: string | null | undefined): void {
-  if (!en || !icon) return
-  const k = nameKey(en)
-  if (k && !iconFileByName.has(k)) iconFileByName.set(k, icon.split('/').pop() as string)
-}
-for (const r of itemsData as Array<{ en?: string; icon?: string | null }>) addName(r.en, r.icon)
-for (const b of ((modsSimData as { bases?: Array<{ en?: string; icon?: string | null }> }).bases ?? [])) addName(b.en, b.icon)
-// magic önekleri ("Greater"/"Lesser"/…) soyarak da dene (items.json'da base, name'de önek olabilir)
-const MAGIC_PREFIX = /^(greater|lesser|grand|giant|colossal|sacred|medium|large|small|flaring|perpetual)\s+/i
-function bundledIconByName(name: string | undefined, base: string | undefined): string | null {
-  for (const cand of [name, base, name && name.replace(MAGIC_PREFIX, '')]) {
-    if (!cand) continue
-    const file = iconFileByName.get(nameKey(cand))
-    if (file) {
-      const url = itemUrlByFile[file]
-      if (url) return url
-    }
-  }
-  return null
 }
 // gem adı → ikon (gems.json en→icon path; roman rakam soyularak da denenir)
 interface GemRec { en: string; icon: string | null }
@@ -161,42 +132,22 @@ const currentStageTitle = computed(() => stage.value?.title || (props.isTr ? 'A�
 // --- GEAR (paper-doll) ---
 // raw.slots: slotName → itemId. Kanonik slot düzeni (oyun karakter ekranı sırası).
 const itemById = computed(() => new Map(props.raw.items.map((it) => [it.id, it])))
-// id → bundled item ikon URL'si (MatchedItem.icon = items.json taban ikonu yolu → glob URL'si)
-const bundledIconById = computed(() => {
-  const m = new Map<string, string>()
-  for (const it of props.items) {
-    if (!it.icon) continue
-    const url = itemUrlByFile[it.icon.split('/').pop() as string]
-    if (url) m.set(it.id, url)
-  }
-  return m
-})
-// uzak ikon (CDN) cache: url → dataUrl (bundled yoksa main net.fetch ile çekilir)
+// uzak ikon (CDN) cache: url → dataUrl (base DB'de OLMAYAN eşyalar/unique için main net.fetch ile çekilir)
 const remoteIcons = ref<Record<string, string>>({})
 async function ensureRemote(url?: string): Promise<void> {
   if (!url || remoteIcons.value[url]) return
   const r = await window.api?.cacheIcon?.(url).catch(() => null)
   if (r?.ok && r.dataUrl) remoteIcons.value = { ...remoteIcons.value, [url]: r.dataUrl }
 }
-// item için ikon (sorun #3 — yanlış base ikonu):
-// EŞYA-ÖZGÜ CDN ikonu (iconUrl) VARSA ÖNCELİKLİDİR. Sebep: Mobalytics yapısal verisinde taban yalnız
-// SINIF adının insanileştirilmişidir ("Ring","Body Armour"). Bazı sınıf adları (örn. "Ring") items.json'da
-// GERÇEK bir tabana denk gelip o tabanın GENEL ikonunu döndürüyordu → eşyanın gerçek ikonu yerine yanlış
-// genel ikon. CDN iconUrl her zaman eşyaya özgü/doğru → onu tercih et; yoksa bundled taban ikonu (PoB/.build,
-// burada taban TAM ad → doğru). Hiçbiri yoksa placeholder.
+// item ikonu — TEK MERKEZİ çözümleyici (item-icon.ts): base_items + craft base'lerinden TAM (exact) eşleme.
+// Non-unique: TAM base eşlemesi AUTHORITATIVE — RARE'de bile Mobalytics `name` = GERÇEK base ("Iron Ring" →
+// IronRing, ASLA "Ring"/MirrorRing'e düşmez); CDN webp başarısız olsa da doğru. Eşleşmezse CDN, o da yoksa
+// "ikon yok". Unique: özel eşya art'ı (CDN) önce, yoksa base ikonu, yoksa "ikon yok" (YANLIŞ ikon ASLA).
 function itemIcon(item: PobItem | null): string | null {
   if (!item) return null
-  // 1) EŞYA-ÖZGÜ CDN ikonu (Mobalytics/Maxroll) — varsa en doğru (gerçek eşya görseli).
-  if (item.iconUrl && remoteIcons.value[item.iconUrl]) return remoteIcons.value[item.iconUrl]
-  // 2) bundled (PoB/.build: MatchedItem.icon = items.json taban ikonu, tam taban → doğru).
-  const byId = bundledIconById.value.get(item.id)
-  if (byId) return byId
-  // 3) #B1.3 bundled ADDAN: Mobalytics item.name GERÇEK base'tir ("Warden Bow"/"Greater Life Flask") →
-  //    CDN gelmese de DOĞRU ikon. SINIF adı base ("Ring"/"Bow") tek başına eşleşmez (nameKey'de yok) →
-  //    yanlış generic riski yok; eşleşmezse null → "ikon yok".
-  const byName = bundledIconByName(item.name, item.base)
-  if (byName) return byName
-  return null
+  const remote = item.iconUrl ? remoteIcons.value[item.iconUrl] ?? null : null
+  if ((item.rarity || '').toUpperCase() === 'UNIQUE') return remote ?? resolveItemBaseIcon(item)
+  return resolveItemBaseIcon(item) ?? remote
 }
 const GEAR_SLOTS: Array<{ slot: string; tr: string; en: string }> = [
   { slot: 'Weapon 1', tr: 'Silah', en: 'Weapon' },
@@ -345,12 +296,14 @@ function toggleSlot(c: GearCell): void {
   const want = !isDone(cellSlotId(c))
   setManyDone([cellSlotId(c), ...cellModIds(c)], want)
 }
-// bundled ikonu olmayan ama uzak iconUrl taşıyan eşyalar için CDN ikonlarını önceden çek
+// base DB'de TAM eşleşmeyen (ör. Changeling Talisman) veya unique eşyalar için CDN ikonlarını önceden çek
 watch(
   [gearCells],
   () => {
     for (const c of gearCells.value) {
-      if (c.item && !bundledIconById.value.get(c.item.id) && c.item.iconUrl) void ensureRemote(c.item.iconUrl)
+      if (!c.item || !c.item.iconUrl) continue
+      const isUnique = (c.item.rarity || '').toUpperCase() === 'UNIQUE'
+      if (isUnique || !resolveItemBaseIcon(c.item)) void ensureRemote(c.item.iconUrl)
     }
   },
   { immediate: true }

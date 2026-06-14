@@ -3,6 +3,16 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.19.3
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 💍 **Eşya base → ikon eşlemesi düzeldi.** "Iron Ring" gibi RARE eşyalar yanlış ikon (Mirror Ring) gösteriyordu; artık ikon, base_items veritabanından eşyanın gerçek adıyla TAM eşleşmeyle gelir (substring/fuzzy yok) — Iron Ring → Iron Ring, Sapphire Charm → Sapphire Charm (Sapphire Ring ile karışmaz). Tam eşleşme yoksa yanlış ikon değil "ikon yok".
+- 🧩 **Tek merkezi ikon çözümleyici.** Build (oyun görünümü + liste) artık aynı merkezi fonksiyondan ikon alır → tüm görünümlerde tutarlı/doğru.
+### 🇬🇧 English
+#### 🐛 Fixes
+- 💍 **Item base → icon mapping fixed.** RARE items like "Iron Ring" showed a wrong icon (Mirror Ring); icons now come from an EXACT match against the base_items DB by the item's real name (no substring/fuzzy) — Iron Ring → Iron Ring, Sapphire Charm → Sapphire Charm (no mix-up with Sapphire Ring). No exact match → "no icon" instead of a wrong one.
+- 🧩 **Single central icon resolver.** The build (game view + list) now resolves icons through the same central function → consistent/correct across all views.
+
 ## 0.19.2
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler

@@ -28,6 +28,7 @@ import { generateFilter, THEMES, DEFAULT_THEME, validateFilter, type Strictness,
 import GameBuildView from './GameBuildView.vue'
 import { pobItemToQueryItem, buildItemTradeQuery } from '../lib/build-compare'
 import { buildEmblemUrl, deriveAscendancyName } from '../lib/ascendancy-icon'
+import { resolveItemBaseIcon } from '../lib/item-icon'
 import { openItemInTrade, ensureStats } from '../lib/price-check'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import passivesData from '../../../data/passives.json'
@@ -103,13 +104,14 @@ let unsubLv: (() => void) | null = null
 const gemIcons = import.meta.glob('../../assets/gems/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 const gemMap: Record<string, string> = {}
 for (const p in gemIcons) gemMap[(p.split('/').pop() as string)] = gemIcons[p]
-// item ikon çözümleme
-const itemIcons = import.meta.glob('../../assets/items/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
-const itemMap: Record<string, string> = {}
-for (const p in itemIcons) itemMap[(p.split('/').pop() as string)] = itemIcons[p]
 function iconUrl(map: Record<string, string>, rel: string | null): string | null {
   if (!rel) return null
   return map[(rel.split('/').pop() as string)] ?? null
+}
+// eşya base ikonu — TEK MERKEZİ resolver (item-icon.ts): base_items'tan TAM eşleme (name→base).
+// MatchedItem.icon kullanılMAZ — RARE'de pureBase=SINIF adına ("Ring") düşüp yanlış ikon (MirrorRing) veriyordu.
+function listItemIcon(it: { name?: string | null; base?: string | null }): string | null {
+  return resolveItemBaseIcon(it)
 }
 
 // --- Maxroll / Mobalytics build linki algılama (Faz 1: rehberli fallback) ---
@@ -1106,7 +1108,7 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
             @click="pickItem(e.item, e.slot)"
           >
             <span class="bld-itemli-slot">{{ slotLabel(e.slot) }}</span>
-            <img v-if="iconUrl(itemMap, e.item.icon)" :src="iconUrl(itemMap, e.item.icon)!" class="bld-itemli-ic" alt="" />
+            <img v-if="listItemIcon(e.item)" :src="listItemIcon(e.item)!" class="bld-itemli-ic" alt="" />
             <span v-else class="bld-itemli-ic bld-itemph">◆</span>
             <span class="bld-itemli-name" :class="'rar-' + e.item.rarity.toLowerCase()">{{ itemName(e.item) }}</span>
             <span v-if="e.slot && e.slot === selectedSlot" class="bld-itemli-cmp">✓</span>
