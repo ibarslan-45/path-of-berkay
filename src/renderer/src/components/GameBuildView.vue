@@ -657,6 +657,7 @@ const progressSummary = computed(() => {
   flex-direction: column;
   gap: 8px;
   min-height: 0;
+  min-width: 0;
   flex: 1;
 }
 .gv-stages {
@@ -690,13 +691,22 @@ const progressSummary = computed(() => {
   flex-direction: column;
   gap: 10px;
   min-height: 0;
+  min-width: 0;
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
-/* accordion bölümü */
+/* accordion bölümü.
+   Sorun #1 (içerik kırpılması): .gv-stack bir flex:1 sütun → çocuklar VARSAYILAN flex-shrink:1 ile
+   sığacak şekilde EZİLİYOR + overflow:hidden ile içerik kırpılıyordu (her bölüm tek satıra iniyordu).
+   flex: none → accordion TAM içerik yüksekliğinde render edilir; taşan yükseklik .gv-stack'in
+   overflow-y:auto'su ile SAYFA gibi aşağı kayar (iç kırpma yok). overflow-x gizli (yatay taşma olmasın). */
 .gv-acc {
   padding: 0;
-  overflow: hidden;
+  flex: none;
+  min-width: 0;
+  overflow-x: hidden;
+  border-radius: 4px;
 }
 .gv-acc-head {
   width: 100%;
@@ -731,6 +741,9 @@ const progressSummary = computed(() => {
 }
 .gv-acc-body {
   padding: 11px 13px;
+  min-width: 0;
+  /* iç scroll / sabit yükseklik YOK — içerik tam boyda; scroll dışarıdaki .gv-stack'te */
+  overflow: visible;
 }
 .gv-sec-head {
   font-variant: small-caps;
@@ -749,9 +762,10 @@ const progressSummary = computed(() => {
 }
 .gv-gear-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 12px;
   align-items: start;
+  width: 100%;
 }
 .gv-slot {
   border: 1px solid rgba(184, 154, 102, 0.25);
@@ -852,9 +866,10 @@ const progressSummary = computed(() => {
 /* Sorun #2: gem grupları tam genişlikte rahat dizilsin (responsive çok-sütun) */
 .gv-gem-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 9px;
   align-items: start;
+  width: 100%;
 }
 /* gem grupları */
 .gv-group {
@@ -1025,6 +1040,7 @@ const progressSummary = computed(() => {
 }
 .gv-treehost {
   height: 440px;
+  max-width: 100%;
   margin-top: 8px;
 }
 

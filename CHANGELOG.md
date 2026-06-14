@@ -3,6 +3,14 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.18.4
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 📐 **Build ekranı bölümleri artık tam açılıyor.** Açılan accordion bölümleri (Ekipman / Yetenek Taşları / Pasif Ağaç) tek satıra sıkışıp sağdan kesiliyordu. Artık her açık bölüm tam yükseklikte render edilir, ekipman ve gem kartları çok satıra sarar (kesilmez) ve içerik için sayfa aşağı kayar.
+### 🇬🇧 English
+#### 🐛 Fixes
+- 📐 **Build screen sections now expand fully.** Open accordion sections (Equipment / Skill Gems / Passive Tree) were squeezed into one row and cut off on the right. Each open section now renders at full height, equipment and gem cards wrap across multiple rows (no clipping), and the page scrolls for the content.
+
 ## 0.18.3
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler
