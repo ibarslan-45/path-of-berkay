@@ -3,6 +3,16 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.19.2
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 🎖️ **Ascendancy node ikonları düzeldi.** Ağaçta ascendancy başlangıç node'u (örn. Deadeye) yanlışlıkla generic kırmızı yumruk ikonu gösteriyordu; artık ascendancy emblemini (kendi ikon setinden) gösterir. Eşleşmeyen ascendancy node'a yumruk değil nötr daire konur.
+- 🔤 **Node adları İngilizce.** Özel-ad kuralı gereği pasif/ascendancy node adları (ve sınıf/ascendancy seçici) TR modunda da İngilizce kalır ("Deadeye", "Mirage Deadeye" — "Keskin Nişancı" değil); yalnız stat/açıklama metni Türkçe.
+### 🇬🇧 English
+#### 🐛 Fixes
+- 🎖️ **Ascendancy node icons fixed.** The ascendancy start node (e.g. Deadeye) in the tree wrongly showed a generic red fist icon; it now shows the ascendancy emblem (from its own icon set). Unmatched ascendancy nodes get a neutral circle, not a fist.
+- 🔤 **Node names in English.** Per the proper-name rule, passive/ascendancy node names (and the class/ascendancy picker) stay English in TR mode too ("Deadeye", "Mirage Deadeye" — not the translated form); only stat/description text is Turkish.
+
 ## 0.19.1
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler

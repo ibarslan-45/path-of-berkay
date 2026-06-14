@@ -11,6 +11,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import treeData from '../../../data/passive-tree.json'
+import { ascendancyIconUrl } from '../lib/ascendancy-icon'
 
 interface PassiveLite {
   id: string
@@ -89,6 +90,24 @@ function getIcon(base: string | null): HTMLImageElement | null {
     img.src = url
     img.onload = () => requestDraw()
     imgCache.set(key, img)
+  }
+  return img.complete && img.naturalWidth > 0 ? img : null
+}
+
+// ascendancy EMBLEMİ (start node'lar için): GGG verisinde start node ikonu generic "damage" (yanlış
+// kırmızı yumruk) → bunun yerine ascendancy adından doğru emblem (assets/ascendancies). ascendancy-icon.ts
+// adı kanonik veriyle eşler; eşleşmezse null → nötr daire (yanlış ikon KOYULMAZ).
+const emblemCache = new Map<string, HTMLImageElement>()
+function getEmblem(name: string | undefined): HTMLImageElement | null {
+  if (!name) return null
+  const url = ascendancyIconUrl(name)
+  if (!url) return null
+  let img = emblemCache.get(name)
+  if (!img) {
+    img = new Image()
+    img.src = url
+    img.onload = () => requestDraw()
+    emblemCache.set(name, img)
   }
   return img.complete && img.naturalWidth > 0 ? img : null
 }
@@ -219,7 +238,8 @@ function onSelectClass(): void {
   requestDraw()
 }
 function classLabel(c: { en: string; tr: string }): string {
-  return props.isTr ? c.tr : c.en
+  // Özel-ad kuralı: sınıf adları TR modunda da EN ("Ranger", "Witch").
+  return c.en
 }
 // seçili sınıfın yükselişleri (yoksa hepsi)
 const ascOptions = computed<AscInfo[]>(() => {
@@ -235,7 +255,8 @@ function onSelectAsc(): void {
   requestDraw()
 }
 function ascLabel(a: AscInfo): string {
-  return (props.isTr ? a.classTr + ' — ' + a.tr : a.classEn + ' — ' + a.en)
+  // Özel-ad kuralı: sınıf + ascendancy adları EN ("Ranger — Deadeye").
+  return a.classEn + ' — ' + a.en
 }
 
 // --- hover / tooltip ---
@@ -262,17 +283,19 @@ function buildTip(skill: number, sx: number, sy: number): void {
   const pid = n[5]
   let name = ''
   let stats: string[] = []
+  // Özel-ad kuralı: pasif/ascendancy node ADLARI TR modunda da İNGİLİZCE kalır
+  // ("Deadeye", "Fast Acting Toxins" — çevrilmez). Yalnız STAT/açıklama metinleri TR olabilir.
   if (pid && props.passivesById[pid]) {
     const p = props.passivesById[pid]
-    name = props.isTr ? p.tr || p.en : p.en || p.tr
+    name = p.en || p.tr
     stats = props.isTr ? (p.stats_tr.length ? p.stats_tr : p.stats_en) : p.stats_en
   } else if (TREE.ascTip[String(skill)]) {
     const a = TREE.ascTip[String(skill)]
-    name = props.isTr ? a.tr || a.en : a.en || a.tr
+    name = a.en || a.tr
     stats = props.isTr ? (a.st.length ? a.st : a.se) : a.se
   } else {
     const l = TREE.labels[String(skill)]
-    name = l ? (props.isTr ? l.tr : l.en) : '(node)'
+    name = l ? l.en || l.tr : '(node)'
   }
   tip.value = { x: sx, y: sy, name, type: typeLabel(n[3]), stats }
 }
@@ -390,8 +413,18 @@ function draw(): void {
     c.fill()
     // ikon — daireye kırpılı. Eşik düşük tutulur (sr>=3.5) ki build ağacının varsayılan (uzak) zoom'unda
     // da node ikonları GÖRÜNSÜN; aksi halde yalnız renkli daireler kalıyordu ("ikon yok" algısı). Çözülemeyen
-    // ikon → null (getIcon) → yalnız nötr daire (YANLIŞ ikon KOYULMAZ).
-    const img = sr >= 3.5 ? getIcon(n[4]) : null
+    // ikon → null → yalnız nötr daire (YANLIŞ ikon KOYULMAZ).
+    // ASCENDANCY BAŞLANGIÇ node'u (code 6): GGG ikonu generic "damage" (yanlış kırmızı yumruk) → ascendancy
+    // EMBLEMİ kullan (kendi ascendancy ikon setinden); emblem yoksa nötr (yumruk DEĞİL).
+    let img: HTMLImageElement | null = null
+    if (sr >= 3.5) {
+      if (code === 6) {
+        const atip = TREE.ascTip[String(n[0])]
+        img = getEmblem(atip?.en)
+      } else {
+        img = getIcon(n[4])
+      }
+    }
     if (img) {
       c.save()
       c.beginPath()
