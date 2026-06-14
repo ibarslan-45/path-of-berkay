@@ -388,8 +388,10 @@ function draw(): void {
     c.arc(sx, sy, r, 0, Math.PI * 2)
     c.fillStyle = TYPE_FILL[code] ?? '#3a3324'
     c.fill()
-    // ikon — daireye kırpılı
-    const img = sr >= 6 ? getIcon(n[4]) : null
+    // ikon — daireye kırpılı. Eşik düşük tutulur (sr>=3.5) ki build ağacının varsayılan (uzak) zoom'unda
+    // da node ikonları GÖRÜNSÜN; aksi halde yalnız renkli daireler kalıyordu ("ikon yok" algısı). Çözülemeyen
+    // ikon → null (getIcon) → yalnız nötr daire (YANLIŞ ikon KOYULMAZ).
+    const img = sr >= 3.5 ? getIcon(n[4]) : null
     if (img) {
       c.save()
       c.beginPath()

@@ -3,6 +3,18 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.19.1
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 🌳 **Pasif ağaç node ikonları artık görünüyor.** Eskiden uzak (varsayılan) yakınlaştırmada node'lar yalnızca renkli daireydi; ikonlar daha küçük zoom'da da çizilir. Eşleşmeyen/dosyası olmayan node'a yanlış ikon değil nötr daire gösterilir.
+- 🖼️ **Ascendancy görseli artık doğru.** Ascendancy, tahsis edilen ascendancy node'larının ADLARINDAN açık eşlemeyle belirlenir (en yakın merkez tahmini kaldırıldı); ice-shot → Deadeye doğru emblemi.
+- 🎒 **Eşya ikonları eksiksiz.** Build'de bazı eşyalar (özellikle flask/charm) boş ikon gösterebiliyordu; artık eşyanın gerçek adından bundled ikon da denenir (CDN gelmese bile görünür), eşleşmezse "ikon yok".
+### 🇬🇧 English
+#### 🐛 Fixes
+- 🌳 **Passive tree node icons now show.** Previously at the default (zoomed-out) view nodes were just colored circles; icons now render at smaller zoom too. Unmatched/missing-file nodes show a neutral circle instead of a wrong icon.
+- 🖼️ **Ascendancy image is now correct.** The ascendancy is determined from the NAMES of the allocated ascendancy nodes via an explicit mapping (nearest-center guessing removed); ice-shot → the correct Deadeye emblem.
+- 🎒 **Complete item icons.** Some build items (especially flasks/charms) could show a blank icon; a bundled icon is now also resolved from the item's real name (visible even without CDN), with "no icon" only when nothing matches.
+
 ## 0.19.0
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler

@@ -17,6 +17,8 @@ import { buildEmblemUrl, deriveAscendancyName } from '../lib/ascendancy-icon'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import gemsData from '../../../data/gems.json'
 import treeData from '../../../data/passive-tree.json'
+import itemsData from '../../../data/items.json'
+import modsSimData from '../../../data/mods_sim.json'
 
 // --- bundled ikon çözümü (assets/gems + assets/items + assets/currency; ağ gerekmez) ---
 const gemAssets = import.meta.glob('../../assets/gems/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
@@ -32,6 +34,31 @@ for (const p in currencyAssets) currencyUrlByFile[p.split('/').pop() as string] 
 function runeIconUrl(iconPath: string | null): string | null {
   if (!iconPath) return null
   return currencyUrlByFile[iconPath.split('/').pop() as string] ?? null
+}
+// #B1.3: eşya ADINDAN bundled ikon (CDN gelmezse de görünür). Mobalytics'te item.name GERÇEK base/tam addır
+// ("Warden Bow", "Lapis Amulet", "Greater Life Flask"). İki kaynak: items.json (ekipman base'leri) +
+// mods_sim.json bases (flask/charm/talisman dahil). Eşleşme YOKSA null → "ikon yok" (yanlış generic KOYMAZ).
+const nameKey = (s: string): string => (s || '').toLowerCase().replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim()
+const iconFileByName = new Map<string, string>()
+function addName(en: string | undefined, icon: string | null | undefined): void {
+  if (!en || !icon) return
+  const k = nameKey(en)
+  if (k && !iconFileByName.has(k)) iconFileByName.set(k, icon.split('/').pop() as string)
+}
+for (const r of itemsData as Array<{ en?: string; icon?: string | null }>) addName(r.en, r.icon)
+for (const b of ((modsSimData as { bases?: Array<{ en?: string; icon?: string | null }> }).bases ?? [])) addName(b.en, b.icon)
+// magic önekleri ("Greater"/"Lesser"/…) soyarak da dene (items.json'da base, name'de önek olabilir)
+const MAGIC_PREFIX = /^(greater|lesser|grand|giant|colossal|sacred|medium|large|small|flaring|perpetual)\s+/i
+function bundledIconByName(name: string | undefined, base: string | undefined): string | null {
+  for (const cand of [name, base, name && name.replace(MAGIC_PREFIX, '')]) {
+    if (!cand) continue
+    const file = iconFileByName.get(nameKey(cand))
+    if (file) {
+      const url = itemUrlByFile[file]
+      if (url) return url
+    }
+  }
+  return null
 }
 // gem adı → ikon (gems.json en→icon path; roman rakam soyularak da denenir)
 interface GemRec { en: string; icon: string | null }
@@ -159,12 +186,17 @@ async function ensureRemote(url?: string): Promise<void> {
 // burada taban TAM ad → doğru). Hiçbiri yoksa placeholder.
 function itemIcon(item: PobItem | null): string | null {
   if (!item) return null
-  // EŞYA-ÖZGÜ CDN ikonu (Mobalytics/Maxroll) varsa YALNIZ onu kullan. Bu kaynaklarda taban yalnız
-  // SINIF adıdır ("Ring","Body Armour") → bundled eşleşmesi GENEL/yanlış olur (ör. "Ring" → rastgele
-  // bir yüzük ikonu). Bu yüzden iconUrl varken bundled'a ASLA düşme: CDN gelmediyse null → "ikon yok"
-  // (yanlış generic ikon KOYMA — sorun #2). Bundled yalnız iconUrl OLMAYAN PoB/.build (tam taban) için.
-  if (item.iconUrl) return remoteIcons.value[item.iconUrl] ?? null
-  return bundledIconById.value.get(item.id) ?? null
+  // 1) EŞYA-ÖZGÜ CDN ikonu (Mobalytics/Maxroll) — varsa en doğru (gerçek eşya görseli).
+  if (item.iconUrl && remoteIcons.value[item.iconUrl]) return remoteIcons.value[item.iconUrl]
+  // 2) bundled (PoB/.build: MatchedItem.icon = items.json taban ikonu, tam taban → doğru).
+  const byId = bundledIconById.value.get(item.id)
+  if (byId) return byId
+  // 3) #B1.3 bundled ADDAN: Mobalytics item.name GERÇEK base'tir ("Warden Bow"/"Greater Life Flask") →
+  //    CDN gelmese de DOĞRU ikon. SINIF adı base ("Ring"/"Bow") tek başına eşleşmez (nameKey'de yok) →
+  //    yanlış generic riski yok; eşleşmezse null → "ikon yok".
+  const byName = bundledIconByName(item.name, item.base)
+  if (byName) return byName
+  return null
 }
 const GEAR_SLOTS: Array<{ slot: string; tr: string; en: string }> = [
   { slot: 'Weapon 1', tr: 'Silah', en: 'Weapon' },
