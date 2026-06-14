@@ -3,6 +3,18 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.18.5
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- 🔹 **Rünler artık okunur.** Ham id ("Runelightninglesser") yerine oyundaki gerçek ad (örn. "Lesser Storm Rune"), rune ikonu ve üstüne gelince etki tooltip'i (silahta/zırhta verdiği stat) gösterilir.
+- 🖼️ **Yanlış eşya ikonları giderildi.** Mobalytics build'lerinde taban yalnızca sınıf adı olduğundan ("Ring" gibi) bazen yanlış genel ikon geliyordu; artık eşyaya özgü ikon kullanılır, eşleşmeyen olursa yanlış ikon yerine "ikon yok" gösterilir.
+- 📐 **Ana bölümler öne çıkıyor.** İkincil kısımlar (içe aktarma kutusu, Yazar Notları, aşama/variant üst bölümü) build yüklenince varsayılan kapalı ve küçültülebilir; Ekipman / Yetenek Taşları / Pasif Ağaç tam genişlikte, ferah kartlarla ekranı kaplar. Aç/kapa durumları kayıtlı kalır.
+### 🇬🇧 English
+#### 🐛 Fixes
+- 🔹 **Runes are now readable.** Instead of a raw id ("Runelightninglesser"), the real in-game name (e.g. "Lesser Storm Rune") is shown with the rune icon and a hover tooltip describing its effect (the stat it grants on a weapon/armour).
+- 🖼️ **Wrong item icons fixed.** In Mobalytics builds the base is only a class name (like "Ring"), which sometimes produced a wrong generic icon; the item-specific icon is now used, and when none matches it shows "no icon" instead of a wrong one.
+- 📐 **Main sections take focus.** Secondary parts (import box, Author Notes, stage/variant header) are collapsed by default and collapsible once a build is loaded; Equipment / Skill Gems / Passive Tree fill the screen full-width with roomy cards. Open/closed states are remembered.
+
 ## 0.18.4
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler

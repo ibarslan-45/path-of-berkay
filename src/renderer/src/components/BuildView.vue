@@ -55,6 +55,27 @@ const buildInfo = ref<{ className: string; ascendClassName: string; level: numbe
 const stageIdx = trackedStage
 const viewMode = ref<'list' | 'game'>('game') // Faz 3: oyun-içi tarzı görünüm varsayılan
 const selectedItemId = ref<string | null>(null)
+// Sorun #3: ikincil bölümleri (içe aktarma kutusu + Yazar Notları) küçültülebilir yap; build yüklenince
+// VARSAYILAN KAPALI → 3 ana bölüm (Ekipman/Gem/Ağaç) öne çıksın. Durum kalıcı (localStorage).
+const LS_BLD_SEC = 'bld-secopen-v1'
+function loadBldSec(): { import: boolean; notes: boolean } {
+  try {
+    const r = JSON.parse(localStorage.getItem(LS_BLD_SEC) || 'null')
+    if (r && typeof r === 'object') return { import: !!r.import, notes: !!r.notes }
+  } catch {
+    /* yok say */
+  }
+  return { import: false, notes: false }
+}
+const secOpen = ref(loadBldSec())
+function toggleBldSec(k: 'import' | 'notes'): void {
+  secOpen.value = { ...secOpen.value, [k]: !secOpen.value[k] }
+  try {
+    localStorage.setItem(LS_BLD_SEC, JSON.stringify(secOpen.value))
+  } catch {
+    /* yok say */
+  }
+}
 // Leveling tracker'dan gelen karakter seviyesi → aşamayı otomatik seçer
 const curLevel = ref<number | null>(null)
 let unsub: (() => void) | null = null
@@ -698,8 +719,23 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
 
 <template>
   <div class="bld">
-    <!-- ÜST: kod kutusu + içe aktar -->
-    <div class="bld-import">
+    <!-- Sorun #3: build yüklüyken İKİNCİL kısımlar (içe aktarma + notlar) küçük toolbar'a iner,
+         VARSAYILAN KAPALI → Ekipman/Gem/Ağaç öne çıkar. -->
+    <div v-if="build" class="bld-toolbar">
+      <button class="bld-btn bld-btn--sm" @click="toggleBldSec('import')">
+        📥 {{ tr('İçe Aktar / Değiştir', 'Import / Change') }} {{ secOpen.import ? '▾' : '▸' }}
+      </button>
+      <button v-if="notes" class="bld-btn bld-btn--sm" @click="toggleBldSec('notes')">
+        📝 {{ tr('Yazar Notları', 'Author Notes') }} {{ secOpen.notes ? '▾' : '▸' }}
+      </button>
+      <span v-if="buildInfo" class="bld-summary">
+        {{ buildInfo.className }}<span v-if="buildInfo.ascendClassName"> · {{ buildInfo.ascendClassName }}</span> · Lv {{ buildInfo.level }}
+      </span>
+      <button class="bld-btn bld-btn--sm" @click="clearBuild">{{ tr('Temizle', 'Clear') }}</button>
+    </div>
+
+    <!-- ÜST: kod kutusu + içe aktar (build yoksa her zaman açık; varsa küçültülebilir) -->
+    <div v-show="!build || secOpen.import" class="bld-import">
       <textarea
         v-model="code"
         class="bld-code"
@@ -897,8 +933,9 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
       </div>
     </div>
 
-    <!-- YAZAR NOTLARI (Faz 4): orijinal metin + opsiyonel LLM TR çeviri -->
-    <div v-if="notes && build" class="bld-notes panel-frame">
+    <!-- YAZAR NOTLARI (Faz 4): orijinal metin + opsiyonel LLM TR çeviri. Sorun #3: build varken
+         VARSAYILAN KAPALI (toolbar'dan açılır); build yokken her zaman görünür. -->
+    <div v-if="notes && build && secOpen.notes" class="bld-notes panel-frame">
       <div class="bld-notes-head">
         <span class="bld-notes-title">{{ tr('Yazar Notları', 'Author Notes') }}</span>
         <!-- çeviri hazır: TR / Orijinal(EN) geçişi + otomatik/cache rozeti (Faz 5) -->
@@ -1209,6 +1246,18 @@ async function copy(text: string, which: 'regex' | 'base'): Promise<void> {
 .bld-btn:hover {
   border-color: var(--gold-line, #b89a66);
   color: #fff;
+}
+/* Sorun #3: küçültülmüş ikincil bölüm toolbar'ı */
+.bld-toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.bld-btn--sm {
+  font-size: 11px;
+  padding: 3px 9px;
 }
 .bld-btn--primary {
   color: #0a1614;

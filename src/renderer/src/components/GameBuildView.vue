@@ -12,17 +12,26 @@ import { buildSig, slotProgressId, modProgressId, gemProgressId, nodeProgressId 
 import { slotWeaponSet, buildHasWeaponSets } from '../lib/weapon-set'
 import { buildItemTradeQuery } from '../lib/build-compare'
 import { openItemInTrade } from '../lib/price-check'
+import { resolveRune } from '../lib/rune-info'
 import PassiveTreeCanvas from './PassiveTreeCanvas.vue'
 import gemsData from '../../../data/gems.json'
 import treeData from '../../../data/passive-tree.json'
 
-// --- bundled ikon çözümü (assets/gems + assets/items; ağ gerekmez) ---
+// --- bundled ikon çözümü (assets/gems + assets/items + assets/currency; ağ gerekmez) ---
 const gemAssets = import.meta.glob('../../assets/gems/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 const itemAssets = import.meta.glob('../../assets/items/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
+const currencyAssets = import.meta.glob('../../assets/currency/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 const gemUrlByFile: Record<string, string> = {}
 for (const p in gemAssets) gemUrlByFile[p.split('/').pop() as string] = gemAssets[p]
 const itemUrlByFile: Record<string, string> = {}
 for (const p in itemAssets) itemUrlByFile[p.split('/').pop() as string] = itemAssets[p]
+const currencyUrlByFile: Record<string, string> = {}
+for (const p in currencyAssets) currencyUrlByFile[p.split('/').pop() as string] = currencyAssets[p]
+// rune ikon yolu (assets/currency/...png) → bundled URL
+function runeIconUrl(iconPath: string | null): string | null {
+  if (!iconPath) return null
+  return currencyUrlByFile[iconPath.split('/').pop() as string] ?? null
+}
 // gem adı → ikon (gems.json en→icon path; roman rakam soyularak da denenir)
 interface GemRec { en: string; icon: string | null }
 const gemRecs = ((gemsData as { records?: GemRec[] }).records ?? (gemsData as GemRec[]))
@@ -92,6 +101,8 @@ const stage = computed(() => stages.value[Math.min(stageIdx.value, Math.max(0, s
 function selectStage(i: number): void {
   setStage(i) // kalıcı yaz (trackedStage'i de günceller)
 }
+// seçili aşamanın başlığı (kapalı üst bölüm özetinde gösterilir)
+const currentStageTitle = computed(() => stage.value?.title || (props.isTr ? 'Aşama ' : 'Stage ') + (stageIdx.value + 1))
 
 // --- GEAR (paper-doll) ---
 // raw.slots: slotName → itemId. Kanonik slot düzeni (oyun karakter ekranı sırası).
@@ -121,12 +132,11 @@ async function ensureRemote(url?: string): Promise<void> {
 // burada taban TAM ad → doğru). Hiçbiri yoksa placeholder.
 function itemIcon(item: PobItem | null): string | null {
   if (!item) return null
-  if (item.iconUrl) {
-    const cdn = remoteIcons.value[item.iconUrl]
-    if (cdn) return cdn
-    // CDN yükleniyor: geçici olarak bundled taban ikonu (varsa), yoksa yüklenene kadar placeholder
-    return bundledIconById.value.get(item.id) ?? null
-  }
+  // EŞYA-ÖZGÜ CDN ikonu (Mobalytics/Maxroll) varsa YALNIZ onu kullan. Bu kaynaklarda taban yalnız
+  // SINIF adıdır ("Ring","Body Armour") → bundled eşleşmesi GENEL/yanlış olur (ör. "Ring" → rastgele
+  // bir yüzük ikonu). Bu yüzden iconUrl varken bundled'a ASLA düşme: CDN gelmediyse null → "ikon yok"
+  // (yanlış generic ikon KOYMA — sorun #2). Bundled yalnız iconUrl OLMAYAN PoB/.build (tam taban) için.
+  if (item.iconUrl) return remoteIcons.value[item.iconUrl] ?? null
   return bundledIconById.value.get(item.id) ?? null
 }
 const GEAR_SLOTS: Array<{ slot: string; tr: string; en: string }> = [
@@ -223,17 +233,32 @@ interface VMod {
   idx: number // item.mods içindeki orijinal index
   fromRune: boolean
 }
+// Bir takılı rune: oyundaki gerçek ad + ikon + etki (tooltip). Çözülemezse ham ad + ikon yok.
+interface RuneView {
+  name: string // gösterilen ad (çözülürse gerçek oyun adı; özel ad → EN)
+  icon: string | null
+  descLines: string[] // etki satırları (tooltip)
+  resolved: boolean
+}
 interface CellParsed {
   mods: VMod[] // görünür mod kontrol listesi (rune kimlik satırları HARİÇ)
-  runes: string[] // takılı rune adları (Rünler satırı)
+  runes: RuneView[] // takılı rune'lar (Rünler satırı)
 }
 function parseCell(c: GearCell): CellParsed {
   const mods: VMod[] = []
-  const runes: string[] = []
+  const runes: RuneView[] = []
   if (!c.item) return { mods, runes }
   c.item.mods.forEach((m, idx) => {
     if (RUNE_NAME_RE.test(m)) {
-      runes.push(m.replace(RUNE_NAME_RE, '').trim())
+      const rawName = m.replace(RUNE_NAME_RE, '').trim()
+      const info = resolveRune(rawName)
+      const desc = info ? (props.isTr ? info.descTr : info.descEn) : ''
+      runes.push({
+        name: info ? info.en : rawName, // özel ad her zaman EN (gerçek oyun adı)
+        icon: info ? runeIconUrl(info.icon) : null,
+        descLines: desc ? desc.split('\n').filter(Boolean) : [],
+        resolved: !!info
+      })
       return
     }
     if (RUNE_SUFFIX_RE.test(m)) {
@@ -365,6 +390,34 @@ function toggleSec(k: SecKey): void {
   }
 }
 
+// Sorun #3: üst İKİNCİL bölüm (aşama/variant + ilerleme + silah seti) açılır-kapanır, VARSAYILAN KAPALI
+// → üç ana bölüm (Ekipman/Gem/Ağaç) öne çıksın. Durum kalıcı (localStorage).
+const LS_TOP = 'gv-topopen-v1'
+const topOpen = ref<boolean>((() => {
+  try {
+    return localStorage.getItem(LS_TOP) === '1'
+  } catch {
+    return false
+  }
+})())
+function toggleTop(): void {
+  topOpen.value = !topOpen.value
+  try {
+    localStorage.setItem(LS_TOP, topOpen.value ? '1' : '0')
+  } catch {
+    /* yok say */
+  }
+}
+
+// Sorun #1: rune tooltip (üstüne gelince etki metni). Fixed konumlu küçük kart.
+const runeTip = ref<{ name: string; lines: string[]; x: number; y: number } | null>(null)
+function showRuneTip(ev: MouseEvent, r: RuneView): void {
+  runeTip.value = { name: r.name, lines: r.descLines, x: ev.clientX, y: ev.clientY }
+}
+function hideRuneTip(): void {
+  runeTip.value = null
+}
+
 // kayda değer (notable/keystone) tahsis edilen node'lar → işaretlenebilir liste (her node yerine
 // anlamlı node'lar; minör node'lar sayıyla gösterilir — dürüst, kullanışlı yorum)
 const notableNodes = computed<Array<{ id: number; name: string }>>(() => {
@@ -439,34 +492,48 @@ const progressSummary = computed(() => {
 
 <template>
   <div class="gv">
-    <!-- aşama / variant seçici (birden çok skillSet varsa) -->
-    <div v-if="stages.length > 1" class="gv-stages">
-      <span class="gv-stages-lbl">{{ tr('Aşama / Variant', 'Stage / Variant') }}</span>
-      <button
-        v-for="(s, i) in stages"
-        :key="s.id"
-        class="gv-stage"
-        :class="{ 'gv-stage--on': i === stageIdx }"
-        @click="selectStage(i)"
-      >
-        {{ s.title || tr('Aşama', 'Stage') + ' ' + (i + 1) }}
+    <!-- Sorun #3: üst İKİNCİL bölüm (aşama/variant + ilerleme + silah seti) küçültülebilir; VARSAYILAN
+         KAPALI → üç ana bölüm öne çıksın. Kapalıyken tek satır özet (variant + ilerleme %). -->
+    <div class="gv-top">
+      <button class="gv-top-head" @click="toggleTop">
+        <span class="gv-acc-caret">{{ topOpen ? '▾' : '▸' }}</span>
+        {{ tr('Build bilgisi', 'Build info') }}
+        <span class="gv-top-summary">
+          <span v-if="stages.length > 1" class="gv-top-variant">{{ currentStageTitle }}</span>
+          {{ tr('İlerleme', 'Progress') }} {{ progressSummary.done }}/{{ progressSummary.total }} · {{ progressSummary.pct }}%
+        </span>
       </button>
-    </div>
+      <div v-show="topOpen" class="gv-top-body">
+        <!-- aşama / variant seçici (birden çok skillSet varsa) -->
+        <div v-if="stages.length > 1" class="gv-stages">
+          <span class="gv-stages-lbl">{{ tr('Aşama / Variant', 'Stage / Variant') }}</span>
+          <button
+            v-for="(s, i) in stages"
+            :key="s.id"
+            class="gv-stage"
+            :class="{ 'gv-stage--on': i === stageIdx }"
+            @click="selectStage(i)"
+          >
+            {{ s.title || tr('Aşama', 'Stage') + ' ' + (i + 1) }}
+          </button>
+        </div>
 
-    <!-- Part 2: ilerleme özeti (bu aşama için "elde ettiğim" oranı) -->
-    <div class="gv-prog">
-      <span class="gv-prog-lbl">{{ tr('İlerleme (bu aşama)', 'Progress (this stage)') }}</span>
-      <div class="gv-prog-bar"><div class="gv-prog-fill" :style="{ width: progressSummary.pct + '%' }"></div></div>
-      <span class="gv-prog-num">{{ progressSummary.done }} / {{ progressSummary.total }} · {{ progressSummary.pct }}%</span>
-    </div>
+        <!-- ilerleme özeti (bu aşama için "elde ettiğim" oranı) -->
+        <div class="gv-prog">
+          <span class="gv-prog-lbl">{{ tr('İlerleme (bu aşama)', 'Progress (this stage)') }}</span>
+          <div class="gv-prog-bar"><div class="gv-prog-fill" :style="{ width: progressSummary.pct + '%' }"></div></div>
+          <span class="gv-prog-num">{{ progressSummary.done }} / {{ progressSummary.total }} · {{ progressSummary.pct }}%</span>
+        </div>
 
-    <!-- #2: silah seti (weapon set 1/2) filtresi — gear + gem + pasif ağaç hepsine uygulanır (yalnız VARSA) -->
-    <div v-if="hasWeaponSets" class="gv-wset gv-wset--global">
-      <span class="gv-wset-lbl">{{ tr('Silah Seti', 'Weapon Set') }}:</span>
-      <button class="gv-wset-btn" :class="{ 'gv-wset-btn--on': setFilter === 'all' }" @click="setFilter = 'all'">{{ tr('Tümü', 'All') }}</button>
-      <button class="gv-wset-btn gv-wset-btn--s1" :class="{ 'gv-wset-btn--on': setFilter === 'set1' }" @click="setFilter = 'set1'">Set 1</button>
-      <button class="gv-wset-btn gv-wset-btn--s2" :class="{ 'gv-wset-btn--on': setFilter === 'set2' }" @click="setFilter = 'set2'">Set 2</button>
-      <span class="gv-wset-note">{{ tr('silahlar, silaha soketli gem’ler ve sete özel pasifler etiketlenir', 'weapons, weapon-socketed gems and set-specific passives are labeled') }}</span>
+        <!-- silah seti (weapon set 1/2) filtresi — gear + gem + pasif ağaç hepsine uygulanır (yalnız VARSA) -->
+        <div v-if="hasWeaponSets" class="gv-wset gv-wset--global">
+          <span class="gv-wset-lbl">{{ tr('Silah Seti', 'Weapon Set') }}:</span>
+          <button class="gv-wset-btn" :class="{ 'gv-wset-btn--on': setFilter === 'all' }" @click="setFilter = 'all'">{{ tr('Tümü', 'All') }}</button>
+          <button class="gv-wset-btn gv-wset-btn--s1" :class="{ 'gv-wset-btn--on': setFilter === 'set1' }" @click="setFilter = 'set1'">Set 1</button>
+          <button class="gv-wset-btn gv-wset-btn--s2" :class="{ 'gv-wset-btn--on': setFilter === 'set2' }" @click="setFilter = 'set2'">Set 2</button>
+          <span class="gv-wset-note">{{ tr('silahlar, silaha soketli gem’ler ve sete özel pasifler etiketlenir', 'weapons, weapon-socketed gems and set-specific passives are labeled') }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Sorun #2: bölümler ALT ALTA, tam genişlik, her biri AÇ/KAPA (accordion) -->
@@ -512,7 +579,7 @@ const progressSummary = computed(() => {
                   </li>
                 </ul>
                 <div v-else-if="!info.runes.length" class="gv-item-nomods">{{ tr('— mod verisi yok (doğrulanmalı)', '— no mod data (verify)') }}</div>
-                <!-- Sorun #4: ayrı RÜNLER satırı — kaç soket / hangi rune takılı -->
+                <!-- Sorun #1: ayrı RÜNLER satırı — kaç soket + her rune'un GERÇEK adı + ikonu + tooltip(etki) -->
                 <div v-if="info.runes.length" class="gv-runes">
                   <span class="gv-runes-lbl">🔹 {{ tr('Rünler', 'Runes') }}</span>
                   <span class="gv-runes-count">{{ info.runes.length }} {{ tr('soket', info.runes.length === 1 ? 'socket' : 'sockets') }}</span>
@@ -520,8 +587,13 @@ const progressSummary = computed(() => {
                     v-for="(rn, ri) in info.runes"
                     :key="ri"
                     class="gv-rune-chip"
-                    :title="tr('Takılı rune', 'Socketed rune') + ': ' + rn"
-                  >{{ rn }}</span>
+                    @mouseenter="showRuneTip($event, rn)"
+                    @mouseleave="hideRuneTip"
+                  >
+                    <img v-if="rn.icon" :src="rn.icon" class="gv-rune-ic" alt="" />
+                    <span v-else class="gv-rune-ic gv-rune-ic--ph" :title="tr('ikon yok', 'no icon')">◆</span>
+                    <span class="gv-rune-name">{{ rn.name }}</span>
+                  </span>
                 </div>
                 <!-- aksiyon butonları KENDİ satırında (başlıkla çakışmaz) -->
                 <div class="gv-slot-actions">
@@ -648,8 +720,24 @@ const progressSummary = computed(() => {
         </div>
       </section>
     </div>
+
+    <!-- Sorun #1: rune tooltip (üstüne gelince etki metni) -->
+    <div
+      v-if="runeTip"
+      class="gv-runetip"
+      :style="{ left: Math.min(runeTip.x + 14, 900) + 'px', top: runeTip.y + 14 + 'px' }"
+    >
+      <div class="gv-runetip-name">🔹 {{ runeTip.name }}</div>
+      <div v-if="runeTip.lines.length" class="gv-runetip-lines">
+        <div v-for="(l, li) in runeTip.lines" :key="li">{{ l }}</div>
+      </div>
+      <div v-else class="gv-runetip-none">{{ tr('etki verisi yok', 'no effect data') }}</div>
+    </div>
   </div>
 </template>
+
+<!-- not: rune tooltip .gv'ye göre sabit konumlu (fixed) -->
+
 
 <style scoped>
 .gv {
@@ -659,6 +747,50 @@ const progressSummary = computed(() => {
   min-height: 0;
   min-width: 0;
   flex: 1;
+}
+/* Sorun #3: küçültülebilir üst "build bilgisi" (aşama/ilerleme/silah seti) */
+.gv-top {
+  flex: none;
+  border: 1px solid rgba(184, 154, 102, 0.25);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.gv-top-head {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  padding: 5px 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gv-top-head:hover {
+  background: rgba(201, 161, 74, 0.06);
+}
+.gv-top-summary {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #c9bfa6;
+}
+.gv-top-variant {
+  color: #1a1408;
+  background: linear-gradient(#d9b765, #c19a45);
+  border-radius: 2px;
+  padding: 0 7px;
+  font-weight: 600;
+}
+.gv-top-body {
+  padding: 4px 11px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .gv-stages {
   display: flex;
@@ -762,8 +894,8 @@ const progressSummary = computed(() => {
 }
 .gv-gear-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  gap: 13px;
   align-items: start;
   width: 100%;
 }
@@ -866,8 +998,8 @@ const progressSummary = computed(() => {
 /* Sorun #2: gem grupları tam genişlikte rahat dizilsin (responsive çok-sütun) */
 .gv-gem-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 9px;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 11px;
   align-items: start;
   width: 100%;
 }
@@ -915,12 +1047,58 @@ const progressSummary = computed(() => {
   color: var(--text-muted);
 }
 .gv-rune-chip {
-  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
   color: #d6e2ff;
   background: rgba(90, 130, 220, 0.2);
   border: 1px solid rgba(120, 160, 235, 0.45);
   border-radius: 3px;
-  padding: 1px 7px;
+  padding: 1px 7px 1px 3px;
+  cursor: help;
+}
+.gv-rune-ic {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex: none;
+}
+.gv-rune-ic--ph {
+  width: 20px;
+  text-align: center;
+  color: #9cc0ff;
+  opacity: 0.7;
+}
+.gv-rune-name {
+  font-weight: 600;
+}
+/* rune tooltip (üstüne gelince etki) */
+.gv-runetip {
+  position: fixed;
+  z-index: 50;
+  max-width: 320px;
+  background: #14130f;
+  border: 1px solid rgba(120, 160, 235, 0.55);
+  border-radius: 4px;
+  padding: 7px 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+.gv-runetip-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #9cc0ff;
+  margin-bottom: 4px;
+}
+.gv-runetip-lines {
+  font-size: 11.5px;
+  color: #d8cdb4;
+  line-height: 1.5;
+}
+.gv-runetip-none {
+  font-size: 11px;
+  color: var(--text-muted);
 }
 .gv-active {
   display: flex;
