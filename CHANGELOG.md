@@ -3,6 +3,22 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.19.6
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- ⚖ **Build Karşılaştırması doğru eşyayı gösterir.** Craft'a gönderdiğin eşya, artık AYNI slot + AYNI aşama/variant'taki build eşyasıyla karşılaştırılır (örn. lvl 31-41 Cultist Bow → o aşamadaki Cultist Bow). Başlıkta aşama yazar ("Weapon 1 · lvl 31-41"); istersen başka aşama/slot seçebilirsin.
+#### ✨ İyileştirmeler
+- 📏 **Gereken item level yazılıyor.** Hedef panelinde ve düşme şansı listesinde her tier için gereken minimum ilvl gösterilir (örn. "T20 → ilvl 54 gerekir; mevcut 33"). Bir tier bu ilvl'de normal rollanamıyorsa net belirtilir.
+- 🚫 **"Bende yok" → alternatif yol.** Koç bir malzeme önerince (Exalted Orb / Essence / Omen) "Bende yok" diyebilirsin; o malzeme hariç tutulur ve koç elindekilerle alternatif yolu yeniden çizer. Hariç tutulanlar hatırlanır, tek tıkla geri alınır.
+- ◆ **Koç daha derin düşünür.** Çok adımlı plan (zincir + kümülatif şans), tier→ilvl farkındalığı, prefix/sonek doluluk mantığı, gerçekçi alternatifler ve risk notları; tüm sayılar gerçek mod havuzundan (uydurma yok).
+### 🇬🇧 English
+#### 🐛 Fixes
+- ⚖ **Build Comparison shows the right item.** The item you send to crafting is now compared against the build item in the SAME slot + SAME stage/variant (e.g. lvl 31-41 Cultist Bow → that stage's Cultist Bow). The header shows the stage ("Weapon 1 · lvl 31-41"); you can still pick another stage/slot.
+#### ✨ Improvements
+- 📏 **Required item level shown.** The target panel and drop-chance list show the minimum ilvl needed for each tier (e.g. "T20 → needs ilvl 54; current 33"). If a tier can't be normally rolled at this ilvl, it says so clearly.
+- 🚫 **"Don't have" → alternative path.** When the coach suggests a material (Exalted Orb / Essence / Omen) you can mark "Don't have"; it's excluded and the coach re-plans an alternative with what you have. Exclusions are remembered and undone with one click.
+- ◆ **Deeper coach.** Multi-step plan (chain + cumulative chance), tier→ilvl awareness, prefix/suffix fullness logic, realistic alternatives and risk notes; all numbers from the real mod pool (nothing made up).
+
 ## 0.19.5
 ### 🇹🇷 Türkçe
 #### 🐛 Düzeltmeler

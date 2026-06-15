@@ -177,7 +177,9 @@ function niceSlotLabel(slot: string): string {
 // id → eşleşmiş eşya (pureBase/itemClass → Craft tohumu için)
 const matchedById = computed(() => new Map(props.items.map((i) => [i.id, i])))
 // Part 5: bu eşyayı Craft Simülatörü'ne gönder (SOL=taban, SAĞ=hedef modlar). App mode'u Craft'a geçer.
-function craftItem(item: PobItem | null): void {
+// 0.19.6: slot + aşama/variant da iletilir → Build Karşılaştırması varsayılan olarak DOĞRU eşyayı
+// (aynı slot + aynı aşamadaki build eşyası) gösterir.
+function craftItem(item: PobItem | null, slot?: string): void {
   if (!item) return
   const mi = matchedById.value.get(item.id)
   requestCraft({
@@ -187,7 +189,10 @@ function craftItem(item: PobItem | null): void {
     itemClass: mi?.itemClass ?? null,
     rarity: item.rarity,
     mods: item.mods,
-    itemLevel: item.itemLevel
+    itemLevel: item.itemLevel,
+    slot,
+    stageIdx: stageIdx.value,
+    stageLabel: stages.value.length > 1 ? currentStageTitle.value : ''
   })
   emit('craft')
 }
@@ -638,7 +643,7 @@ const progressSummary = computed(() => {
                   <button
                     class="gv-craftbtn"
                     :title="tr('Bu eşyayı Craft Simülatörü’ne gönder (hedef olarak)', 'Send this item to the Craft Simulator (as target)')"
-                    @click="craftItem(info.c.item)"
+                    @click="craftItem(info.c.item, info.c.slot)"
                   >⚒ {{ tr('Craft’la', 'Craft') }}</button>
                   <button
                     class="gv-tradebtn"

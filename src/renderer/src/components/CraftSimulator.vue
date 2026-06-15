@@ -28,6 +28,7 @@ import {
   evaluateTarget,
   type TargetEntry,
   type TargetableGroup,
+  type TargetRow,
   type SimBase,
   type ItemState,
   type HistoryEntry,
@@ -47,7 +48,7 @@ import {
 } from '../lib/craft-advisor'
 import { itemStateToQueryItem, type QueryItem } from '../lib/trade-query'
 import { estimateValue, openItemInTrade, priceErrMsg, type PriceEstimate } from '../lib/price-check'
-import { ensureBuild, trackedBuild, gearSlots, slotItem, selectedSlot, guessSlot, consumeCraftSeed, craftSeedItem } from '../lib/build-target'
+import { ensureBuild, trackedBuild, selectedSlot, guessSlot, consumeCraftSeed, craftSeedItem, stagedGearSlots, stagedSlotItem, stageLabels } from '../lib/build-target'
 import { craftSeedFromItem, type CraftSeedItem } from '../lib/build-craft-seed'
 import { compareMods, type CompareResult } from '../lib/build-compare'
 
@@ -365,10 +366,53 @@ function clearTargets(): void {
   targets.value = []
   saveCraft()
 }
+// hedef satırının "neden olmuyor" notu — tier ulaşılamıyorsa GEREKEN ilvl'i yaz (örn. T20 → ilvl 82 gerekir)
+function targetBadNote(r: TargetRow): string {
+  if (r.reasonCode === 'not_on_base') return tr('bu tabanda yok', 'not on base')
+  if (r.reasonCode === 'tier_unreachable' && r.reqIlvl != null && item.value && r.reqIlvl > item.value.ilvl)
+    return tr(`ilvl ${r.reqIlvl} gerekir (mevcut ${item.value.ilvl})`, `needs ilvl ${r.reqIlvl} (current ${item.value.ilvl})`)
+  return tr('en iyi T' + r.bestTier, 'best T' + r.bestTier)
+}
+// çıkmaz kutusu için ilvl özeti (tier ilvl'e takılan hedefler)
+const deadendIlvlNote = computed<string>(() => {
+  const ts = targetStatus.value
+  if (!ts || !item.value) return ''
+  const ilvlBlocked = ts.rows.filter((r) => !r.feasible && r.reasonCode === 'tier_unreachable' && r.reqIlvl != null && r.reqIlvl > item.value!.ilvl)
+  if (!ilvlBlocked.length) return ''
+  const need = Math.max(...ilvlBlocked.map((r) => r.reqIlvl as number))
+  return tr(`hedef tier için ilvl ${need} gerekir (mevcut ${item.value.ilvl})`, `target tier needs ilvl ${need} (current ${item.value.ilvl})`)
+})
+
+// --- "BENDE YOK" — kullanıcının elinde olmayan malzemeler (action id'leri) hariç tutulur ---
+// Koç bu malzemeleri kullanmaz, eldekilerle alternatif yol çizer. Plan değişince hatırlanır.
+const excludedMaterials = ref<Set<string>>(new Set())
+const excludedList = computed<Array<{ id: string; label: string }>>(() =>
+  [...excludedMaterials.value].map((id) => ({ id, label: excludedLabels.value.get(id) ?? id }))
+)
+// id → okunur ad (hariç tutulanları listede göstermek için; aday üretiminden toplanır)
+const excludedLabels = ref<Map<string, string>>(new Map())
+function excludeMaterial(a: ActionEval): void {
+  const next = new Set(excludedMaterials.value)
+  next.add(a.id)
+  excludedMaterials.value = next
+  const m = new Map(excludedLabels.value)
+  m.set(a.id, actionName(a))
+  excludedLabels.value = m
+}
+function unexcludeMaterial(id: string): void {
+  const next = new Set(excludedMaterials.value)
+  next.delete(id)
+  excludedMaterials.value = next
+}
+function clearExcluded(): void {
+  excludedMaterials.value = new Set()
+}
+// craft değişince (yeni taban/tohum) hariç-tutma sıfırlanır (yeni eşya = farklı envanter bağlamı değil,
+// ama temiz başlamak mantıklı; yine de kullanıcı tekrar işaretleyebilir)
 
 // --- USTA CRAFT YARDIMCISI (offline, çok-adımlı) ---
 const plan = computed<CraftPlan | null>(() =>
-  item.value && targets.value.length ? planCraft(item.value, targets.value) : null
+  item.value && targets.value.length ? planCraft(item.value, targets.value, excludedMaterials.value) : null
 )
 // Usta crafter'ın "mevcut durum değerlendirmesi" (rarity + dolu slotlar + hedef ilerleme + dolu taraf uyarısı)
 const stateAssessment = computed<string>(() => {
@@ -603,8 +647,8 @@ function buildLlmContext(): unknown {
   const it = item.value
   if (!it) return {}
   const status = evaluateTarget(it, targets.value)
-  const p = planCraft(it, targets.value)
-  const cands = enumerateActions(it, targets.value)
+  const p = planCraft(it, targets.value, excludedMaterials.value)
+  const cands = enumerateActions(it, targets.value, excludedMaterials.value)
   actionMap = {}
   const pct = (n: number): number => +(n * 100).toFixed(1)
   // odaklı, grounded aksiyon listesi: ilerleten + garanti essence + temel manipülasyonlar
@@ -794,11 +838,19 @@ const seedSource = ref<CraftSeedItem | null>(null) // gösterim için orijinal b
 const seedApplied = ref(false) // #3: bir "Craft'la" tohumu uygulandı mı (kayıtlı-craft yükleyici ezmesin)
 const seedUnmatched = ref<string[]>([])
 const seedNotice = ref<{ baseEn: string; matched: number; unmatched: number; suggested: boolean } | null>(null)
+// 0.19.6: tohumun geldiği slot + aşama → Build Karşılaştırması varsayılan olarak DOĞRU eşyayı gösterir.
+const seedSlot = ref<string>('')
+const seedStageIdx = ref<number | null>(null)
 function applyCraftSeed(it: CraftSeedItem): void {
   const seed = craftSeedFromItem(it)
   seedApplied.value = true // kayıtlı-craft yükleyici (async) tohumu ezmesin
   seedSource.value = it
   seedUnmatched.value = seed.unmatched
+  // karşılaştırma varsayılanı: bu eşyanın AYNI slotu + AYNI aşaması
+  seedSlot.value = it.slot ?? ''
+  seedStageIdx.value = typeof it.stageIdx === 'number' ? it.stageIdx : null
+  if (it.slot) selectedSlot.value = it.slot
+  excludedMaterials.value = new Set() // yeni eşya → temiz envanter varsayımı
   // baseEn artık item-class tahminiyle de dolabilir (baseSuggested) — selClass SIM sınıfı listede olmalı.
   if (seed.baseEn && seed.itemClass && classes.value.includes(seed.itemClass)) {
     // SOL taraf: bu eşyanın SAF/beyaz tabanı (kesin VEYA tahmini; kullanıcı taban kutusundan düzeltebilir)
@@ -831,18 +883,35 @@ function dismissSeedNotice(): void {
   seedSource.value = null
   seedUnmatched.value = []
 }
-const compareSlots = computed(() => (trackedBuild.value ? gearSlots(trackedBuild.value) : []))
-// seçili slot: global selectedSlot (BuildView'dan) → yoksa item tabanına göre tahmin
+// AŞAMA-FARKINDA karşılaştırma: craft'ı başlattığın eşyanın aşaması (varsa) varsayılan;
+// kullanıcı başka aşama/variant seçebilir. Tek-aşamalı build'lerde (PoB/.build) aşama gizlenir.
+const compareStages = computed(() => (trackedBuild.value ? stageLabels(trackedBuild.value) : []))
+const compareStageIdx = ref<number>(0)
+// tohum aşaması gelince (veya build değişince) karşılaştırma aşamasını ona ayarla
+watch([seedStageIdx, trackedBuild], () => {
+  if (seedStageIdx.value != null) compareStageIdx.value = seedStageIdx.value
+}, { immediate: true })
+const compareSlots = computed(() =>
+  trackedBuild.value ? stagedGearSlots(trackedBuild.value, compareStageIdx.value) : []
+)
+// seçili slot: tohum slotu (selectedSlot) → o aşamada varsa → yoksa item tabanına göre tahmin
 const compareSlot = computed<string>({
   get() {
-    if (selectedSlot.value && trackedBuild.value?.slots[selectedSlot.value]) return selectedSlot.value
-    if (trackedBuild.value && item.value) return guessSlot(trackedBuild.value, item.value.base.item_class || item.value.base.en)
-    return ''
+    const b = trackedBuild.value
+    if (!b) return ''
+    if (selectedSlot.value && stagedSlotItem(b, compareStageIdx.value, selectedSlot.value)) return selectedSlot.value
+    if (item.value) {
+      const g = guessSlot(b, item.value.base.item_class || item.value.base.en)
+      if (g && stagedSlotItem(b, compareStageIdx.value, g)) return g
+    }
+    return compareSlots.value[0]?.slot ?? ''
   },
   set(v: string) {
     selectedSlot.value = v
   }
 })
+// aşama etiketi (örn. "lvl 31-41") — karşılaştırma başlığında gösterilir
+const compareStageLabel = computed<string>(() => compareStages.value.find((s) => s.idx === compareStageIdx.value)?.label ?? '')
 function craftCandidateLines(): string[] {
   if (!item.value) return []
   const out: string[] = []
@@ -854,7 +923,7 @@ function craftCandidateLines(): string[] {
 const compareResult = computed<CompareResult | null>(() => {
   const b = trackedBuild.value
   if (!b || !item.value || !compareSlot.value) return null
-  const tgt = slotItem(b, compareSlot.value)
+  const tgt = stagedSlotItem(b, compareStageIdx.value, compareSlot.value)
   if (!tgt) return null
   return compareMods(tgt.mods, craftCandidateLines())
 })
@@ -906,6 +975,11 @@ function pct(g: GroupChance): string {
 }
 // düşme şansı listesi mod adı: HER ZAMAN İngilizce (eşya kartı/trade ile tutarlı)
 const chanceText = (g: GroupChance): string => g.en.replace(/\n/g, ', ')
+// tier→ilvl bilgisi: bu ilvl'de erişilen en iyi tier + bir üstü için gereken ilvl
+function chanceTierHint(g: GroupChance): string {
+  if (g.topTier >= 99) return ''
+  return g.nextIlvl != null ? `T${g.topTier} (T${g.topTier - 1}→ilvl ${g.nextIlvl})` : `T${g.topTier}`
+}
 
 // --- tooltip yardımcıları ---
 function modLine(m: RolledMod): { en: string; tr: string; tier: number; tierMax: number; range: string; special: boolean; boosted: boolean } {
@@ -1320,11 +1394,19 @@ function parts(text: string): { t: string; num: boolean }[] {
           </div>
           <div v-if="!trackedBuild" class="cs-cmp-empty">{{ tr('Önce Build sekmesinden bir build içe aktar.', 'Import a build from the Build tab first.') }}</div>
           <template v-else>
+            <!-- aşama/variant seçici (yalnız çok-aşamalı build'lerde) — varsayılan craft'ın geldiği aşama -->
+            <div v-if="compareStages.length > 1" class="cs-cmp-slotrow">
+              <span class="cs-cmp-lbl">{{ tr('Aşama', 'Stage') }}</span>
+              <select v-model.number="compareStageIdx" class="cs-cmp-select">
+                <option v-for="s in compareStages" :key="s.idx" :value="s.idx">{{ s.label }}</option>
+              </select>
+            </div>
             <div class="cs-cmp-slotrow">
               <span class="cs-cmp-lbl">{{ tr('Hedef slot', 'Target slot') }}</span>
               <select v-model="compareSlot" class="cs-cmp-select">
                 <option v-for="s in compareSlots" :key="s.slot" :value="s.slot">{{ s.slot }} — {{ s.item.name || s.item.base }}</option>
               </select>
+              <span v-if="compareStageLabel" class="cs-cmp-stagetag">· {{ compareStageLabel }}</span>
             </div>
             <div v-if="!compareResult" class="cs-cmp-empty">{{ tr('Karşılaştırılacak hedef eşya yok', 'No target item to compare') }}</div>
             <template v-else>
@@ -1383,7 +1465,10 @@ function parts(text: string): { t: string; num: boolean }[] {
             <div class="cs-adv-primary">
               <div class="cs-adv-plabel">{{ tr('Önerilen ilk adım', 'Recommended first step') }}</div>
               <div class="cs-adv-ptext">{{ stepDesc(plan.steps[0]) }}</div>
-              <button class="cs-essapply cs-adv-btn" @click="applyPrimary">▸ {{ actionName(plan.steps[0].action) }} — {{ tr('Uygula', 'Apply') }}</button>
+              <div class="cs-adv-pbtns">
+                <button class="cs-essapply cs-adv-btn" @click="applyPrimary">▸ {{ actionName(plan.steps[0].action) }} — {{ tr('Uygula', 'Apply') }}</button>
+                <button class="cs-adv-nohave" :title="tr('Bu malzeme bende yok — başka yol çiz', 'I don’t have this material — find another way')" @click="excludeMaterial(plan.steps[0].action)">✕ {{ tr('Bende yok', 'Don’t have') }}</button>
+              </div>
             </div>
 
             <!-- ÇOK-ADIMLI YOL -->
@@ -1409,12 +1494,24 @@ function parts(text: string): { t: string; num: boolean }[] {
               <div class="cs-adv-whyprimary">
                 {{ tr('«' + actionName(plan.steps[0].action) + '» öneriyorum (en dengeli); alternatifler:', 'I recommend «' + actionName(plan.steps[0].action) + '» (most balanced); alternatives:') }}
               </div>
-              <button v-for="(a, i) in plan.alternatives" :key="i" class="cs-adv-alt" @click="applyAlt(a)">
-                <span class="cs-adv-alttxt">{{ altDesc(a) }}</span>
-                <span class="cs-adv-altcost">{{ '£'.repeat(a.action.costRank) }}</span>
-              </button>
+              <div v-for="(a, i) in plan.alternatives" :key="i" class="cs-adv-altrow">
+                <button class="cs-adv-alt" @click="applyAlt(a)">
+                  <span class="cs-adv-alttxt">{{ altDesc(a) }}</span>
+                  <span class="cs-adv-altcost">{{ '£'.repeat(a.action.costRank) }}</span>
+                </button>
+                <button class="cs-adv-nohave cs-adv-nohave--sm" :title="tr('Bu malzeme bende yok', 'I don’t have this material')" @click="excludeMaterial(a.action)">✕</button>
+              </div>
             </div>
           </template>
+
+          <!-- "BENDE YOK" — hariç tutulan malzemeler + geri al -->
+          <div v-if="excludedList.length" class="cs-adv-excluded">
+            <span class="cs-adv-exlbl">{{ tr('Hariç (bende yok)', 'Excluded (don’t have)') }}:</span>
+            <button v-for="e in excludedList" :key="e.id" class="cs-adv-exchip" :title="tr('Geri ekle', 'Add back')" @click="unexcludeMaterial(e.id)">
+              {{ e.label }} ↩
+            </button>
+            <button class="cs-adv-exclear" @click="clearExcluded">{{ tr('hepsini geri al', 'reset all') }}</button>
+          </div>
 
           <!-- RİSK NOTLARI (tüm durumlarda) -->
           <div v-if="plan.risks.length" class="cs-adv-risks">
@@ -1441,6 +1538,7 @@ function parts(text: string): { t: string; num: boolean }[] {
                 <span class="cs-chance-pct">{{ pct(g) }}</span>
                 <span class="cs-chance-name">{{ chanceText(g) }}</span>
                 <span v-if="g.range" class="cs-chance-range">{{ g.range }}</span>
+                <span v-if="chanceTierHint(g)" class="cs-chance-tier" :title="tr('en iyi erişilebilir tier · bir üstü için gereken ilvl', 'best reachable tier · ilvl needed for one tier better')">{{ chanceTierHint(g) }}</span>
               </div>
               <div v-if="!chances.prefix.length" class="cs-chance-row cs-chance-none">—</div>
             </div>
@@ -1450,6 +1548,7 @@ function parts(text: string): { t: string; num: boolean }[] {
                 <span class="cs-chance-pct">{{ pct(g) }}</span>
                 <span class="cs-chance-name">{{ chanceText(g) }}</span>
                 <span v-if="g.range" class="cs-chance-range">{{ g.range }}</span>
+                <span v-if="chanceTierHint(g)" class="cs-chance-tier" :title="tr('en iyi erişilebilir tier · bir üstü için gereken ilvl', 'best reachable tier · ilvl needed for one tier better')">{{ chanceTierHint(g) }}</span>
               </div>
               <div v-if="!chances.suffix.length" class="cs-chance-row cs-chance-none">—</div>
             </div>
@@ -1535,9 +1634,10 @@ function parts(text: string): { t: string; num: boolean }[] {
               <span class="cs-target-name">
                 {{ groupLabel(r) }} <b>T{{ r.minTier }}+</b>
                 <span v-if="rowRange(r)" class="cs-target-range">{{ rowRange(r) }}</span>
+                <span v-if="r.reqIlvl != null && r.feasible" class="cs-target-ilvl" :class="{ 'cs-target-ilvl--bad': item && r.reqIlvl > item.ilvl }">· {{ tr('ilvl', 'ilvl') }} {{ r.reqIlvl }}</span>
                 <span v-if="r.currentTier" class="cs-target-cur">· {{ tr('şu an', 'now') }} T{{ r.currentTier }}</span>
                 <span v-if="!r.feasible" class="cs-target-bad">
-                  · {{ r.reasonCode === 'not_on_base' ? tr('bu tabanda yok', 'not on base') : tr('en iyi T' + r.bestTier, 'best T' + r.bestTier) }}
+                  · {{ targetBadNote(r) }}
                 </span>
               </span>
               <button class="cs-target-rm" :title="tr('Kaldır', 'Remove')" @click="removeTarget(r.group)">×</button>
@@ -1548,6 +1648,7 @@ function parts(text: string): { t: string; num: boolean }[] {
           <div v-if="targets.length && targetStatus && !targetStatus.feasible" class="cs-target-deadend">
             ⚠ {{ tr('Bu hedef bu tabanda/ilvl’de mümkün değil', 'This target is impossible on this base/ilvl') }}
             <span v-if="targetStatus.limitOver"> — {{ targetStatus.prefixWant }}P/{{ targetStatus.suffixWant }}S > {{ targetStatus.cap }}</span>
+            <span v-else-if="deadendIlvlNote"> — {{ deadendIlvlNote }}</span>
           </div>
           <div v-else-if="targetStatus && targetStatus.reached" class="cs-target-win">★ {{ tr('Hedefe ulaşıldı!', 'Target reached!') }}</div>
           <button v-if="targets.length" class="cs-hbtn cs-target-clear" @click="clearTargets">{{ tr('Hedefi temizle', 'Clear target') }}</button>
@@ -3292,5 +3393,94 @@ function parts(text: string): { t: string; num: boolean }[] {
   margin-top: 5px;
   font-size: 11px;
   color: #e2a0a0;
+}
+
+/* --- 0.19.6: aşama etiketi + tier→ilvl + "bende yok" --- */
+.cs-cmp-stagetag {
+  font-size: 11px;
+  color: #c2a878;
+  margin-left: 4px;
+}
+.cs-target-ilvl {
+  font-size: 10px;
+  color: #8fb0c8;
+  margin-left: 3px;
+}
+.cs-target-ilvl--bad {
+  color: #e0a85a;
+  font-weight: 600;
+}
+.cs-chance-tier {
+  font-size: 10px;
+  color: #8aa0b4;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+.cs-adv-pbtns {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.cs-adv-nohave {
+  background: rgba(140, 60, 60, 0.3);
+  border: 1px solid rgba(200, 110, 110, 0.45);
+  color: #e0aaaa;
+  border-radius: 3px;
+  font-size: 11px;
+  padding: 2px 8px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.cs-adv-nohave:hover {
+  background: rgba(180, 70, 70, 0.5);
+  color: #fff;
+}
+.cs-adv-nohave--sm {
+  padding: 2px 6px;
+}
+.cs-adv-altrow {
+  display: flex;
+  gap: 4px;
+  align-items: stretch;
+  margin-bottom: 3px;
+}
+.cs-adv-altrow .cs-adv-alt {
+  flex: 1 1 auto;
+  margin-bottom: 0;
+}
+.cs-adv-excluded {
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(200, 110, 110, 0.3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+.cs-adv-exlbl {
+  font-size: 11px;
+  color: #c89090;
+}
+.cs-adv-exchip {
+  background: rgba(90, 50, 50, 0.35);
+  border: 1px solid rgba(190, 110, 110, 0.4);
+  color: #e0b0b0;
+  border-radius: 10px;
+  font-size: 10px;
+  padding: 1px 8px;
+  cursor: pointer;
+}
+.cs-adv-exchip:hover {
+  background: rgba(120, 60, 60, 0.55);
+  color: #fff;
+}
+.cs-adv-exclear {
+  background: none;
+  border: none;
+  color: #9aa0a6;
+  font-size: 10px;
+  cursor: pointer;
+  text-decoration: underline;
 }
 </style>

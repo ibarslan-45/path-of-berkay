@@ -23,6 +23,10 @@ export interface CraftSeedItem {
   rarity?: string
   mods: string[]
   itemLevel?: number
+  // Build karşılaştırması için: bu eşyanın geldiği slot + aşama/variant (varsayılan hedef doğru olsun).
+  slot?: string // örn. "Weapon 1"
+  stageIdx?: number // hangi aşama/variant'tan geldi (Mobalytics stageSlots indexi)
+  stageLabel?: string // okunur aşama etiketi (örn. "lvl 31-41")
 }
 
 export interface CraftSeed {

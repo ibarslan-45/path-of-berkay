@@ -846,6 +846,18 @@ export function groupTierRanges(group: string, affix: 'prefix' | 'suffix'): stri
   return fam.map((m) => tierRangeText(m))
 }
 
+/** Bir grup+affix'in T<tier> mod'u (tier 1 = en yüksek ilvl). Yoksa null. */
+export function modAtTier(group: string, affix: 'prefix' | 'suffix', tier: number): SimMod | null {
+  const fam = SIM_MODS.filter((m) => m.group === group && m.affix === affix).sort((a, b) => b.ilvl - a.ilvl)
+  return fam[tier - 1] ?? null
+}
+
+/** T<tier>'i rollamak için gereken minimum item level (mod ilvl'i). Yoksa null. */
+export function requiredIlvlForTier(group: string, affix: 'prefix' | 'suffix', tier: number): number | null {
+  const m = modAtTier(group, affix, tier)
+  return m ? m.ilvl : null
+}
+
 /**
  * ELLE GİRİŞ (gerçek oyun sonucu): bir grup+affix için, kullanıcının girdiği gerçek değer(ler)e uyan
  * SimMod'u seç + o değerlerle RolledMod üret. Tier, değerin tier aralıklarına oturtulmasıyla belirlenir
@@ -993,6 +1005,7 @@ export interface TargetRow {
   feasible: boolean
   reasonCode: '' | 'not_on_base' | 'tier_unreachable'
   bestTier: number
+  reqIlvl: number | null // hedef tier'ını (minTier) rollamak için gereken minimum item level
 }
 export interface TargetStatus {
   rows: TargetRow[]
@@ -1048,7 +1061,8 @@ export function evaluateTarget(item: ItemState, targets: TargetEntry[]): TargetS
       met,
       feasible,
       reasonCode,
-      bestTier
+      bestTier,
+      reqIlvl: requiredIlvlForTier(t.group, affix, t.minTier)
     }
   })
   const limitOver = prefixWant > cap || suffixWant > cap
@@ -1200,6 +1214,8 @@ export interface GroupChance {
   weight: number
   chance: number // 0..1 (birleşik havuza göre)
   range: string // bu grupta erişilebilir tier'ların birleşik değer aralığı
+  topTier: number // bu ilvl'de erişilebilen EN İYİ tier (en düşük tier sayısı)
+  nextIlvl: number | null // bir üst tier'ı (daha iyi) açmak için gereken ilvl (yoksa null)
 }
 export interface ChancePreview {
   total: number
@@ -1223,7 +1239,7 @@ export function groupChances(item: ItemState, op: OpName): ChancePreview {
     const key = e.mod.affix + '|' + e.mod.group
     let g = agg.get(key)
     if (!g) {
-      g = { group: e.mod.group, affix: e.mod.affix, en: e.mod.text_en, tr: e.mod.text_tr, weight: 0, chance: 0, range: '' }
+      g = { group: e.mod.group, affix: e.mod.affix, en: e.mod.text_en, tr: e.mod.text_tr, weight: 0, chance: 0, range: '', topTier: 99, nextIlvl: null }
       agg.set(key, g)
     }
     g.weight += e.weight
@@ -1234,7 +1250,11 @@ export function groupChances(item: ItemState, op: OpName): ChancePreview {
   const all = [...agg.values()]
   for (const g of all) {
     g.chance = total > 0 ? g.weight / total : 0
-    g.range = combinedRange(groupMods.get(g.affix + '|' + g.group) ?? [])
+    const gm = groupMods.get(g.affix + '|' + g.group) ?? []
+    g.range = combinedRange(gm)
+    // bu ilvl'de erişilen en iyi tier + bir üst tier için gereken ilvl (tier→ilvl bilgisi)
+    g.topTier = gm.length ? Math.min(...gm.map((m) => tierOf(m))) : 99
+    g.nextIlvl = g.topTier > 1 ? requiredIlvlForTier(g.group, g.affix, g.topTier - 1) : null
   }
   all.sort((a, b) => b.weight - a.weight)
   return {

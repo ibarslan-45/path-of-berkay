@@ -1,7 +1,7 @@
 {
   "name": "path-of-berkay",
   "productName": "Path of Berkay",
-  "version": "0.19.5",
+  "version": "0.19.6",
   "description": "Path of Berkay (PoBe) — PoE 2 iki dilli (EN/TR) veritabanı",
   "main": "./out/main/index.js",
   "author": "Berkay",

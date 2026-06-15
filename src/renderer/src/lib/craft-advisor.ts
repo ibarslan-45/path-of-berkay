@@ -256,7 +256,7 @@ function opRisk(op: OpName, item: ItemState, allTargets: Set<string>, keepers: S
 }
 
 /** Belirli bir state + hedef için TÜM yasal işlemleri değerlendirilmiş aday listesine çıkarır. */
-export function enumerateActions(item: ItemState, targets: TargetEntry[]): ActionEval[] {
+export function enumerateActions(item: ItemState, targets: TargetEntry[], excluded: Set<string> = new Set()): ActionEval[] {
   const { missing, allTargets, keepers } = missingInfo(item, targets)
   const minTierByGroup = new Map<string, number>(targets.map((t) => [t.group, t.minTier]))
   const out: ActionEval[] = []
@@ -385,13 +385,18 @@ export function enumerateActions(item: ItemState, targets: TargetEntry[]): Actio
     })
   }
 
+  // KULLANICIDA OLMAYAN MALZEMELER ("bende yok") hariç tutulur: aynı id + bir baz op hariç
+  // tutulduysa o op'u kullanan omen-op'lar da (omen+exalt için Exalted Orb gerekir) düşer.
+  const usable = excluded.size
+    ? out.filter((a) => !excluded.has(a.id) && !(a.kind === 'omen-op' && a.op != null && excluded.has('op:' + a.op)))
+    : out
   // sıralama: önce ilerleten (yüksek şans), sonra ucuz, sonra düşük risk
-  out.sort((a, b) => {
+  usable.sort((a, b) => {
     if (b.progressChance !== a.progressChance) return b.progressChance - a.progressChance
     if (a.costRank !== b.costRank) return a.costRank - b.costRank
     return a.risk.lossChance - b.risk.lossChance
   })
-  return out
+  return usable
 }
 
 // ============================================================================
@@ -428,8 +433,8 @@ function isEssReq(item: ItemState, r: TargetRow): boolean {
 }
 
 /** Mevcut state + hedeften en iyi tekniği tanır ve birincil adımı döndürür (deterministik). */
-export function recommendPrimary(item: ItemState, targets: TargetEntry[]): Recommendation {
-  const cands = enumerateActions(item, targets)
+export function recommendPrimary(item: ItemState, targets: TargetEntry[], excluded: Set<string> = new Set()): Recommendation {
+  const cands = enumerateActions(item, targets, excluded)
   const st = evaluateTarget(item, targets)
   const byId = (id: string): ActionEval | undefined => cands.find((c) => c.id === id)
   const allTargetGroups = new Set(targets.map((t) => t.group))
@@ -758,8 +763,8 @@ function stepChance(action: ActionEval, rationaleCode: string): { chance: number
 }
 
 /** İlk adım birincil aksiyona karşı 1-2 alternatif yaklaşım (farklı teknik, karşılaştırmalı). */
-function buildAlternatives(item: ItemState, targets: TargetEntry[], primary: ActionEval, primaryChance: number): PlanAlternative[] {
-  const cands = enumerateActions(item, targets)
+function buildAlternatives(item: ItemState, targets: TargetEntry[], primary: ActionEval, primaryChance: number, excluded: Set<string> = new Set()): PlanAlternative[] {
+  const cands = enumerateActions(item, targets, excluded)
   // hedefe ilerleten adaylar (ekleme şansı>0 VEYA garantili-isabet essence)
   const progressors = cands.filter((c) => c.progressChance > 0 || (c.kind === 'essence' && c.progressChance === 1))
   // teknik başına en iyi (şans desc, maliyet asc)
@@ -795,8 +800,8 @@ function buildAlternatives(item: ItemState, targets: TargetEntry[], primary: Act
 
 const RISK_RANK: Record<string, number> = { corruption_locked: 0, annul_danger: 1, chaos_remove: 2, fracture_random: 3, vaal_irreversible: 4 }
 /** Mevcut state için en alakalı genel risk notları (gerçek sayılarla). */
-function buildRisks(item: ItemState, targets: TargetEntry[]): RiskNote[] {
-  const cands = enumerateActions(item, targets)
+function buildRisks(item: ItemState, targets: TargetEntry[], excluded: Set<string> = new Set()): RiskNote[] {
+  const cands = enumerateActions(item, targets, excluded)
   const risks: RiskNote[] = []
   if (item.corrupted) risks.push({ code: 'corruption_locked', level: 'high', lossChance: 0 })
   const annul = cands.find((c) => c.op === 'annul')
@@ -812,8 +817,8 @@ function buildRisks(item: ItemState, targets: TargetEntry[]): RiskNote[] {
 }
 
 /** Hedefe giden çok-adımlı plan (mevcut state'ten başlar; 1-3 adım). */
-export function planCraft(item: ItemState, targets: TargetEntry[]): CraftPlan {
-  const rec0 = recommendPrimary(item, targets)
+export function planCraft(item: ItemState, targets: TargetEntry[], excluded: Set<string> = new Set()): CraftPlan {
+  const rec0 = recommendPrimary(item, targets, excluded)
   if (rec0.kind !== 'plan') {
     const deadend: DeadendInfo | undefined =
       rec0.kind === 'deadend'
@@ -828,7 +833,7 @@ export function planCraft(item: ItemState, targets: TargetEntry[]): CraftPlan {
       cumulative: rec0.kind === 'reached' ? 1 : 0,
       cumulativeApprox: false,
       alternatives: [],
-      risks: buildRisks(item, targets),
+      risks: buildRisks(item, targets, excluded),
       deadend,
       deadendCode: rec0.deadendCode,
       targetEn: rec0.targetEn,
@@ -838,7 +843,7 @@ export function planCraft(item: ItemState, targets: TargetEntry[]): CraftPlan {
   const steps: PlanStep[] = []
   let state = item
   for (let i = 0; i < 3; i++) {
-    const rec = recommendPrimary(state, targets)
+    const rec = recommendPrimary(state, targets, excluded)
     if (rec.kind === 'reached') break
     if (rec.kind !== 'plan' || !rec.primary) break
     const sc = stepChance(rec.primary, rec.rationaleCode)
@@ -859,7 +864,7 @@ export function planCraft(item: ItemState, targets: TargetEntry[]): CraftPlan {
   let cumulative = 1
   for (const s of steps) cumulative *= s.chance
   const firstStep = steps[0]
-  const alternatives = firstStep ? buildAlternatives(item, targets, firstStep.action, firstStep.chance) : []
+  const alternatives = firstStep ? buildAlternatives(item, targets, firstStep.action, firstStep.chance, excluded) : []
   return {
     kind: 'plan',
     strategy: rec0.strategy,
@@ -869,7 +874,7 @@ export function planCraft(item: ItemState, targets: TargetEntry[]): CraftPlan {
     cumulative,
     cumulativeApprox: steps.some((s) => !s.deterministic && s.chance < 1),
     alternatives,
-    risks: buildRisks(item, targets),
+    risks: buildRisks(item, targets, excluded),
     targetEn: rec0.targetEn,
     targetTr: rec0.targetTr
   }

@@ -228,6 +228,37 @@ export function gearSlots(build: PobBuild): Array<{ slot: string; item: PobItem 
   return out
 }
 
+// --- AŞAMA-FARKINDA slot çözümü (Mobalytics: her variant kendi ekipmanını taşır) ---
+// Build Karşılaştırması, craft'ı başlattığın eşyanın AYNI aşamasındaki/slotundaki build eşyasıyla
+// karşılaştırsın diye stageIdx-duyarlı yardımcılar. stageSlots yoksa tek `slots`'a düşer.
+
+/** Bir aşamanın slot→itemId haritası (stageSlots varsa onu, yoksa build.slots). */
+export function stageSlotsMap(build: PobBuild, stageIdx: number): Record<string, string> {
+  return build.stageSlots?.[stageIdx] ?? build.slots ?? {}
+}
+/** Bir aşamadaki bir slot'taki eşya (yoksa null). */
+export function stagedSlotItem(build: PobBuild, stageIdx: number, slot: string): PobItem | null {
+  const id = stageSlotsMap(build, stageIdx)[slot]
+  if (!id) return null
+  return build.items.find((i) => i.id === id) ?? null
+}
+/** Bir aşamadaki EKİPMAN slot'ları (flask/jewel/socket/swap hariç). */
+export function stagedGearSlots(build: PobBuild, stageIdx: number): Array<{ slot: string; item: PobItem }> {
+  const out: Array<{ slot: string; item: PobItem }> = []
+  for (const slot of Object.keys(stageSlotsMap(build, stageIdx))) {
+    if (NON_GEAR.test(slot)) continue
+    const item = stagedSlotItem(build, stageIdx, slot)
+    if (item) out.push({ slot, item })
+  }
+  return out
+}
+/** Aşama/variant etiketleri (skillSets başlıkları). Birden çok aşama yoksa boş dizi. */
+export function stageLabels(build: PobBuild): Array<{ idx: number; label: string }> {
+  const sets = build.skillSets ?? []
+  if (sets.length <= 1) return []
+  return sets.map((s, i) => ({ idx: i, label: s.title || `Stage ${i + 1}` }))
+}
+
 // item_class / base → büyük olasılıkla uyan slot (overlay otomatik seçimi için)
 const CLASS_SLOT: Array<[RegExp, string]> = [
   [/body armour|garb|plate|vest|robe/i, 'Body Armour'],
