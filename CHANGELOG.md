@@ -3,6 +3,20 @@
 > Sürüm notları hem uygulama-içi "Neler Değişti" bildiriminde hem de GitHub Releases açıklamasında gösterilir.
 > Her sürüm iki dillidir (🇹🇷 Türkçe / 🇬🇧 English). En üstte en yeni sürüm.
 
+## 0.19.5
+### 🇹🇷 Türkçe
+#### 🐛 Düzeltmeler
+- ⚒ **Build eşyasından Craft'a doğru base geliyor.** Bir bow'da "Craft'la"ya basınca simülatöre yanlış base/sınıf (örn. crossbow) yükleniyordu; artık eşyanın gerçek base'i (Cultist Bow → Cultist Bow, item class Bow) ikon çözümleyiciyle AYNI merkezi kaynaktan TAM eşleşmeyle gelir.
+- 🔤 **Craft Simülatörü'nde mod metni İngilizce.** Eşya kartı, düşme şansı listesi, hedef paneli ve koç önerilerindeki mod adları/değerleri artık her zaman İngilizce (oyundaki + eşya kartı/trade ile tutarlı); yalnız arayüz etiketleri Türkçe.
+#### ✨ İyileştirmeler
+- ✍️ **Gerçek oyun sonucunu elle gir.** Oyunda bir craft malzemesi kullandıktan sonra çıkan gerçek eşyayı programa yansıtabilirsin: rarity'yi ayarla, gerçek rollanmış modları ekle/çıkar → eşya durumu oyundakiyle birebir olur. Craft Koçu bu gerçek duruma göre yeniden değerlendirip sonraki en iyi adımı (şans/maliyet) önerir.
+### 🇬🇧 English
+#### 🐛 Fixes
+- ⚒ **Correct base when crafting from a build item.** Pressing "Craft" on a bow loaded the wrong base/class into the simulator (e.g. a crossbow); it now loads the item's real base (Cultist Bow → Cultist Bow, item class Bow) via the SAME central resolver as icons, with an exact match.
+- 🔤 **Mod text in English in the Craft Simulator.** Mod names/values in the item card, drop-chance list, target panel and coach advice are now always English (consistent with the game + item card/trade); only UI labels stay Turkish.
+#### ✨ Improvements
+- ✍️ **Enter the real in-game result manually.** After using a crafting material in-game, reflect the actual item in the app: set rarity, add/remove the real rolled mods → the item state matches the game exactly. The Craft Coach re-evaluates from this real state and proposes the next best step (chance/cost).
+
 ## 0.19.4
 ### 🇹🇷 Türkçe
 #### ✨ İyileştirmeler

@@ -13,6 +13,7 @@ import {
   type SimBase,
   type TargetEntry
 } from './craft-sim'
+import { resolveBaseName } from './base-name'
 
 export interface CraftSeedItem {
   base: string // saf taban adı (pureBase tercih)
@@ -78,22 +79,15 @@ export function representativeBase(itemClass: string | null | undefined): SimBas
   return [...list].sort((a, b) => b.drop_level - a.drop_level)[0]
 }
 
-/** Saf taban adından SIM_BASES eşleşmesi (tam ad → içerme fallback; kalite önekleri soyulur). */
+/**
+ * Saf taban adından SIM_BASES eşleşmesi — TAM eşleme (kalite önekleri soyulur). Substring YOK:
+ * "Bow" (sınıf adı) bir crossbow base'ine ("...Crossbow" içinde "bow" geçer) YANLIŞLIKLA çözülmez.
+ * Yalnızca gerçek base adı ("Cultist Bow") eşleşir; aksi halde null (çağıran name/itemClass'a düşer).
+ */
 export function matchSimBase(pureBase: string): SimBase | null {
   const k = normBase((pureBase || '').replace(BASE_NOISE, ' '))
   if (!k) return null
-  const exact = baseByName.get(k)
-  if (exact) return exact
-  // içerme: build tabanı SIM tabanını içeriyorsa (en uzun eşleşme)
-  let best: SimBase | null = null
-  let bestLen = 0
-  for (const [name, b] of baseByName) {
-    if ((k === name || k.includes(name) || name.includes(k)) && name.length > bestLen) {
-      best = b
-      bestLen = name.length
-    }
-  }
-  return best
+  return baseByName.get(k) ?? null
 }
 
 // bir mod satırının değerini gruptaki tier aralıklarına oturt → minTier (yoksa 1)
@@ -124,12 +118,20 @@ function tierForValue(group: string, affix: 'prefix' | 'suffix', line: string): 
  * Eşleşmeyen modlar `unmatched` (advisor'a girmez; kullanıcı görür).
  */
 export function craftSeedFromItem(item: CraftSeedItem): CraftSeed {
-  // 1) pureBase → base → name sırasıyla SIM tabanı bul (unique adı taban değil → en sonda).
+  // 1) MERKEZİ resolver (item-icon ile AYNI kaynak + sıra: name → önek-soyulmuş name → base).
+  //    Mobalytics'te gerçek base eşyanın `name` alanındadır (base = yalnız "Bow" SINIFI); bu yüzden
+  //    önce kanonik base adı çözülür → o tam adla SIM tabanı eşlenir. Böylece "Cultist Bow" → Cultist Bow
+  //    (Bow), yanlış crossbow base'ine DÜŞMEZ.
   let simBase: SimBase | null = null
-  for (const cand of [item.pureBase, item.base, item.name]) {
-    if (!cand) continue
-    simBase = matchSimBase(cand)
-    if (simBase) break
+  const canon = resolveBaseName({ name: item.name, base: item.pureBase || item.base })
+  if (canon) simBase = matchSimBase(canon)
+  // 1b) yedek: ham adaylarla TAM eşleme (resolver DB'de olmayan ama SIM'de olan nadir durum)
+  if (!simBase) {
+    for (const cand of [item.name, item.pureBase, item.base]) {
+      if (!cand) continue
+      simBase = matchSimBase(cand)
+      if (simBase) break
+    }
   }
   // 2) Hâlâ yoksa item-class'tan TEMSİLCİ taban TAHMİN et (Mobalytics genel sınıf / bilinmeyen taban).
   let baseSuggested = false

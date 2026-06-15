@@ -340,8 +340,9 @@ function rowRange(r: { group: string; affix: 'prefix' | 'suffix'; minTier: numbe
 }
 const targetStatus = computed(() => (item.value ? evaluateTarget(item.value, targets.value) : null))
 const metCount = computed(() => targetStatus.value?.rows.filter((r) => r.met).length ?? 0)
-function groupLabel(g: { en: string; tr: string }): string {
-  return (props.isTr && g.tr ? g.tr : g.en).split('\n')[0]
+// mod/stat metni HER ZAMAN İngilizce (oyundaki + eşya kartı + trade ile tutarlı; özel adlar çevrilmez).
+function groupLabel(g: { en: string }): string {
+  return g.en.split('\n')[0]
 }
 function saveCraft(): void {
   window.api?.craft?.set(
@@ -404,9 +405,9 @@ function actionName(a: ActionEval): string {
   if (a.op) return opLabelByName(a.op)
   return a.labelEn
 }
-// hedef adının ilk satırı (iki dilli)
-function tgtOf(en?: string, trv?: string): string {
-  return (props.isTr && trv ? trv : en || '').split('\n')[0]
+// hedef (mod) adının ilk satırı — HER ZAMAN İngilizce (mod metni eşya kartı/trade ile tutarlı)
+function tgtOf(en?: string, _trv?: string): string {
+  return (en || '').split('\n')[0]
 }
 function chanceLabel(s: PlanStep): string {
   if (s.deterministic) return tr('kesin', 'sure')
@@ -538,6 +539,46 @@ function applyPrimary(): void {
 }
 function applyAlt(a: PlanAlternative): void {
   applyActionEval(a.action)
+}
+
+// --- ELLE GERÇEK SONUÇ GİRİŞİ (oyunda craft yaptıktan sonra çıkan gerçek eşyayı yansıt) ---
+// Kullanıcı modları elle ekler/çıkarır → eşya durumu oyundakiyle birebir olur → koç (plan) yeni
+// duruma göre otomatik yeniden değerlendirir (item.value reaktif). Sim-tahmin değil, gerçek ilerleme.
+const manualEdit = ref(false)
+const manualGroupKey = ref('') // "affix|group"
+const manualValue = ref('')
+const manualMsg = ref('')
+// eklenebilir gruplar (bu tabanda + ilvl): zaten dolu olanları çıkar
+function manualGroupOptions(): Array<{ key: string; label: string; affix: 'prefix' | 'suffix' }> {
+  const used = new Set(
+    item.value ? [...item.value.prefixes, ...item.value.suffixes].map((m) => m.mod.group) : []
+  )
+  return targetGroups.value
+    .filter((g) => !used.has(g.group))
+    .map((g) => ({ key: g.affix + '|' + g.group, label: g.en.split('\n')[0], affix: g.affix }))
+}
+function manualAdd(): void {
+  if (!session || !manualGroupKey.value) return
+  const [affix, group] = manualGroupKey.value.split('|') as ['prefix' | 'suffix', string]
+  const r = session.addManualMod(group, affix, manualValue.value.trim())
+  if (r.ok) {
+    manualValue.value = ''
+    manualGroupKey.value = ''
+    manualMsg.value = ''
+    sync()
+  } else {
+    manualMsg.value = r.reason
+  }
+}
+function manualRemove(side: 'prefix' | 'suffix', index: number): void {
+  if (!session) return
+  session.removeManualMod(side, index)
+  sync()
+}
+function manualSetRarity(r: 'normal' | 'magic' | 'rare'): void {
+  if (!session) return
+  session.setRarityManual(r)
+  sync()
 }
 
 // --- LLM modu (opsiyonel; kullanıcının kendi anahtarıyla, main process'ten) ---
@@ -863,7 +904,8 @@ function opLabelByName(op: OpName): string {
 function pct(g: GroupChance): string {
   return (g.chance * 100).toFixed(g.chance < 0.01 ? 2 : 1) + '%'
 }
-const chanceText = (g: GroupChance): string => (props.isTr && g.tr ? g.tr : g.en).replace(/\n/g, ', ')
+// düşme şansı listesi mod adı: HER ZAMAN İngilizce (eşya kartı/trade ile tutarlı)
+const chanceText = (g: GroupChance): string => g.en.replace(/\n/g, ', ')
 
 // --- tooltip yardımcıları ---
 function modLine(m: RolledMod): { en: string; tr: string; tier: number; tierMax: number; range: string; special: boolean; boosted: boolean } {
@@ -1106,12 +1148,15 @@ function parts(text: string): { t: string; num: boolean }[] {
             {{ tr('Item Seviyesi', 'Item Level') }}: <b>{{ item.ilvl }}</b>
             <span class="cs-tip-count">· {{ item.prefixes.length }}P / {{ item.suffixes.length }}S</span>
             <span v-if="item.quality > 0" class="cs-tip-qual">· {{ tr('Kalite', 'Quality') }} <b>%{{ item.quality }}</b><span v-if="item.catalystTag"> ({{ item.catalystTag }})</span></span>
+            <button class="cs-medit-toggle" :class="{ 'cs-medit-toggle--on': manualEdit }" @click="manualEdit = !manualEdit" :title="tr('Oyundaki gerçek sonucu elle gir', 'Enter the real in-game result manually')">
+              ✎ {{ manualEdit ? tr('Düzenlemeyi bitir', 'Done editing') : tr('Gerçek sonucu gir', 'Enter real result') }}
+            </button>
           </div>
 
-          <!-- base stat'lar (quality ile ölçekli) -->
+          <!-- base stat'lar (quality ile ölçekli) — etiket EN (oyun terimi, eşya kartıyla tutarlı) -->
           <div v-if="qStats.length" class="cs-tip-stats">
             <div v-for="(s, i) in qStats" :key="i" class="cs-tip-stat">
-              <span class="cs-tip-statlbl">{{ props.isTr ? s.label_tr : s.label_en }}</span>
+              <span class="cs-tip-statlbl">{{ s.label_en }}</span>
               <span class="cs-tip-statval" :class="{ 'cs-tip-statq': item.quality > 0 }">{{ s.value }}</span>
             </div>
           </div>
@@ -1120,13 +1165,12 @@ function parts(text: string): { t: string; num: boolean }[] {
           <template v-if="implicit || item.implicits.length">
             <div class="cs-tip-sep"></div>
             <div class="cs-implicit">
+              <!-- implicit/corruption stat metni EN (eşya kartı/oyun ile tutarlı) -->
               <template v-if="implicit">
                 <div class="cs-imp-en">{{ implicit.en }}</div>
-                <div v-if="implicit.tr" class="cs-imp-tr">{{ implicit.tr }}</div>
               </template>
               <div v-for="(im, i) in item.implicits" :key="'ci' + i" class="cs-imp-corrupt">
                 <div class="cs-imp-en cs-imp-en--corrupt">{{ im.en }}</div>
-                <div v-if="im.tr && im.tr !== im.en" class="cs-imp-tr">{{ im.tr }}</div>
               </div>
             </div>
           </template>
@@ -1140,8 +1184,8 @@ function parts(text: string): { t: string; num: boolean }[] {
                 <span class="cs-sock-lbl">{{ item.sockets.runes.length }}/{{ item.sockets.count }} {{ tr('Soket', 'Socket') }}</span>
               </div>
               <div v-for="(rn, i) in item.sockets.runes" :key="'rn' + i" class="cs-sock-rune">
-                <span class="cs-sock-rune-eff">{{ props.isTr ? rn.effect_tr : rn.effect_en }}</span>
-                <span class="cs-sock-rune-name">({{ props.isTr && rn.name_tr ? rn.name_tr : rn.name_en }})</span>
+                <span class="cs-sock-rune-eff">{{ rn.effect_en }}</span>
+                <span class="cs-sock-rune-name">({{ rn.name_en }})</span>
               </div>
             </div>
           </template>
@@ -1161,8 +1205,8 @@ function parts(text: string): { t: string; num: boolean }[] {
                 <span class="cs-mod-tier">T{{ modLine(m).tier }}<span class="cs-mod-tiermax">/{{ modLine(m).tierMax }}</span></span>
                 <span v-if="modLine(m).range" class="cs-mod-range" :title="tr('bu tier değer aralığı', 'this tier value range')">{{ modLine(m).range }}</span>
                 <span class="cs-mod-en" :class="{ 'cs-mod-boosted': modLine(m).boosted }"><span v-for="(p, j) in parts(modLine(m).en)" :key="j" :class="{ 'cs-num': p.num }">{{ p.t }}</span></span>
+                <button v-if="manualEdit" class="cs-mmod-rm" :title="tr('Kaldır', 'Remove')" @click="manualRemove('prefix', i)">×</button>
               </div>
-              <div v-if="modLine(m).tr" class="cs-mod-tr">{{ modLine(m).tr }}</div>
             </li>
             <li v-for="(m, i) in item.suffixes" :key="'s' + i" class="cs-mod" :class="{ 'cs-mod--frac': m.fractured }">
               <div class="cs-mod-top">
@@ -1172,10 +1216,34 @@ function parts(text: string): { t: string; num: boolean }[] {
                 <span class="cs-mod-tier">T{{ modLine(m).tier }}<span class="cs-mod-tiermax">/{{ modLine(m).tierMax }}</span></span>
                 <span v-if="modLine(m).range" class="cs-mod-range" :title="tr('bu tier değer aralığı', 'this tier value range')">{{ modLine(m).range }}</span>
                 <span class="cs-mod-en" :class="{ 'cs-mod-boosted': modLine(m).boosted }"><span v-for="(p, j) in parts(modLine(m).en)" :key="j" :class="{ 'cs-num': p.num }">{{ p.t }}</span></span>
+                <button v-if="manualEdit" class="cs-mmod-rm" :title="tr('Kaldır', 'Remove')" @click="manualRemove('suffix', i)">×</button>
               </div>
-              <div v-if="modLine(m).tr" class="cs-mod-tr">{{ modLine(m).tr }}</div>
             </li>
           </ul>
+
+          <!-- ELLE GERÇEK SONUÇ GİRİŞİ: oyunda craft yaptıktan sonra çıkan eşyayı birebir yansıt -->
+          <div v-if="manualEdit" class="cs-medit">
+            <div class="cs-medit-hint">
+              {{ tr('Oyundaki gerçek sonucu gir — koç bu duruma göre devam eder.', 'Enter the real in-game result — the coach continues from this state.') }}
+            </div>
+            <div class="cs-medit-rar">
+              <span class="cs-medit-lbl">{{ tr('Rarity', 'Rarity') }}:</span>
+              <button v-for="r in (['normal','magic','rare'] as const)" :key="r" class="cs-medit-rbtn" :class="{ 'cs-medit-rbtn--on': item.rarity === r }" @click="manualSetRarity(r)">
+                {{ r === 'normal' ? 'Normal' : r === 'magic' ? 'Magic' : 'Rare' }}
+              </button>
+            </div>
+            <div class="cs-medit-add">
+              <select v-model="manualGroupKey" class="class-filter cs-medit-grp">
+                <option value="">{{ tr('Mod seç…', 'Pick a mod…') }}</option>
+                <option v-for="o in manualGroupOptions()" :key="o.key" :value="o.key">
+                  {{ o.label }} [{{ o.affix === 'prefix' ? 'P' : 'S' }}]
+                </option>
+              </select>
+              <input v-model="manualValue" class="class-filter cs-medit-val" :placeholder="tr('değer (ör. 120 veya 12 30)', 'value (e.g. 120 or 12 30)')" @keyup.enter="manualAdd" />
+              <button class="cs-medit-addbtn" :disabled="!manualGroupKey" @click="manualAdd">+ {{ tr('Ekle', 'Add') }}</button>
+            </div>
+            <div v-if="manualMsg" class="cs-medit-msg">⚠ {{ manualMsg }}</div>
+          </div>
         </div>
         <div v-else class="cs-noitem">{{ tr('Taban seçilmedi', 'No base selected') }}</div>
 
@@ -1405,7 +1473,6 @@ function parts(text: string): { t: string; num: boolean }[] {
               <span class="cs-essrow-en">{{ essPrev.en }}</span>
               <span v-if="essPrev.special" class="cs-essrow-special">{{ tr('(özel mod)', '(special mod)') }}</span>
             </div>
-            <div v-if="essPrev.tr" class="cs-essrow-tr">{{ essPrev.tr }}</div>
             <div v-if="essPrev.approx" class="cs-essnote cs-essnote--approx">{{ tr('(yaklaşık değer — essence-birebir olmayabilir)', '(approx value — may differ from exact essence)') }}</div>
             <button
               class="cs-essapply"
@@ -3124,5 +3191,106 @@ function parts(text: string): { t: string; num: boolean }[] {
   border: 1px dashed rgba(200, 170, 110, 0.45);
   border-radius: 2px;
   padding: 0 6px;
+}
+
+/* --- elle gerçek sonuç girişi --- */
+.cs-medit-toggle {
+  margin-left: 8px;
+  background: rgba(120, 95, 50, 0.25);
+  border: 1px solid rgba(200, 170, 110, 0.4);
+  color: #d8b87a;
+  border-radius: 3px;
+  font-size: 11px;
+  padding: 1px 7px;
+  cursor: pointer;
+}
+.cs-medit-toggle--on {
+  background: rgba(200, 170, 110, 0.85);
+  color: #1a1206;
+  font-weight: 600;
+}
+.cs-mmod-rm {
+  margin-left: auto;
+  background: rgba(140, 40, 40, 0.35);
+  border: 1px solid rgba(200, 90, 90, 0.5);
+  color: #e2a0a0;
+  border-radius: 3px;
+  width: 18px;
+  height: 18px;
+  line-height: 1;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.cs-mmod-rm:hover {
+  background: rgba(180, 50, 50, 0.6);
+  color: #fff;
+}
+.cs-medit {
+  margin-top: 8px;
+  padding: 8px;
+  border: 1px solid rgba(200, 170, 110, 0.35);
+  border-radius: 4px;
+  background: rgba(60, 45, 22, 0.3);
+}
+.cs-medit-hint {
+  font-size: 11px;
+  color: #c2a878;
+  margin-bottom: 6px;
+}
+.cs-medit-rar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.cs-medit-lbl {
+  font-size: 11px;
+  color: #b89a68;
+}
+.cs-medit-rbtn {
+  background: rgba(80, 65, 35, 0.4);
+  border: 1px solid rgba(180, 150, 95, 0.35);
+  color: #cdb284;
+  border-radius: 3px;
+  font-size: 11px;
+  padding: 1px 9px;
+  cursor: pointer;
+}
+.cs-medit-rbtn--on {
+  background: rgba(200, 170, 110, 0.85);
+  color: #1a1206;
+  font-weight: 600;
+}
+.cs-medit-add {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.cs-medit-grp {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.cs-medit-val {
+  width: 150px;
+  flex: 0 0 auto;
+}
+.cs-medit-addbtn {
+  background: rgba(90, 140, 70, 0.4);
+  border: 1px solid rgba(130, 190, 100, 0.5);
+  color: #bfe0a8;
+  border-radius: 3px;
+  font-size: 12px;
+  padding: 2px 10px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.cs-medit-addbtn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.cs-medit-msg {
+  margin-top: 5px;
+  font-size: 11px;
+  color: #e2a0a0;
 }
 </style>

@@ -7,6 +7,7 @@
 // SINIF adıdır: "Ring"/"Bow"); bu yüzden ÖNCE `name`, sonra önek-soyulmuş name, sonra `base` denenir.
 import itemsData from '../../../data/items.json'
 import modsSimData from '../../../data/mods_sim.json'
+export { canonicalBaseName, resolveBaseName } from './base-name'
 
 const assets = import.meta.glob('../../assets/items/*.png', { eager: true, query: '?url', import: 'default' }) as Record<string, string>
 const urlByFile: Record<string, string> = {}

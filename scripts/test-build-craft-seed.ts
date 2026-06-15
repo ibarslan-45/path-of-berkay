@@ -97,5 +97,27 @@ check('Felt Cap → itemClass Helmet', felt.itemClass === 'Helmet', felt.itemCla
 check('Felt Cap → kesin eşleşme (tahmin değil)', felt.baseSuggested === false)
 check('Felt Cap → Bow DEĞİL', !/bow/i.test(felt.baseEn || ''))
 
+// 0.19.5: Mobalytics gerçek base `name` alanında; `base`/`pureBase` yalnız SINIF ("Bow"). Eski substring
+// eşleşmesi "bow"u "...Crossbow" içinde bulup yanlış crossbow base'ine düşürüyordu. Artık TAM eşleme +
+// name-önceliği → doğru base.
+console.log('\n#1 (0.19.5) — Mobalytics bow: name=gerçek base, base=SINIF (crossbow’a düşmemeli):')
+const bow = craftSeedFromItem({
+  base: 'Bow',
+  pureBase: 'Bow',
+  name: 'Cultist Bow',
+  itemClass: 'Bow',
+  rarity: 'Rare',
+  mods: ['Adds 12 to 30 Cold Damage', '+18% increased Attack Speed'],
+  itemLevel: 81
+})
+check('name=Cultist Bow → baseEn Cultist Bow', bow.baseEn === 'Cultist Bow', bow.baseEn)
+check('itemClass = Bow', bow.itemClass === 'Bow', bow.itemClass)
+check('Crossbow DEĞİL', !/crossbow/i.test(bow.baseEn || ''), bow.baseEn)
+check('kesin eşleşme (tahmin değil)', bow.baseSuggested === false)
+// sınıf adı ("Bow") tek başına matchSimBase'e verilirse artık YANLIŞ base döndürmez (TAM eşleme yok)
+check('matchSimBase("Bow") → null (sınıf adı, base değil)', matchSimBase('Bow') === null, matchSimBase('Bow')?.en)
+check('matchSimBase("Crossbow") → null (sınıf adı)', matchSimBase('Crossbow') === null, matchSimBase('Crossbow')?.en)
+check('matchSimBase("Cultist Bow") → Cultist Bow', matchSimBase('Cultist Bow')?.en === 'Cultist Bow', matchSimBase('Cultist Bow')?.en)
+
 console.log(`\n${pass} geçti, ${fail} kaldı`)
 process.exit(fail ? 1 : 0)

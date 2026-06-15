@@ -846,6 +846,44 @@ export function groupTierRanges(group: string, affix: 'prefix' | 'suffix'): stri
   return fam.map((m) => tierRangeText(m))
 }
 
+/**
+ * ELLE GİRİŞ (gerçek oyun sonucu): bir grup+affix için, kullanıcının girdiği gerçek değer(ler)e uyan
+ * SimMod'u seç + o değerlerle RolledMod üret. Tier, değerin tier aralıklarına oturtulmasıyla belirlenir
+ * (build-craft-seed.tierForValue ile aynı mantık). Değer verilmezse T1, taban için geçerli mod yoksa null.
+ */
+export function manualModForValue(
+  base: SimBase,
+  group: string,
+  affix: 'prefix' | 'suffix',
+  valuesText: string
+): RolledMod | null {
+  const cands = SIM_MODS.filter(
+    (m) => m.group === group && m.affix === affix && m.domain === base.domain && weightForBase(m, base) > 0
+  ).sort((a, b) => tierOf(a) - tierOf(b)) // T1 başta
+  if (!cands.length) return null
+  const nums = valuesText.match(/-?\d+(?:\.\d+)?/g) || []
+  let mod = cands[0]
+  if (nums.length) {
+    const val = Math.max(...nums.map(Number))
+    const ranges = groupTierRanges(group, affix) // index 0 = T1
+    let bestIdx = -1
+    let bestLo = -Infinity
+    for (let i = 0; i < ranges.length; i++) {
+      const m = ranges[i].match(/(-?\d+(?:\.\d+)?)\s*[-–]\s*(-?\d+(?:\.\d+)?)/)
+      if (!m) continue
+      const lo = Math.min(parseFloat(m[1]), parseFloat(m[2]))
+      if (lo <= val && lo > bestLo) {
+        bestLo = lo
+        bestIdx = i
+      }
+    }
+    const tierNum = bestIdx >= 0 ? bestIdx + 1 : ranges.length
+    mod = cands.find((c) => tierOf(c) === tierNum) ?? cands[Math.min(tierNum - 1, cands.length - 1)] ?? cands[0]
+  }
+  const vals = nums.length ? nums : mod.values ? mod.values.split(' / ').map(rollToken) : []
+  return { mod, en: fillHashes(mod.text_en, vals), tr: mod.text_tr ? fillHashes(mod.text_tr, vals) : '' }
+}
+
 /** Birden çok tier'ı birleştirip toplam değer aralığı verir (en düşük alt – en yüksek üst sınır). */
 function combinedRange(mods: SimMod[]): string {
   const segs: { lo: number; hi: number; dec: boolean; suffix: string }[] = []
@@ -1211,7 +1249,7 @@ export const OPS = { transmute, augment, regal, exalt, chaos, alchemy, annul, di
 export type OpName = keyof typeof OPS
 
 export interface HistoryEntry {
-  op: OpName | 'init' | 'essence'
+  op: OpName | 'init' | 'essence' | 'manual'
   message: string
   added: RolledMod[]
   removed: RolledMod[]
@@ -1318,6 +1356,58 @@ export class CraftSession {
   setBase(base: SimBase, ilvl: number): void {
     this.stack = [makeItem(base, ilvl)]
     this.logs = [{ op: 'init', message: 'Temiz taban', added: [], removed: [] }]
+    this.armedOmen = null
+  }
+
+  // --- ELLE DÜZENLEME: gerçek oyun sonucunu yansıt (sim-tahmin değil) ---
+  // Her biri yeni state'i yığına iter (undo çalışır) ve 'manual' olarak loglar.
+
+  /** Rarity'yi elle ayarla; düşürürken kapasiteyi aşan modlar sondan kırpılır. */
+  setRarityManual(r: Rarity): void {
+    const ni = clone(this.item)
+    ni.rarity = r
+    const c = caps(r)
+    while (ni.prefixes.length > c.p) ni.prefixes.pop()
+    while (ni.suffixes.length > c.s) ni.suffixes.pop()
+    this.stack.push(ni)
+    this.logs.push({ op: 'manual', message: 'Rarity → ' + r, added: [], removed: [] })
+    this.armedOmen = null
+  }
+
+  /** Gerçek rollanmış bir mod ekle (gruptan + girilen değer). Yer yoksa rarity otomatik yükselir.
+   *  Dolu/uygulanamazsa { ok:false, reason }. */
+  addManualMod(group: string, affix: 'prefix' | 'suffix', valuesText: string): { ok: boolean; reason: string } {
+    const it = this.item
+    const rolled = manualModForValue(it.base, group, affix, valuesText)
+    if (!rolled) return { ok: false, reason: 'Bu taban için uygun mod yok' }
+    const ni = clone(it)
+    const groups = new Set([...ni.prefixes, ...ni.suffixes].map((m) => m.mod.group).filter(Boolean))
+    if (rolled.mod.group && groups.has(rolled.mod.group)) return { ok: false, reason: 'Bu grup zaten var' }
+    // kapasite: gerekiyorsa rarity yükselt
+    const side = (): number => (affix === 'prefix' ? ni.prefixes.length : ni.suffixes.length)
+    let cap = (): number => (affix === 'prefix' ? caps(ni.rarity).p : caps(ni.rarity).s)
+    if (side() >= cap()) {
+      if (ni.rarity === 'normal') ni.rarity = 'magic'
+      else if (ni.rarity === 'magic') ni.rarity = 'rare'
+    }
+    cap = (): number => (affix === 'prefix' ? caps(ni.rarity).p : caps(ni.rarity).s)
+    if (side() >= cap()) return { ok: false, reason: 'O taraf dolu (3/3)' }
+    if (affix === 'prefix') ni.prefixes.push(rolled)
+    else ni.suffixes.push(rolled)
+    this.stack.push(ni)
+    this.logs.push({ op: 'manual', message: 'Mod eklendi', added: [rolled], removed: [] })
+    this.armedOmen = null
+    return { ok: true, reason: '' }
+  }
+
+  /** Bir modu elle kaldır (gerçek annul/regret sonrası). */
+  removeManualMod(side: 'prefix' | 'suffix', index: number): void {
+    const ni = clone(this.item)
+    const arr = side === 'prefix' ? ni.prefixes : ni.suffixes
+    if (index < 0 || index >= arr.length) return
+    const [removed] = arr.splice(index, 1)
+    this.stack.push(ni)
+    this.logs.push({ op: 'manual', message: 'Mod kaldırıldı', added: [], removed: removed ? [removed] : [] })
     this.armedOmen = null
   }
 }
